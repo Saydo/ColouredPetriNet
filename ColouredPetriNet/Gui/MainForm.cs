@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ColouredPetriNet.Gui
+namespace ColouredPetriNetGui
 {
     public partial class MainForm : Form
     {
