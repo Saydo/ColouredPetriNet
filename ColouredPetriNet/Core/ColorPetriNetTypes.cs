@@ -1,8 +1,6 @@
-﻿using System.Drawing;
-
-namespace ColorPetriNet
+﻿namespace ColouredPetriNet.Core
 {
-    public enum ColorElemType { SquareMarker, RoundMarker, TriangleMarker, SquareTransition,
+    public enum ColouredElementType { SquareMarker, RoundMarker, TriangleMarker, SquareTransition,
         RhombTransition, RoundState, ImageState };
 
     public class SquareMarker

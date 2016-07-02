@@ -1,38 +1,38 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace PetriNet
+namespace ColouredPetriNet.Container
 {
     public delegate void AccumulateMarkersFunction(IStateWrapper state, List<IMarkerWrapper> markers);
 
     public class PetriNetAccumulateRule
     {
-        public Type state;
-        public List<Tuple<Type, int>> markers;
-        public AccumulateMarkersFunction accumulateFunction;
+        public Type State { get; set; }
+        public List<Tuple<Type, int>> Markers { get; set; }
+        public AccumulateMarkersFunction AccumulateFunction { get; set; }
 
         public PetriNetAccumulateRule(Type state, List<Tuple<Type, int>> markers)
         {
-            this.state = state;
-            this.markers = markers;
+            State = state;
+            Markers = markers;
         }
 
-        public bool isComply(Type state, List<Tuple<Type, List<int>>> in_markers)
+        public bool IsComply(Type state, List<Tuple<Type, List<int>>> inputMarkers)
         {
-            if (this.state != state)
+            if (State != state)
             {
                 return false;
             }
-            bool is_found = false;
-            for (int i = 0; i < this.markers.Count; ++i)
+            bool isFound = false;
+            for (int i = 0; i < Markers.Count; ++i)
             {
-                for (int j = 0; j < in_markers.Count; ++j)
+                for (int j = 0; j < inputMarkers.Count; ++j)
                 {
-                    if (this.markers[i].Item1 == in_markers[j].Item1)
+                    if (Markers[i].Item1 == inputMarkers[j].Item1)
                     {
-                        if (this.markers[i].Item2 <= in_markers[j].Item2.Count)
+                        if (Markers[i].Item2 <= inputMarkers[j].Item2.Count)
                         {
-                            is_found = true;
+                            isFound = true;
                             break;
                         }
                         else
@@ -41,7 +41,7 @@ namespace PetriNet
                         }
                     }
                 }
-                if (!is_found)
+                if (!isFound)
                 {
                     return false;
                 }

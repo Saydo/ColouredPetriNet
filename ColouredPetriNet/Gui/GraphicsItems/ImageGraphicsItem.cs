@@ -1,10 +1,11 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 
-namespace ColorPetriNetGui
+namespace ColouredPetriNet.Gui.GraphicsItems
 {
     public class ImageGraphicsItem : RectangleGraphicsItem
     {
+        protected Image _image;
+
         public ImageGraphicsItem() : this(-1, -1, null, 0, 0, 0, 0)
         {
         }
@@ -17,22 +18,20 @@ namespace ColorPetriNetGui
         public ImageGraphicsItem(int id, int typeId, Image image, int x, int y, int w, int h, int z = 0)
             : base(id, typeId, w, h, x, y, z)
         {
-            m_image = image;
+            _image = image;
         }
 
-        public override void draw(Graphics graphics)
+        public override void Draw(Graphics graphics)
         {
-            if (!ReferenceEquals(null, m_image))
+            if (!ReferenceEquals(null, _image))
             {
-                graphics.DrawImage(m_image, m_x - m_width/2, m_y - m_height/2, m_width, m_height);
+                graphics.DrawImage(_image, _x - _width/2, _y - _height/2, _width, _height);
             }
-            if (m_selected)
+            if (_selected)
             {
-                graphics.DrawRectangle(m_selectionPen, m_x - m_width / 2 - m_extent, m_y - m_height / 2 - m_extent,
-                    m_width + 2 * m_extent, m_height + 2 * m_extent);
+                graphics.DrawRectangle(_selectionPen, _x - _width / 2 - _extent, _y - _height / 2 - _extent,
+                    _width + 2 * _extent, _height + 2 * _extent);
             }
         }
-
-        protected Image m_image;
     }
 }

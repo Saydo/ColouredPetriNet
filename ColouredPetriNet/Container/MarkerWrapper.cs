@@ -1,43 +1,23 @@
 ﻿using System;
 
-namespace PetriNet
+namespace ColouredPetriNet.Container
 {
     public class MarkerWrapper<T> : IMarkerWrapper<T>
     {
-        public MarkerWrapper(int id, int state_id, T value)
+        public int Id { get; private set; }
+        public int StateId { get; set; }
+        public T Value { get; private set; }
+
+        public MarkerWrapper(int id, int stateId, T value)
         {
-            m_id = id;
-            m_stateId = state_id;
-            m_value = value;
+            Id = id;
+            StateId = stateId;
+            Value = value;
         }
 
-        public int getId()
-        {
-            return m_id;
-        }
-
-        public int getStateId()
-        {
-            return m_stateId;
-        }
-
-        public void setStateId(int value)
-        {
-            m_stateId = value;
-        }
-
-        public T getValue()
-        {
-            return m_value;
-        }
-
-        public Type getValueType()
+        public Type GetValueType()
         {
             return typeof(T);
         }
-
-        protected int m_id;
-        protected int m_stateId;
-        protected T m_value;
     }
 }

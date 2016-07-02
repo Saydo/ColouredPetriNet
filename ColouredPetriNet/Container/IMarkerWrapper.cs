@@ -1,17 +1,16 @@
 ﻿using System;
 
-namespace PetriNet
+namespace ColouredPetriNet.Container
 {
     public interface IMarkerWrapper
     {
-        int getId();
-        int getStateId();
-        void setStateId(int value);
-        Type getValueType();
+        int Id { get; }
+        int StateId { get; set; }
+        Type GetValueType();
     }
 
     public interface IMarkerWrapper<T> : IMarkerWrapper
     {
-        T getValue();
+        T Value { get; }
     }
 }

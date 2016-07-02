@@ -1,27 +1,27 @@
-﻿namespace PetriNet
+﻿namespace ColouredPetriNet.Container
 {
     public class IdGenerator
     {
-        private int m_id;
+        private int _id;
 
         public IdGenerator(int id = 0)
         {
-            m_id = 0;
+            _id = 0;
         }
 
-        public int getNextId()
+        public int GetNextId()
         {
-            return ++m_id;
+            return ++_id;
         }
 
-        public int getCurrId()
+        public int GetCurrId()
         {
-            return m_id;
+            return _id;
         }
 
-        public void reset(int id = 0)
+        public void Reset(int id = 0)
         {
-            m_id = id;
+            _id = id;
         }
     }
 }

@@ -1,16 +1,16 @@
-﻿namespace PetriNet
+﻿namespace ColouredPetriNet.Container
 {
-    public interface IStateWrapper : IPetriNetNode
+    public interface IStateWrapper : IColouredPetriNetNode
     {
-        int getMarker(int index);
-        int getMarkerCount();
-        bool containsMarkers();
-        bool containsMarker(int id);
-        void addMarker(int id);
-        void removeMarker(int id);
+        int GetMarker(int index);
+        int GetMarkerCount();
+        bool ContainsMarkers();
+        bool ContainsMarker(int id);
+        void AddMarker(int id);
+        void RemoveMarker(int id);
     }
 
-    public interface IStateWrapper<T> : IStateWrapper, IPetriNetNode<T>
+    public interface IStateWrapper<T> : IStateWrapper, IColouredPetriNetNode<T>
     {
     }
 }

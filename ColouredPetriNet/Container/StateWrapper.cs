@@ -1,56 +1,56 @@
 ﻿using System.Collections.Generic;
 
-namespace PetriNet
+namespace ColouredPetriNet.Container
 {
-    public class StateWrapper<T> : PetriNetNode<T>, IStateWrapper<T>
+    public class StateWrapper<T> : ColouredPetriNetNode<T>, IStateWrapper<T>
     {
-        protected List<int> m_markerList;
+        protected List<int> _markerList;
 
         public StateWrapper() : base()
         {
-            m_markerList = new List<int>();
+            _markerList = new List<int>();
         }
 
-        public StateWrapper(int id, T value) : base(id, value)
+        public StateWrapper(int id, T state) : base(id, state)
         {
-            m_markerList = new List<int>();
+            _markerList = new List<int>();
         }
 
-        public int getMarker(int index)
+        public int GetMarker(int index)
         {
-            if ((index < 0) || (index >= m_markerList.Count))
+            if ((index < 0) || (index >= _markerList.Count))
             {
                 return -1;
             }
             else
             {
-                return m_markerList[index];
+                return _markerList[index];
             }
         }
 
-        public int getMarkerCount()
+        public int GetMarkerCount()
         {
-            return m_markerList.Count;
+            return _markerList.Count;
         }
 
-        public bool containsMarkers()
+        public bool ContainsMarkers()
         {
-            return (m_markerList.Count > 0);
+            return (_markerList.Count > 0);
         }
 
-        public bool containsMarker(int id)
+        public bool ContainsMarker(int id)
         {
-            return m_markerList.Contains(id);
+            return _markerList.Contains(id);
         }
 
-        public void addMarker(int id)
+        public void AddMarker(int id)
         {
-            addToIdList(m_markerList, id);
+            AddToIdList(_markerList, id);
         }
 
-        public void removeMarker(int id)
+        public void RemoveMarker(int id)
         {
-            m_markerList.Remove(id);
+            _markerList.Remove(id);
         }
     }
 }

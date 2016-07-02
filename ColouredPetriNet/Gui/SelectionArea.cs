@@ -1,116 +1,115 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 
-namespace ColorPetriNetGui
+namespace ColouredPetriNet.Gui
 {
+    public enum HorizontalDirection { Left, Right };
+    public enum VerticalDirection { Top, Bottom };
+
     public class SelectionArea
     {
-        public enum HorizontalDirection { Left, Right };
-        public enum VerticalDirection { Top, Bottom };
+        private int _x;
+        private int _y;
+        private int _width;
+        private int _height;
+        private Brush _fillBrush;
+        private Pen _borderPen;
+        private bool _visible;
+        private HorizontalDirection _horizontalDirection;
+        private VerticalDirection _verticalDirection;
+
+        public int X
+        {
+            get { return _x; }
+            set { _x = (value < 0 ? 0 : value); }
+        }
+
+        public int Y
+        {
+            get { return _y; }
+            set { _y = (value < 0 ? 0 : value); }
+        }
+
+        public int Width
+        {
+            get { return _width; }
+            set { _width = (value < 0 ? 0 : value); }
+        }
+
+        public int Height
+        {
+            get { return _height; }
+            set { _height = (value < 0 ? 0 : value); }
+        }
+
+        public Brush FillBrush
+        {
+            get { return _fillBrush; }
+            set
+            {
+                if (!ReferenceEquals(_fillBrush, null))
+                {
+                    _fillBrush = value;
+                }
+            }
+        }
+
+        public Pen BorderPen
+        {
+            get { return _borderPen; }
+            set
+            {
+                if (!ReferenceEquals(_borderPen, null))
+                {
+                    _borderPen = value;
+                }
+            }
+        }
+
+        public bool Visible
+        {
+            get { return _visible; }
+            set { _visible = value; }
+        }
+
+        public HorizontalDirection HorizontalDirection
+        {
+            get { return _horizontalDirection; }
+            set { _horizontalDirection = value; }
+        }
+
+        public VerticalDirection VerticalDirection
+        {
+            get { return _verticalDirection; }
+            set { _verticalDirection = value; }
+        }
 
         public SelectionArea() : this(0, 0, 0, 0)
         {
-            m_visible = false;
+            _visible = false;
         }
 
         public SelectionArea(int x, int y, int w, int h)
         {
-            m_x = x;
-            m_y = y;
-            m_width = w;
-            m_height = h;
-            m_visible = true;
-            m_fillBrush = new SolidBrush(Color.FromArgb(150, 0, 0, 255));
-            m_borderPen = new Pen(Color.FromArgb(0, 0, 255));
-            m_hDirection = HorizontalDirection.Right;
-            m_vDirection = VerticalDirection.Top;
+            _x = x;
+            _y = y;
+            _width = w;
+            _height = h;
+            _visible = true;
+            _fillBrush = new SolidBrush(Color.FromArgb(150, 0, 0, 255));
+            _borderPen = new Pen(Color.FromArgb(0, 0, 255));
+            _horizontalDirection = HorizontalDirection.Right;
+            _verticalDirection = VerticalDirection.Top;
         }
 
-        public int x
+        public void Draw(Graphics graphics)
         {
-            get { return m_x; }
-            set { m_x = (value < 0 ? 0 : value); }
-        }
-
-        public int y
-        {
-            get { return m_y; }
-            set { m_y = (value < 0 ? 0 : value); }
-        }
-
-        public int width
-        {
-            get { return m_width; }
-            set { m_width = (value < 0 ? 0 : value); }
-        }
-
-        public int height
-        {
-            get { return m_height; }
-            set { m_height = (value < 0 ? 0 : value); }
-        }
-
-        public Brush fillBrush
-        {
-            get { return m_fillBrush; }
-            set
+            if (_visible)
             {
-                if (!ReferenceEquals(m_fillBrush, null))
-                {
-                    m_fillBrush = value;
-                }
+                int x = (_horizontalDirection == HorizontalDirection.Left ? _x - _width : _x);
+                int y = (_verticalDirection == VerticalDirection.Bottom ? _y - _height : _y);
+                graphics.FillRectangle(_fillBrush, x, y, _width, _height);
+                graphics.DrawRectangle(_borderPen, x, y, _width, _height);
             }
         }
-
-        public Pen borderPen
-        {
-            get { return m_borderPen; }
-            set
-            {
-                if (!ReferenceEquals(m_borderPen, null))
-                {
-                    m_borderPen = value;
-                }
-            }
-        }
-
-        public bool visible
-        {
-            get { return m_visible; }
-            set { m_visible = value; }
-        }
-
-        public void draw(Graphics graphics)
-        {
-            if (m_visible)
-            {
-                int x = (m_hDirection == HorizontalDirection.Left ? m_x - m_width : m_x);
-                int y = (m_vDirection == VerticalDirection.Bottom ? m_y - m_height : m_y);
-                graphics.FillRectangle(m_fillBrush, x, y, m_width, m_height);
-                graphics.DrawRectangle(m_borderPen, x, y, m_width, m_height);
-            }
-        }
-
-        public HorizontalDirection horizontalDirection
-        {
-            get { return m_hDirection; }
-            set { m_hDirection = value; }
-        }
-
-        public VerticalDirection verticalDirection
-        {
-            get { return m_vDirection; }
-            set { m_vDirection = value; }
-        }
-
-        private int m_x;
-        private int m_y;
-        private int m_width;
-        private int m_height;
-        private Brush m_fillBrush;
-        private Pen m_borderPen;
-        private bool m_visible;
-        private HorizontalDirection m_hDirection;
-        private VerticalDirection m_vDirection;
     }
 }

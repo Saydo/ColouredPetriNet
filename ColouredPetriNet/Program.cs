@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ColouredPetriNet
@@ -13,7 +10,7 @@ namespace ColouredPetriNet
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new ColouredPetriNetGui.MainForm());
+            Application.Run(new Gui.MainForm());
         }
     }
 }

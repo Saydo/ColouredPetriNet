@@ -1,49 +1,35 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
+using ColouredPetriNet.Gui.GraphicsItems;
 
-namespace ColorPetriNetGui
+namespace ColouredPetriNet.Gui
 {
-    public interface IGraphicsItemMap
-    {
-        bool contains(int id);
-        List<GraphicsItem> findItems(int x, int y);
-        void select(int x, int y);
-        void deselect(int x, int y);
-        void select(int x, int y, int w, int h);
-        void deselect(int x, int y, int w, int h);
-        void selectAllItems();
-        void deselectAllItems();
-        void removeSelectedItems();
-        void addItem(GraphicsItem item);
-        bool removeItem(int id);
-        void clear();
-        void setSelectionArea(int x, int y, int w, int h);
-        void updateSelectionArea(int w, int h);
-        void updateSelectionAreaByPos(int x, int y);
-        void hideSelectionArea();
-        OverlapType overlap
-        {
-            get;
-            set;
-        }
-        void draw(Graphics graphics);
-    }
-
     public class GraphicsItemMap : IGraphicsItemMap
     {
-        public GraphicsItemMap()
+        private List<GraphicsItem> _items;
+        private List<int> _selectedItems;
+        private SelectionArea _selectionArea;
+        private OverlapType _overlap;
+
+        public OverlapType Overlap
         {
-            m_items = new List<GraphicsItem>();
-            m_selectedItems = new List<int>();
-            m_selectionArea = new SelectionArea();
-            m_overlap = OverlapType.Partial;
+            get { return _overlap; }
+            set { _overlap = value; }
         }
 
-        public bool contains(int id)
+        public GraphicsItemMap()
         {
-            for (int i = 0; i < m_items.Count; ++i)
+            _items = new List<GraphicsItem>();
+            _selectedItems = new List<int>();
+            _selectionArea = new SelectionArea();
+            _overlap = OverlapType.Partial;
+        }
+
+        public bool Contains(int id)
+        {
+            for (int i = 0; i < _items.Count; ++i)
             {
-                if (m_items[i].id == id)
+                if (_items[i].Id == id)
                 {
                     return true;
                 }
@@ -51,246 +37,240 @@ namespace ColorPetriNetGui
             return false;
         }
 
-        public List<GraphicsItem> findItems(int x, int y)
+        public List<GraphicsItem> FindItems(int x, int y)
         {
-            List<GraphicsItem> found_items = new List<GraphicsItem>();
-            for (int i = 0; i < m_items.Count; ++i)
+            List<GraphicsItem> foundItems = new List<GraphicsItem>();
+            for (int i = 0; i < _items.Count; ++i)
             {
-                if (m_items[i].isCollision(x, y))
+                if (_items[i].IsCollision(x, y))
                 {
-                    found_items.Add(m_items[i]);
+                    foundItems.Add(_items[i]);
                 }
             }
-            return found_items;
+            return foundItems;
         }
 
-        public void select(int id)
+        public void Select(int id)
         {
-            for (int i = 0; i < m_items.Count; ++i)
+            for (int i = 0; i < _items.Count; ++i)
             {
-                if (m_items[i].id == id)
+                if (_items[i].Id == id)
                 {
-                    if (!m_items[i].isSelected())
+                    if (!_items[i].IsSelected())
                     {
-                        m_items[i].select();
-                        m_selectedItems.Add(id);
+                        _items[i].Select();
+                        _selectedItems.Add(id);
                     }
                     break;
                 }
             }
         }
 
-        public void deselect(int id)
+        public void Deselect(int id)
         {
-            for (int i = 0; i < m_items.Count; ++i)
+            for (int i = 0; i < _items.Count; ++i)
             {
-                if (m_items[i].id == id)
+                if (_items[i].Id == id)
                 {
-                    if (m_items[i].isSelected())
+                    if (_items[i].IsSelected())
                     {
-                        m_items[i].deselect();
-                        removeFromSelectedItems(id);
+                        _items[i].Deselect();
+                        RemoveFromSelectedItems(id);
                     }
                     break;
                 }
             }
         }
 
-        public void select(int x, int y)
+        public void Select(int x, int y)
         {
-            for (int i = 0; i < m_items.Count; ++i)
+            for (int i = 0; i < _items.Count; ++i)
             {
-                if (m_items[i].isCollision(x, y))
+                if (_items[i].IsCollision(x, y))
                 {
-                    if (!m_items[i].isSelected())
+                    if (!_items[i].IsSelected())
                     {
-                        m_items[i].select();
-                        m_selectedItems.Add(m_items[i].id);
+                        _items[i].Select();
+                        _selectedItems.Add(_items[i].Id);
                     }
                 }
             }
         }
 
-        public void deselect(int x, int y)
+        public void Deselect(int x, int y)
         {
-            for (int i = 0; i < m_items.Count; ++i)
+            for (int i = 0; i < _items.Count; ++i)
             {
-                if (m_items[i].isCollision(x, y))
+                if (_items[i].IsCollision(x, y))
                 {
-                    if (m_items[i].isSelected())
+                    if (_items[i].IsSelected())
                     {
-                        m_items[i].deselect();
-                        removeFromSelectedItems(m_items[i].id);
+                        _items[i].Deselect();
+                        RemoveFromSelectedItems(_items[i].Id);
                     }
                 }
             }
         }
 
-        public void select(int x, int y, int w, int h)
+        public void Select(int x, int y, int w, int h)
         {
-            for (int i = 0; i < m_items.Count; ++i)
+            for (int i = 0; i < _items.Count; ++i)
             {
-                if ((findIndexSelectedItem(m_items[i].id) < 0) && (m_items[i].isCollision(x, y, w, h, overlap)))
+                if ((FindIndexSelectedItem(_items[i].Id) < 0) && (_items[i].IsCollision(x, y, w, h, _overlap)))
                 {
-                    m_selectedItems.Add(m_items[i].id);
-                    m_items[i].select();
+                    _selectedItems.Add(_items[i].Id);
+                    _items[i].Select();
                 }
             }
         }
 
-        public void deselect(int x, int y, int w, int h)
+        public void Deselect(int x, int y, int w, int h)
         {
-            for (int i = 0; i < m_items.Count; ++i)
+            for (int i = 0; i < _items.Count; ++i)
             {
-                if (m_items[i].isCollision(x, y, w, h, overlap))
+                if (_items[i].IsCollision(x, y, w, h, _overlap))
                 {
-                    removeFromSelectedItems(m_items[i].id);
-                    m_items[i].deselect();
+                    RemoveFromSelectedItems(_items[i].Id);
+                    _items[i].Deselect();
                 }
             }
         }
 
-        public void selectAllItems()
+        public void SelectAllItems()
         {
-            m_selectedItems.Clear();
-            for (int i = 0; i < m_items.Count; ++i)
+            _selectedItems.Clear();
+            for (int i = 0; i < _items.Count; ++i)
             {
-                m_items[i].select();
-                m_selectedItems.Add(m_items[i].id);
+                _items[i].Select();
+                _selectedItems.Add(_items[i].Id);
             }
         }
 
-        public void deselectAllItems()
+        public void DeselectAllItems()
         {
-            m_selectedItems.Clear();
-            for (int i = 0; i < m_items.Count; ++i)
+            _selectedItems.Clear();
+            for (int i = 0; i < _items.Count; ++i)
             {
-                m_items[i].deselect();
+                _items[i].Deselect();
             }
         }
 
-        public void removeSelectedItems()
+        public void RemoveSelectedItems()
         {
-            for (int i = 0; i < m_selectedItems.Count; ++i)
+            for (int i = 0; i < _selectedItems.Count; ++i)
             {
-                for (int j = m_items.Count-1; j >= 0; --j)
+                for (int j = _items.Count-1; j >= 0; --j)
                 {
-                    if (m_selectedItems[i] == m_items[j].id)
+                    if (_selectedItems[i] == _items[j].Id)
                     {
-                        m_items.RemoveAt(j);
+                        _items.RemoveAt(j);
                         break;
                     }
                 }
             }
-            m_selectedItems.Clear();
+            _selectedItems.Clear();
         }
 
-        public void addItem(GraphicsItem item)
+        public void AddItem(GraphicsItem item)
         {
-            m_items.Add(item);
+            _items.Add(item);
         }
 
-        public bool removeItem(int id)
+        public bool RemoveItem(int id)
         {
-            bool is_found = false;
-            for (int i = 0; i < m_items.Count; ++i)
+            bool isFound = false;
+            for (int i = 0; i < _items.Count; ++i)
             {
-                if (m_items[i].id == id)
+                if (_items[i].Id == id)
                 {
-                    m_items.RemoveAt(i);
-                    is_found = true;
+                    _items.RemoveAt(i);
+                    isFound = true;
                     break;
                 }
             }
-            return is_found;
+            return isFound;
         }
 
-        public void clear()
+        public void Clear()
         {
-            m_selectedItems.Clear();
-            m_items.Clear();
+            _selectedItems.Clear();
+            _items.Clear();
         }
 
-        public void setSelectionArea(int x, int y, int w, int h)
+        public void SetSelectionArea(int x, int y, int w, int h)
         {
-            m_selectionArea.x = x;
-            m_selectionArea.y = y;
-            m_selectionArea.width = w;
-            m_selectionArea.height = h;
-            m_selectionArea.visible = true;
-            m_selectionArea.horizontalDirection = SelectionArea.HorizontalDirection.Right;
-            m_selectionArea.verticalDirection = SelectionArea.VerticalDirection.Top;
-            select(x, y, w, h);
+            _selectionArea.X = x;
+            _selectionArea.Y = y;
+            _selectionArea.Width = w;
+            _selectionArea.Height = h;
+            _selectionArea.Visible = true;
+            _selectionArea.HorizontalDirection = HorizontalDirection.Right;
+            _selectionArea.VerticalDirection = VerticalDirection.Top;
+            Select(x, y, w, h);
         }
 
-        public void updateSelectionAreaByPos(int x, int y)
+        public void UpdateSelectionAreaByPos(int x, int y)
         {
-            int diff_x = x - m_selectionArea.x;
-            int diff_y = y - m_selectionArea.y;
-            m_selectionArea.width = System.Math.Abs(diff_x);
-            m_selectionArea.height = System.Math.Abs(diff_y);
-            if (diff_x < 0)
+            int dx = x - _selectionArea.X;
+            int dy = y - _selectionArea.Y;
+            _selectionArea.Width = System.Math.Abs(dx);
+            _selectionArea.Height = System.Math.Abs(dy);
+            if (dx < 0)
             {
-                m_selectionArea.horizontalDirection = SelectionArea.HorizontalDirection.Left;
-                if (diff_y < 0)
+                _selectionArea.HorizontalDirection = HorizontalDirection.Left;
+                if (dy < 0)
                 {
-                    m_selectionArea.verticalDirection = SelectionArea.VerticalDirection.Bottom;
-                    select(x, y, m_selectionArea.width, m_selectionArea.height);
+                    _selectionArea.VerticalDirection = VerticalDirection.Bottom;
+                    Select(x, y, _selectionArea.Width, _selectionArea.Height);
                 }
                 else
                 {
-                    m_selectionArea.verticalDirection = SelectionArea.VerticalDirection.Top;
-                    select(x, m_selectionArea.y, m_selectionArea.width, m_selectionArea.height);
+                    _selectionArea.VerticalDirection = VerticalDirection.Top;
+                    Select(x, _selectionArea.Y, _selectionArea.Width, _selectionArea.Height);
                 }
             }
             else
             {
-                m_selectionArea.horizontalDirection = SelectionArea.HorizontalDirection.Right;
-                if (diff_y < 0)
+                _selectionArea.HorizontalDirection = HorizontalDirection.Right;
+                if (dy < 0)
                 {
-                    m_selectionArea.verticalDirection = SelectionArea.VerticalDirection.Bottom;
-                    select(m_selectionArea.x, y, m_selectionArea.width, m_selectionArea.height);
+                    _selectionArea.VerticalDirection = VerticalDirection.Bottom;
+                    Select(_selectionArea.X, y, _selectionArea.Width, _selectionArea.Height);
                 }
                 else
                 {
-                    m_selectionArea.verticalDirection = SelectionArea.VerticalDirection.Top;
-                    select(m_selectionArea.x, m_selectionArea.y, m_selectionArea.width, m_selectionArea.height);
+                    _selectionArea.VerticalDirection = VerticalDirection.Top;
+                    Select(_selectionArea.X, _selectionArea.Y, _selectionArea.Width, _selectionArea.Height);
                 }
             }
         }
 
-        public void updateSelectionArea(int w, int h)
+        public void UpdateSelectionArea(int w, int h)
         {
-            m_selectionArea.width = w;
-            m_selectionArea.height = h;
-            select(m_selectionArea.x, m_selectionArea.y, w, h);
+            _selectionArea.Width = w;
+            _selectionArea.Height = h;
+            Select(_selectionArea.X, _selectionArea.Y, w, h);
         }
 
-        public void hideSelectionArea()
+        public void HideSelectionArea()
         {
-            m_selectionArea.visible = false;
+            _selectionArea.Visible = false;
         }
 
-        public OverlapType overlap
+        public void Draw(Graphics graphics)
         {
-            get { return m_overlap; }
-            set { m_overlap = value; }
-        }
-
-        public void draw(Graphics graphics)
-        {
-            for (int i = 0; i < m_items.Count; ++i)
+            for (int i = 0; i < _items.Count; ++i)
             {
-                m_items[i].draw(graphics);
+                _items[i].Draw(graphics);
             }
-            m_selectionArea.draw(graphics);
+            _selectionArea.Draw(graphics);
         }
 
-        private int findIndexSelectedItem(int id)
+        private int FindIndexSelectedItem(int id)
         {
-            for (int i = 0; i < m_selectedItems.Count; ++i)
+            for (int i = 0; i < _selectedItems.Count; ++i)
             {
-                if (m_selectedItems[i] == id)
+                if (_selectedItems[i] == id)
                 {
                     return i;
                 }
@@ -298,21 +278,16 @@ namespace ColorPetriNetGui
             return -1;
         }
 
-        private void removeFromSelectedItems(int id)
+        private void RemoveFromSelectedItems(int id)
         {
-            for (int i = 0; i < m_selectedItems.Count; ++i)
+            for (int i = 0; i < _selectedItems.Count; ++i)
             {
-                if (m_selectedItems[i] == id)
+                if (_selectedItems[i] == id)
                 {
-                    m_selectedItems.RemoveAt(i);
+                    _selectedItems.RemoveAt(i);
                     break;
                 }
             }
         }
-
-        private List<GraphicsItem> m_items;
-        private List<int> m_selectedItems;
-        private SelectionArea m_selectionArea;
-        private OverlapType m_overlap;
     }
 }

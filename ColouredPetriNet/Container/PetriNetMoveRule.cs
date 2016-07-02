@@ -1,32 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace PetriNet
+namespace ColouredPetriNet.Container
 {
     public delegate void MoveMarkersFunction(IStateWrapper state1, IStateWrapper state2,
-        IPetriNetNode transition, List<IMarkerWrapper> markers);
+        IColouredPetriNetNode transition, List<IMarkerWrapper> markers);
 
     public class PetriNetMoveRule
     {
-        public Type inputState;
-        public Type outputState;
-        public Type transition;
-        public Type marker;
-        public int count;
-        public MoveMarkersFunction moveFunction;
+        public Type InputState { get; set; }
+        public Type OutputState { get; set; }
+        public Type Transition { get; set; }
+        public Type Marker { get; set; }
+        public int Count { get; set; }
+        public MoveMarkersFunction MoveFunction { get; set; }
 
-        public PetriNetMoveRule(Type input_state, Type output_state, Type transition, Type marker, int count)
+        public PetriNetMoveRule(Type inputState, Type outputState, Type transition, Type marker, int count)
         {
-            inputState = input_state;
-            outputState = output_state;
-            this.transition = transition;
-            this.marker = marker;
+            InputState = inputState;
+            OutputState = outputState;
+            Transition = transition;
+            Marker = marker;
         }
 
-        public bool isComply(Type input_state, Type output_state, Type transition, Type marker, int count)
+        public bool IsComply(Type inputState, Type outputState, Type transition, Type marker, int count)
         {
-            return ((inputState == input_state) && (outputState == output_state)
-                && (this.transition == transition) && (this.marker == marker) && (this.count <= count));
+            return ((InputState == inputState) && (OutputState == outputState)
+                && (Transition == transition) && (Marker == marker) && (Count <= count));
         }
     }
 }

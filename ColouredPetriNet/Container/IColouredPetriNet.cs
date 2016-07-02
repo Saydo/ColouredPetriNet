@@ -1,0 +1,82 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace ColouredPetriNet.Container
+{
+    public interface IColouredPetriNet
+    {
+        bool IsStateExist(int id);
+        bool IsStateExist<T>(int id);
+        bool IsTransitionExist(int id);
+        bool IsTransitionExist<T>(int id);
+        bool IsMarkerExist(int id);
+        bool IsMarkerExist<T>(int id);
+        bool IsStateExist();
+        bool IsStateExist<T>();
+        bool IsTransitionExist();
+        bool IsTransitionExist<T>();
+        bool IsMarkerExist();
+        bool IsMarkerExist<T>();
+        int AddState<T>(T state);
+        int AddTransition<T>(T transition);
+        int AddMarker<T>(int stateId, T marker);
+        bool AddStateToTransitionLink<TState, TTransition>(int stateId, int transitionId);
+        bool AddTransitionToStateLink<TTransition, TState>(int transitionId, int stateId);
+        bool RemoveStateToTransitionLink<TState, TTransition>(int stateId, int transitionId);
+        bool RemoveTransitionToStateLink<TTransition, TState>(int transitionId, int stateId);
+        bool ConnectMarkerToState(int markerId, int stateId);
+        bool ConnectMarkerToState<TState>(int markerId, int stateId);
+        bool DisconnectMarkerFromState(int markerId, int stateId);
+        bool DisconnectMarkerFromState<TState>(int markerId, int stateId);
+        bool RemoveMarkersFromState(int stateId);
+        bool RemoveMarkersFromState<T>(int stateId);
+        bool RemoveState(int id);
+        bool RemoveState<T>(int id);
+        bool RemoveTransition(int id);
+        bool RemoveTransition<T>(int id);
+        bool RemoveMarker(int id);
+        bool RemoveMarker<T>(int id);
+        bool MoveMarker(int markerId, int newStateId);
+        bool MoveMarker<T>(int markerId, int newStateId);
+        int GetStateCount();
+        int GetStateCount<T>();
+        int GetTransitionCount();
+        int GetTransitionCount<T>();
+        int GetMarkerCount();
+        int GetMarkerCount<T>();
+        T GetStateById<T>(int id);
+        T GetTransitionById<T>(int id);
+        T GetMarkerById<T>(int id);
+        T GetState<T>(int index);
+        T GetTransition<T>(int index);
+        T GetMarker<T>(int index);
+        StateWrapper<T> GetStateWrapper<T>(int index);
+        TransitionWrapper<T> GetTransitionWrapper<T>(int index);
+        MarkerWrapper<T> GetMarkerWrapper<T>(int index);
+        StateWrapper<T> GetStateWrapperById<T>(int id);
+        TransitionWrapper<T> GetTransitionWrapperById<T>(int id);
+        MarkerWrapper<T> GetMarkerWrapperById<T>(int id);
+        void Clear();
+        void ClearStates();
+        void ClearStates<T>();
+        void ClearTransitions();
+        void ClearTransitions<T>();
+        void ClearMarkers();
+        void ClearMarkers<T>();
+        void ClearLinks();
+        void MoveMarkers();
+        void AddMoveRule(Type inputState, Type outputState, Type transition, Type marker, int count = 1);
+        void AddPrevAccumulateRule(Type state, List<Tuple<Type, int>> markers);
+        void AddPrevAccumulateRule(Type state, Type marker, int count = 1);
+        void AddNextAccumulateRule(Type state, List<Tuple<Type, int>> markers);
+        void AddNextAccumulateRule(Type state, Type marker, int count = 1);
+        void ClearMoveRules();
+        void ClearPrevAccumulateRules();
+        void ClearNextAccumulateRules();
+        void RemoveMoveRule(Type inputState, Type outputState, Type transition, Type marker, int count = -1);
+        void RemovePrevAccumulateRule(Type state, List<Tuple<Type, int>> markers);
+        void RemovePrevAccumulateRule(Type state, Type marker, int count = -1);
+        void RemoveNextAccumulateRule(Type state, List<Tuple<Type, int>> markers);
+        void RemoveNextAccumulateRule(Type state, Type marker, int count = -1);
+    }
+}
