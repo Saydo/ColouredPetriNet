@@ -37,7 +37,6 @@
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.tsbView = new System.Windows.Forms.ToolStripButton();
             this.tsbMove = new System.Windows.Forms.ToolStripButton();
-            this.tsbAddState = new System.Windows.Forms.ToolStripButton();
             this.tsbAddTransition = new System.Windows.Forms.ToolStripButton();
             this.tsbAddMarker = new System.Windows.Forms.ToolStripButton();
             this.tsbRemove = new System.Windows.Forms.ToolStripButton();
@@ -52,6 +51,8 @@
             this.trvTransitions = new System.Windows.Forms.TreeView();
             this.lblStates = new System.Windows.Forms.Label();
             this.lblTransitions = new System.Windows.Forms.Label();
+            this.silAddState = new ColouredPetriNet.Gui.StripImageList();
+            this.toolStripComboBox1 = new System.Windows.Forms.ToolStripComboBox();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbMap)).BeginInit();
@@ -99,7 +100,7 @@
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsbView,
             this.tsbMove,
-            this.tsbAddState,
+            this.silAddState,
             this.tsbAddTransition,
             this.tsbAddMarker,
             this.tsbRemove,
@@ -107,7 +108,8 @@
             this.toolStripSeparator1,
             this.tsbOneStepSimulation,
             this.tsbRunSimulation,
-            this.tsbStopSimulation});
+            this.tsbStopSimulation,
+            this.toolStripComboBox1});
             this.toolStrip1.Location = new System.Drawing.Point(0, 24);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(489, 25);
@@ -131,15 +133,6 @@
             this.tsbMove.Name = "tsbMove";
             this.tsbMove.Size = new System.Drawing.Size(23, 22);
             this.tsbMove.Text = "toolStripButton2";
-            // 
-            // tsbAddState
-            // 
-            this.tsbAddState.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbAddState.Image = ((System.Drawing.Image)(resources.GetObject("tsbAddState.Image")));
-            this.tsbAddState.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbAddState.Name = "tsbAddState";
-            this.tsbAddState.Size = new System.Drawing.Size(23, 22);
-            this.tsbAddState.Text = "toolStripButton3";
             // 
             // tsbAddTransition
             // 
@@ -213,7 +206,7 @@
             // 
             this.pbMap.Location = new System.Drawing.Point(13, 53);
             this.pbMap.Name = "pbMap";
-            this.pbMap.Size = new System.Drawing.Size(340, 243);
+            this.pbMap.Size = new System.Drawing.Size(45, 42);
             this.pbMap.TabIndex = 2;
             this.pbMap.TabStop = false;
             // 
@@ -257,6 +250,16 @@
             this.lblTransitions.TabIndex = 7;
             this.lblTransitions.Text = "Transitions";
             // 
+            // silAddState
+            // 
+            this.silAddState.Name = "silAddState";
+            this.silAddState.Size = new System.Drawing.Size(13, 22);
+            // 
+            // toolStripComboBox1
+            // 
+            this.toolStripComboBox1.Name = "toolStripComboBox1";
+            this.toolStripComboBox1.Size = new System.Drawing.Size(121, 25);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -294,7 +297,10 @@
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripButton tsbView;
         private System.Windows.Forms.ToolStripButton tsbMove;
-        private System.Windows.Forms.ToolStripButton tsbAddState;
+        //private System.Windows.Forms.ToolStripButton tsbAddState;
+
+        private StripImageList silAddState;
+
         private System.Windows.Forms.ToolStripButton tsbAddTransition;
         private System.Windows.Forms.ToolStripButton tsbAddMarker;
         private System.Windows.Forms.ToolStripButton tsbRemove;
@@ -309,5 +315,6 @@
         private System.Windows.Forms.ToolStripButton tsbOneStepSimulation;
         private System.Windows.Forms.ToolStripButton tsbRunSimulation;
         private System.Windows.Forms.ToolStripButton tsbStopSimulation;
+        private System.Windows.Forms.ToolStripComboBox toolStripComboBox1;
     }
 }

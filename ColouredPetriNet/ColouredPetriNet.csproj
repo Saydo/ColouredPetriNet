@@ -60,6 +60,7 @@
     <Compile Include="Container\StateWrapper.cs" />
     <Compile Include="Container\TransitionWrapper.cs" />
     <Compile Include="Core\ColorPetriNetTypes.cs" />
+    <Compile Include="Gui\CustomRender.cs" />
     <Compile Include="Gui\GraphicsItemMap.cs" />
     <Compile Include="Gui\GraphicsItems\ColourGraphicsItem.cs" />
     <Compile Include="Gui\GraphicsItems\GraphicsItem.cs" />
@@ -81,6 +82,9 @@
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Gui\SelectionArea.cs" />
+    <Compile Include="Gui\StripImageList.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
