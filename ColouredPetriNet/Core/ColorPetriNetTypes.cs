@@ -1,9 +1,9 @@
 ﻿namespace ColouredPetriNet.Core
 {
-    public enum ColouredElementType { SquareMarker, RoundMarker, TriangleMarker, SquareTransition,
+    public enum ColouredElementType { RhombMarker, RoundMarker, TriangleMarker, RectangleTransition,
         RhombTransition, RoundState, ImageState };
 
-    public class SquareMarker
+    public class RhombMarker
     {
     }
 
@@ -15,7 +15,7 @@
     {
     }
 
-    public class SquareTransition
+    public class RectangleTransition
     {
     }
 

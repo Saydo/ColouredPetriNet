@@ -1,320 +1,282 @@
-﻿namespace ColouredPetriNet.Gui
+﻿using System.Windows.Forms;
+using System.Drawing;
+
+namespace ColouredPetriNet.Gui
 {
     partial class MainForm
     {
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
-        private System.ComponentModel.IContainer components = null;
-
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && (components != null))
-            {
-                components.Dispose();
-            }
-            base.Dispose(disposing);
-        }
-
-        #region Windows Form Designer generated code
-
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.mniFile = new System.Windows.Forms.ToolStripMenuItem();
-            this.mniMap = new System.Windows.Forms.ToolStripMenuItem();
-            this.mniView = new System.Windows.Forms.ToolStripMenuItem();
-            this.mniAbout = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.tsbView = new System.Windows.Forms.ToolStripButton();
-            this.tsbMove = new System.Windows.Forms.ToolStripButton();
-            this.tsbAddTransition = new System.Windows.Forms.ToolStripButton();
-            this.tsbAddMarker = new System.Windows.Forms.ToolStripButton();
-            this.tsbRemove = new System.Windows.Forms.ToolStripButton();
-            this.tsbRemoveMarker = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.tsbOneStepSimulation = new System.Windows.Forms.ToolStripButton();
-            this.tsbRunSimulation = new System.Windows.Forms.ToolStripButton();
-            this.tsbStopSimulation = new System.Windows.Forms.ToolStripButton();
-            this.pbMap = new System.Windows.Forms.PictureBox();
-            this.stsStatus = new System.Windows.Forms.StatusStrip();
-            this.trvStates = new System.Windows.Forms.TreeView();
-            this.trvTransitions = new System.Windows.Forms.TreeView();
-            this.lblStates = new System.Windows.Forms.Label();
-            this.lblTransitions = new System.Windows.Forms.Label();
-            this.silAddState = new ColouredPetriNet.Gui.StripImageList();
-            this.toolStripComboBox1 = new System.Windows.Forms.ToolStripComboBox();
-            this.menuStrip1.SuspendLayout();
-            this.toolStrip1.SuspendLayout();
+            mnsMain = new MenuStrip();
+            mniFile = new ToolStripMenuItem();
+            mniMap = new ToolStripMenuItem();
+            mniView = new ToolStripMenuItem();
+            mniAbout = new ToolStripMenuItem();
+
+            tlsMain = new ToolStrip();
+            tsbView = new ToolStripButton();
+            tsbMove = new ToolStripButton();
+            imageListAddState = new StripImageList();
+            imageListAddTransition = new StripImageList();
+            imageListAddMarker = new StripImageList();
+            tsbRemove = new ToolStripButton();
+            tsbRemoveMarker = new ToolStripButton();
+            tsSeparator1 = new ToolStripSeparator();
+            tsbOneStepSimulation = new ToolStripButton();
+            tsbRunSimulation = new ToolStripButton();
+            tsbStopSimulation = new ToolStripButton();
+
+            pbMap = new PictureBox();
+            stsStatus = new StatusStrip();
+            trvStates = new TreeView();
+            trvTransitions = new TreeView();
+            lblStates = new Label();
+            lblTransitions = new Label();
+
+            mnsMain.SuspendLayout();
+            tlsMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbMap)).BeginInit();
-            this.SuspendLayout();
-            // 
-            // menuStrip1
-            // 
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mniFile,
-            this.mniMap,
-            this.mniView,
-            this.mniAbout});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(489, 24);
-            this.menuStrip1.TabIndex = 0;
-            this.menuStrip1.Text = "menuStrip1";
-            // 
-            // mniFile
-            // 
-            this.mniFile.Name = "mniFile";
-            this.mniFile.Size = new System.Drawing.Size(37, 20);
-            this.mniFile.Text = "File";
-            // 
-            // mniMap
-            // 
-            this.mniMap.Name = "mniMap";
-            this.mniMap.Size = new System.Drawing.Size(43, 20);
-            this.mniMap.Text = "Map";
-            // 
-            // mniView
-            // 
-            this.mniView.Name = "mniView";
-            this.mniView.Size = new System.Drawing.Size(44, 20);
-            this.mniView.Text = "View";
-            // 
-            // mniAbout
-            // 
-            this.mniAbout.Name = "mniAbout";
-            this.mniAbout.Size = new System.Drawing.Size(52, 20);
-            this.mniAbout.Text = "About";
-            // 
-            // toolStrip1
-            // 
-            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsbView,
-            this.tsbMove,
-            this.silAddState,
-            this.tsbAddTransition,
-            this.tsbAddMarker,
-            this.tsbRemove,
-            this.tsbRemoveMarker,
-            this.toolStripSeparator1,
-            this.tsbOneStepSimulation,
-            this.tsbRunSimulation,
-            this.tsbStopSimulation,
-            this.toolStripComboBox1});
-            this.toolStrip1.Location = new System.Drawing.Point(0, 24);
-            this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(489, 25);
-            this.toolStrip1.TabIndex = 1;
-            this.toolStrip1.Text = "toolStrip1";
-            // 
-            // tsbView
-            // 
-            this.tsbView.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbView.Image = ((System.Drawing.Image)(resources.GetObject("tsbView.Image")));
-            this.tsbView.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbView.Name = "tsbView";
-            this.tsbView.Size = new System.Drawing.Size(23, 22);
-            this.tsbView.Text = "toolStripButton1";
-            // 
-            // tsbMove
-            // 
-            this.tsbMove.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbMove.Image = ((System.Drawing.Image)(resources.GetObject("tsbMove.Image")));
-            this.tsbMove.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbMove.Name = "tsbMove";
-            this.tsbMove.Size = new System.Drawing.Size(23, 22);
-            this.tsbMove.Text = "toolStripButton2";
-            // 
-            // tsbAddTransition
-            // 
-            this.tsbAddTransition.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbAddTransition.Image = ((System.Drawing.Image)(resources.GetObject("tsbAddTransition.Image")));
-            this.tsbAddTransition.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbAddTransition.Name = "tsbAddTransition";
-            this.tsbAddTransition.Size = new System.Drawing.Size(23, 22);
-            this.tsbAddTransition.Text = "toolStripButton4";
-            // 
-            // tsbAddMarker
-            // 
-            this.tsbAddMarker.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbAddMarker.Image = ((System.Drawing.Image)(resources.GetObject("tsbAddMarker.Image")));
-            this.tsbAddMarker.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbAddMarker.Name = "tsbAddMarker";
-            this.tsbAddMarker.Size = new System.Drawing.Size(23, 22);
-            this.tsbAddMarker.Text = "toolStripButton5";
-            // 
-            // tsbRemove
-            // 
-            this.tsbRemove.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbRemove.Image = ((System.Drawing.Image)(resources.GetObject("tsbRemove.Image")));
-            this.tsbRemove.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbRemove.Name = "tsbRemove";
-            this.tsbRemove.Size = new System.Drawing.Size(23, 22);
-            this.tsbRemove.Text = "removeToolStripButton";
-            // 
-            // tsbRemoveMarker
-            // 
-            this.tsbRemoveMarker.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbRemoveMarker.Image = ((System.Drawing.Image)(resources.GetObject("tsbRemoveMarker.Image")));
-            this.tsbRemoveMarker.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbRemoveMarker.Name = "tsbRemoveMarker";
-            this.tsbRemoveMarker.Size = new System.Drawing.Size(23, 22);
-            this.tsbRemoveMarker.Text = "removeMarkerToolStripButton";
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
-            // 
-            // tsbOneStepSimulation
-            // 
-            this.tsbOneStepSimulation.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbOneStepSimulation.Image = ((System.Drawing.Image)(resources.GetObject("tsbOneStepSimulation.Image")));
-            this.tsbOneStepSimulation.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbOneStepSimulation.Name = "tsbOneStepSimulation";
-            this.tsbOneStepSimulation.Size = new System.Drawing.Size(23, 22);
-            this.tsbOneStepSimulation.Text = "toolStripButton9";
-            // 
-            // tsbRunSimulation
-            // 
-            this.tsbRunSimulation.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbRunSimulation.Image = ((System.Drawing.Image)(resources.GetObject("tsbRunSimulation.Image")));
-            this.tsbRunSimulation.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbRunSimulation.Name = "tsbRunSimulation";
-            this.tsbRunSimulation.Size = new System.Drawing.Size(23, 22);
-            this.tsbRunSimulation.Text = "toolStripButton10";
-            // 
-            // tsbStopSimulation
-            // 
-            this.tsbStopSimulation.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbStopSimulation.Image = ((System.Drawing.Image)(resources.GetObject("tsbStopSimulation.Image")));
-            this.tsbStopSimulation.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbStopSimulation.Name = "tsbStopSimulation";
-            this.tsbStopSimulation.Size = new System.Drawing.Size(23, 22);
-            this.tsbStopSimulation.Text = "toolStripButton11";
-            // 
-            // pbMap
-            // 
-            this.pbMap.Location = new System.Drawing.Point(13, 53);
-            this.pbMap.Name = "pbMap";
-            this.pbMap.Size = new System.Drawing.Size(45, 42);
-            this.pbMap.TabIndex = 2;
-            this.pbMap.TabStop = false;
-            // 
-            // stsStatus
-            // 
-            this.stsStatus.Location = new System.Drawing.Point(0, 309);
-            this.stsStatus.Name = "stsStatus";
-            this.stsStatus.Size = new System.Drawing.Size(489, 22);
-            this.stsStatus.TabIndex = 3;
-            this.stsStatus.Text = "statusStrip1";
-            // 
-            // trvStates
-            // 
-            this.trvStates.Location = new System.Drawing.Point(360, 71);
-            this.trvStates.Name = "trvStates";
-            this.trvStates.Size = new System.Drawing.Size(121, 105);
-            this.trvStates.TabIndex = 4;
-            // 
-            // trvTransitions
-            // 
-            this.trvTransitions.Location = new System.Drawing.Point(360, 195);
-            this.trvTransitions.Name = "trvTransitions";
-            this.trvTransitions.Size = new System.Drawing.Size(121, 101);
-            this.trvTransitions.TabIndex = 5;
-            // 
-            // lblStates
-            // 
-            this.lblStates.AutoSize = true;
-            this.lblStates.Location = new System.Drawing.Point(360, 52);
-            this.lblStates.Name = "lblStates";
-            this.lblStates.Size = new System.Drawing.Size(37, 13);
-            this.lblStates.TabIndex = 6;
-            this.lblStates.Text = "States";
-            // 
-            // lblTransitions
-            // 
-            this.lblTransitions.AutoSize = true;
-            this.lblTransitions.Location = new System.Drawing.Point(360, 179);
-            this.lblTransitions.Name = "lblTransitions";
-            this.lblTransitions.Size = new System.Drawing.Size(58, 13);
-            this.lblTransitions.TabIndex = 7;
-            this.lblTransitions.Text = "Transitions";
-            // 
-            // silAddState
-            // 
-            this.silAddState.Name = "silAddState";
-            this.silAddState.Size = new System.Drawing.Size(13, 22);
-            // 
-            // toolStripComboBox1
-            // 
-            this.toolStripComboBox1.Name = "toolStripComboBox1";
-            this.toolStripComboBox1.Size = new System.Drawing.Size(121, 25);
-            // 
+            SuspendLayout();
+            //
+            // Main (MenuStrip)
+            //
+            mnsMain.Name = "mnsMain";
+            mnsMain.Size = new Size(489, 24);
+            mnsMain.Location = new Point(0, 0);
+            mnsMain.Items.AddRange(new ToolStripItem[] {
+                mniFile,
+                mniMap,
+                mniView,
+                mniAbout
+            });
+            mnsMain.TabIndex = 0;
+            mnsMain.Text = "Main Menu";
+            //
+            // File (ToolStripMenuItem)
+            //
+            mniFile.Name = "mniFile";
+            mniFile.Size = new Size(37, 20);
+            mniFile.Text = "File";
+            //
+            // Map (ToolStripMenuItem)
+            //
+            mniMap.Name = "mniMap";
+            mniMap.Size = new Size(43, 20);
+            mniMap.Text = "Map";
+            //
+            // View (ToolStripMenuItem)
+            //
+            mniView.Name = "mniView";
+            mniView.Size = new Size(44, 20);
+            mniView.Text = "View";
+            //
+            // About (ToolStripMenuItem)
+            //
+            mniAbout.Name = "mniAbout";
+            mniAbout.Size = new Size(52, 20);
+            mniAbout.Text = "About";
+            //
+            // Main (ToolStrip)
+            //
+            tlsMain.Name = "tlsMain";
+            tlsMain.Size = new Size(489, 25);
+            tlsMain.Location = new Point(0, 24);
+            tlsMain.Items.AddRange(new ToolStripItem[] {
+                tsbView,
+                tsbMove,
+                imageListAddState,
+                imageListAddTransition,
+                imageListAddMarker,
+                tsbRemove,
+                tsbRemoveMarker,
+                tsSeparator1,
+                tsbOneStepSimulation,
+                tsbRunSimulation,
+                tsbStopSimulation
+            });
+            tlsMain.TabIndex = 1;
+            tlsMain.Text = "Main ToolStrip";
+            //
+            // View (ToolStripButton)
+            //
+            tsbView.Name = "tsbView";
+            tsbView.Size = new Size(23, 22);
+            tsbView.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            tsbView.Image = Properties.Resources.ViewIcon;
+            tsbView.Text = "View";
+            //
+            // Move (ToolStripButton)
+            //
+            tsbMove.Name = "tsbMove";
+            tsbMove.Size = new Size(23, 22);
+            tsbMove.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            tsbMove.Image = Properties.Resources.MoveIcon;
+            tsbMove.Text = "Move";
+            //
+            // imageListAddState (StripImageList)
+            //
+            imageListAddState.Name = "imageListAddState";
+            imageListAddState.Size = new Size(33, 22);
+            imageListAddState.AddItem(Properties.Resources.AddRoundStateIcon, "Add Round State");
+            imageListAddState.AddItem(Properties.Resources.AddImageStateIcon, "Add Image State");
+            //
+            // imageListAddTransition (StripImageList)
+            //
+            imageListAddTransition.Name = "imageListAddTransition";
+            imageListAddTransition.Size = new Size(33, 22);
+            imageListAddTransition.AddItem(Properties.Resources.AddRectangleTransitionIcon, "Add Rectangle Transition");
+            imageListAddTransition.AddItem(Properties.Resources.AddRhombTransitionIcon, "Add Rhomb Transition");
+            //
+            // imageListAddMarker (StripImageList)
+            //
+            imageListAddMarker.Name = "imageListAddMarker";
+            imageListAddMarker.Size = new Size(33, 22);
+            imageListAddMarker.AddItem(Properties.Resources.AddRoundMarkerIcon, "Add Round Marker");
+            imageListAddMarker.AddItem(Properties.Resources.AddRhombMarkerIcon, "Add Rhomb Marker");
+            imageListAddMarker.AddItem(Properties.Resources.AddTriangleMarkerIcon, "Add Triangle Marker");
+            //
+            // Remove (ToolStripButton)
+            //
+            tsbRemove.Name = "tsbRemove";
+            tsbRemove.Size = new Size(23, 22);
+            tsbRemove.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            tsbRemove.Image = Properties.Resources.RemoveIcon;
+            tsbRemove.Text = "Remove";
+            //
+            // RemoveMarker (ToolStripButton)
+            //
+            tsbRemoveMarker.Name = "tsbRemoveMarker";
+            tsbRemoveMarker.Size = new Size(23, 22);
+            tsbRemoveMarker.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            tsbRemoveMarker.Image = Properties.Resources.RemoveMarkerIcon;
+            tsbRemoveMarker.Text = "Remove Marker";
+            //
+            // tsSeparator1 (ToolStripSeparator)
+            //
+            tsSeparator1.Name = "tsSeparator1";
+            tsSeparator1.Size = new Size(6, 25);
+            //
+            // tsbOneStepSimulation (ToolStripButton)
+            //
+            tsbOneStepSimulation.Name = "tsbOneStepSimulation";
+            tsbOneStepSimulation.Size = new Size(23, 22);
+            tsbOneStepSimulation.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            tsbOneStepSimulation.Image = Properties.Resources.AddImageStateIcon;
+            tsbOneStepSimulation.Text = "One Step Simulation";
+            //
+            // tsbRunSimulation (ToolStripButton)
+            //
+            tsbRunSimulation.Name = "tsbRunSimulation";
+            tsbRunSimulation.Size = new Size(23, 22);
+            tsbRunSimulation.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            tsbRunSimulation.Image = Properties.Resources.AddImageStateIcon;
+            tsbRunSimulation.Text = "Run Simulation";
+            //
+            // tsbStopSimulation (ToolStripButton)
+            //
+            tsbStopSimulation.Name = "tsbStopSimulation";
+            tsbStopSimulation.Size = new Size(23, 22);
+            tsbStopSimulation.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            tsbStopSimulation.Image = Properties.Resources.AddImageStateIcon;
+            tsbStopSimulation.Text = "Stop Simulation";
+            //
+            // pbMap (PictureBox)
+            //
+            pbMap.Name = "pbMap";
+            pbMap.Size = new Size(45, 42);
+            pbMap.Location = new Point(13, 53);
+            pbMap.TabIndex = 2;
+            pbMap.TabStop = false;
+            //
+            // stsStatus (StatusStrip)
+            //
+            stsStatus.Name = "stsStatus";
+            stsStatus.Size = new Size(489, 22);
+            stsStatus.Location = new Point(0, 309);
+            stsStatus.TabIndex = 3;
+            stsStatus.Text = "Status";
+            //
+            // trvStates (TreeView)
+            //
+            trvStates.Name = "trvStates";
+            trvStates.Size = new Size(121, 105);
+            trvStates.Location = new Point(360, 71);
+            trvStates.TabIndex = 4;
+            //
+            // trvTransitions (TreeView)
+            //
+            trvTransitions.Name = "trvTransitions";
+            trvTransitions.Size = new Size(121, 101);
+            trvTransitions.Location = new Point(360, 195);
+            trvTransitions.TabIndex = 5;
+            //
+            // lblStates (Label)
+            //
+            lblStates.Name = "lblStates";
+            lblStates.Size = new Size(37, 13);
+            lblStates.Location = new Point(360, 52);
+            lblStates.AutoSize = true;
+            lblStates.TabIndex = 6;
+            lblStates.Text = "States";
+            //
+            // lblTransitions (Label)
+            //
+            lblTransitions.Name = "lblTransitions";
+            lblTransitions.Size = new Size(58, 13);
+            lblTransitions.Location = new Point(360, 179);
+            lblTransitions.AutoSize = true;
+            lblTransitions.TabIndex = 7;
+            lblTransitions.Text = "Transitions";
+            //
             // MainForm
-            // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(489, 331);
-            this.Controls.Add(this.lblTransitions);
-            this.Controls.Add(this.lblStates);
-            this.Controls.Add(this.trvTransitions);
-            this.Controls.Add(this.trvStates);
-            this.Controls.Add(this.stsStatus);
-            this.Controls.Add(this.pbMap);
-            this.Controls.Add(this.toolStrip1);
-            this.Controls.Add(this.menuStrip1);
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MainMenuStrip = this.menuStrip1;
-            this.Name = "MainForm";
-            this.Text = "Coloured Petri Net";
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
-            this.toolStrip1.ResumeLayout(false);
-            this.toolStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbMap)).EndInit();
-            this.ResumeLayout(false);
-            this.PerformLayout();
+            //
+            Name = "MainForm"; 
+            AutoScaleDimensions = new SizeF(6F, 13F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(489, 331);
+            Controls.Add(lblTransitions);
+            Controls.Add(lblStates);
+            Controls.Add(trvTransitions);
+            Controls.Add(trvStates);
+            Controls.Add(stsStatus);
+            Controls.Add(pbMap);
+            Controls.Add(tlsMain);
+            Controls.Add(mnsMain);
+            Icon = Properties.Resources.AppIcon;
+            MainMenuStrip = mnsMain;
+            Text = "Coloured Petri Net";
+            mnsMain.ResumeLayout(false);
+            mnsMain.PerformLayout();
+            tlsMain.ResumeLayout(false);
+            tlsMain.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(pbMap)).EndInit();
+            ResumeLayout(false);
+            PerformLayout();
 
         }
 
-        #endregion
-
-        private System.Windows.Forms.MenuStrip menuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem mniFile;
-        private System.Windows.Forms.ToolStripMenuItem mniMap;
-        private System.Windows.Forms.ToolStripMenuItem mniView;
-        private System.Windows.Forms.ToolStripMenuItem mniAbout;
-        private System.Windows.Forms.ToolStrip toolStrip1;
-        private System.Windows.Forms.ToolStripButton tsbView;
-        private System.Windows.Forms.ToolStripButton tsbMove;
-        //private System.Windows.Forms.ToolStripButton tsbAddState;
-
-        private StripImageList silAddState;
-
-        private System.Windows.Forms.ToolStripButton tsbAddTransition;
-        private System.Windows.Forms.ToolStripButton tsbAddMarker;
-        private System.Windows.Forms.ToolStripButton tsbRemove;
-        private System.Windows.Forms.ToolStripButton tsbRemoveMarker;
-        private System.Windows.Forms.PictureBox pbMap;
-        private System.Windows.Forms.StatusStrip stsStatus;
-        private System.Windows.Forms.TreeView trvStates;
-        private System.Windows.Forms.TreeView trvTransitions;
-        private System.Windows.Forms.Label lblStates;
-        private System.Windows.Forms.Label lblTransitions;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.ToolStripButton tsbOneStepSimulation;
-        private System.Windows.Forms.ToolStripButton tsbRunSimulation;
-        private System.Windows.Forms.ToolStripButton tsbStopSimulation;
-        private System.Windows.Forms.ToolStripComboBox toolStripComboBox1;
+        private MenuStrip mnsMain;
+        private ToolStripMenuItem mniFile;
+        private ToolStripMenuItem mniMap;
+        private ToolStripMenuItem mniView;
+        private ToolStripMenuItem mniAbout;
+        private ToolStrip tlsMain;
+        private ToolStripButton tsbView;
+        private ToolStripButton tsbMove;
+        private ToolStripButton tsbRemove;
+        private ToolStripButton tsbRemoveMarker;
+        private ToolStripSeparator tsSeparator1;
+        private ToolStripButton tsbOneStepSimulation;
+        private ToolStripButton tsbRunSimulation;
+        private ToolStripButton tsbStopSimulation;
+        private StripImageList imageListAddState;
+        private StripImageList imageListAddTransition;
+        private StripImageList imageListAddMarker;
+        private PictureBox pbMap;
+        private StatusStrip stsStatus;
+        private TreeView trvStates;
+        private TreeView trvTransitions;
+        private Label lblStates;
+        private Label lblTransitions;
     }
 }
