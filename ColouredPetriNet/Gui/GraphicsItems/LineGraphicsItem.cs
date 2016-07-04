@@ -48,6 +48,7 @@ namespace ColouredPetriNet.Gui.GraphicsItems
         public LineGraphicsItem(int id, int typeId, Point p1, Point p2, int z = 0)
             : base(id, typeId, 0, 0, z)
         {
+            _pen = new Pen(Color.FromArgb(0, 0, 0), 1.0F);
             _point1 = new Point();
             _point2 = new Point();
             if ((!ReferenceEquals(p1, null)) && (!ReferenceEquals(p2, null)))
@@ -64,7 +65,12 @@ namespace ColouredPetriNet.Gui.GraphicsItems
             {
                 _extentPoints[i] = new Point();
             }
-            UpdateBorder();
+            _extentPoints = LinearAlgebra.Algorithm.GetLineBorder(_point1, _point2,
+                (_selected ? _extent : 2));
+            base.SetBorder(LinearAlgebra.Algorithm.MinX(_extentPoints),
+                LinearAlgebra.Algorithm.MaxX(_extentPoints),
+                LinearAlgebra.Algorithm.MinY(_extentPoints),
+                LinearAlgebra.Algorithm.MaxY(_extentPoints));
         }
 
         public override void Draw(Graphics graphics)
@@ -131,7 +137,7 @@ namespace ColouredPetriNet.Gui.GraphicsItems
         protected override void UpdateBorder()
         {
             _extentPoints = LinearAlgebra.Algorithm.GetLineBorder(_point1, _point2,
-                (_selected ? _extent : 1));
+                (_selected ? _extent : 2));
             base.SetBorder(LinearAlgebra.Algorithm.MinX(_extentPoints),
                 LinearAlgebra.Algorithm.MaxX(_extentPoints),
                 LinearAlgebra.Algorithm.MinY(_extentPoints),

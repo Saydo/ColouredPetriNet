@@ -18,6 +18,10 @@ namespace ColouredPetriNet.Gui.LinearAlgebra
         {
             int dx = center.X - p.X;
             int dy = center.Y - p.Y;
+            if ((dx == 0) && (dy == 0))
+            {
+                return;
+            }
             double scaleFactor = length / Math.Sqrt(dx * dx + dy * dy);
             p.X = center.X + (int)(scaleFactor * dx);
             p.Y = center.Y + (int)(scaleFactor * dy);

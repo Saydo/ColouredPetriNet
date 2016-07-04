@@ -36,12 +36,14 @@ namespace ColouredPetriNet.Gui.GraphicsItems
         public LinkGraphicsItem(int id, int typeId, Point p1, Point p2, LinkDirection direction = LinkDirection.None, int z = 0)
             : base(id, typeId, p1, p2, z)
         {
+            _arrowLength = 5;
             _direction = direction;
             _arrowPoints = new Point[4];
             for (int i = 0; i < _arrowPoints.Length; ++i)
             {
                 _arrowPoints[i] = new Point();
             }
+            UpdateArrowPosition();
         }
 
         public override void Draw(Graphics graphics)
@@ -84,7 +86,7 @@ namespace ColouredPetriNet.Gui.GraphicsItems
         protected void UpdateArrowPosition(Point p1, Point p2, out Point arrowPoint1, out Point arrowPoint2)
         {
             var eq1 = new LinearAlgebra.Equation(p1, p2);
-            var p3 = eq1.GetPoint(p1, _arrowLength);
+            var p3 = eq1.GetPoint(p1, p2, _arrowLength);
             var eq2 = eq1.GetNormalEquation(p3);
             arrowPoint1 = eq2.GetPoint(p3, _extent);
             arrowPoint2 = eq2.GetPoint(p3, -_extent);

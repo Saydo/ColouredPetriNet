@@ -79,11 +79,51 @@ namespace ColouredPetriNet.Gui.LinearAlgebra
             }
             else
             {
-                equation.k = 1 / k;
+                equation.k = -1 / k;
                 equation.b = p.X * (k - equation.k) + b;
                 equation.type = type;
                 return equation;
             }
+        }
+
+        public Point GetPoint(Point p1, Point p2, double length)
+        {
+            if (length < 0)
+            {
+                length = -length;
+            }
+            Point resultPoint = new Point();
+            if (type == EquationType.Dot)
+            {
+                resultPoint.X = (int)k;
+                resultPoint.Y = (int)b;
+            }
+            else if (type == EquationType.ConstX)
+            {
+                resultPoint.X = (int)k;
+                resultPoint.Y = p1.Y + (p2.Y >= p1.Y ? 1 : -1) * (int)length;
+            }
+            else if (type == EquationType.ConstY)
+            {
+                resultPoint.X = p1.X + (p2.X >= p1.X ? 1 : -1) * (int)length;
+                resultPoint.Y = (int)k;
+            }
+            else
+            {
+                if (p2.X > p1.X)
+                {
+                    resultPoint.X = p1.X + 1;
+                    resultPoint.Y = (int)(k * resultPoint.X + b);
+                    Algorithm.ResizeLine(p1, ref resultPoint, -length);
+                }
+                else
+                {
+                    resultPoint.X = p1.X - 1;
+                    resultPoint.Y = (int)(k * resultPoint.X + b);
+                    Algorithm.ResizeLine(p1, ref resultPoint, -length);
+                }
+            }
+            return resultPoint;
         }
 
         public Point GetPoint(Point p, double length)
