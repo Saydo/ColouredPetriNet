@@ -10,7 +10,7 @@ namespace ColouredPetriNet.Gui
             ((ToolStripDropDownMenu)DropDown).ShowImageMargin = false;
             ((ToolStripDropDownMenu)DropDown).ShowCheckMargin = false;
             this.ToolTipText = toolTipText;
-            this.DropDownItemClicked += changeImage;
+            this.DropDownItemClicked += ChangeImage;
         }
 
         public void AddItem(Image image, string toolTipText = "")
@@ -27,11 +27,11 @@ namespace ColouredPetriNet.Gui
             ToolStripMenuItem item = new ToolStripMenuItem("");
             item.Image = image;
             item.ToolTipText = toolTipText;
-            item.Paint += toolStripMenuItemPaint;
+            item.Paint += ToolStripMenuItemPaint;
             this.DropDown.Items.Add(item);
         }
 
-        private void changeImage(object sender, ToolStripItemClickedEventArgs e)
+        private void ChangeImage(object sender, ToolStripItemClickedEventArgs e)
         {
             ToolStripDropDownButton button = sender as ToolStripDropDownButton;
             if ((!ReferenceEquals(button, null)) && (!ReferenceEquals(e.ClickedItem, null)))
@@ -41,7 +41,7 @@ namespace ColouredPetriNet.Gui
             }
         }
 
-        private void toolStripMenuItemPaint(object sender, PaintEventArgs e)
+        private void ToolStripMenuItemPaint(object sender, PaintEventArgs e)
         {
             ToolStripMenuItem menuItem = sender as ToolStripMenuItem;
             e.Graphics.DrawImage(menuItem.Image, e.ClipRectangle.Width / 2 - 8,

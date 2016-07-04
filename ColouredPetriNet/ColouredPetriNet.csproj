@@ -76,6 +76,7 @@
     <Compile Include="Container\TransitionWrapper.cs" />
     <Compile Include="Core\ColorPetriNetTypes.cs" />
     <Compile Include="Gui\CustomRender.cs" />
+    <Compile Include="Gui\LinearAlgebra\Equation.cs" />
     <Compile Include="Gui\GraphicsItemMap.cs" />
     <Compile Include="Gui\GraphicsItems\ColourGraphicsItem.cs" />
     <Compile Include="Gui\GraphicsItems\GraphicsItem.cs" />
@@ -89,7 +90,7 @@
     <Compile Include="Gui\GraphicsItems\RoundGraphicsItem.cs" />
     <Compile Include="Gui\GraphicsItems\TriangleGraphicsItem.cs" />
     <Compile Include="Gui\IGraphicsItemMap.cs" />
-    <Compile Include="Gui\LinearAlgebra.cs" />
+    <Compile Include="Gui\LinearAlgebra\Algorithm.cs" />
     <Compile Include="Gui\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -17,20 +17,20 @@ namespace ColouredPetriNet.Gui.GraphicsItems
         public override bool InShape(int x, int y)
         {
             Point p1, p2, p3;
-            double k1, k2, k3, b1, b2, b3;
+            LinearAlgebra.Equation[] eq = new LinearAlgebra.Equation[3];
             DefinePointPosition((_selected ? _extentPoints : _points), out p1, out p2, out p3);
-            LinearAlgebra.GetEquation(p1, p2, out k1, out b1);
-            LinearAlgebra.GetEquation(p1, p3, out k2, out b2);
-            LinearAlgebra.GetEquation(p2, p3, out k3, out b3);
-            if ((LinearAlgebra.InLineByY(x, y, k1, b1) <= 0) && (LinearAlgebra.InLineByY(x, y, k2, b2) >= 0))
+            eq[0] = new LinearAlgebra.Equation(p1, p2);
+            eq[1] = new LinearAlgebra.Equation(p2, p3);
+            eq[2] = new LinearAlgebra.Equation(p1, p3);
+            if ((eq[0].InLineByY(x, y) <= 0) && (eq[2].InLineByY(x, y) >= 0))
             {
                 if (p3.X >= p2.X)
                 {
-                    if (LinearAlgebra.InLineByY(x, y, k3, b3) <= 0) return true;
+                    if (eq[1].InLineByY(x, y) <= 0) return true;
                 }
                 else
                 {
-                    if (LinearAlgebra.InLineByY(x, y, k3, b3) >= 0) return true;
+                    if (eq[1].InLineByY(x, y) >= 0) return true;
                 }
             }
             return false;
@@ -53,16 +53,15 @@ namespace ColouredPetriNet.Gui.GraphicsItems
             else
             {
                 Point p1, p2, p3;
-                double k1, k2, k3, b1, b2, b3;
+                LinearAlgebra.Equation[] eq = new LinearAlgebra.Equation[3];
                 DefinePointPosition((_selected ? _extentPoints : _points), out p1, out p2, out p3);
-                LinearAlgebra.GetEquation(p1, p2, out k1, out b1);
-                LinearAlgebra.GetEquation(p2, p3, out k2, out b2);
-                LinearAlgebra.GetEquation(p1, p3, out k3, out b3);
+                eq[0] = new LinearAlgebra.Equation(p1, p2);
+                eq[1] = new LinearAlgebra.Equation(p2, p3);
+                eq[2] = new LinearAlgebra.Equation(p1, p3);
                 if (p1.Y > p2.Y)
                 {
-                    if ((LinearAlgebra.InLineByY(x, y, k3, b3) >= 0)
-                        && (LinearAlgebra.InLineByY(x + w, y, k2, b2) >= 0)
-                        && (LinearAlgebra.InLineByY(x + w, y + h, k1, b1) <= 0))
+                    if ((eq[2].InLineByY(x, y) >= 0) && (eq[1].InLineByY(x + w, y) >= 0)
+                        && (eq[0].InLineByY(x + w, y + h) <= 0))
                     {
                         return true;
                     }
@@ -75,9 +74,8 @@ namespace ColouredPetriNet.Gui.GraphicsItems
                 {
                     if (p1.Y > p3.Y)
                     {
-                        if ((LinearAlgebra.InLineByY(x, y + h, k1, b1) <= 0)
-                            && (LinearAlgebra.InLineByY(x + w, y, k2, b2) >= 0)
-                            && (LinearAlgebra.InLineByY(x, y, k3, b3) >= 0))
+                        if ((eq[0].InLineByY(x, y + h) <= 0) && (eq[1].InLineByY(x + w, y) >= 0)
+                            && (eq[2].InLineByY(x, y) >= 0))
                         {
                             return true;
                         }
@@ -88,9 +86,9 @@ namespace ColouredPetriNet.Gui.GraphicsItems
                     }
                     else
                     {
-                        if ((LinearAlgebra.InLineByY(x, y + h, k1, b1) <= 0)
-                            && (LinearAlgebra.InLineByY(x + w, y + h, k2, b2) <= 0)
-                            && (LinearAlgebra.InLineByY(x + w, y, k3, b3) >= 0))
+                        if ((eq[0].InLineByY(x, y + h) <= 0)
+                            && (eq[1].InLineByY(x + w, y + h) <= 0)
+                            && (eq[2].InLineByY(x + w, y) >= 0))
                         {
                             return true;
                         }
@@ -112,14 +110,19 @@ namespace ColouredPetriNet.Gui.GraphicsItems
                     _extentPoints[i].X = _points[i].X;
                     _extentPoints[i].Y = _points[i].Y;
                 }
-                LinearAlgebra.ExpandTriangle(_extentPoints[0], _extentPoints[1], _extentPoints[2], _extent);
-                base.SetBorder(LinearAlgebra.MinX(_extentPoints), LinearAlgebra.MaxX(_extentPoints),
-                    LinearAlgebra.MinY(_extentPoints), LinearAlgebra.MaxY(_extentPoints));
+                LinearAlgebra.Algorithm.ExpandTriangle(_extentPoints[0], _extentPoints[1],
+                    _extentPoints[2], _extent);
+                base.SetBorder(LinearAlgebra.Algorithm.MinX(_extentPoints),
+                    LinearAlgebra.Algorithm.MaxX(_extentPoints),
+                    LinearAlgebra.Algorithm.MinY(_extentPoints),
+                    LinearAlgebra.Algorithm.MaxY(_extentPoints));
             }
             else
             {
-                base.SetBorder(LinearAlgebra.MinX(_points), LinearAlgebra.MaxX(_points),
-                    LinearAlgebra.MinY(_points), LinearAlgebra.MaxY(_points));
+                base.SetBorder(LinearAlgebra.Algorithm.MinX(_points),
+                    LinearAlgebra.Algorithm.MaxX(_points),
+                    LinearAlgebra.Algorithm.MinY(_points),
+                    LinearAlgebra.Algorithm.MaxY(_points));
             }
         }
 

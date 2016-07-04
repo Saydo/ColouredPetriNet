@@ -183,10 +183,16 @@ namespace ColouredPetriNet.Gui
             // pbMap (PictureBox)
             //
             pbMap.Name = "pbMap";
-            pbMap.Size = new Size(45, 42);
+            pbMap.Size = new Size(200, 200);
             pbMap.Location = new Point(13, 53);
             pbMap.TabIndex = 2;
             pbMap.TabStop = false;
+            pbMap.BorderStyle = BorderStyle.FixedSingle;
+            pbMap.Paint += new PaintEventHandler(ItemMapPaint);
+            pbMap.MouseClick += new MouseEventHandler(ItemMapMouseClick);
+            pbMap.MouseDown += new MouseEventHandler(ItemMapMouseDown);
+            pbMap.MouseMove += new MouseEventHandler(ItemMapMouseMove);
+            pbMap.MouseUp += new MouseEventHandler(ItemMapMouseUp);
             //
             // stsStatus (StatusStrip)
             //

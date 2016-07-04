@@ -7,7 +7,7 @@ namespace ColouredPetriNet.Gui.GraphicsItems
         protected Point _point1;
         protected Point _point2;
         protected Pen _pen;
-        protected Point[] _extentPoint;
+        protected Point[] _extentPoints;
 
         public Point Point1
         {
@@ -59,10 +59,10 @@ namespace ColouredPetriNet.Gui.GraphicsItems
                 _point2.X = p2.X;
                 _point2.Y = p2.Y;
             }
-            _extentPoint = new Point[4];
-            for (int i = 0; i < _extentPoint.Length; ++i)
+            _extentPoints = new Point[4];
+            for (int i = 0; i < _extentPoints.Length; ++i)
             {
-                _extentPoint[i] = new Point();
+                _extentPoints[i] = new Point();
             }
             UpdateBorder();
         }
@@ -72,20 +72,19 @@ namespace ColouredPetriNet.Gui.GraphicsItems
             graphics.DrawLine(_pen, _point1, _point2);
             if (_selected)
             {
-                graphics.DrawPolygon(_selectionPen, _extentPoint);
+                graphics.DrawPolygon(_selectionPen, _extentPoints);
             }
         }
 
         public override bool InShape(int x, int y)
         {
-            double[] k = new double[4];
-            double[] b = new double[4];
-            LinearAlgebra.GetEquation(_extentPoint[0], _extentPoint[1], out k[0], out b[0]);
-            LinearAlgebra.GetEquation(_extentPoint[1], _extentPoint[2], out k[1], out b[1]);
-            LinearAlgebra.GetEquation(_extentPoint[2], _extentPoint[3], out k[2], out b[2]);
-            LinearAlgebra.GetEquation(_extentPoint[3], _extentPoint[0], out k[3], out b[3]);
-            if ((LinearAlgebra.InLineByY(x, y, k[0], b[0]) <= 0) && (LinearAlgebra.InLineByX(x, y, k[1], b[1]) <= 0)
-               && (LinearAlgebra.InLineByY(x, y, k[2], b[2]) >= 0) && (LinearAlgebra.InLineByX(x, y, k[3], b[3]) >= 0))
+            LinearAlgebra.Equation[] eq = new LinearAlgebra.Equation[4];
+            eq[0] = new LinearAlgebra.Equation(_extentPoints[0], _extentPoints[1]);
+            eq[1] = new LinearAlgebra.Equation(_extentPoints[1], _extentPoints[2]);
+            eq[2] = new LinearAlgebra.Equation(_extentPoints[2], _extentPoints[3]);
+            eq[3] = new LinearAlgebra.Equation(_extentPoints[3], _extentPoints[0]);
+            if ((eq[0].InLineByY(x, y) <= 0) && (eq[1].InLineByX(x, y) <= 0)
+               && (eq[2].InLineByY(x, y) >= 0) && (eq[3].InLineByX(x, y) >= 0))
             {
                 return true;
             }
@@ -97,17 +96,16 @@ namespace ColouredPetriNet.Gui.GraphicsItems
 
         public override bool InShape(int x, int y, int w, int h, OverlapType overlap = OverlapType.Partial)
         {
-            double[] k = new double[4];
-            double[] b = new double[4];
-            LinearAlgebra.GetEquation(_extentPoint[0], _extentPoint[1], out k[0], out b[0]);
-            LinearAlgebra.GetEquation(_extentPoint[1], _extentPoint[2], out k[1], out b[1]);
-            LinearAlgebra.GetEquation(_extentPoint[2], _extentPoint[3], out k[2], out b[2]);
-            LinearAlgebra.GetEquation(_extentPoint[3], _extentPoint[0], out k[3], out b[3]);
+
+            LinearAlgebra.Equation[] eq = new LinearAlgebra.Equation[4];
+            eq[0] = new LinearAlgebra.Equation(_extentPoints[0], _extentPoints[1]);
+            eq[1] = new LinearAlgebra.Equation(_extentPoints[1], _extentPoints[2]);
+            eq[2] = new LinearAlgebra.Equation(_extentPoints[2], _extentPoints[3]);
+            eq[3] = new LinearAlgebra.Equation(_extentPoints[3], _extentPoints[0]);
             if (overlap == OverlapType.Partial)
             {
-                if ((LinearAlgebra.InLineByY(x + w, y, k[0], b[0]) > 0) || (LinearAlgebra.InLineByY(x, y, k[1], b[1]) > 0)
-                    || (LinearAlgebra.InLineByY(x, y + h, k[2], b[2]) < 0)
-                    || (LinearAlgebra.InLineByY(x + w, y + h, k[3], b[3]) < 0))
+                if ((eq[0].InLineByY(x + w, y) > 0) || (eq[1].InLineByY(x, y) > 0)
+                    || (eq[2].InLineByY(x, y + h) < 0) || (eq[3].InLineByY(x + w, y + h) < 0))
                 {
                     return false;
                 }
@@ -118,10 +116,8 @@ namespace ColouredPetriNet.Gui.GraphicsItems
             }
             else
             {
-                if ((LinearAlgebra.InLineByY(x, y + h, k[0], b[0]) <= 0)
-                    && (LinearAlgebra.InLineByY(x + w, y + h, k[1], b[1]) <= 0)
-                    && (LinearAlgebra.InLineByY(x + w, y, k[2], b[2]) >= 0)
-                    && (LinearAlgebra.InLineByY(x, y, k[3], b[3]) >= 0))
+                if ((eq[0].InLineByY(x, y + h) <= 0) && (eq[1].InLineByY(x + w, y + h) <= 0)
+                    && (eq[2].InLineByY(x + w, y) >= 0) && (eq[3].InLineByY(x, y) >= 0))
                 {
                     return true;
                 }
@@ -134,9 +130,12 @@ namespace ColouredPetriNet.Gui.GraphicsItems
 
         protected override void UpdateBorder()
         {
-            _extentPoint = LinearAlgebra.GetLineBorder(_point1, _point2, (_selected ? _extent : 1));
-            base.SetBorder(LinearAlgebra.MinX(_extentPoint), LinearAlgebra.MaxX(_extentPoint),
-                LinearAlgebra.MinY(_extentPoint), LinearAlgebra.MaxY(_extentPoint));
+            _extentPoints = LinearAlgebra.Algorithm.GetLineBorder(_point1, _point2,
+                (_selected ? _extent : 1));
+            base.SetBorder(LinearAlgebra.Algorithm.MinX(_extentPoints),
+                LinearAlgebra.Algorithm.MaxX(_extentPoints),
+                LinearAlgebra.Algorithm.MinY(_extentPoints),
+                LinearAlgebra.Algorithm.MaxY(_extentPoints));
         }
     }
 }

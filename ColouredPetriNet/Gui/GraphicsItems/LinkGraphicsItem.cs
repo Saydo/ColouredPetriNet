@@ -59,7 +59,7 @@ namespace ColouredPetriNet.Gui.GraphicsItems
             }
             if (_selected)
             {
-                graphics.DrawPolygon(_selectionPen, _extentPoint);
+                graphics.DrawPolygon(_selectionPen, _extentPoints);
             }
         }
 
@@ -83,12 +83,11 @@ namespace ColouredPetriNet.Gui.GraphicsItems
 
         protected void UpdateArrowPosition(Point p1, Point p2, out Point arrowPoint1, out Point arrowPoint2)
         {
-            Point p3 = new Point();
-            p3.X = p2.X;
-            p3.Y = p2.Y;
-            LinearAlgebra.ResizeLine(p1, p3, _arrowLength);
-            arrowPoint1 = LinearAlgebra.GetNormalToLine(p1, p3, _extent, true);
-            arrowPoint2 = LinearAlgebra.GetNormalToLine(p1, p3, _extent, false);
+            var eq1 = new LinearAlgebra.Equation(p1, p2);
+            var p3 = eq1.GetPoint(p1, _arrowLength);
+            var eq2 = eq1.GetNormalEquation(p3);
+            arrowPoint1 = eq2.GetPoint(p3, _extent);
+            arrowPoint2 = eq2.GetPoint(p3, -_extent);
         }
     }
 }

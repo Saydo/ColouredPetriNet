@@ -1,88 +1,11 @@
 ﻿using System;
 using System.Drawing;
 
-namespace ColouredPetriNet.Gui
+namespace ColouredPetriNet.Gui.LinearAlgebra
 {
-    public static class LinearAlgebra
+    public static class Algorithm
     {
-        public enum EquationType { Common, ConstX, ConstY, Dot };
-
-        /*
-        public struct Equation
-        {
-            public double k;
-            public double b;
-            public EquationType type;
-
-            public Equation(Point p1, Point p2)
-            {
-                if (p1.X == p2.X)
-                {
-                    if (p1.Y == p2.Y)
-                    {
-                        type = EquationType.Dot;
-                    }
-                    else
-                    {
-                        type = EquationType.ConstX;
-                    }
-                }
-                else if (p1.Y == p2.Y)
-                {
-                    type = EquationType.ConstY;
-                }
-                else
-                {
-                    type = EquationType.Common;
-                }
-                //k = ;
-            }
-
-            public int getY(int x)
-            {
-                return (int)(k * x + b);
-            }
-
-            public int getX(int y)
-            {
-                return (int)((y - b)/ k);
-            }
-        }
-        */
-
-        static public void GetEquation(Point p1, Point p2, out double k, out double b)
-        {
-            k = (p1.Y - p2.Y) / (p1.X - p2.X);
-            b = p1.Y - k * p1.X;
-        }
-
-        static public void GetEquation(int x1, int y1, int x2, int y2, out double k, out double b)
-        {
-            k = (y1 - y2) / (x1 - x2);
-            b = y1 - k * x1;
-        }
-
-        static public int InLineByY(Point p, double k, double b)
-        {
-            return (p.Y - (int)(k * p.X + b));
-        }
-
-        static public int InLineByX(Point p, double k, double b)
-        {
-            return (p.X - (int)((p.Y - b) / k));
-        }
-
-        static public int InLineByY(int x, int y, double k, double b)
-        {
-            return (y - (int)(k * x + b));
-        }
-
-        static public int InLineByX(int x, int y, double k, double b)
-        {
-            return (x - (int)((y - b) / k));
-        }
-
-        static public void ExpandLine(Point center, Point p, double extent)
+        static public void ExpandLine(Point center, ref Point p, double extent)
         {
             int dx = center.X - p.X;
             int dy = center.Y - p.Y;
@@ -91,7 +14,7 @@ namespace ColouredPetriNet.Gui
             p.Y += (int)(scaleFactor * dy);
         }
 
-        static public void ResizeLine(Point center, Point p, double length)
+        static public void ResizeLine(Point center, ref Point p, double length)
         {
             int dx = center.X - p.X;
             int dy = center.Y - p.Y;
@@ -121,28 +44,23 @@ namespace ColouredPetriNet.Gui
         static public Point[] GetLineBorder(Point p1, Point p2, int extent)
         {
             Point[] lineBorder = new Point[4];
-            for (int i = 0; i < 4; ++i)
-            {
-                lineBorder[i] = new Point();
-            }
+            Equation eq1 = new Equation(p1, p2);
+            Equation eq2 = eq1.GetNormalEquation(p1);
+            Equation eq3 = eq1.GetNormalEquation(p2);
             if (((p2.X >= p1.X) && (p2.Y >= p1.Y)) || ((p2.X < p1.X) && (p2.Y < p1.Y)))
             {
-                lineBorder[0].X = p1.X - 1;
-                lineBorder[1].X = p2.X - 1;
-                lineBorder[2].X = p2.X + 1;
-                lineBorder[3].X = p1.X + 1;
+                lineBorder[0] = eq2.GetPoint(p1, -extent);
+                lineBorder[1] = eq3.GetPoint(p2, -extent);
+                lineBorder[2] = eq3.GetPoint(p2, extent);
+                lineBorder[3] = eq2.GetPoint(p1, extent);
             }
             else
             {
-                lineBorder[0].X = p1.X + 1;
-                lineBorder[1].X = p2.X + 1;
-                lineBorder[2].X = p2.X - 1;
-                lineBorder[3].X = p1.X - 1;
+                lineBorder[0] = eq2.GetPoint(p1, extent);
+                lineBorder[1] = eq3.GetPoint(p2, extent);
+                lineBorder[2] = eq3.GetPoint(p2, -extent);
+                lineBorder[3] = eq2.GetPoint(p1, -extent);
             }
-            ResizeLine(p1, lineBorder[0], extent);
-            ResizeLine(p1, lineBorder[1], extent);
-            ResizeLine(p2, lineBorder[2], extent);
-            ResizeLine(p2, lineBorder[3], extent);
             return lineBorder;
         }
 
@@ -214,39 +132,11 @@ namespace ColouredPetriNet.Gui
             return int.MinValue;
         }
 
-        static public Point GetNormalToLine(Point p1, Point p2, int length, bool overLine = true)
+        static public Point GetNormalToLine(Point p1, Point p2, int length)
         {
-            Point normalPoint = new Point();
-            normalPoint.X = p2.X;
-            normalPoint.Y = p2.Y;
-            double k1, b1, k2, b2;
-            GetEquation(p1, p2, out k1, out b1);
-            k2 = 1 / k1;
-            b2 = normalPoint.X * (k1 - k2) + b1;
-            if (((p2.X >= p1.X) && (p2.Y >= p1.Y)) || ((p2.X < p1.X) && (p2.Y < p1.Y)))
-            {
-                if (overLine)
-                {
-                    --normalPoint.X;
-                }
-                else
-                {
-                    ++normalPoint.X;
-                }
-            }
-            else
-            {
-                if (overLine)
-                {
-                    ++normalPoint.X;
-                }
-                else
-                {
-                    --normalPoint.X;
-                }
-            }
-            ResizeLine(p2, normalPoint, length);
-            return normalPoint;
+            Equation eq1 = new Equation(p1, p2);
+            Equation eq2 = eq1.GetNormalEquation(p2);
+            return eq2.GetPoint(p2, length);
         }
 
         static private double GetIncircleRadius(Point p1, Point p2, Point p3)
@@ -291,23 +181,10 @@ namespace ColouredPetriNet.Gui
             beta = Math.Acos(cosAlpha) * 90 / Math.PI;
             double s1 = (r + extent) / Math.Tan(beta * Math.PI / 180);
             Point nps2 = new Point();
-            nps2.X = ps2.X;
-            nps2.Y = ps2.Y;
-            ResizeLine(ps1, nps2, s1);
-            double k1, b1, k2, b2;
-            GetEquation(ps1, ps2, out k1, out b1);
-            k2 = 1 / k1;
-            b2 = nps2.X * (k1 - k2) + b1;
-            if (InLineByY(ps3, k1, b1) >= 0)
-            {
-                incenter.Y = nps2.Y + 1;
-            }
-            else
-            {
-                incenter.Y = nps2.Y - 1;
-            }
-            incenter.X = (int)((incenter.Y - b2) / k2);
-            ResizeLine(nps2, incenter, r + extent);
+            ResizeLine(ps1, ref nps2, s1);
+            Equation eq1 = new Equation(ps1, ps2);
+            Equation eq2 = eq1.GetNormalEquation(nps2);
+            eq2.GetPoint(nps2, r + extent);
             return incenter;
         }
     }

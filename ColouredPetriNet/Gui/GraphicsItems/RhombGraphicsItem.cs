@@ -37,24 +37,23 @@ namespace ColouredPetriNet.Gui.GraphicsItems
 
         public override bool InShape(int x, int y)
         {
-            double[] k = { 0.0, 0.0, 0.0, 0.0 };
-            double[] b = { 0.0, 0.0, 0.0, 0.0 };
+            LinearAlgebra.Equation[] eq = new LinearAlgebra.Equation[4];
             if (_selected)
             {
-                LinearAlgebra.GetEquation(_extentPoints[0], _extentPoints[1], out k[0], out b[0]);
-                LinearAlgebra.GetEquation(_extentPoints[1], _extentPoints[2], out k[1], out b[1]);
-                LinearAlgebra.GetEquation(_extentPoints[2], _extentPoints[3], out k[2], out b[2]);
-                LinearAlgebra.GetEquation(_extentPoints[3], _extentPoints[0], out k[3], out b[3]);
+                eq[0] = new LinearAlgebra.Equation(_extentPoints[0], _extentPoints[1]);
+                eq[1] = new LinearAlgebra.Equation(_extentPoints[1], _extentPoints[2]);
+                eq[2] = new LinearAlgebra.Equation(_extentPoints[2], _extentPoints[3]);
+                eq[3] = new LinearAlgebra.Equation(_extentPoints[3], _extentPoints[0]);
             }
             else
             {
-                LinearAlgebra.GetEquation(_points[0], _points[1], out k[0], out b[0]);
-                LinearAlgebra.GetEquation(_points[1], _points[2], out k[1], out b[1]);
-                LinearAlgebra.GetEquation(_points[2], _points[3], out k[2], out b[2]);
-                LinearAlgebra.GetEquation(_points[3], _points[0], out k[3], out b[3]);
+                eq[0] = new LinearAlgebra.Equation(_points[0], _points[1]);
+                eq[1] = new LinearAlgebra.Equation(_points[1], _points[2]);
+                eq[2] = new LinearAlgebra.Equation(_points[2], _points[3]);
+                eq[3] = new LinearAlgebra.Equation(_points[3], _points[0]);
             }
-            if ((LinearAlgebra.InLineByY(x, y, k[0], b[0]) <= 0) && (LinearAlgebra.InLineByY(x, y, k[1], b[1]) <= 0)
-                && (LinearAlgebra.InLineByY(x, y, k[2], b[2]) >= 0) && (LinearAlgebra.InLineByY(x, y, k[3], b[3]) >= 0))
+            if ((eq[0].InLineByY(x, y) <= 0) && (eq[1].InLineByY(x, y) <= 0)
+                && (eq[2].InLineByY(x, y) >= 0) && (eq[3].InLineByY(x, y) >= 0))
             {
                 return true;
             }
@@ -66,27 +65,25 @@ namespace ColouredPetriNet.Gui.GraphicsItems
 
         public override bool InShape(int x, int y, int w, int h, OverlapType overlap = OverlapType.Partial)
         {
-            double[] k = { 0.0, 0.0, 0.0, 0.0 };
-            double[] b = { 0.0, 0.0, 0.0, 0.0 };
+            LinearAlgebra.Equation[] eq = new LinearAlgebra.Equation[4];
             if (_selected)
             {
-                LinearAlgebra.GetEquation(_extentPoints[0], _extentPoints[1], out k[0], out b[0]);
-                LinearAlgebra.GetEquation(_extentPoints[1], _extentPoints[2], out k[1], out b[1]);
-                LinearAlgebra.GetEquation(_extentPoints[2], _extentPoints[3], out k[2], out b[2]);
-                LinearAlgebra.GetEquation(_extentPoints[3], _extentPoints[0], out k[3], out b[3]);
+                eq[0] = new LinearAlgebra.Equation(_extentPoints[0], _extentPoints[1]);
+                eq[1] = new LinearAlgebra.Equation(_extentPoints[1], _extentPoints[2]);
+                eq[2] = new LinearAlgebra.Equation(_extentPoints[2], _extentPoints[3]);
+                eq[3] = new LinearAlgebra.Equation(_extentPoints[3], _extentPoints[0]);
             }
             else
             {
-                LinearAlgebra.GetEquation(_points[0], _points[1], out k[0], out b[0]);
-                LinearAlgebra.GetEquation(_points[1], _points[2], out k[1], out b[1]);
-                LinearAlgebra.GetEquation(_points[2], _points[3], out k[2], out b[2]);
-                LinearAlgebra.GetEquation(_points[3], _points[0], out k[3], out b[3]);
+                eq[0] = new LinearAlgebra.Equation(_points[0], _points[1]);
+                eq[1] = new LinearAlgebra.Equation(_points[1], _points[2]);
+                eq[2] = new LinearAlgebra.Equation(_points[2], _points[3]);
+                eq[3] = new LinearAlgebra.Equation(_points[3], _points[0]);
             }
             if (overlap == OverlapType.Partial)
             {
-                if ((LinearAlgebra.InLineByY(x + w, y, k[0], b[0]) > 0) || (LinearAlgebra.InLineByY(x, y, k[1], b[1]) > 0)
-                    || (LinearAlgebra.InLineByY(x, y + h, k[2], b[2]) < 0)
-                    || (LinearAlgebra.InLineByY(x + w, y + h, k[3], b[3]) < 0))
+                if ((eq[0].InLineByY(x + w, y) > 0) || (eq[1].InLineByY(x, y) > 0)
+                    || (eq[2].InLineByY(x, y + h) < 0) || (eq[3].InLineByY(x + w, y + h) < 0))
                 {
                     return false;
                 }
@@ -97,10 +94,8 @@ namespace ColouredPetriNet.Gui.GraphicsItems
             }
             else
             {
-                if ((LinearAlgebra.InLineByY(x, y + h, k[0], b[0]) <= 0)
-                    && (LinearAlgebra.InLineByY(x + w, y + h, k[1], b[1]) <= 0)
-                    && (LinearAlgebra.InLineByY(x + w, y, k[2], b[2]) >= 0)
-                    && (LinearAlgebra.InLineByY(x, y, k[3], b[3]) >= 0))
+                if ((eq[0].InLineByY(x, y + h) <= 0) && (eq[1].InLineByY(x + w, y + h) <= 0)
+                    && (eq[2].InLineByY(x + w, y) >= 0) && (eq[3].InLineByY(x, y) >= 0))
                 {
                     return true;
                 }
