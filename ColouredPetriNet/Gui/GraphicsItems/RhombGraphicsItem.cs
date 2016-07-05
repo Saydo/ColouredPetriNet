@@ -9,12 +9,17 @@ namespace ColouredPetriNet.Gui.GraphicsItems
         protected Point[] _points;
         protected Point[] _extentPoints;
 
-        public RhombGraphicsItem() : this(-1, -1)
+        public RhombGraphicsItem() : this(-1, -1, new Point(0, 0))
         {
         }
 
-        public RhombGraphicsItem(int id, int typeId, int w = 10, int h = 10, int x = 0, int y = 0, int z = 0)
-            : base(id, typeId, w, h, x, y, z)
+        public RhombGraphicsItem(int id, int typeId, int z = 0)
+            : this(id, typeId, new Point(0, 0), 10, 10, z)
+        {
+        }
+
+        public RhombGraphicsItem(int id, int typeId, Point center, int w = 10, int h = 10, int z = 0)
+            : base(id, typeId, center, w, h, z)
         {
             _points = new Point[4];
             _extentPoints = new Point[4];
@@ -34,6 +39,21 @@ namespace ColouredPetriNet.Gui.GraphicsItems
             {
                 graphics.DrawPolygon(_selectionPen, _extentPoints);
             }
+        }
+
+        public override void Move(int x, int y)
+        {
+            int dx = x - _center.X;
+            int dy = y - _center.Y;
+            for (int i = 0; i < _points.Length; ++i)
+            {
+                _points[i].X += dx;
+                _points[i].Y += dy;
+                _extentPoints[i].X += dx;
+                _extentPoints[i].Y += dy;
+            }
+            _center.X = x;
+            _center.Y = y;
         }
 
         public override bool InShape(int x, int y)
@@ -136,23 +156,23 @@ namespace ColouredPetriNet.Gui.GraphicsItems
 
         protected void UpdatePointPosition(int halfWidth, int halfHeight, int extentHalfWidth, int extentHalfHeight)
         {
-            _points[(int)PointPos.Top].X = _x;
-            _points[(int)PointPos.Top].Y = _y + halfHeight;
-            _points[(int)PointPos.Bottom].X = _x;
-            _points[(int)PointPos.Bottom].Y = _y - halfHeight;
-            _points[(int)PointPos.Left].X = _x - halfWidth;
-            _points[(int)PointPos.Left].Y = _y;
-            _points[(int)PointPos.Right].X = _x + halfWidth;
-            _points[(int)PointPos.Right].Y = _y;
+            _points[(int)PointPos.Top].X = _center.X;
+            _points[(int)PointPos.Top].Y = _center.Y + halfHeight;
+            _points[(int)PointPos.Bottom].X = _center.X;
+            _points[(int)PointPos.Bottom].Y = _center.Y - halfHeight;
+            _points[(int)PointPos.Left].X = _center.X - halfWidth;
+            _points[(int)PointPos.Left].Y = _center.Y;
+            _points[(int)PointPos.Right].X = _center.X + halfWidth;
+            _points[(int)PointPos.Right].Y = _center.Y;
 
-            _extentPoints[(int)PointPos.Top].X = _x;
-            _extentPoints[(int)PointPos.Top].Y = _y + extentHalfHeight;
-            _extentPoints[(int)PointPos.Bottom].X = _x;
-            _extentPoints[(int)PointPos.Bottom].Y = _y - extentHalfHeight;
-            _extentPoints[(int)PointPos.Left].X = _x - extentHalfWidth;
-            _extentPoints[(int)PointPos.Left].Y = _y;
-            _extentPoints[(int)PointPos.Right].X = _x + extentHalfWidth;
-            _extentPoints[(int)PointPos.Right].Y = _y;
+            _extentPoints[(int)PointPos.Top].X = _center.X;
+            _extentPoints[(int)PointPos.Top].Y = _center.Y + extentHalfHeight;
+            _extentPoints[(int)PointPos.Bottom].X = _center.X;
+            _extentPoints[(int)PointPos.Bottom].Y = _center.Y - extentHalfHeight;
+            _extentPoints[(int)PointPos.Left].X = _center.X - extentHalfWidth;
+            _extentPoints[(int)PointPos.Left].Y = _center.Y;
+            _extentPoints[(int)PointPos.Right].X = _center.X + extentHalfWidth;
+            _extentPoints[(int)PointPos.Right].Y = _center.Y;
         }
     }
 }

@@ -4,8 +4,7 @@ namespace ColouredPetriNet.Gui.GraphicsItems
 {
     public class GraphicsItem : IGraphicsItem
     {
-        protected int _x;
-        protected int _y;
+        protected Point _center;
         protected int _z;
         protected int _extent;
         protected int[] _borderPoint;
@@ -14,16 +13,15 @@ namespace ColouredPetriNet.Gui.GraphicsItems
 
         public int Id { get; private set; }
         public int TypeId { get; private set; }
-        public int X
+        public Point Center
         {
-            get { return _x; }
-            set { _x = (value < 0 ? 0 : value); }
-        }
-
-        public int Y
-        {
-            get { return _y; }
-            set { _y = (value < 0 ? 0 : value); }
+            get { return _center; }
+            set {
+                if (_center != value)
+                {
+                    Move(value.X, value.Y);
+                }
+            }
         }
 
         public int Z
@@ -54,16 +52,19 @@ namespace ColouredPetriNet.Gui.GraphicsItems
             }
         }
 
-        public GraphicsItem() : this(-1, -1)
+        public GraphicsItem() : this(-1, -1, new Point(0, 0))
         {
         }
 
-        public GraphicsItem(int id, int typeId, int x = 0, int y = 0, int z = 0)
+        public GraphicsItem(int id, int typeId, int z = 0) : this (id, typeId, new Point(0, 0), z)
+        {
+        }
+
+        public GraphicsItem(int id, int typeId, Point center, int z = 0)
         {
             Id = id;
             TypeId = typeId;
-            _x = x;
-            _y = y;
+            _center = center;
             _z = z;
             _extent = 2;
             _selected = false;
@@ -75,8 +76,15 @@ namespace ColouredPetriNet.Gui.GraphicsItems
         {
             if (_selected)
             {
-                graphics.DrawRectangle(_selectionPen, _x - _extent, _y - _extent, 2*_extent, 2*_extent);
+                graphics.DrawRectangle(_selectionPen, _center.X - _extent, _center.Y - _extent,
+                    2*_extent, 2*_extent);
             }
+        }
+
+        public virtual void Move(int x, int y)
+        {
+            _center.X = x;
+            _center.Y = y;
         }
 
         public bool IsCollision(int x, int y, int z = -1)
@@ -127,8 +135,8 @@ namespace ColouredPetriNet.Gui.GraphicsItems
 
         public bool InBorder(int x, int y)
         {
-            int diff_x = x - _x;
-            int diff_y = y - _y;
+            int diff_x = x - _center.X;
+            int diff_y = y - _center.Y;
             if ((diff_x < _borderPoint[(int)BorderSide.Left]) || (diff_x > _borderPoint[(int)BorderSide.Right])
                 || (diff_y < _borderPoint[(int)BorderSide.Bottom]) || (diff_y > _borderPoint[(int)BorderSide.Top]))
             {
@@ -141,8 +149,10 @@ namespace ColouredPetriNet.Gui.GraphicsItems
         {
             if (overlap == OverlapType.Partial)
             {
-                if ((x + w < _x + _borderPoint[(int)BorderSide.Left]) || (x > _x + _borderPoint[(int)BorderSide.Right])
-                    || (y + h < _y + _borderPoint[(int)BorderSide.Bottom]) || (y > _y + _borderPoint[(int)BorderSide.Top]))
+                if ((x + w < _center.X + _borderPoint[(int)BorderSide.Left])
+                    || (x > _center.X + _borderPoint[(int)BorderSide.Right])
+                    || (y + h < _center.Y + _borderPoint[(int)BorderSide.Bottom])
+                    || (y > _center.Y + _borderPoint[(int)BorderSide.Top]))
                 {
                     return false;
                 }
@@ -153,8 +163,10 @@ namespace ColouredPetriNet.Gui.GraphicsItems
             }
             else
             {
-                if ((x <= _x + _borderPoint[(int)BorderSide.Left]) && (x + w >= _x + _borderPoint[(int)BorderSide.Right])
-                   && (y <= _y + _borderPoint[(int)BorderSide.Bottom]) && (y + h >= _y + _borderPoint[(int)BorderSide.Top]))
+                if ((x <= _center.X + _borderPoint[(int)BorderSide.Left])
+                    && (x + w >= _center.X + _borderPoint[(int)BorderSide.Right])
+                    && (y <= _center.Y + _borderPoint[(int)BorderSide.Bottom])
+                    && (y + h >= _center.Y + _borderPoint[(int)BorderSide.Top]))
                 {
                     return true;
                 }
@@ -186,11 +198,6 @@ namespace ColouredPetriNet.Gui.GraphicsItems
         public int[] GetBorder()
         {
             return _borderPoint;
-        }
-
-        public Point GetPos()
-        {
-            return new Point(_x, _y);
         }
 
         public bool IsSelected()

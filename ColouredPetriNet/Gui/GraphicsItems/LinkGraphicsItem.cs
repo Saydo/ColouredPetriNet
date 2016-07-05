@@ -65,6 +65,18 @@ namespace ColouredPetriNet.Gui.GraphicsItems
             }
         }
 
+        public override void Move(int x, int y)
+        {
+            int dx = x - _center.X;
+            int dy = y - _center.Y;
+            base.Move(x, y);
+            for (int i = 0; i < _arrowPoints.Length; ++i)
+            {
+                _arrowPoints[i].X += dx;
+                _arrowPoints[i].Y += dy;
+            }
+        }
+
         protected override void UpdateBorder()
         {
             base.UpdateBorder();

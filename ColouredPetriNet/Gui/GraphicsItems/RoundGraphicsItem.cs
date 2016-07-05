@@ -20,37 +20,44 @@ namespace ColouredPetriNet.Gui.GraphicsItems
         {
         }
 
-        public RoundGraphicsItem(int id, int typeId, int r = 10, int x = 0, int y = 0, int z = 0)
-            : base(id, typeId, x, y, z)
+        public RoundGraphicsItem(int id, int typeId, int r = 10, int z = 0)
+            : this(id, typeId, new Point(0, 0), r, z)
+        {
+        }
+
+        public RoundGraphicsItem(int id, int typeId, Point center, int r = 10, int z = 0)
+            : base(id, typeId, center, z)
         {
             Radius = r;
         }
 
         public override void Draw(Graphics graphics)
         {
-            graphics.FillEllipse(_fillBrush, _x - _radius, _y - _radius, 2 * _radius, 2 * _radius);
-            graphics.DrawEllipse(_borderPen, _x - _radius, _y - _radius, 2 * _radius, 2 * _radius);
+            graphics.FillEllipse(_fillBrush, _center.X - _radius, _center.Y - _radius,
+                2 * _radius, 2 * _radius);
+            graphics.DrawEllipse(_borderPen, _center.X - _radius, _center.Y - _radius,
+                2 * _radius, 2 * _radius);
             if (_selected)
             {
                 int r = _radius + _extent;
-                graphics.DrawEllipse(_selectionPen, _x - r, _y - r, 2*r, 2*r);
+                graphics.DrawEllipse(_selectionPen, _center.X - r, _center.Y - r, 2 * r, 2 * r);
             }
         }
 
         public override bool InShape(int x, int y)
         {
             int r = _radius + (_selected ? _extent : 0);
-            return ((x - _x) * (x - _x) + (y - _y) * (y - _y) <= r * r);
+            return ((x - _center.X) * (x - _center.X) + (y - _center.Y) * (y - _center.Y) <= r * r);
         }
 
         public override bool InShape(int x, int y, int w, int h, OverlapType overlap = OverlapType.Partial)
         {
             if (overlap == OverlapType.Partial)
             {
-                if (((y > _y) && (x > _x) && (!InShape(x, y)))
-                    || ((y + h < _y) && (x > _x) && (!InShape(x, y + h)))
-                    || ((y > _y) && (x + w < _x) && (!InShape(x + w, y)))
-                    || ((y + h < _y) && (x + w < _x) && (!InShape(x + w, y + h))))
+                if (((y > _center.Y) && (x > _center.X) && (!InShape(x, y)))
+                    || ((y + h < _center.Y) && (x > _center.X) && (!InShape(x, y + h)))
+                    || ((y > _center.Y) && (x + w < _center.X) && (!InShape(x + w, y)))
+                    || ((y + h < _center.Y) && (x + w < _center.X) && (!InShape(x + w, y + h))))
                 {
                     return false;
                 }
@@ -61,8 +68,8 @@ namespace ColouredPetriNet.Gui.GraphicsItems
             }
             else
             {
-                if ((x < _x) && (y < _y) && (x + w > _x) && (y + h > _y) && InShape(x, y)
-                    && InShape(x, y + h) && InShape(x + w, y + h) && InShape(x + w, y))
+                if ((x < _center.X) && (y < _center.Y) && (x + w > _center.X) && (y + h > _center.Y)
+                    && InShape(x, y) && InShape(x, y + h) && InShape(x + w, y + h) && InShape(x + w, y))
                 {
                     return true;
                 }

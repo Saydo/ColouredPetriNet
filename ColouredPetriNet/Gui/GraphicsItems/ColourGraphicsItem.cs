@@ -19,11 +19,17 @@ namespace ColouredPetriNet.Gui.GraphicsItems
             set { _borderPen = value; }
         }
 
-        public ColourGraphicsItem() : this(-1, -1)
+        public ColourGraphicsItem() : this(-1, -1, new Point(0, 0))
         {
         }
 
-        public ColourGraphicsItem(int id, int typeId, int x = 0, int y = 0, int z = 0) : base(id, typeId, x, y, z)
+        public ColourGraphicsItem(int id, int typeId, int z = 0)
+            : this(id, typeId, new Point(0, 0), z)
+        {
+        }
+
+        public ColourGraphicsItem(int id, int typeId, Point center, int z = 0)
+            : base(id, typeId, center, z)
         {
             _fillBrush = new SolidBrush(Color.FromArgb(0, 0, 0));
             _borderPen = new Pen(Color.FromArgb(0, 0, 0));

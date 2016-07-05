@@ -9,12 +9,12 @@ namespace ColouredPetriNet.Gui.GraphicsItems
     {
         int Id { get; }
         int TypeId { get; }
-        int X { get; set; }
-        int Y { get; set; }
+        Point Center { get; set; }
         int Z { get; set; }
         int Extent { get; set; }
         Pen SelectionPen { get; set; }
         void Draw(Graphics graphics);
+        void Move(int x, int y);
         bool IsCollision(int x, int y, int z = -1);
         bool IsCollision(int x, int y, int w, int h, OverlapType overlap = OverlapType.Partial, int z = -1);
         bool InShape(int x, int y);
@@ -24,7 +24,6 @@ namespace ColouredPetriNet.Gui.GraphicsItems
         void SetBorder(int left, int right, int top, int bottom);
         void SetBorder(BorderSide side, int value);
         int GetBorder(BorderSide side);
-        Point GetPos();
         bool IsSelected();
         void Select();
         void Deselect();

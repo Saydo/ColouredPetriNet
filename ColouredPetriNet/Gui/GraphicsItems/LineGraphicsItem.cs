@@ -46,15 +46,15 @@ namespace ColouredPetriNet.Gui.GraphicsItems
         }
 
         public LineGraphicsItem(int id, int typeId, Point p1, Point p2, int z = 0)
-            : base(id, typeId, 0, 0, z)
+            : base(id, typeId, z)
         {
             _pen = new Pen(Color.FromArgb(0, 0, 0), 1.0F);
             _point1 = new Point();
             _point2 = new Point();
             if ((!ReferenceEquals(p1, null)) && (!ReferenceEquals(p2, null)))
             {
-                _x = (p2.X + p1.X) / 2;
-                _y = (p2.Y + p1.Y) / 2;
+                _center.X = (p2.X + p1.X) / 2;
+                _center.Y = (p2.Y + p1.Y) / 2;
                 _point1.X = p1.X;
                 _point1.Y = p1.Y;
                 _point2.X = p2.X;
@@ -80,6 +80,23 @@ namespace ColouredPetriNet.Gui.GraphicsItems
             {
                 graphics.DrawPolygon(_selectionPen, _extentPoints);
             }
+        }
+
+        public override void Move(int x, int y)
+        {
+            int dx = x - _center.X;
+            int dy = y - _center.Y;
+            _point1.X += dx;
+            _point1.Y += dy;
+            _point2.X += dx;
+            _point2.Y += dy;
+            for (int i = 0; i < _extentPoints.Length; ++i)
+            {
+                _extentPoints[i].X += dx;
+                _extentPoints[i].Y += dy;
+            }
+            _center.X = x;
+            _center.Y = y;
         }
 
         public override bool InShape(int x, int y)

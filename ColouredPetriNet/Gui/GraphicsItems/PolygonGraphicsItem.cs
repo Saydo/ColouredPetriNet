@@ -7,12 +7,17 @@ namespace ColouredPetriNet.Gui.GraphicsItems
         protected Point[] _points;
         protected Point[] _extentPoints;
 
-        public PolygonGraphicsItem() : this(-1, -1)
+        public PolygonGraphicsItem() : this(-1, -1, new Point(0, 0))
         {
         }
 
-        public PolygonGraphicsItem(int id, int typeId, int count = 4, int x = 0, int y = 0, int z = 0)
-            : base(id, typeId, x, y, z)
+        public PolygonGraphicsItem(int id, int typeId, int count = 4, int z = 0)
+            : this(id, typeId, new Point(0, 0), count, z)
+        {
+        }
+
+        public PolygonGraphicsItem(int id, int typeId, Point center, int count = 4, int z = 0)
+            : base(id, typeId, center, z)
         {
             _points = new Point[count];
             _extentPoints = new Point[count];
@@ -50,10 +55,26 @@ namespace ColouredPetriNet.Gui.GraphicsItems
         {
             graphics.FillPolygon(_fillBrush, _points);
             graphics.DrawPolygon(_borderPen, _points);
+            _selectionPen = new Pen(Color.FromArgb(255, 0, 0));
             if (_selected)
             {
                 graphics.DrawPolygon(_selectionPen, _extentPoints);
             }
+        }
+
+        public override void Move(int x, int y)
+        {
+            int dx = x - _center.X;
+            int dy = y - _center.Y;
+            for (int i = 0; i < _points.Length; ++i)
+            {
+                _points[i].X += dx;
+                _points[i].Y += dy;
+                _extentPoints[i].X += dx;
+                _extentPoints[i].Y += dy;
+            }
+            _center.X = x;
+            _center.Y = y;
         }
     }
 }

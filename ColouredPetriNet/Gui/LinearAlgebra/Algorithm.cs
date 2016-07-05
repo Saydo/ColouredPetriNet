@@ -5,7 +5,7 @@ namespace ColouredPetriNet.Gui.LinearAlgebra
 {
     public static class Algorithm
     {
-        static public void ExpandLine(Point center, ref Point p, double extent)
+        public static void ExpandLine(Point center, ref Point p, double extent)
         {
             int dx = center.X - p.X;
             int dy = center.Y - p.Y;
@@ -14,7 +14,7 @@ namespace ColouredPetriNet.Gui.LinearAlgebra
             p.Y += (int)(scaleFactor * dy);
         }
 
-        static public void ResizeLine(Point center, ref Point p, double length)
+        public static void ResizeLine(Point center, ref Point p, double length)
         {
             int dx = center.X - p.X;
             int dy = center.Y - p.Y;
@@ -27,15 +27,84 @@ namespace ColouredPetriNet.Gui.LinearAlgebra
             p.Y = center.Y + (int)(scaleFactor * dy);
         }
 
-        static public double GetTriangleCos(double a, double b, double c)
+        public static double GetTriangleCos(double a, double b, double c)
         {
             return (b * b + c * c - a * a) / (2 * b * c);
         }
 
-        static public void ExpandTriangle(Point p1, Point p2, Point p3, int extent)
+        public static double GetTriangleOuterRadius(double a, double b, double c)
         {
-            double r = GetIncircleRadius(p1, p2, p3);
-            Point incenter = GetTriangleIncenter(p1, p2, p3, r, extent);
+            double cosAlpha = GetTriangleCos(a, b, c);
+            return a / (2 * Math.Sqrt(1 - cosAlpha * cosAlpha));
+        }
+
+        public static double GetTriangleOuterRadius(Point p1, Point p2, Point p3)
+        {
+            double a = Math.Sqrt((p2.X - p1.X) * (p2.X - p1.X) + (p2.Y - p1.Y) * (p2.Y - p1.Y));
+            double b = Math.Sqrt((p3.X - p2.X) * (p3.X - p2.X) + (p3.Y - p2.Y) * (p3.Y - p2.Y));
+            double c = Math.Sqrt((p1.X - p3.X) * (p1.X - p3.X) + (p1.Y - p3.Y) * (p1.Y - p3.Y));
+            return GetTriangleOuterRadius(a, b, c);
+        }
+
+        public static double GetTriangleInnerRadius(double a, double b, double c)
+        {
+            double p = (a + b + c) / 2;
+            return Math.Sqrt((p - a) * (p - b) * (p - c) / p);
+        }
+
+        public static double GetTriangleInnerRadius(Point p1, Point p2, Point p3)
+        {
+            double a = Math.Sqrt((p2.X - p1.X) * (p2.X - p1.X) + (p2.Y - p1.Y) * (p2.Y - p1.Y));
+            double b = Math.Sqrt((p3.X - p2.X) * (p3.X - p2.X) + (p3.Y - p2.Y) * (p3.Y - p2.Y));
+            double c = Math.Sqrt((p1.X - p3.X) * (p1.X - p3.X) + (p1.Y - p3.Y) * (p1.Y - p3.Y));
+            return GetTriangleInnerRadius(a, b, c);
+        }
+
+        public static Point GetTriangleOutcenter(Point p1, Point p2, Point p3)
+        {
+            Equation eq1 = new Equation(p1, p2);
+            Equation eq2 = new Equation(p1, p3);
+            Point middlePoint1 = new Point((p1.X + p2.X) / 2, (p1.Y + p2.Y) / 2);
+            Point middlePoint2 = new Point((p1.X + p3.X) / 2, (p1.Y + p3.Y) / 2);
+            Equation eq3 = eq1.GetNormalEquation(middlePoint1);
+            Equation eq4 = eq2.GetNormalEquation(middlePoint2);
+            return eq3.GetIntersectionPoint(eq4);
+        }
+
+        public static Point GetTriangleIncenter(Point p1, Point p2, Point p3)
+        {
+            double a = Math.Sqrt((p2.X - p1.X) * (p2.X - p1.X) + (p2.Y - p1.Y) * (p2.Y - p1.Y));
+            double b = Math.Sqrt((p3.X - p2.X) * (p3.X - p2.X) + (p3.Y - p2.Y) * (p3.Y - p2.Y));
+            double c = Math.Sqrt((p1.X - p3.X) * (p1.X - p3.X) + (p1.Y - p3.Y) * (p1.Y - p3.Y));
+            double innerRadius = GetTriangleInnerRadius(a, b, c);
+            double cosAlpha = GetTriangleCos(a, b, c);
+            double halfAlpha = Math.Asin(Math.Sqrt(1 - cosAlpha * cosAlpha)) / 2;
+            double normalSide = innerRadius * Math.Sin(Math.PI / 2 - halfAlpha) / Math.Sin(halfAlpha);
+            Point normalPoint = p1;
+            ResizeLine(p3, ref normalPoint, normalSide);
+            Equation eq1 = new Equation(p1, p3);
+            Equation eq2 = eq1.GetNormalEquation(normalPoint);
+            return eq2.GetPoint(normalPoint, p2, innerRadius);
+        }
+
+        public static void BuildEquilateralTriangle(Point center, double outerRadius, out Point p1, out Point p2, out Point p3)
+        {
+            p1 = new Point();
+            p2 = new Point();
+            p3 = new Point();
+            int dy = (int)(outerRadius / 2);
+            int dx = (int)(Math.Cos(Math.PI / 6) * outerRadius);
+            p1.X = center.X - dx;
+            p3.X = center.X + dx;
+            p1.Y = p3.Y = center.Y - dy;
+            p2.X = center.X;
+            p2.Y = center.Y + (int)outerRadius;
+        }
+
+        public static void ExpandTriangle(ref Point p1, ref Point p2, ref Point p3, int extent)
+        {
+            double r = GetTriangleInnerRadius(p1, p2, p3);
+            Point incenter = GetTriangleIncenter(p1, p2, p3, r);
             double scaleFactor = extent / r;
             p1.X += (int)(scaleFactor * (incenter.X - p1.X));
             p1.Y += (int)(scaleFactor * (incenter.Y - p1.Y));
@@ -45,7 +114,7 @@ namespace ColouredPetriNet.Gui.LinearAlgebra
             p3.Y += (int)(scaleFactor * (incenter.Y - p3.Y));
         }
 
-        static public Point[] GetLineBorder(Point p1, Point p2, int extent)
+        public static Point[] GetLineBorder(Point p1, Point p2, int extent)
         {
             Point[] lineBorder = new Point[4];
             Equation eq1 = new Equation(p1, p2);
@@ -68,7 +137,7 @@ namespace ColouredPetriNet.Gui.LinearAlgebra
             return lineBorder;
         }
 
-        static public int MinX(Point[] points)
+        public static int MinX(Point[] points)
         {
             if (points.Length > 0)
             {
@@ -85,7 +154,7 @@ namespace ColouredPetriNet.Gui.LinearAlgebra
             return int.MinValue;
         }
 
-        static public int MinY(Point[] points)
+        public static int MinY(Point[] points)
         {
             if (points.Length > 0)
             {
@@ -102,7 +171,7 @@ namespace ColouredPetriNet.Gui.LinearAlgebra
             return int.MinValue;
         }
 
-        static public int MaxX(Point[] points)
+        public static int MaxX(Point[] points)
         {
             if (points.Length > 0)
             {
@@ -119,7 +188,7 @@ namespace ColouredPetriNet.Gui.LinearAlgebra
             return int.MinValue;
         }
 
-        static public int MaxY(Point[] points)
+        public static int MaxY(Point[] points)
         {
             if (points.Length > 0)
             {
@@ -136,60 +205,26 @@ namespace ColouredPetriNet.Gui.LinearAlgebra
             return int.MinValue;
         }
 
-        static public Point GetNormalToLine(Point p1, Point p2, int length)
+        public static Point GetNormalToLine(Point p1, Point p2, int length)
         {
             Equation eq1 = new Equation(p1, p2);
             Equation eq2 = eq1.GetNormalEquation(p2);
             return eq2.GetPoint(p2, length);
         }
 
-        static private double GetIncircleRadius(Point p1, Point p2, Point p3)
+        private static Point GetTriangleIncenter(Point p1, Point p2, Point p3, double innerRadius)
         {
             double a = Math.Sqrt((p2.X - p1.X) * (p2.X - p1.X) + (p2.Y - p1.Y) * (p2.Y - p1.Y));
             double b = Math.Sqrt((p3.X - p2.X) * (p3.X - p2.X) + (p3.Y - p2.Y) * (p3.Y - p2.Y));
             double c = Math.Sqrt((p1.X - p3.X) * (p1.X - p3.X) + (p1.Y - p3.Y) * (p1.Y - p3.Y));
-            double p = (a + b + c) / 2;
-            return Math.Sqrt((p - a) * (p - b) * (p - c) / p);
-        }
-
-        static private Point GetTriangleIncenter(Point p1, Point p2, Point p3, double r, int extent)
-        {
-            Point incenter = new Point();
-            double a = Math.Sqrt((p2.X - p1.X) * (p2.X - p1.X) + (p2.Y - p1.Y) * (p2.Y - p1.Y));
-            double b = Math.Sqrt((p3.X - p2.X) * (p3.X - p2.X) + (p3.Y - p2.Y) * (p3.Y - p2.Y));
-            double c = Math.Sqrt((p1.X - p3.X) * (p1.X - p3.X) + (p1.Y - p3.Y) * (p1.Y - p3.Y));
-            double cosAlpha;
-            double beta;
-            Point ps1, ps2, ps3;
-            if ((a >= b) && (a >= c))
-            {
-                ps1 = p3;
-                ps2 = p1;
-                ps3 = p2;
-                cosAlpha = GetTriangleCos(a, b, c);
-            }
-            else if ((b > a) && (b >= c))
-            {
-                ps1 = p1;
-                ps2 = p2;
-                ps3 = p3;
-                cosAlpha = GetTriangleCos(b, a, c);
-            }
-            else
-            {
-                ps1 = p2;
-                ps2 = p3;
-                ps3 = p1;
-                cosAlpha = GetTriangleCos(c, a, b);
-            }
-            beta = Math.Acos(cosAlpha) * 90 / Math.PI;
-            double s1 = (r + extent) / Math.Tan(beta * Math.PI / 180);
-            Point nps2 = new Point();
-            ResizeLine(ps1, ref nps2, s1);
-            Equation eq1 = new Equation(ps1, ps2);
-            Equation eq2 = eq1.GetNormalEquation(nps2);
-            eq2.GetPoint(nps2, r + extent);
-            return incenter;
+            double cosAlpha = GetTriangleCos(a, b, c);
+            double halfAlpha = Math.Asin(Math.Sqrt(1 - cosAlpha * cosAlpha)) / 2;
+            double normalSide = innerRadius * Math.Sin(Math.PI / 2 - halfAlpha) / Math.Sin(halfAlpha);
+            Point normalPoint = p1;
+            ResizeLine(p3, ref normalPoint, normalSide);
+            Equation eq1 = new Equation(p1, p3);
+            Equation eq2 = eq1.GetNormalEquation(normalPoint);
+            return eq2.GetPoint(normalPoint, p2, innerRadius);
         }
     }
 }

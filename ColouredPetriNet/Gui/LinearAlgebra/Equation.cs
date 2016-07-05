@@ -262,5 +262,109 @@ namespace ColouredPetriNet.Gui.LinearAlgebra
                 return x - (int)((y - b) / k);
             }
         }
+
+        public Point GetIntersectionPoint(Equation otherEquation)
+        {
+            Point intersectionPoint = new Point();
+            if (this.type == EquationType.Dot)
+            {
+                if (((otherEquation.type == EquationType.Dot) && (otherEquation.k == k)
+                      && (otherEquation.b == b))
+                    || ((otherEquation.type == EquationType.ConstX) && (otherEquation.k == k))
+                    || ((otherEquation.type == EquationType.ConstY) && (otherEquation.k == b))
+                    || ((otherEquation.type == EquationType.Common)
+                      && ((int)(otherEquation.k * k + otherEquation.b) == (int)b))
+                    )
+                {
+                    intersectionPoint.X = (int)k;
+                    intersectionPoint.Y = (int)b;
+                }
+            }
+            else if (this.type == EquationType.ConstX)
+            {
+                if (otherEquation.type == EquationType.Dot)
+                {
+                    if (otherEquation.k == k)
+                    {
+                        intersectionPoint.X = (int)otherEquation.k;
+                        intersectionPoint.Y = (int)otherEquation.b;
+                    }
+                }
+                else if (otherEquation.type == EquationType.ConstX)
+                {
+                    if (otherEquation.k == k)
+                    {
+                        intersectionPoint.X = (int)k;
+                        intersectionPoint.Y = 0;
+                    }
+                }
+                else if (otherEquation.type == EquationType.ConstY)
+                {
+                    intersectionPoint.X = (int)k;
+                    intersectionPoint.Y = (int)otherEquation.k;
+                }
+                else
+                {
+                    intersectionPoint.X = (int)k;
+                    intersectionPoint.Y = (int)(k * otherEquation.k + otherEquation.b);
+                }
+            }
+            else if (this.type == EquationType.ConstY)
+            {
+                if (otherEquation.type == EquationType.Dot)
+                {
+                    if (otherEquation.b == k)
+                    {
+                        intersectionPoint.X = (int)otherEquation.k;
+                        intersectionPoint.Y = (int)otherEquation.b;
+                    }
+                }
+                else if (otherEquation.type == EquationType.ConstX)
+                {
+                    intersectionPoint.X = (int)otherEquation.k;
+                    intersectionPoint.Y = (int)k;
+                }
+                else if (otherEquation.type == EquationType.ConstY)
+                {
+                    if (otherEquation.k == k)
+                    {
+                        intersectionPoint.X = 0;
+                        intersectionPoint.Y = (int)k;
+                    }
+                }
+                else
+                {
+                    intersectionPoint.Y = (int)k;
+                    intersectionPoint.X = (int)((intersectionPoint.Y - otherEquation.b) / otherEquation.k);
+                }
+            }
+            else
+            {
+                if (otherEquation.type == EquationType.Dot)
+                {
+                    if ((int)(otherEquation.k * k + b) == (int)otherEquation.b)
+                    {
+                        intersectionPoint.X = (int)otherEquation.k;
+                        intersectionPoint.Y = (int)otherEquation.b;
+                    }
+                }
+                else if (otherEquation.type == EquationType.ConstX)
+                {
+                    intersectionPoint.X = (int)otherEquation.k;
+                    intersectionPoint.Y = (int)(k * otherEquation.k + b);
+                }
+                else if (otherEquation.type == EquationType.ConstY)
+                {
+                    intersectionPoint.Y = (int)otherEquation.k;
+                    intersectionPoint.X = (int)((intersectionPoint.Y - b) / k);
+                }
+                else
+                {
+                    intersectionPoint.X = (int)((b - otherEquation.b) / (otherEquation.k - k));
+                    intersectionPoint.Y = (int)(k * intersectionPoint.X + b);
+                }
+            }
+            return intersectionPoint;
+        }
     }
 }

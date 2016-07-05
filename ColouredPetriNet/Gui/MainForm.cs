@@ -21,16 +21,19 @@ namespace ColouredPetriNet.Gui
             trvStates.Nodes.Add(new TreeNode("State 1", 1, 1));
             trvStates.Nodes.Add(new TreeNode("State 2", 0, 0));
             */
-            GraphicsItems.TriangleGraphicsItem triangle = new GraphicsItems.TriangleGraphicsItem(0, 0, 10, 10);
+            GraphicsItems.TriangleGraphicsItem triangle = new GraphicsItems.TriangleGraphicsItem(0, 0,
+                new Point(10, 10), new Point(10, 40), new Point(40, 40));
+            /*
             triangle.SetPoint(0, new Point(10, 10));
             triangle.SetPoint(1, new Point(10, 40));
             triangle.SetPoint(2, new Point(40, 40));
+            */
             _itemMap.AddItem(triangle);
             //_itemMap.AddItem(new GraphicsItems.LinkGraphicsItem(2, 1, new Point(50, 50), new Point(100, 100),
             //    GraphicsItems.LinkGraphicsItem.LinkDirection.Both));
             //_itemMap.AddItem(new GraphicsItems.LineGraphicsItem(2, 1, new Point(50, 50), new Point(100, 100)));
             //_itemMap.AddItem(new GraphicsItems.RectangleGraphicsItem(1, 1, 20, 40, 100, 100));
-            _itemMap.AddItem(new GraphicsItems.RhombGraphicsItem(1, 1, 20, 4, 100, 100));
+            //_itemMap.AddItem(new GraphicsItems.RhombGraphicsItem(1, 1, 20, 4, 100, 100));
             //_itemMap.AddItem(new GraphicsItems.RoundGraphicsItem(1, 1, 10, 100, 100));
         }
 

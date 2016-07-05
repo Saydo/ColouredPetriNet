@@ -75,7 +75,6 @@
     <Compile Include="Container\StateWrapper.cs" />
     <Compile Include="Container\TransitionWrapper.cs" />
     <Compile Include="Core\ColorPetriNetTypes.cs" />
-    <Compile Include="Gui\CustomRender.cs" />
     <Compile Include="Gui\LinearAlgebra\Equation.cs" />
     <Compile Include="Gui\GraphicsItemMap.cs" />
     <Compile Include="Gui\GraphicsItems\ColourGraphicsItem.cs" />

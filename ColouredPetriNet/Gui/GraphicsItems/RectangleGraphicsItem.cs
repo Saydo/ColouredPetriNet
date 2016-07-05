@@ -26,12 +26,17 @@ namespace ColouredPetriNet.Gui.GraphicsItems
             }
         }
 
-        public RectangleGraphicsItem() : this(-1, -1)
+        public RectangleGraphicsItem() : this(-1, -1, new Point(0, 0))
         {
         }
 
-        public RectangleGraphicsItem(int id, int typeId, int w = 10, int h = 10, int x = 0, int y = 0, int z = 0)
-            : base (id, typeId, x, y, z)
+        public RectangleGraphicsItem(int id, int typeId, int w = 10, int h = 10, int z = 0)
+            : this(id, typeId, new Point(0, 0), w, h, z)
+        {
+        }
+
+        public RectangleGraphicsItem(int id, int typeId, Point center, int w = 10, int h = 10, int z = 0)
+            : base (id, typeId, z)
         {
             _width = w;
             _height = h;
@@ -58,12 +63,12 @@ namespace ColouredPetriNet.Gui.GraphicsItems
 
         public override void Draw(Graphics graphics)
         {
-            graphics.FillRectangle(_fillBrush, _x - _width/2, _y - _height/2, _width, _height);
-            graphics.DrawRectangle(_borderPen, _x - _width/2, _y - _height/2, _width, _height);
+            graphics.FillRectangle(_fillBrush, _center.X - _width/2, _center.Y - _height/2, _width, _height);
+            graphics.DrawRectangle(_borderPen, _center.X - _width/2, _center.Y - _height/2, _width, _height);
             if (_selected)
             {
-                graphics.DrawRectangle(_selectionPen, _x - _width/2 - _extent, _y - _height/2 - _extent,
-                    _width + 2*_extent, _height + 2*_extent);
+                graphics.DrawRectangle(_selectionPen, _center.X - _width/2 - _extent,
+                    _center.Y - _height/2 - _extent, _width + 2*_extent, _height + 2*_extent);
             }
         }
 
