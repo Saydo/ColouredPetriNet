@@ -4,7 +4,7 @@ namespace ColouredPetriNet.Gui.GraphicsItems
 {
     public class RhombGraphicsItem : RectangleGraphicsItem
     {
-        enum PointPos { Top, Bottom, Left, Right };
+        enum PointPos { Left, Top, Right, Bottom };
 
         protected Point[] _points;
         protected Point[] _extentPoints;
@@ -23,6 +23,7 @@ namespace ColouredPetriNet.Gui.GraphicsItems
                 _points[i] = new Point();
                 _extentPoints[i] = new Point();
             }
+            UpdateBorder();
         }
 
         public override void Draw(Graphics graphics)
@@ -108,18 +109,32 @@ namespace ColouredPetriNet.Gui.GraphicsItems
 
         protected override void UpdateBorder()
         {
-            int halfWidth = (_width - (int)_borderPen.Width) / 2;
-            int halfHeight = (_height - (int)_borderPen.Width) / 2;
+            int halfWidth = (_width + (int)_borderPen.Width) / 2;
+            int halfHeight = (_height + (int)_borderPen.Width) / 2;
+            int extentHalfWidth = halfWidth;
+            int extentHalfHeight = halfHeight;
             if (_selected)
             {
-                halfWidth += _extent;
-                halfHeight += _extent;
+                if (extentHalfWidth <= extentHalfHeight)
+                {
+                    extentHalfHeight = (extentHalfWidth + _extent) * extentHalfHeight / extentHalfWidth;
+                    extentHalfWidth += _extent;
+                }
+                else
+                {
+                    extentHalfWidth = (extentHalfHeight + _extent) * extentHalfWidth / extentHalfHeight;
+                    extentHalfHeight += _extent;
+                }
+                base.SetBorder(-extentHalfWidth, extentHalfWidth, -extentHalfHeight, extentHalfHeight);
             }
-            base.SetBorder(-halfWidth, halfWidth, -halfHeight, halfHeight);
-            UpdatePointPosition(halfWidth, halfHeight);
+            else
+            {
+                base.SetBorder(-halfWidth, halfWidth, -halfHeight, halfHeight);
+            }
+            UpdatePointPosition(halfWidth, halfHeight, extentHalfWidth, extentHalfHeight);
         }
 
-        protected void UpdatePointPosition(int halfWidth, int halfHeight)
+        protected void UpdatePointPosition(int halfWidth, int halfHeight, int extentHalfWidth, int extentHalfHeight)
         {
             _points[(int)PointPos.Top].X = _x;
             _points[(int)PointPos.Top].Y = _y + halfHeight;
@@ -129,18 +144,15 @@ namespace ColouredPetriNet.Gui.GraphicsItems
             _points[(int)PointPos.Left].Y = _y;
             _points[(int)PointPos.Right].X = _x + halfWidth;
             _points[(int)PointPos.Right].Y = _y;
-            for (int i = 0; i < 4; ++i)
-            {
-                _extentPoints[i].X = _points[i].X;
-                _extentPoints[i].Y = _points[i].Y;
-            }
-            if (_selected)
-            {
-                _points[(int)PointPos.Top].Y -= _extent;
-                _points[(int)PointPos.Bottom].Y += _extent;
-                _points[(int)PointPos.Left].X += _extent;
-                _points[(int)PointPos.Right].X -= _extent;
-            }
+
+            _extentPoints[(int)PointPos.Top].X = _x;
+            _extentPoints[(int)PointPos.Top].Y = _y + extentHalfHeight;
+            _extentPoints[(int)PointPos.Bottom].X = _x;
+            _extentPoints[(int)PointPos.Bottom].Y = _y - extentHalfHeight;
+            _extentPoints[(int)PointPos.Left].X = _x - extentHalfWidth;
+            _extentPoints[(int)PointPos.Left].Y = _y;
+            _extentPoints[(int)PointPos.Right].X = _x + extentHalfWidth;
+            _extentPoints[(int)PointPos.Right].Y = _y;
         }
     }
 }

@@ -30,7 +30,7 @@ namespace ColouredPetriNet.Gui
             //    GraphicsItems.LinkGraphicsItem.LinkDirection.Both));
             //_itemMap.AddItem(new GraphicsItems.LineGraphicsItem(2, 1, new Point(50, 50), new Point(100, 100)));
             //_itemMap.AddItem(new GraphicsItems.RectangleGraphicsItem(1, 1, 20, 40, 100, 100));
-            //_itemMap.AddItem(new GraphicsItems.RhombGraphicsItem(1, 1, 10, 20, 100, 100));
+            _itemMap.AddItem(new GraphicsItems.RhombGraphicsItem(1, 1, 20, 4, 100, 100));
             //_itemMap.AddItem(new GraphicsItems.RoundGraphicsItem(1, 1, 10, 100, 100));
         }
 
