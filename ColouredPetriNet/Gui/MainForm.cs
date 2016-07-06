@@ -12,6 +12,7 @@ namespace ColouredPetriNet.Gui
         {
             InitializeComponent();
             _itemMap = new GraphicsItemMap();
+            //_itemMap.Overlap = GraphicsItems.OverlapType.Full;
             _mousePressed = false;
             /*
             ImageList img_list = new ImageList();
@@ -21,24 +22,20 @@ namespace ColouredPetriNet.Gui
             trvStates.Nodes.Add(new TreeNode("State 1", 1, 1));
             trvStates.Nodes.Add(new TreeNode("State 2", 0, 0));
             */
-            //GraphicsItems.TriangleGraphicsItem triangle = new GraphicsItems.TriangleGraphicsItem(0, 0, new Point(100, 100), 40);
-            //GraphicsItems.TriangleGraphicsItem triangle = new GraphicsItems.TriangleGraphicsItem(0, 0,
-            //    new Point(80, 111), new Point(100, 77), new Point(120, 111));
-            //    new Point(10, 10), new Point(10, 50), new Point(40, 50));
+            //_itemMap.AddItem(new GraphicsItems.RoundGraphicsItem(1, 1, new Point(100, 100), 10));
+            //_itemMap.AddItem(new GraphicsItems.RhombGraphicsItem(1, 1, new Point(100, 100), 20, 4));
+            //_itemMap.AddItem(new GraphicsItems.RectangleGraphicsItem(1, 1, new Point(100, 100), 20, 40));
 
-            /*
-            triangle.SetPoint(0, new Point(10, 10));
-            triangle.SetPoint(1, new Point(10, 40));
-            triangle.SetPoint(2, new Point(40, 40));
-            */
-            //_itemMap.AddItem(triangle);
             //_itemMap.AddItem(new GraphicsItems.LinkGraphicsItem(2, 1, new Point(50, 50), new Point(100, 100),
             //    GraphicsItems.LinkGraphicsItem.LinkDirection.Both));
             //_itemMap.AddItem(new GraphicsItems.LineGraphicsItem(2, 1, new Point(50, 50), new Point(100, 100)));
-            // _itemMap.AddItem(new GraphicsItems.RoundGraphicsItem(1, 1, new Point(100, 100), 10));
+            //GraphicsItems.TriangleGraphicsItem triangle = new GraphicsItems.TriangleGraphicsItem(0, 0, new Point(100, 100), 40);
+            GraphicsItems.TriangleGraphicsItem triangle = new GraphicsItems.TriangleGraphicsItem(0, 0,
+            //    new Point(80, 111), new Point(100, 77), new Point(120, 111));
+                new Point(10, 10), new Point(10, 50), new Point(40, 50));
+            _itemMap.AddItem(triangle);
 
-            //_itemMap.AddItem(new GraphicsItems.RectangleGraphicsItem(1, 1, new Point(100, 100), 20, 40));
-            //_itemMap.AddItem(new GraphicsItems.RhombGraphicsItem(1, 1, new Point(100, 100), 20, 4));
+            // triangle - full mode selection problems, border definition problem
         }
 
         private void ItemMapPaint(object sender, PaintEventArgs e)

@@ -106,15 +106,15 @@ namespace ColouredPetriNet.Gui.GraphicsItems
             {
                 return (InBorder(x, y) && InShape(x, y));
             }
-            if (IsOverlapBorder(x, y, w, h, overlap))
+            if (!IsOverlapBorder(x, y, w, h, overlap))
             {
-                return true;
+                return false;
             }
             else
             {
                 if (overlap == OverlapType.Full)
                 {
-                    return false;
+                    return true;
                 }
                 else
                 {
@@ -135,10 +135,10 @@ namespace ColouredPetriNet.Gui.GraphicsItems
 
         public bool InBorder(int x, int y)
         {
-            int diff_x = x - _center.X;
-            int diff_y = y - _center.Y;
-            if ((diff_x < _borderPoint[(int)BorderSide.Left]) || (diff_x > _borderPoint[(int)BorderSide.Right])
-                || (diff_y < _borderPoint[(int)BorderSide.Bottom]) || (diff_y > _borderPoint[(int)BorderSide.Top]))
+            if ((x < _center.X + _borderPoint[(int)BorderSide.Left])
+                || (x > _center.X + _borderPoint[(int)BorderSide.Right])
+                || (y < _center.Y + _borderPoint[(int)BorderSide.Bottom])
+                || (y > _center.Y + _borderPoint[(int)BorderSide.Top]))
             {
                 return false;
             }

@@ -49,28 +49,27 @@ namespace ColouredPetriNet.Gui.GraphicsItems
             : base(id, typeId, z)
         {
             _pen = new Pen(Color.FromArgb(0, 0, 0), 1.0F);
-            _point1 = new Point();
-            _point2 = new Point();
-            if ((!ReferenceEquals(p1, null)) && (!ReferenceEquals(p2, null)))
-            {
-                _center.X = (p2.X + p1.X) / 2;
-                _center.Y = (p2.Y + p1.Y) / 2;
-                _point1.X = p1.X;
-                _point1.Y = p1.Y;
-                _point2.X = p2.X;
-                _point2.Y = p2.Y;
-            }
+            _point1 = p1;
+            _point2 = p2;
+            _center.X = (p2.X + p1.X) / 2;
+            _center.Y = (p2.Y + p1.Y) / 2;
             _extentPoints = new Point[4];
             for (int i = 0; i < _extentPoints.Length; ++i)
             {
                 _extentPoints[i] = new Point();
             }
+            System.Console.WriteLine("LineGraphicsItem(0): p1={0}, p2={1}", _point1, _point2);
             _extentPoints = LinearAlgebra.Algorithm.GetLineBorder(_point1, _point2,
                 (_selected ? _extent : 2));
-            base.SetBorder(LinearAlgebra.Algorithm.MinX(_extentPoints),
-                LinearAlgebra.Algorithm.MaxX(_extentPoints),
-                LinearAlgebra.Algorithm.MinY(_extentPoints),
-                LinearAlgebra.Algorithm.MaxY(_extentPoints));
+            System.Console.WriteLine("LineGraphicsItem(1): _ep[0]={0}, _ep[1]={1}, _ep[2]={2}, _ep[3]={3}",
+                _extentPoints[0], _extentPoints[1], _extentPoints[2], _extentPoints[3]);
+            System.Console.WriteLine("LineGraphicsItem(2): b[Left]={0}, b[Right]={1}, b[Bottom]={2}, b[Top]={3}",
+                _borderPoint[(int)BorderSide.Left], _borderPoint[(int)BorderSide.Right],
+                _borderPoint[(int)BorderSide.Bottom], _borderPoint[(int)BorderSide.Top]);
+            base.SetBorder(LinearAlgebra.Algorithm.MinX(_extentPoints) - _center.X,
+                LinearAlgebra.Algorithm.MaxX(_extentPoints) - _center.X,
+                LinearAlgebra.Algorithm.MinY(_extentPoints) - _center.Y,
+                LinearAlgebra.Algorithm.MaxY(_extentPoints) - _center.Y);
         }
 
         public override void Draw(Graphics graphics)
@@ -109,10 +108,12 @@ namespace ColouredPetriNet.Gui.GraphicsItems
             if ((eq[0].InLineByY(x, y) <= 0) && (eq[1].InLineByX(x, y) <= 0)
                && (eq[2].InLineByY(x, y) >= 0) && (eq[3].InLineByX(x, y) >= 0))
             {
+                System.Console.WriteLine("InShape(x, y) true");
                 return true;
             }
             else
             {
+                System.Console.WriteLine("InShape(x, y) false");
                 return false;
             }
         }
@@ -127,27 +128,23 @@ namespace ColouredPetriNet.Gui.GraphicsItems
             eq[3] = new LinearAlgebra.Equation(_extentPoints[3], _extentPoints[0]);
             if (overlap == OverlapType.Partial)
             {
-                if ((eq[0].InLineByY(x + w, y) > 0) || (eq[1].InLineByY(x, y) > 0)
-                    || (eq[2].InLineByY(x, y + h) < 0) || (eq[3].InLineByY(x + w, y + h) < 0))
+                if ((eq[0].InLineByY(x + w, y) > 0) || (eq[1].InLineByX(x, y) > 0)
+                    || (eq[2].InLineByY(x, y + h) < 0) || (eq[3].InLineByX(x + w, y + h) < 0))
                 {
+                    System.Console.WriteLine("InShape(x, y, w, h) overlap=Partical; false");
                     return false;
                 }
                 else
                 {
+                    System.Console.WriteLine("InShape(x, y, w, h) overlap=Partical; true");
                     return true;
                 }
             }
             else
             {
-                if ((eq[0].InLineByY(x, y + h) <= 0) && (eq[1].InLineByY(x + w, y + h) <= 0)
-                    && (eq[2].InLineByY(x + w, y) >= 0) && (eq[3].InLineByY(x, y) >= 0))
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                bool res = InBorder(x, y);
+                System.Console.WriteLine("InShape(x, y, w, h) overlap=Full; {0}", res);
+                return res;
             }
         }
 
@@ -155,10 +152,10 @@ namespace ColouredPetriNet.Gui.GraphicsItems
         {
             _extentPoints = LinearAlgebra.Algorithm.GetLineBorder(_point1, _point2,
                 (_selected ? _extent : 2));
-            base.SetBorder(LinearAlgebra.Algorithm.MinX(_extentPoints),
-                LinearAlgebra.Algorithm.MaxX(_extentPoints),
-                LinearAlgebra.Algorithm.MinY(_extentPoints),
-                LinearAlgebra.Algorithm.MaxY(_extentPoints));
+            base.SetBorder(LinearAlgebra.Algorithm.MinX(_extentPoints) - _center.X,
+                LinearAlgebra.Algorithm.MaxX(_extentPoints) - _center.X,
+                LinearAlgebra.Algorithm.MinY(_extentPoints) - _center.Y,
+                LinearAlgebra.Algorithm.MaxY(_extentPoints) - _center.Y);
         }
     }
 }

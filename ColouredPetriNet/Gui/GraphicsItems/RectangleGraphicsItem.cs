@@ -40,6 +40,9 @@ namespace ColouredPetriNet.Gui.GraphicsItems
         {
             _width = w;
             _height = h;
+            int half_width = (_width - (int)_borderPen.Width) / 2;
+            int half_height = (_height - (int)_borderPen.Width) / 2;
+            base.SetBorder(-half_width, half_width, -half_height, half_height);
         }
 
         public void SetSize(int w, int h)
@@ -69,6 +72,52 @@ namespace ColouredPetriNet.Gui.GraphicsItems
             {
                 graphics.DrawRectangle(_selectionPen, _center.X - _width/2 - _extent,
                     _center.Y - _height/2 - _extent, _width + 2*_extent, _height + 2*_extent);
+            }
+        }
+
+        public override bool InShape(int x, int y)
+        {
+            int halfWidth = _width / 2 + (int)_borderPen.Width;
+            int halfHeight = _height / 2 + (int)_borderPen.Width;
+            if (_selected)
+            {
+                halfWidth += _extent;
+                halfHeight += _extent;
+            }
+            if ((x < _center.X - halfWidth) || (x > _center.X + halfWidth)
+                || (y < _center.Y - halfHeight) || (y > _center.Y + halfHeight))
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public override bool InShape(int x, int y, int w, int h, OverlapType overlap = OverlapType.Partial)
+        {
+            int halfWidth = _width / 2 + (int)_borderPen.Width;
+            int halfHeight = _height / 2 + (int)_borderPen.Width;
+            if (_selected)
+            {
+                halfWidth += _extent;
+                halfHeight += _extent;
+            }
+            if (overlap == OverlapType.Partial)
+            {
+                if ((x + w < _center.X - halfWidth) || (x > _center.X + halfWidth)
+                    || (y + h < _center.Y - halfHeight) || (y > _center.Y + halfHeight))
+                {
+                    return false;
+                }
+                return true;
+            }
+            else
+            {
+                if ((x <= _center.X - halfWidth) && (x + w >= _center.X + halfWidth)
+                    && (y <= _center.Y - halfHeight) && (y + h >= _center.Y + halfHeight))
+                {
+                    return true;
+                }
+                return false;
             }
         }
 
