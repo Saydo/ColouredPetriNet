@@ -31,11 +31,11 @@ namespace ColouredPetriNet.Gui
             //_itemMap.AddItem(new GraphicsItems.LineGraphicsItem(2, 1, new Point(50, 50), new Point(100, 100)));
             //GraphicsItems.TriangleGraphicsItem triangle = new GraphicsItems.TriangleGraphicsItem(0, 0, new Point(100, 100), 40);
             GraphicsItems.TriangleGraphicsItem triangle = new GraphicsItems.TriangleGraphicsItem(0, 0,
-            //    new Point(80, 111), new Point(100, 77), new Point(120, 111));
-                new Point(10, 10), new Point(10, 50), new Point(40, 50));
+                new Point(80, 111), new Point(100, 77), new Point(120, 111));
+            //    new Point(10, 10), new Point(10, 50), new Point(40, 50));
             _itemMap.AddItem(triangle);
 
-            // triangle - full mode selection problems, border definition problem
+            // triangle - partial mode selection problems
         }
 
         private void ItemMapPaint(object sender, PaintEventArgs e)

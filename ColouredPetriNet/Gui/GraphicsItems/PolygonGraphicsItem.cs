@@ -53,9 +53,6 @@ namespace ColouredPetriNet.Gui.GraphicsItems
 
         public override void Draw(Graphics graphics)
         {
-            graphics.DrawRectangle(new Pen(Color.Green), _center.X + _borderPoint[(int)BorderSide.Left],
-                _center.Y + _borderPoint[(int)BorderSide.Bottom], _borderPoint[(int)BorderSide.Right] - _borderPoint[(int)BorderSide.Left],
-                _borderPoint[(int)BorderSide.Top] - _borderPoint[(int)BorderSide.Bottom]);
             graphics.FillPolygon(_fillBrush, _points);
             graphics.DrawPolygon(_borderPen, _points);
             if (_selected)

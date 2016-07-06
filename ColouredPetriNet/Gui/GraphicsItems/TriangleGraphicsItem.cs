@@ -89,26 +89,96 @@ namespace ColouredPetriNet.Gui.GraphicsItems
 
         public override bool InShape(int x, int y, int w, int h, OverlapType overlap = OverlapType.Partial)
         {
+            Point p1, p2, p3;
+            LinearAlgebra.Equation[] eq = new LinearAlgebra.Equation[3];
+            DefinePointPosition((_selected ? _extentPoints : _points), out p1, out p2, out p3);
+            eq[0] = new LinearAlgebra.Equation(p1, p2);
+            eq[1] = new LinearAlgebra.Equation(p2, p3);
+            eq[2] = new LinearAlgebra.Equation(p1, p3);
             if (overlap == OverlapType.Partial)
             {
-                if ((x + w < _borderPoint[(int)BorderSide.Left]) || (x > _borderPoint[(int)BorderSide.Right])
-                   || (y + h < _borderPoint[(int)BorderSide.Bottom]) || (y > _borderPoint[(int)BorderSide.Top]))
+                if (p1.Y > p2.Y)
                 {
+                    if ((eq[0].InLineByY(x, y + h) < 0) || (eq[1].InLineByY(x, y) > 0)
+                        || (eq[2].InLineByX(x + w, y) < 0))
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        
+                        return true;
+                    }
+                }
+                else
+                {
+                    if (p1.Y > p3.Y)
+                    {
+                        if (p3.X > p2.X)
+                        {
+                            if ((eq[0].InLineByY(x + w, y + h) < 0) || (eq[1].InLineByY(x, y) > 0)
+                                || (eq[2].InLineByX(x + w, y) < 0))
+                            {
+                                return false;
+                            }
+                            else
+                            {
+                                return true;
+                            }
+                        }
+                        else
+                        {
+                            if ((eq[0].InLineByY(x + w, y + h) < 0) || (eq[1].InLineByY(x, y + h) < 0)
+                                 || (eq[2].InLineByY(x + w, y) > 0))
+                            {
+                                return false;
+                            }
+                            else
+                            {
+                                return true;
+                            }
+                        }
+                        if ((eq[0].InLineByY(x + w, y + h) < 0) || (eq[2].InLineByY(x + w, y) > 0)
+                            || (eq[1].InLineByX(x, y + h) > 0))
+                        {
+                            return false;
+                        }
+                        else
+                        {
+                            return true;
+                        }
+                    }
+                    else
+                    {
+                        if ((eq[2].InLineByY(x, y) > 0) || (eq[1].InLineByY(x, y + h) < 0)
+                            || (eq[0].InLineByX(x + w, y + h) < 0))
+                        {
+                            return false;
+                        }
+                        else
+                        {
+                            return true;
+                        }
+                    }
+                }
+                /*
+                if ((x + w < _center.X + _borderPoint[(int)BorderSide.Left])
+                    || (x > _center.X + _borderPoint[(int)BorderSide.Right])
+                    || (y + h < _center.Y + _borderPoint[(int)BorderSide.Bottom])
+                    || (y > _center.Y + _borderPoint[(int)BorderSide.Top]))
+                {
+                    System.Console.WriteLine("InShape(x,y,w,h) false");
                     return false;
                 }
                 else
                 {
+                    System.Console.WriteLine("InShape(x,y,w,h) true");
                     return true;
                 }
+                */
             }
             else
             {
-                Point p1, p2, p3;
-                LinearAlgebra.Equation[] eq = new LinearAlgebra.Equation[3];
-                DefinePointPosition((_selected ? _extentPoints : _points), out p1, out p2, out p3);
-                eq[0] = new LinearAlgebra.Equation(p1, p2);
-                eq[1] = new LinearAlgebra.Equation(p2, p3);
-                eq[2] = new LinearAlgebra.Equation(p1, p3);
                 if (p1.Y > p2.Y)
                 {
                     if ((eq[2].InLineByY(x, y) >= 0) && (eq[1].InLineByY(x + w, y) >= 0)
@@ -167,10 +237,10 @@ namespace ColouredPetriNet.Gui.GraphicsItems
                     ref _extentPoints[2], _extent);
                 System.Console.WriteLine("UpdateBorder(3):_ep[0]={0}, _ep[1]={1}, _ep[2]={2}", _extentPoints[0], _extentPoints[1], _extentPoints[2]);
             }
-            base.SetBorder(LinearAlgebra.Algorithm.MinX(_extentPoints),
-                    LinearAlgebra.Algorithm.MaxX(_extentPoints),
-                    LinearAlgebra.Algorithm.MinY(_extentPoints),
-                    LinearAlgebra.Algorithm.MaxY(_extentPoints));
+            base.SetBorder(LinearAlgebra.Algorithm.MinX(_extentPoints) - _center.X,
+                    LinearAlgebra.Algorithm.MaxX(_extentPoints) - _center.X,
+                    LinearAlgebra.Algorithm.MinY(_extentPoints) - _center.Y,
+                    LinearAlgebra.Algorithm.MaxY(_extentPoints) - _center.Y);
         }
 
         private void BuildEquilateralTriangle(int side)
