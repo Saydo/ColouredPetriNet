@@ -52,7 +52,11 @@ namespace ColouredPetriNet.Gui.GraphicsItems
             _points[1] = p2;
             _points[2] = p3;
             _center = LinearAlgebra.Algorithm.GetTriangleIncenter(p1, p2, p3);
+            System.Console.WriteLine("TriangleGraphicsItem(1): _p[0]={0}, _p[1]={1}, _p[2]={2}, _c={3}",
+                _points[0], _points[1], _points[2], _center);
             UpdateBorder();
+            System.Console.WriteLine("TriangleGraphicsItem(2): _ep[0]={0}, _ep[1]={1}, _ep[2]={2}",
+                _extentPoints[0], _extentPoints[1], _extentPoints[2]);
         }
 
         public TriangleGraphicsItem(int id, int typeId, Point center, int outerRadius = 10, int z = 0)
@@ -154,13 +158,13 @@ namespace ColouredPetriNet.Gui.GraphicsItems
 
         protected override void UpdateBorder()
         {
+            for (int i = 0; i < 3; ++i)
+            {
+                _extentPoints[i].X = _points[i].X;
+                _extentPoints[i].Y = _points[i].Y;
+            }
             if (_selected)
             {
-                for (int i = 0; i < 3; ++i)
-                {
-                    _extentPoints[i].X = _points[i].X;
-                    _extentPoints[i].Y = _points[i].Y;
-                }
                 LinearAlgebra.Algorithm.ExpandTriangle(ref _extentPoints[0], ref _extentPoints[1],
                     ref _extentPoints[2], _extent);
                 base.SetBorder(LinearAlgebra.Algorithm.MinX(_extentPoints),
@@ -221,19 +225,6 @@ namespace ColouredPetriNet.Gui.GraphicsItems
                     p3 = points[0];
                 }
             }
-        }
-
-        private void Resize(double scale)
-        {
-            /*
-            var eq1 = new LinearAlgebra.Equation(_points[0], _points[1]);
-            var eq2 = new LinearAlgebra.Equation(_points[1], _points[2]);
-            var eq3 = new LinearAlgebra.Equation(_points[0], _points[2]);
-            //Point
-            //LinearAlgebra.Algorithm.ResizeLine();
-            _points[0] = ;
-            _points[1] = ;
-            */
         }
     }
 }

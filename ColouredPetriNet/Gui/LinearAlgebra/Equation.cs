@@ -112,16 +112,14 @@ namespace ColouredPetriNet.Gui.LinearAlgebra
             {
                 if (p2.X > p1.X)
                 {
-                    resultPoint.X = p1.X + 1;
-                    resultPoint.Y = (int)(k * resultPoint.X + b);
-                    Algorithm.ResizeLine(p1, ref resultPoint, -length);
+                    resultPoint.X = p1.X + 1000;
                 }
                 else
                 {
-                    resultPoint.X = p1.X - 1;
-                    resultPoint.Y = (int)(k * resultPoint.X + b);
-                    Algorithm.ResizeLine(p1, ref resultPoint, -length);
+                    resultPoint.X = p1.X - 1000;
                 }
+                resultPoint.Y = (int)(k * resultPoint.X + b);
+                Algorithm.ResizeLine(p1, ref resultPoint, length);
             }
             return resultPoint;
         }

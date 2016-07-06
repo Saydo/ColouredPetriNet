@@ -7,8 +7,8 @@ namespace ColouredPetriNet.Gui.LinearAlgebra
     {
         public static void ExpandLine(Point center, ref Point p, double extent)
         {
-            int dx = center.X - p.X;
-            int dy = center.Y - p.Y;
+            int dx = p.X - center.X;
+            int dy = p.Y - center.Y;
             double scaleFactor = extent / Math.Sqrt(dx * dx + dy * dy);
             p.X += (int)(scaleFactor * dx);
             p.Y += (int)(scaleFactor * dy);
@@ -16,8 +16,8 @@ namespace ColouredPetriNet.Gui.LinearAlgebra
 
         public static void ResizeLine(Point center, ref Point p, double length)
         {
-            int dx = center.X - p.X;
-            int dy = center.Y - p.Y;
+            int dx = p.X - center.X;
+            int dy = p.Y - center.Y;
             if ((dx == 0) && (dy == 0))
             {
                 return;
@@ -106,12 +106,12 @@ namespace ColouredPetriNet.Gui.LinearAlgebra
             double r = GetTriangleInnerRadius(p1, p2, p3);
             Point incenter = GetTriangleIncenter(p1, p2, p3, r);
             double scaleFactor = extent / r;
-            p1.X += (int)(scaleFactor * (incenter.X - p1.X));
-            p1.Y += (int)(scaleFactor * (incenter.Y - p1.Y));
-            p2.X += (int)(scaleFactor * (incenter.X - p2.X));
-            p2.Y += (int)(scaleFactor * (incenter.Y - p2.Y));
-            p3.X += (int)(scaleFactor * (incenter.X - p3.X));
-            p3.Y += (int)(scaleFactor * (incenter.Y - p3.Y));
+            p1.X += (int)(scaleFactor * (p1.X - incenter.X));
+            p1.Y += (int)(scaleFactor * (p1.Y - incenter.Y));
+            p2.X += (int)(scaleFactor * (p2.X - incenter.X));
+            p2.Y += (int)(scaleFactor * (p2.Y - incenter.Y));
+            p3.X += (int)(scaleFactor * (p3.X - incenter.X));
+            p3.Y += (int)(scaleFactor * (p3.Y - incenter.Y));
         }
 
         public static Point[] GetLineBorder(Point p1, Point p2, int extent)
