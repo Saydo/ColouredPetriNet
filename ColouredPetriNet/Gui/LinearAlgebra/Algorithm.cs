@@ -87,20 +87,6 @@ namespace ColouredPetriNet.Gui.LinearAlgebra
             return eq2.GetPoint(normalPoint, p2, innerRadius);
         }
 
-        public static void BuildEquilateralTriangle(Point center, double outerRadius, out Point p1, out Point p2, out Point p3)
-        {
-            p1 = new Point();
-            p2 = new Point();
-            p3 = new Point();
-            int dy = (int)(outerRadius / 2);
-            int dx = (int)(Math.Cos(Math.PI / 6) * outerRadius);
-            p1.X = center.X - dx;
-            p3.X = center.X + dx;
-            p1.Y = p3.Y = center.Y - dy;
-            p2.X = center.X;
-            p2.Y = center.Y + (int)outerRadius;
-        }
-
         public static void ExpandTriangle(ref Point p1, ref Point p2, ref Point p3, int extent)
         {
             double r = GetTriangleInnerRadius(p1, p2, p3);

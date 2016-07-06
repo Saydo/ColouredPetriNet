@@ -65,14 +65,14 @@ namespace ColouredPetriNet.Gui.LinearAlgebra
             }
             else if (type == EquationType.ConstX)
             {
-                equation.k = p.X;
+                equation.k = p.Y;
                 equation.b = 0;
                 equation.type = EquationType.ConstY;
                 return equation;
             }
             else if (type == EquationType.ConstY)
             {
-                equation.k = p.Y;
+                equation.k = p.X;
                 equation.b = 0;
                 equation.type = EquationType.ConstX;
                 return equation;

@@ -52,20 +52,16 @@ namespace ColouredPetriNet.Gui.GraphicsItems
             _points[1] = p2;
             _points[2] = p3;
             _center = LinearAlgebra.Algorithm.GetTriangleIncenter(p1, p2, p3);
-            System.Console.WriteLine("TriangleGraphicsItem(1): _p[0]={0}, _p[1]={1}, _p[2]={2}, _c={3}",
-                _points[0], _points[1], _points[2], _center);
             UpdateBorder();
-            System.Console.WriteLine("TriangleGraphicsItem(2): _ep[0]={0}, _ep[1]={1}, _ep[2]={2}",
-                _extentPoints[0], _extentPoints[1], _extentPoints[2]);
         }
 
-        public TriangleGraphicsItem(int id, int typeId, Point center, int outerRadius = 10, int z = 0)
+        public TriangleGraphicsItem(int id, int typeId, Point center, int side = 10, int z = 0)
             : base(id, typeId, center, 3, z)
         {
-            _outerRadius = outerRadius;
-            LinearAlgebra.Algorithm.BuildEquilateralTriangle(center, outerRadius,
-                out _points[0], out _points[1], out _points[2]);
-            _innerRadius = LinearAlgebra.Algorithm.GetTriangleInnerRadius(_points[0], _points[1], _points[2]);
+            _points[0] = new Point();
+            _points[1] = new Point();
+            _points[2] = new Point();
+            BuildEquilateralTriangle(side);
             UpdateBorder();
         }
 
@@ -165,20 +161,29 @@ namespace ColouredPetriNet.Gui.GraphicsItems
             }
             if (_selected)
             {
+                System.Console.WriteLine("UpdateBorder(1):_p[0]={0}, _p[1]={1}, _p[2]={2}", _points[0], _points[1], _points[2]);
+                System.Console.WriteLine("UpdateBorder(2):_ep[0]={0}, _ep[1]={1}, _ep[2]={2}", _extentPoints[0], _extentPoints[1], _extentPoints[2]);
                 LinearAlgebra.Algorithm.ExpandTriangle(ref _extentPoints[0], ref _extentPoints[1],
                     ref _extentPoints[2], _extent);
-                base.SetBorder(LinearAlgebra.Algorithm.MinX(_extentPoints),
+                System.Console.WriteLine("UpdateBorder(3):_ep[0]={0}, _ep[1]={1}, _ep[2]={2}", _extentPoints[0], _extentPoints[1], _extentPoints[2]);
+            }
+            base.SetBorder(LinearAlgebra.Algorithm.MinX(_extentPoints),
                     LinearAlgebra.Algorithm.MaxX(_extentPoints),
                     LinearAlgebra.Algorithm.MinY(_extentPoints),
                     LinearAlgebra.Algorithm.MaxY(_extentPoints));
-            }
-            else
-            {
-                base.SetBorder(LinearAlgebra.Algorithm.MinX(_points),
-                    LinearAlgebra.Algorithm.MaxX(_points),
-                    LinearAlgebra.Algorithm.MinY(_points),
-                    LinearAlgebra.Algorithm.MaxY(_points));
-            }
+        }
+
+        private void BuildEquilateralTriangle(int side)
+        {
+            _outerRadius = side / System.Math.Sqrt(3);
+            _innerRadius = _outerRadius / 2;
+            int dy = (int)(_outerRadius / 2);
+            int dx = (int)(System.Math.Cos(System.Math.PI / 6) * _outerRadius);
+            _points[0].X = _center.X - dx;
+            _points[2].X = _center.X + dx;
+            _points[0].Y = _points[2].Y = _center.Y + dy;
+            _points[1].X = _center.X;
+            _points[1].Y = _center.Y - (int)_outerRadius;
         }
 
         private void DefinePointPosition(Point[] points, out Point p1, out Point p2, out Point p3)

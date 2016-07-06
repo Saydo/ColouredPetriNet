@@ -36,7 +36,7 @@ namespace ColouredPetriNet.Gui.GraphicsItems
         }
 
         public RectangleGraphicsItem(int id, int typeId, Point center, int w = 10, int h = 10, int z = 0)
-            : base (id, typeId, z)
+            : base (id, typeId, center, z)
         {
             _width = w;
             _height = h;
