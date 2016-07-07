@@ -67,158 +67,119 @@ namespace ColouredPetriNet.Gui.GraphicsItems
 
         public override bool InShape(int x, int y)
         {
-            Point p1, p2, p3;
-            LinearAlgebra.Equation[] eq = new LinearAlgebra.Equation[3];
-            DefinePointPosition((_selected ? _extentPoints : _points), out p1, out p2, out p3);
-            eq[0] = new LinearAlgebra.Equation(p1, p2);
-            eq[1] = new LinearAlgebra.Equation(p2, p3);
-            eq[2] = new LinearAlgebra.Equation(p1, p3);
-            if ((eq[0].InLineByY(x, y) <= 0) && (eq[2].InLineByY(x, y) >= 0))
+            Point[] points = (_selected ? _extentPoints : _points);
+            var pointIndices = NormalizePointPosition(points[0], points[1], points[2]);
+            var eq1 = new LinearAlgebra.Equation(points[pointIndices[0]], points[pointIndices[1]]);
+            var eq2 = new LinearAlgebra.Equation(points[pointIndices[1]], points[pointIndices[2]]);
+            var eq3 = new LinearAlgebra.Equation(points[pointIndices[2]], points[pointIndices[0]]);
+            if ((eq2.InLineByX(x, y) <= 0) && (eq3.InLineByY(x, y) >= 0)
+                && (((points[pointIndices[0]].X != points[pointIndices[1]].X)
+                    && (eq1.InLineByY(x, y) <= 0))
+                  || ((points[pointIndices[0]].X == points[pointIndices[1]].X)
+                    && (eq1.InLineByX(x, y) >= 0))))
             {
-                if (p3.X >= p2.X)
-                {
-                    if (eq[1].InLineByY(x, y) <= 0) return true;
-                }
-                else
-                {
-                    if (eq[1].InLineByY(x, y) >= 0) return true;
-                }
+                return true;
             }
-            return false;
+            else
+            {
+                return false;
+            }
         }
 
         public override bool InShape(int x, int y, int w, int h, OverlapType overlap = OverlapType.Partial)
         {
-            Point p1, p2, p3;
-            LinearAlgebra.Equation[] eq = new LinearAlgebra.Equation[3];
-            DefinePointPosition((_selected ? _extentPoints : _points), out p1, out p2, out p3);
-            eq[0] = new LinearAlgebra.Equation(p1, p2);
-            eq[1] = new LinearAlgebra.Equation(p2, p3);
-            eq[2] = new LinearAlgebra.Equation(p1, p3);
+            Point[] points = (_selected ? _extentPoints : _points);
+            var pointIndices = NormalizePointPosition(points[0], points[1], points[2]);
+            var eq1 = new LinearAlgebra.Equation(points[pointIndices[0]], points[pointIndices[1]]);
+            var eq2 = new LinearAlgebra.Equation(points[pointIndices[1]], points[pointIndices[2]]);
+            var eq3 = new LinearAlgebra.Equation(points[pointIndices[2]], points[pointIndices[0]]);
             if (overlap == OverlapType.Partial)
             {
-                if (p1.Y > p2.Y)
+                if (points[pointIndices[0]].Y == points[pointIndices[1]].Y)
                 {
-                    if ((eq[0].InLineByY(x, y + h) < 0) || (eq[1].InLineByY(x, y) > 0)
-                        || (eq[2].InLineByX(x + w, y) < 0))
+                    if (eq1.InLineByY(x, y) > 0)
                     {
                         return false;
                     }
-                    else
+                }
+                else if (points[pointIndices[0]].X == points[pointIndices[1]].X)
+                {
+                    if (eq1.InLineByX(x + w, y) < 0)
                     {
-                        
-                        return true;
+                        return false;
                     }
                 }
                 else
                 {
-                    if (p1.Y > p3.Y)
+                    if (eq1.InLineByY(x + w, y) > 0)
                     {
-                        if (p3.X > p2.X)
-                        {
-                            if ((eq[0].InLineByY(x + w, y + h) < 0) || (eq[1].InLineByY(x, y) > 0)
-                                || (eq[2].InLineByX(x + w, y) < 0))
-                            {
-                                return false;
-                            }
-                            else
-                            {
-                                return true;
-                            }
-                        }
-                        else
-                        {
-                            if ((eq[0].InLineByY(x + w, y + h) < 0) || (eq[1].InLineByY(x, y + h) < 0)
-                                 || (eq[2].InLineByY(x + w, y) > 0))
-                            {
-                                return false;
-                            }
-                            else
-                            {
-                                return true;
-                            }
-                        }
-                        if ((eq[0].InLineByY(x + w, y + h) < 0) || (eq[2].InLineByY(x + w, y) > 0)
-                            || (eq[1].InLineByX(x, y + h) > 0))
-                        {
-                            return false;
-                        }
-                        else
-                        {
-                            return true;
-                        }
-                    }
-                    else
-                    {
-                        if ((eq[2].InLineByY(x, y) > 0) || (eq[1].InLineByY(x, y + h) < 0)
-                            || (eq[0].InLineByX(x + w, y + h) < 0))
-                        {
-                            return false;
-                        }
-                        else
-                        {
-                            return true;
-                        }
+                        return false;
                     }
                 }
-                /*
-                if ((x + w < _center.X + _borderPoint[(int)BorderSide.Left])
-                    || (x > _center.X + _borderPoint[(int)BorderSide.Right])
-                    || (y + h < _center.Y + _borderPoint[(int)BorderSide.Bottom])
-                    || (y > _center.Y + _borderPoint[(int)BorderSide.Top]))
+                if (points[pointIndices[1]].Y == points[pointIndices[2]].Y)
                 {
-                    System.Console.WriteLine("InShape(x,y,w,h) false");
-                    return false;
+                    if (eq2.InLineByY(x, y) > 0)
+                    {
+                        return false;
+                    }
+                }
+                else if (points[pointIndices[1]].X > points[pointIndices[2]].X)
+                {
+                    if (eq2.InLineByX(x, y + h) > 0)
+                    {
+                        return false;
+                    }
                 }
                 else
                 {
-                    System.Console.WriteLine("InShape(x,y,w,h) true");
-                    return true;
+                    if (eq2.InLineByX(x, y) > 0)
+                    {
+                        return false;
+                    }
                 }
-                */
+                if (points[pointIndices[0]].Y >= points[pointIndices[2]].Y)
+                {
+                    if (eq3.InLineByY(x + w, y + h) < 0)
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    if (eq3.InLineByY(x, y + h) < 0)
+                    {
+                        return false;
+                    }
+                }
+                return true;
             }
             else
             {
-                if (p1.Y > p2.Y)
+                if (eq3.InLineByY(x + w, y) < 0)
                 {
-                    if ((eq[2].InLineByY(x, y) >= 0) && (eq[1].InLineByY(x + w, y) >= 0)
-                        && (eq[0].InLineByY(x + w, y + h) <= 0))
-                    {
-                        return true;
-                    }
-                    else
-                    {
+                    return false;
+                }
+                if (points[pointIndices[0]].X == points[pointIndices[1]].X)
+                {
+                    if (eq1.InLineByX(x, y) < 0)
                         return false;
-                    }
                 }
                 else
                 {
-                    if (p1.Y > p3.Y)
-                    {
-                        if ((eq[0].InLineByY(x, y + h) <= 0) && (eq[1].InLineByY(x + w, y) >= 0)
-                            && (eq[2].InLineByY(x, y) >= 0))
-                        {
-                            return true;
-                        }
-                        else
-                        {
-                            return false;
-                        }
-                    }
-                    else
-                    {
-                        if ((eq[0].InLineByY(x, y + h) <= 0)
-                            && (eq[1].InLineByY(x + w, y + h) <= 0)
-                            && (eq[2].InLineByY(x + w, y) >= 0))
-                        {
-                            return true;
-                        }
-                        else
-                        {
-                            return false;
-                        }
-                    }
+                    if (eq1.InLineByY(x, y) < 0)
+                        return false;
                 }
+                if (points[pointIndices[1]].Y == points[pointIndices[2]].Y)
+                {
+                    if (eq2.InLineByY(x, y + h) > 0)
+                        return false;
+                }
+                else
+                {
+                    if ((eq2.InLineByX(x + w, y + h) > 0) && (eq2.InLineByX(x + w, y) > 0))
+                        return false;
+                }
+                return true;
             }
         }
 
@@ -231,16 +192,106 @@ namespace ColouredPetriNet.Gui.GraphicsItems
             }
             if (_selected)
             {
-                System.Console.WriteLine("UpdateBorder(1):_p[0]={0}, _p[1]={1}, _p[2]={2}", _points[0], _points[1], _points[2]);
-                System.Console.WriteLine("UpdateBorder(2):_ep[0]={0}, _ep[1]={1}, _ep[2]={2}", _extentPoints[0], _extentPoints[1], _extentPoints[2]);
                 LinearAlgebra.Algorithm.ExpandTriangle(ref _extentPoints[0], ref _extentPoints[1],
                     ref _extentPoints[2], _extent);
-                System.Console.WriteLine("UpdateBorder(3):_ep[0]={0}, _ep[1]={1}, _ep[2]={2}", _extentPoints[0], _extentPoints[1], _extentPoints[2]);
             }
             base.SetBorder(LinearAlgebra.Algorithm.MinX(_extentPoints) - _center.X,
-                    LinearAlgebra.Algorithm.MaxX(_extentPoints) - _center.X,
-                    LinearAlgebra.Algorithm.MinY(_extentPoints) - _center.Y,
-                    LinearAlgebra.Algorithm.MaxY(_extentPoints) - _center.Y);
+                LinearAlgebra.Algorithm.MaxX(_extentPoints) - _center.X,
+                LinearAlgebra.Algorithm.MinY(_extentPoints) - _center.Y,
+                LinearAlgebra.Algorithm.MaxY(_extentPoints) - _center.Y);
+        }
+
+        private int[] NormalizePointPosition(Point p1, Point p2, Point p3)
+        {
+            int[] indices = new int[3] { -1, -1, -1 };
+            if ((p1.X <= p2.X) && (p1.X <= p3.X))
+            {
+                if (p1.X == p2.X)
+                {
+                    if (p1.Y < p2.Y)
+                    {
+                        indices[0] = 0;
+                        indices[1] = 1;
+                    }
+                    else
+                    {
+                        indices[0] = 1;
+                        indices[1] = 0;
+                    }
+                    indices[2] = 2;
+                }
+                else
+                {
+                    indices[0] = 0;
+                }
+            }
+            else if ((p2.X < p1.X) && (p2.X <= p3.X))
+            {
+                if (p2.X == p3.X)
+                {
+                    if (p2.Y < p3.Y)
+                    {
+                        indices[0] = 1;
+                        indices[1] = 2;
+                    }
+                    else
+                    {
+                        indices[0] = 2;
+                        indices[1] = 1;
+                    }
+                    indices[2] = 0;
+                }
+                else
+                {
+                    indices[0] = 1;
+                }
+            }
+            else
+            {
+                indices[0] = 2;
+            }
+            if (indices[1] >= 0)
+                return indices;
+            if (indices[0] == 0)
+            {
+                if (p2.Y >= p3.Y)
+                {
+                    indices[1] = 1;
+                    indices[2] = 2;
+                }
+                else
+                {
+                    indices[1] = 2;
+                    indices[2] = 1;
+                }
+            }
+            else if (indices[0] == 1)
+            {
+                if (p1.Y >= p3.Y)
+                {
+                    indices[1] = 0;
+                    indices[2] = 2;
+                }
+                else
+                {
+                    indices[1] = 2;
+                    indices[2] = 0;
+                }
+            }
+            else
+            {
+                if (p1.Y >= p2.Y)
+                {
+                    indices[1] = 0;
+                    indices[2] = 1;
+                }
+                else
+                {
+                    indices[1] = 1;
+                    indices[2] = 0;
+                }
+            }
+            return indices;
         }
 
         private void BuildEquilateralTriangle(int side)
@@ -254,52 +305,6 @@ namespace ColouredPetriNet.Gui.GraphicsItems
             _points[0].Y = _points[2].Y = _center.Y + dy;
             _points[1].X = _center.X;
             _points[1].Y = _center.Y - (int)_outerRadius;
-        }
-
-        private void DefinePointPosition(Point[] points, out Point p1, out Point p2, out Point p3)
-        {
-            if ((points[0].X <= points[1].X) && (points[0].X <= points[2].X))
-            {
-                p1 = points[0];
-                if (points[1].Y >= points[2].Y)
-                {
-                    p2 = points[1];
-                    p3 = points[2];
-                }
-                else
-                {
-                    p2 = points[2];
-                    p3 = points[1];
-                }
-            }
-            else if ((points[0].X > points[1].X) && (points[1].X <= points[2].X))
-            {
-                p1 = points[1];
-                if (points[0].Y >= points[2].Y)
-                {
-                    p2 = points[0];
-                    p3 = points[2];
-                }
-                else
-                {
-                    p2 = points[2];
-                    p3 = points[0];
-                }
-            }
-            else
-            {
-                p1 = points[2];
-                if (points[0].Y >= points[1].Y)
-                {
-                    p2 = points[0];
-                    p3 = points[1];
-                }
-                else
-                {
-                    p2 = points[1];
-                    p3 = points[0];
-                }
-            }
         }
     }
 }

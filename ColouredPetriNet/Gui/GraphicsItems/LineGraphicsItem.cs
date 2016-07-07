@@ -64,8 +64,8 @@ namespace ColouredPetriNet.Gui.GraphicsItems
             System.Console.WriteLine("LineGraphicsItem(1): _ep[0]={0}, _ep[1]={1}, _ep[2]={2}, _ep[3]={3}",
                 _extentPoints[0], _extentPoints[1], _extentPoints[2], _extentPoints[3]);
             System.Console.WriteLine("LineGraphicsItem(2): b[Left]={0}, b[Right]={1}, b[Bottom]={2}, b[Top]={3}",
-                _borderPoint[(int)BorderSide.Left], _borderPoint[(int)BorderSide.Right],
-                _borderPoint[(int)BorderSide.Bottom], _borderPoint[(int)BorderSide.Top]);
+                _borderPoints[(int)BorderSide.Left], _borderPoints[(int)BorderSide.Right],
+                _borderPoints[(int)BorderSide.Bottom], _borderPoints[(int)BorderSide.Top]);
             base.SetBorder(LinearAlgebra.Algorithm.MinX(_extentPoints) - _center.X,
                 LinearAlgebra.Algorithm.MaxX(_extentPoints) - _center.X,
                 LinearAlgebra.Algorithm.MinY(_extentPoints) - _center.Y,

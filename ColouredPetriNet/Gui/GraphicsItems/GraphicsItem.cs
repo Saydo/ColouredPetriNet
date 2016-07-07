@@ -7,7 +7,7 @@ namespace ColouredPetriNet.Gui.GraphicsItems
         protected Point _center;
         protected int _z;
         protected int _extent;
-        protected int[] _borderPoint;
+        protected int[] _borderPoints;
         protected bool _selected;
         protected Pen _selectionPen;
 
@@ -69,7 +69,7 @@ namespace ColouredPetriNet.Gui.GraphicsItems
             _extent = 2;
             _selected = false;
             _selectionPen = new Pen(Color.FromArgb(0, 0, 0));
-            _borderPoint = new[] { 0, 0, 0, 0 };
+            _borderPoints = new[] { 0, 0, 0, 0 };
         }
 
         public virtual void Draw(Graphics graphics)
@@ -135,10 +135,10 @@ namespace ColouredPetriNet.Gui.GraphicsItems
 
         public bool InBorder(int x, int y)
         {
-            if ((x < _center.X + _borderPoint[(int)BorderSide.Left])
-                || (x > _center.X + _borderPoint[(int)BorderSide.Right])
-                || (y < _center.Y + _borderPoint[(int)BorderSide.Bottom])
-                || (y > _center.Y + _borderPoint[(int)BorderSide.Top]))
+            if ((x < _center.X + _borderPoints[(int)BorderSide.Left])
+                || (x > _center.X + _borderPoints[(int)BorderSide.Right])
+                || (y < _center.Y + _borderPoints[(int)BorderSide.Bottom])
+                || (y > _center.Y + _borderPoints[(int)BorderSide.Top]))
             {
                 return false;
             }
@@ -149,10 +149,10 @@ namespace ColouredPetriNet.Gui.GraphicsItems
         {
             if (overlap == OverlapType.Partial)
             {
-                if ((x + w < _center.X + _borderPoint[(int)BorderSide.Left])
-                    || (x > _center.X + _borderPoint[(int)BorderSide.Right])
-                    || (y + h < _center.Y + _borderPoint[(int)BorderSide.Bottom])
-                    || (y > _center.Y + _borderPoint[(int)BorderSide.Top]))
+                if ((x + w < _center.X + _borderPoints[(int)BorderSide.Left])
+                    || (x > _center.X + _borderPoints[(int)BorderSide.Right])
+                    || (y + h < _center.Y + _borderPoints[(int)BorderSide.Bottom])
+                    || (y > _center.Y + _borderPoints[(int)BorderSide.Top]))
                 {
                     return false;
                 }
@@ -163,10 +163,10 @@ namespace ColouredPetriNet.Gui.GraphicsItems
             }
             else
             {
-                if ((x <= _center.X + _borderPoint[(int)BorderSide.Left])
-                    && (x + w >= _center.X + _borderPoint[(int)BorderSide.Right])
-                    && (y <= _center.Y + _borderPoint[(int)BorderSide.Bottom])
-                    && (y + h >= _center.Y + _borderPoint[(int)BorderSide.Top]))
+                if ((x <= _center.X + _borderPoints[(int)BorderSide.Left])
+                    && (x + w >= _center.X + _borderPoints[(int)BorderSide.Right])
+                    && (y <= _center.Y + _borderPoints[(int)BorderSide.Bottom])
+                    && (y + h >= _center.Y + _borderPoints[(int)BorderSide.Top]))
                 {
                     return true;
                 }
@@ -179,25 +179,25 @@ namespace ColouredPetriNet.Gui.GraphicsItems
 
         public virtual void SetBorder(int left, int right, int bottom, int top)
         {
-            _borderPoint[(int)BorderSide.Left] = left;
-            _borderPoint[(int)BorderSide.Right] = right;
-            _borderPoint[(int)BorderSide.Bottom] = bottom;
-            _borderPoint[(int)BorderSide.Top] = top;
+            _borderPoints[(int)BorderSide.Left] = left;
+            _borderPoints[(int)BorderSide.Right] = right;
+            _borderPoints[(int)BorderSide.Bottom] = bottom;
+            _borderPoints[(int)BorderSide.Top] = top;
         }
 
         public virtual void SetBorder(BorderSide side, int value)
         {
-            _borderPoint[(int)side] = value;
+            _borderPoints[(int)side] = value;
         }
 
         public int GetBorder(BorderSide side)
         {
-            return _borderPoint[(int)side];
+            return _borderPoints[(int)side];
         }
 
         public int[] GetBorder()
         {
-            return _borderPoint;
+            return _borderPoints;
         }
 
         public bool IsSelected()

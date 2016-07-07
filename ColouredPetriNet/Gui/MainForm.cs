@@ -34,8 +34,6 @@ namespace ColouredPetriNet.Gui
                 new Point(80, 111), new Point(100, 77), new Point(120, 111));
             //    new Point(10, 10), new Point(10, 50), new Point(40, 50));
             _itemMap.AddItem(triangle);
-
-            // triangle - partial mode selection problems
         }
 
         private void ItemMapPaint(object sender, PaintEventArgs e)
