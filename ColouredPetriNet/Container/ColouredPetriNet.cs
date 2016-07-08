@@ -112,6 +112,66 @@ namespace ColouredPetriNet.Container
             return (GetMarkerCount<T>() != 0);
         }
 
+        public bool IsLinkExist(int stateId, int transitionId)
+        {
+            var state = GetStateInterface(stateId);
+            if (ReferenceEquals(null, state))
+            {
+                return false;
+            }
+            return state.ContainsLinkNode(transitionId);
+        }
+
+        public bool IsLinkExist<TState>(int stateId, int transitionId)
+        {
+            var state = GetStateWrapperById<TState>(stateId);
+            if (ReferenceEquals(null, state))
+            {
+                return false;
+            }
+            return state.ContainsLinkNode(transitionId);
+        }
+
+        public bool IsInputLinkExist(int stateId, int transitionId)
+        {
+            var state = GetStateInterface(stateId);
+            if (ReferenceEquals(null, state))
+            {
+                return false;
+            }
+            return state.ContainsInputLinkNode(transitionId);
+        }
+
+        public bool IsInputLinkExist<TState>(int stateId, int transitionId)
+        {
+            var state = GetStateWrapperById<TState>(stateId);
+            if (ReferenceEquals(null, state))
+            {
+                return false;
+            }
+            return state.ContainsInputLinkNode(transitionId);
+        }
+
+        public bool IsOutputLinkExist(int stateId, int transitionId)
+        {
+            var state = GetStateInterface(stateId);
+            if (ReferenceEquals(null, state))
+            {
+                return false;
+            }
+            return state.ContainsOutputLinkNode(transitionId);
+        }
+
+        public bool IsOutputLinkExist<TState>(int stateId, int transitionId)
+        {
+            var state = GetStateWrapperById<TState>(stateId);
+            if (ReferenceEquals(null, state))
+            {
+                return false;
+            }
+            return state.ContainsOutputLinkNode(transitionId);
+        }
+
         public int AddState<T>(T state)
         {
             List<StateWrapper<T>> stateStorage = FindStateStorage<T>();
@@ -149,6 +209,23 @@ namespace ColouredPetriNet.Container
             return _idGenerator.GetCurrId();
         }
 
+        public bool AddStateToTransitionLink(int stateId, int transitionId)
+        {
+            IStateWrapper state = GetStateInterface(stateId);
+            if (!ReferenceEquals(null, state))
+            {
+                return false;
+            }
+            IColouredPetriNetNode transition = GetTransitionInterface(transitionId);
+            if (!ReferenceEquals(null, transition))
+            {
+                return false;
+            }
+            state.AddOutputLinkNode(transitionId);
+            transition.AddInputLinkNode(stateId);
+            return true;
+        }
+
         public bool AddStateToTransitionLink<TState, TTransition>(int stateId, int transitionId)
         {
             StateWrapper<TState> state = GetStateWrapperById<TState>(stateId);
@@ -163,6 +240,23 @@ namespace ColouredPetriNet.Container
             }
             state.AddOutputLinkNode(transitionId);
             transition.AddInputLinkNode(stateId);
+            return true;
+        }
+
+        public bool AddTransitionToStateLink(int transitionId, int stateId)
+        {
+            IStateWrapper state = GetStateInterface(stateId);
+            if (!ReferenceEquals(null, state))
+            {
+                return false;
+            }
+            IColouredPetriNetNode transition = GetTransitionInterface(transitionId);
+            if (!ReferenceEquals(null, transition))
+            {
+                return false;
+            }
+            transition.AddOutputLinkNode(stateId);
+            state.AddInputLinkNode(transitionId);
             return true;
         }
 
@@ -495,6 +589,164 @@ namespace ColouredPetriNet.Container
             {
                 return storage.Count;
             }
+        }
+
+        public int GetLinkCount()
+        {
+            IList storage;
+            IColouredPetriNetNode node;
+            int count = 0;
+            for (int i = 0; i < _states.Count; ++i)
+            {
+                storage = (IList)_states[i];
+                for (int j = 0; j < storage.Count; ++j)
+                {
+                    node = (IColouredPetriNetNode)storage[j];
+                    count += node.OutputLinkNodes.Count;
+                }
+            }
+            for (int i = 0; i < _transitions.Count; ++i)
+            {
+                storage = (IList)_transitions[i];
+                for (int j = 0; j < storage.Count; ++j)
+                {
+                    node = (IColouredPetriNetNode)storage[j];
+                    if (node.InputLinkNodes.Count == 0)
+                    {
+                        count += node.OutputLinkNodes.Count;
+                    }
+                }
+            }
+            return count;
+        }
+
+        public int GetLinkCount<TState, TTransition>()
+        {
+            var stateStorage = FindStateStorage<TState>();
+            if (ReferenceEquals(stateStorage, null))
+            {
+                return 0;
+            }
+            var transitionStorage = FindTransitionStorage<TTransition>();
+            if (ReferenceEquals(transitionStorage, null))
+            {
+                return 0;
+            }
+            List<int> listId;
+            int count = 0;
+            for (int i = 0; i < stateStorage.Count; ++i)
+            {
+                listId = stateStorage[i].OutputLinkNodes;
+                for (int j = 0; j < listId.Count; ++j)
+                {
+                    for (int k = 0; k < transitionStorage.Count; ++k)
+                    {
+                        if (transitionStorage[k].Id == listId[j])
+                        {
+                            ++count;
+                            break;
+                        }
+                    }
+                }
+            }
+            for (int i = 0; i < transitionStorage.Count; ++i)
+            {
+                if (transitionStorage[i].InputLinkNodes.Count > 0)
+                {
+                    continue;
+                }
+                listId = transitionStorage[i].OutputLinkNodes;
+                for (int j = 0; j < listId.Count; ++j)
+                {
+                    for (int k = 0; k < stateStorage.Count; ++k)
+                    {
+                        if (stateStorage[k].Id == listId[j])
+                        {
+                            ++count;
+                            break;
+                        }
+                    }
+                }
+            }
+            return count;
+        }
+
+        public int GetLinkCount(int stateId, int transitionId)
+        {
+            var state = GetStateInterface(stateId);
+            if (ReferenceEquals(state, null))
+            {
+                return 0;
+            }
+            int count = 0;
+            if (state.ContainsInputLinkNode(transitionId))
+            {
+                ++count;
+            }
+            if (state.ContainsOutputLinkNode(transitionId))
+            {
+                ++count;
+            }
+            return count;
+        }
+
+        public int GetLinkCount<TState>(int stateId, int transitionId)
+        {
+            var state = GetStateWrapperById<TState>(stateId);
+            if (ReferenceEquals(state, null))
+            {
+                return 0;
+            }
+            int count = 0;
+            if (state.ContainsInputLinkNode(transitionId))
+            {
+                ++count;
+            }
+            if (state.ContainsOutputLinkNode(transitionId))
+            {
+                ++count;
+            }
+            return count;
+        }
+
+        public int GetInputLinkCount(int stateId, int transitionId)
+        {
+            var state = GetStateInterface(stateId);
+            if ((!ReferenceEquals(state, null)) && (state.ContainsInputLinkNode(transitionId)))
+            {
+                return 1;
+            }
+            return 0;
+        }
+
+        public int GetInputLinkCount<TState>(int stateId, int transitionId)
+        {
+            var state = GetStateWrapperById<TState>(stateId);
+            if ((!ReferenceEquals(state, null)) && (state.ContainsOutputLinkNode(transitionId)))
+            {
+                return 1;
+            }
+            return 0;
+        }
+
+        public int GetOutputLinkCount(int stateId, int transitionId)
+        {
+            var state = GetStateInterface(stateId);
+            if ((!ReferenceEquals(state, null)) && (state.ContainsOutputLinkNode(transitionId)))
+            {
+                return 1;
+            }
+            return 0;
+        }
+
+        public int GetOutputLinkCount<TState>(int stateId, int transitionId)
+        {
+            var state = GetStateWrapperById<TState>(stateId);
+            if ((!ReferenceEquals(state, null)) && (state.ContainsOutputLinkNode(transitionId)))
+            {
+                return 1;
+            }
+            return 0;
         }
 
         public StateWrapper<T> GetStateWrapperById<T>(int id)
@@ -950,6 +1202,63 @@ namespace ColouredPetriNet.Container
             }
         }
 
+        public IStateWrapper GetStateInterface(int id)
+        {
+            IList storage;
+            IStateWrapper state;
+            for (int i = 0; i < _states.Count; ++i)
+            {
+                storage = (IList)_states[i];
+                for (int j = 0; j < storage.Count; ++j)
+                {
+                    state = (IStateWrapper)storage[j];
+                    if (state.Id == id)
+                    {
+                        return state;
+                    }
+                }
+            }
+            return null;
+        }
+
+        public IColouredPetriNetNode GetTransitionInterface(int id)
+        {
+            IList storage;
+            IColouredPetriNetNode transition;
+            for (int i = 0; i < _transitions.Count; ++i)
+            {
+                storage = (IList)_transitions[i];
+                for (int j = 0; j < storage.Count; ++j)
+                {
+                    transition = (IColouredPetriNetNode)storage[j];
+                    if (transition.Id == id)
+                    {
+                        return transition;
+                    }
+                }
+            }
+            return null;
+        }
+
+        public IMarkerWrapper GetMarkerInterface(int id)
+        {
+            IList storage;
+            IMarkerWrapper marker;
+            for (int i = 0; i < _markers.Count; ++i)
+            {
+                storage = (IList)_markers[i];
+                for (int j = 0; j < storage.Count; ++j)
+                {
+                    marker = (IMarkerWrapper)storage[j];
+                    if (marker.Id == id)
+                    {
+                        return marker;
+                    }
+                }
+            }
+            return null;
+        }
+
         //--------------- Helpful Functions --------------------
         #region Helpful Functions
         protected void RemoveLinksByState(int stateId)
@@ -1221,63 +1530,6 @@ namespace ColouredPetriNet.Container
             {
                 RemoveMarkerFromStorage(state.GetMarker(i));
             }
-        }
-
-        protected IStateWrapper GetStateInterface(int id)
-        {
-            IList storage;
-            IStateWrapper state;
-            for (int i = 0; i < _states.Count; ++i)
-            {
-                storage = (IList)_states[i];
-                for (int j = 0; j < storage.Count; ++j)
-                {
-                    state = (IStateWrapper)storage[j];
-                    if (state.Id == id)
-                    {
-                        return state;
-                    }
-                }
-            }
-            return null;
-        }
-
-        protected IColouredPetriNetNode GetTransitionInterface(int id)
-        {
-            IList storage;
-            IColouredPetriNetNode transition;
-            for (int i = 0; i < _transitions.Count; ++i)
-            {
-                storage = (IList)_transitions[i];
-                for (int j = 0; j < storage.Count; ++j)
-                {
-                    transition = (IColouredPetriNetNode)storage[j];
-                    if (transition.Id == id)
-                    {
-                        return transition;
-                    }
-                }
-            }
-            return null;
-        }
-
-        protected IMarkerWrapper GetMarkerInterface(int id)
-        {
-            IList storage;
-            IMarkerWrapper marker;
-            for (int i = 0; i < _markers.Count; ++i)
-            {
-                storage = (IList)_markers[i];
-                for (int j = 0; j < storage.Count; ++j)
-                {
-                    marker = (IMarkerWrapper)storage[j];
-                    if (marker.Id == id)
-                    {
-                        return marker;
-                    }
-                }
-            }
-            return null;
         }
 
         protected PetriNetMoveRule FindSuitableMovementRule(Type inputState, Type outputState,

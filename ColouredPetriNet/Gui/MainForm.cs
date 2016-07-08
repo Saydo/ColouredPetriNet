@@ -5,8 +5,12 @@ namespace ColouredPetriNet.Gui
 {
     public partial class MainForm : Form
     {
+        private enum ItemMapMode { View, Move, AddElement , Remove, RemoveMarker};
+
         private GraphicsItemMap _itemMap;
         private bool _mousePressed;
+        private ItemMapMode _mapMode;
+        //private Core.ColouredElementType _elementType;
 
         public MainForm()
         {
@@ -30,10 +34,10 @@ namespace ColouredPetriNet.Gui
             //    GraphicsItems.LinkGraphicsItem.LinkDirection.Both));
             //_itemMap.AddItem(new GraphicsItems.LineGraphicsItem(2, 1, new Point(50, 50), new Point(100, 100)));
             //GraphicsItems.TriangleGraphicsItem triangle = new GraphicsItems.TriangleGraphicsItem(0, 0, new Point(100, 100), 40);
-            GraphicsItems.TriangleGraphicsItem triangle = new GraphicsItems.TriangleGraphicsItem(0, 0,
-                new Point(80, 111), new Point(100, 77), new Point(120, 111));
+            //GraphicsItems.TriangleGraphicsItem triangle = new GraphicsItems.TriangleGraphicsItem(0, 0,
+            //    new Point(80, 111), new Point(100, 77), new Point(120, 111));
             //    new Point(10, 10), new Point(10, 50), new Point(40, 50));
-            _itemMap.AddItem(triangle);
+            //_itemMap.AddItem(triangle);
         }
 
         private void ItemMapPaint(object sender, PaintEventArgs e)
@@ -44,6 +48,28 @@ namespace ColouredPetriNet.Gui
         private void ItemMapMouseClick(object sender, MouseEventArgs e)
         {
             System.Console.WriteLine("ItemMapMouseClick");
+            if (_mapMode == ItemMapMode.AddElement)
+            {
+                /*
+                switch (_elementType)
+                {
+                    case Core.ColouredElementType.RhombMarker:
+                        break;
+                    case Core.ColouredElementType.RoundMarker:
+                        break;
+                    case Core.ColouredElementType.TriangleMarker:
+                        break;
+                    case Core.ColouredElementType.RectangleTransition:
+                        break;
+                    case Core.ColouredElementType.RhombTransition:
+                        break;
+                    case Core.ColouredElementType.RoundState:
+                        break;
+                    case Core.ColouredElementType.ImageState:
+                        break;
+                }
+                */
+            }
         }
 
         private void ItemMapMouseDown(object sender, MouseEventArgs e)

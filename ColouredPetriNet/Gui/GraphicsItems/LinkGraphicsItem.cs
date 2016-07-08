@@ -19,6 +19,7 @@ namespace ColouredPetriNet.Gui.GraphicsItems
                 UpdateArrowPosition();
             }
         }
+
         public int ArrowLength
         {
             get { return _arrowLength; }

@@ -74,7 +74,9 @@
     <Compile Include="Container\ColouredPetriNetNode.cs" />
     <Compile Include="Container\StateWrapper.cs" />
     <Compile Include="Container\TransitionWrapper.cs" />
-    <Compile Include="Core\ColorPetriNetTypes.cs" />
+    <Compile Include="Core\ColouredPetriNetTypes.cs" />
+    <Compile Include="Gui\ColouredPetriNetStyle.cs" />
+    <Compile Include="Core\IPetriNetGraphicsMap.cs" />
     <Compile Include="Gui\LinearAlgebra\Equation.cs" />
     <Compile Include="Gui\GraphicsItemMap.cs" />
     <Compile Include="Gui\GraphicsItems\ColourGraphicsItem.cs" />
@@ -96,6 +98,7 @@
     <Compile Include="Gui\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Core\PetriNetGraphicsMap.cs" />
     <Compile Include="Gui\SelectionArea.cs" />
     <Compile Include="Gui\StripImageList.cs">
       <SubType>Component</SubType>

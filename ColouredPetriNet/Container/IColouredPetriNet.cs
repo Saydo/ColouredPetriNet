@@ -17,10 +17,18 @@ namespace ColouredPetriNet.Container
         bool IsTransitionExist<T>();
         bool IsMarkerExist();
         bool IsMarkerExist<T>();
+        bool IsLinkExist(int stateId, int transitionId);
+        bool IsLinkExist<TState>(int stateId, int transitionId);
+        bool IsInputLinkExist(int stateId, int transitionId);
+        bool IsInputLinkExist<TState>(int stateId, int transitionId);
+        bool IsOutputLinkExist(int stateId, int transitionId);
+        bool IsOutputLinkExist<TState>(int stateId, int transitionId);
         int AddState<T>(T state);
         int AddTransition<T>(T transition);
         int AddMarker<T>(int stateId, T marker);
+        bool AddStateToTransitionLink(int stateId, int transitionId);
         bool AddStateToTransitionLink<TState, TTransition>(int stateId, int transitionId);
+        bool AddTransitionToStateLink(int transitionId, int stateId);
         bool AddTransitionToStateLink<TTransition, TState>(int transitionId, int stateId);
         bool RemoveStateToTransitionLink<TState, TTransition>(int stateId, int transitionId);
         bool RemoveTransitionToStateLink<TTransition, TState>(int transitionId, int stateId);
@@ -44,6 +52,14 @@ namespace ColouredPetriNet.Container
         int GetTransitionCount<T>();
         int GetMarkerCount();
         int GetMarkerCount<T>();
+        int GetLinkCount();
+        int GetLinkCount<TState, TTransition>();
+        int GetLinkCount(int stateId, int transitionId);
+        int GetLinkCount<TState>(int stateId, int transitionId);
+        int GetInputLinkCount(int stateId, int transitionId);
+        int GetInputLinkCount<TState>(int stateId, int transitionId);
+        int GetOutputLinkCount(int stateId, int transitionId);
+        int GetOutputLinkCount<TState>(int stateId, int transitionId);
         T GetStateById<T>(int id);
         T GetTransitionById<T>(int id);
         T GetMarkerById<T>(int id);
@@ -78,5 +94,8 @@ namespace ColouredPetriNet.Container
         void RemovePrevAccumulateRule(Type state, Type marker, int count = -1);
         void RemoveNextAccumulateRule(Type state, List<Tuple<Type, int>> markers);
         void RemoveNextAccumulateRule(Type state, Type marker, int count = -1);
+        IStateWrapper GetStateInterface(int id);
+        IColouredPetriNetNode GetTransitionInterface(int id);
+        IMarkerWrapper GetMarkerInterface(int id);
     }
 }
