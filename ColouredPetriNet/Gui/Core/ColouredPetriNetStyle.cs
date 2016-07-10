@@ -1,4 +1,4 @@
-﻿namespace ColouredPetriNet.Gui.Style
+﻿namespace ColouredPetriNet.Gui.Core.Style
 {
     public class ShapeStyle
     {

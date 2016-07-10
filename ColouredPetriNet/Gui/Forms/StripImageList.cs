@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
 
-namespace ColouredPetriNet.Gui
+namespace ColouredPetriNet.Gui.Forms
 {
     public class StripImageList : ToolStripDropDownButton
     {

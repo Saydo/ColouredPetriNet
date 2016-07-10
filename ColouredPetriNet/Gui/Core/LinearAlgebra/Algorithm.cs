@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Drawing;
 
-namespace ColouredPetriNet.Gui.LinearAlgebra
+namespace ColouredPetriNet.Gui.Core.LinearAlgebra
 {
     public static class Algorithm
     {

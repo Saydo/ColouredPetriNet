@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace ColouredPetriNet.Gui
+namespace ColouredPetriNet.Gui.Core
 {
     public enum HorizontalDirection { Left, Right };
     public enum VerticalDirection { Top, Bottom };

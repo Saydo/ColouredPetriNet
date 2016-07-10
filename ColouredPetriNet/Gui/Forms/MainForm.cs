@@ -1,13 +1,13 @@
 ﻿using System.Windows.Forms;
 using System.Drawing;
 
-namespace ColouredPetriNet.Gui
+namespace ColouredPetriNet.Gui.Forms
 {
     public partial class MainForm : Form
     {
         private enum ItemMapMode { View, Move, AddElement , Remove, RemoveMarker};
 
-        private GraphicsItemMap _itemMap;
+        //private GraphicsItemMap _itemMap;
         private bool _mousePressed;
         private ItemMapMode _mapMode;
         //private Core.ColouredElementType _elementType;
@@ -15,7 +15,7 @@ namespace ColouredPetriNet.Gui
         public MainForm()
         {
             InitializeComponent();
-            _itemMap = new GraphicsItemMap();
+            //_itemMap = new GraphicsItemMap();
             //_itemMap.Overlap = GraphicsItems.OverlapType.Full;
             _mousePressed = false;
             /*
@@ -42,7 +42,7 @@ namespace ColouredPetriNet.Gui
 
         private void ItemMapPaint(object sender, PaintEventArgs e)
         {
-            _itemMap.Draw(e.Graphics);
+            //_itemMap.Draw(e.Graphics);
         }
 
         private void ItemMapMouseClick(object sender, MouseEventArgs e)
@@ -76,7 +76,7 @@ namespace ColouredPetriNet.Gui
         {
             System.Console.WriteLine("ItemMapMouseDown");
             _mousePressed = true;
-            _itemMap.SetSelectionArea(e.X, e.Y, 1, 1);
+            //_itemMap.SetSelectionArea(e.X, e.Y, 1, 1);
             this.pbMap.Refresh();
         }
 
@@ -85,7 +85,7 @@ namespace ColouredPetriNet.Gui
             if (_mousePressed)
             {
                 System.Console.WriteLine("ItemMapMouseMove");
-                _itemMap.UpdateSelectionAreaByPos(e.X, e.Y);
+                //_itemMap.UpdateSelectionAreaByPos(e.X, e.Y);
                 this.pbMap.Refresh();
             }
         }
@@ -94,7 +94,7 @@ namespace ColouredPetriNet.Gui
         {
             System.Console.WriteLine("ItemMapMouseUp");
             _mousePressed = false;
-            _itemMap.HideSelectionArea();
+            //_itemMap.HideSelectionArea();
             this.pbMap.Refresh();
         }
     }

@@ -1,7 +1,7 @@
 ﻿using System.Windows.Forms;
 using System.Drawing;
 
-namespace ColouredPetriNet.Gui
+namespace ColouredPetriNet.Gui.Forms
 {
     partial class MainForm
     {

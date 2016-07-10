@@ -10,7 +10,7 @@ namespace ColouredPetriNet
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Gui.MainForm());
+            Application.Run(new Gui.Forms.MainForm());
         }
     }
 }

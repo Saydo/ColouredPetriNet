@@ -1,14 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
-using ColouredPetriNet.Gui.GraphicsItems;
 
-namespace ColouredPetriNet.Gui
+namespace ColouredPetriNet.Gui.Core
 {
     public interface IGraphicsItemMap
     {
-        OverlapType Overlap { get; set; }
+        GraphicsItems.OverlapType Overlap { get; set; }
         bool Contains(int id);
-        List<GraphicsItem> FindItems(int x, int y);
+        List<GraphicsItems.GraphicsItem> FindItems(int x, int y);
         void Select(int x, int y);
         void Deselect(int x, int y);
         void Select(int x, int y, int w, int h);
@@ -16,7 +15,7 @@ namespace ColouredPetriNet.Gui
         void SelectAllItems();
         void DeselectAllItems();
         void RemoveSelectedItems();
-        void AddItem(GraphicsItem item);
+        void AddItem(GraphicsItems.GraphicsItem item);
         bool RemoveItem(int id);
         void Clear();
         void SetSelectionArea(int x, int y, int w, int h);

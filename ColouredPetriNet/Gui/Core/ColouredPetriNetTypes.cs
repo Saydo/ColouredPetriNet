@@ -1,4 +1,4 @@
-﻿namespace ColouredPetriNet.Core
+﻿namespace ColouredPetriNet.Gui.Core
 {
     public enum ColouredStateType { RoundState, ImageState };
     public enum ColouredTransitionType { RectangleTransition, RhombTransition };

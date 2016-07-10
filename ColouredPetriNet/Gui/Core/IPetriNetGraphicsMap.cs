@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 
-namespace ColouredPetriNet.Core
+namespace ColouredPetriNet.Gui.Core
 {
     public enum LinkDirection { FromStateToTransition, FromTransitionToState };
 
@@ -13,7 +13,7 @@ namespace ColouredPetriNet.Core
         int MarkerCount { get; }
         int TransitionCount { get; }
         int StateCount { get; }
-        Gui.Style.ColouredPetriNetStyle Style { get; set; }
+        Style.ColouredPetriNetStyle Style { get; set; }
         // Add
         void AddState(int x, int y, ColouredStateType stateType);
         void AddTransition(int x, int y, ColouredTransitionType transitionType);
@@ -60,14 +60,14 @@ namespace ColouredPetriNet.Core
         int GetLinkCount(int stateId, int transitionId);
         int GetLinkCount(int stateId, int transitionId, LinkDirection direction);
         // Find
-        List<Gui.GraphicsItems.GraphicsItem> FindItems(int x, int y);
-        List<Gui.GraphicsItems.GraphicsItem> FindLinks(int x, int y);
-        List<Gui.GraphicsItems.GraphicsItem> FindMarkers(int x, int y);
-        List<Gui.GraphicsItems.GraphicsItem> FindMarkers(int x, int y, ColouredMarkerType markerType);
-        List<Gui.GraphicsItems.GraphicsItem> FindStates(int x, int y);
-        List<Gui.GraphicsItems.GraphicsItem> FindStates(int x, int y, ColouredStateType stateType);
-        List<Gui.GraphicsItems.GraphicsItem> FindTransitions(int x, int y);
-        List<Gui.GraphicsItems.GraphicsItem> FindTransitions(int x, int y, ColouredTransitionType transitionType);
+        List<GraphicsItems.GraphicsItem> FindItems(int x, int y);
+        List<GraphicsItems.GraphicsItem> FindLinks(int x, int y);
+        List<GraphicsItems.GraphicsItem> FindMarkers(int x, int y);
+        List<GraphicsItems.GraphicsItem> FindMarkers(int x, int y, ColouredMarkerType markerType);
+        List<GraphicsItems.GraphicsItem> FindStates(int x, int y);
+        List<GraphicsItems.GraphicsItem> FindStates(int x, int y, ColouredStateType stateType);
+        List<GraphicsItems.GraphicsItem> FindTransitions(int x, int y);
+        List<GraphicsItems.GraphicsItem> FindTransitions(int x, int y, ColouredTransitionType transitionType);
         // Select
         void Select(int x, int y);
         void Select(int x, int y, int w, int h);

@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace ColouredPetriNet.Gui.GraphicsItems
+namespace ColouredPetriNet.Gui.Core.GraphicsItems
 {
     public class GraphicsItem : IGraphicsItem
     {

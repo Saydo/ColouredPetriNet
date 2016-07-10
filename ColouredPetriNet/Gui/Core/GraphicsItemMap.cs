@@ -1,17 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
-using ColouredPetriNet.Gui.GraphicsItems;
 
-namespace ColouredPetriNet.Gui
+namespace ColouredPetriNet.Gui.Core
 {
     public class GraphicsItemMap : IGraphicsItemMap
     {
-        private List<GraphicsItem> _items;
+        private List<GraphicsItems.GraphicsItem> _items;
         private List<int> _selectedItems;
         private SelectionArea _selectionArea;
-        private OverlapType _overlap;
+        private GraphicsItems.OverlapType _overlap;
 
-        public OverlapType Overlap
+        public GraphicsItems.OverlapType Overlap
         {
             get { return _overlap; }
             set { _overlap = value; }
@@ -19,10 +18,10 @@ namespace ColouredPetriNet.Gui
 
         public GraphicsItemMap()
         {
-            _items = new List<GraphicsItem>();
+            _items = new List<GraphicsItems.GraphicsItem>();
             _selectedItems = new List<int>();
             _selectionArea = new SelectionArea();
-            _overlap = OverlapType.Partial;
+            _overlap = GraphicsItems.OverlapType.Partial;
         }
 
         public bool Contains(int id)
@@ -37,9 +36,9 @@ namespace ColouredPetriNet.Gui
             return false;
         }
 
-        public List<GraphicsItem> FindItems(int x, int y)
+        public List<GraphicsItems.GraphicsItem> FindItems(int x, int y)
         {
-            List<GraphicsItem> foundItems = new List<GraphicsItem>();
+            List<GraphicsItems.GraphicsItem> foundItems = new List<GraphicsItems.GraphicsItem>();
             for (int i = 0; i < _items.Count; ++i)
             {
                 if (_items[i].IsCollision(x, y))
@@ -171,7 +170,7 @@ namespace ColouredPetriNet.Gui
             _selectedItems.Clear();
         }
 
-        public void AddItem(GraphicsItem item)
+        public void AddItem(GraphicsItems.GraphicsItem item)
         {
             _items.Add(item);
         }

@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace ColouredPetriNet.Gui.GraphicsItems
+namespace ColouredPetriNet.Gui.Core.GraphicsItems
 {
     public enum BorderSide { Left, Right, Top, Bottom };
     public enum OverlapType { Full, Partial };
