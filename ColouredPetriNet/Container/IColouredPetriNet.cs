@@ -30,7 +30,9 @@ namespace ColouredPetriNet.Container
         bool AddStateToTransitionLink<TState, TTransition>(int stateId, int transitionId);
         bool AddTransitionToStateLink(int transitionId, int stateId);
         bool AddTransitionToStateLink<TTransition, TState>(int transitionId, int stateId);
+        bool RemoveStateToTransitionLink(int stateId, int transitionId);
         bool RemoveStateToTransitionLink<TState, TTransition>(int stateId, int transitionId);
+        bool RemoveTransitionToStateLink(int transitionId, int stateId);
         bool RemoveTransitionToStateLink<TTransition, TState>(int transitionId, int stateId);
         bool ConnectMarkerToState(int markerId, int stateId);
         bool ConnectMarkerToState<TState>(int markerId, int stateId);
@@ -38,6 +40,8 @@ namespace ColouredPetriNet.Container
         bool DisconnectMarkerFromState<TState>(int markerId, int stateId);
         bool RemoveMarkersFromState(int stateId);
         bool RemoveMarkersFromState<T>(int stateId);
+        bool RemoveMarkersFromState(int stateId, int count);
+        bool RemoveMarkersFromState<T>(int stateId, int count);
         bool RemoveState(int id);
         bool RemoveState<T>(int id);
         bool RemoveTransition(int id);

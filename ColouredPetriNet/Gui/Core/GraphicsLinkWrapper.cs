@@ -1,6 +1,8 @@
 ﻿namespace ColouredPetriNet.Gui.Core
 {
-    class GraphicsLinkWrapper
+    public enum LinkDirection { FromStateToTransition, FromTransitionToState };
+
+    public class GraphicsLinkWrapper
     {
         public GraphicsItems.LinkGraphicsItem Link;
         public GraphicsStateWrapper State;

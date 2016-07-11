@@ -2,7 +2,7 @@
 
 namespace ColouredPetriNet.Gui.Core
 {
-    class GraphicsTransitionWrapper
+    public class GraphicsTransitionWrapper
     {
         public GraphicsItems.GraphicsItem Transition;
         public List<GraphicsLinkWrapper> OutputLinks;

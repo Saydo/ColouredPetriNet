@@ -81,7 +81,6 @@
     <Compile Include="Gui\Core\GraphicsStateWrapper.cs" />
     <Compile Include="Gui\Core\GraphicsTransitionWrapper.cs" />
     <Compile Include="Gui\Core\LinearAlgebra\Equation.cs" />
-    <Compile Include="Gui\Core\GraphicsItemMap.cs" />
     <Compile Include="Gui\Core\GraphicsItems\ColourGraphicsItem.cs" />
     <Compile Include="Gui\Core\GraphicsItems\GraphicsItem.cs" />
     <Compile Include="Gui\Core\GraphicsItems\IGraphicsItem.cs" />
@@ -93,7 +92,6 @@
     <Compile Include="Gui\Core\GraphicsItems\RhombGraphicsItem.cs" />
     <Compile Include="Gui\Core\GraphicsItems\RoundGraphicsItem.cs" />
     <Compile Include="Gui\Core\GraphicsItems\TriangleGraphicsItem.cs" />
-    <Compile Include="Gui\Core\IGraphicsItemMap.cs" />
     <Compile Include="Gui\Core\LinearAlgebra\Algorithm.cs" />
     <Compile Include="Gui\Forms\MainForm.cs">
       <SubType>Form</SubType>

@@ -277,6 +277,23 @@ namespace ColouredPetriNet.Container
             return true;
         }
 
+        public bool RemoveStateToTransitionLink(int stateId, int transitionId)
+        {
+            var state = GetStateInterface(stateId);
+            if (!ReferenceEquals(null, state))
+            {
+                return false;
+            }
+            var transition = GetTransitionInterface(transitionId);
+            if (!ReferenceEquals(null, transition))
+            {
+                return false;
+            }
+            state.RemoveOutputLinkNode(transitionId);
+            transition.RemoveInputLinkNode(stateId);
+            return true;
+        }
+
         public bool RemoveStateToTransitionLink<TState, TTransition>(int stateId, int transitionId)
         {
             StateWrapper<TState> state = GetStateWrapperById<TState>(stateId);
@@ -291,6 +308,23 @@ namespace ColouredPetriNet.Container
             }
             state.RemoveOutputLinkNode(transitionId);
             transition.RemoveInputLinkNode(stateId);
+            return true;
+        }
+
+        public bool RemoveTransitionToStateLink(int transitionId, int stateId)
+        {
+            var state = GetStateInterface(stateId);
+            if (!ReferenceEquals(null, state))
+            {
+                return false;
+            }
+            var transition = GetTransitionInterface(transitionId);
+            if (!ReferenceEquals(null, transition))
+            {
+                return false;
+            }
+            transition.RemoveOutputLinkNode(stateId);
+            state.RemoveInputLinkNode(transitionId);
             return true;
         }
 
@@ -377,6 +411,42 @@ namespace ColouredPetriNet.Container
                 return false;
             }
             for (int i = 0; i < state.GetMarkerCount(); ++i)
+            {
+                RemoveMarkerFromStorage(state.GetMarker(i));
+            }
+            return true;
+        }
+
+        public bool RemoveMarkersFromState(int stateId, int count)
+        {
+            var state = GetStateInterface(stateId);
+            if (ReferenceEquals(null, state))
+            {
+                return false;
+            }
+            if (count > state.GetMarkerCount())
+            {
+                count = state.GetMarkerCount();
+            }
+            for (int i = count - 1; i >= 0; --i)
+            {
+                RemoveMarkerFromStorage(state.GetMarker(i));
+            }
+            return true;
+        }
+
+        public bool RemoveMarkersFromState<T>(int stateId, int count)
+        {
+            var state = GetStateWrapperById<T>(stateId);
+            if (ReferenceEquals(null, state))
+            {
+                return false;
+            }
+            if (count > state.GetMarkerCount())
+            {
+                count = state.GetMarkerCount();
+            }
+            for (int i = count - 1; i >= 0; --i)
             {
                 RemoveMarkerFromStorage(state.GetMarker(i));
             }

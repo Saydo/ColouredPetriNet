@@ -3,7 +3,7 @@ using System.Drawing;
 
 namespace ColouredPetriNet.Gui.Core
 {
-    public class PetriNetGraphicsMap// : IPetriNetGraphicsMap
+    public class PetriNetGraphicsMap : IPetriNetGraphicsMap
     {
         private enum ItemType { Link, Marker = 100, Transition = 200, State = 300 };
 
@@ -18,6 +18,7 @@ namespace ColouredPetriNet.Gui.Core
         private List<int> _selectedTransitions;
         private SelectionArea _selectionArea;
         private Container.ColouredPetriNet _petriNet;
+        private Container.IdGenerator _linkIdGenerator;
 
         public int LinkCount { get { return _links.Count; } }
         public int TransitionCount { get { return _transitions.Count; } }
@@ -34,6 +35,7 @@ namespace ColouredPetriNet.Gui.Core
             _selectedTransitions = new List<int>();
             _selectionArea = new SelectionArea();
             _petriNet = new Container.ColouredPetriNet();
+            _linkIdGenerator = new Container.IdGenerator(-1);
             Style = new Style.ColouredPetriNetStyle();
 
         }
@@ -165,41 +167,76 @@ namespace ColouredPetriNet.Gui.Core
                 linkDirection = GraphicsItems.LinkGraphicsItem.LinkDirection.FromP2toP1;
             }
             _links.Add(new GraphicsLinkWrapper(state, transition,
-                new GraphicsItems.LinkGraphicsItem(-1, (int)ItemType.Link, state.State.Center,
-                transition.Transition.Center, linkDirection, _stateZ), direction));
+                new GraphicsItems.LinkGraphicsItem(_linkIdGenerator.GetNextId(),
+                (int)ItemType.Link, state.State.Center, transition.Transition.Center,
+                linkDirection, _stateZ), direction));
         }
         #endregion
 
         #region Remove Functions
-        /*
-        public bool RemoveItem(int id)
+        public bool RemoveLink(int id)
         {
-            if (RemoveMarker(id))
-                return true;
-            if (RemoveState(id))
-                return true;
-            if (RemoveTransition(id))
-                return true;
+            for (int i = 0; i < _links.Count; ++i)
+            {
+                if (_links[i].Link.Id == id)
+                {
+                    RemoveFromIdList(id, _selectedLinks);
+                    if (_links[i].Direction == LinkDirection.FromStateToTransition)
+                    {
+                        RemoveFromLinkList(id, _links[i].State.OutputLinks);
+                        RemoveFromLinkList(id, _links[i].Transition.InputLinks);
+                        _petriNet.RemoveStateToTransitionLink(_links[i].State.State.Id,
+                            _links[i].Transition.Transition.Id);
+                    }
+                    else
+                    {
+                        RemoveFromLinkList(id, _links[i].State.InputLinks);
+                        RemoveFromLinkList(id, _links[i].Transition.OutputLinks);
+                        _petriNet.RemoveTransitionToStateLink(_links[i].Transition.Transition.Id,
+                            _links[i].State.State.Id);
+                    }
+                    _links.RemoveAt(i);
+                    return true;
+                }
+            }
             return false;
         }
 
         public bool RemoveLinks(int stateId, int transitionId)
         {
-            //_petriNet();
+            var state = FindStateById(stateId);
+            if (ReferenceEquals(state, null))
+            {
+                return false;
+            }
+            bool isFound = RemoveInputLink(state, stateId, transitionId);
+            return (RemoveOutputLink(state, stateId, transitionId) || isFound);
         }
 
         public bool RemoveLinks(int stateId, int transitionId, LinkDirection direction)
         {
-            //
+            var state = FindStateById(stateId);
+            if (ReferenceEquals(state, null))
+            {
+                return false;
+            }
+            if (direction == LinkDirection.FromTransitionToState)
+            {
+                return RemoveInputLink(state, stateId, transitionId);
+            }
+            else
+            {
+                return RemoveOutputLink(state, stateId, transitionId);
+            }
         }
 
         public bool RemoveMarker(int id)
         {
-            for (int i = 0; i < _markers.Count; ++i)
+            for (int i = 0; i < _states.Count; ++i)
             {
-                if (_markers[i].Id == id)
+                if (_states[i].RemoveMarker(id))
                 {
-                    _markers.RemoveAt(i);
+                    _petriNet.RemoveMarker(id);
                     return true;
                 }
             }
@@ -208,49 +245,140 @@ namespace ColouredPetriNet.Gui.Core
 
         public bool RemoveMarker(int id, int stateId)
         {
-            var marker = _petriNet.GetMarkerInterface(id);
-            if ((!ReferenceEquals(marker, null)) && (marker.StateId == stateId))
+            var state = _petriNet.GetStateInterface(stateId);
+            if (ReferenceEquals(state, null))
             {
-                return _petriNet.RemoveMarker(id);
+                return false;
             }
-            return false;
+            var stateItem = FindStateById(stateId);
+            if (ReferenceEquals(stateItem, null))
+            {
+                return false;
+            }
+            state.RemoveMarker(id);
+            stateItem.RemoveMarker(id);
+            return true;
         }
 
         public bool RemoveMarkers(int stateId)
         {
-            return _petriNet.RemoveMarkersFromState(stateId);
+            for (int i = 0; i < _states.Count; ++i)
+            {
+                if (_states[i].State.Id == stateId)
+                {
+                    _states[i].Markers.Clear();
+                    _petriNet.RemoveMarkersFromState(stateId);
+                    return true;
+                }
+            }
+            return false;
         }
 
-        public bool RemoveMarkers(ColouredMarkerType markerType)
+        public void RemoveMarkers(ColouredMarkerType markerType)
         {
-            //
+            int typeId = (int)ItemType.Marker + (int)markerType;
+            List<int> listId;
+            for (int i = 0; i < _states.Count; ++i)
+            {
+                for (int j = 0; j < _states[i].Markers.Count; ++i)
+                {
+                    if (_states[i].Markers[j].Item1.TypeId == typeId)
+                    {
+                        listId = _states[i].Markers[j].Item2;
+                        for (int k = 0; k < listId.Count; ++k)
+                        {
+                            _petriNet.RemoveMarker(listId[k]);
+                        }
+                        _states[i].Markers.RemoveAt(j);
+                        break;
+                    }
+                }
+            }
         }
 
-        public bool RemoveMarkers(int stateId, ColouredMarkerType markerType)
+        public void RemoveMarkers(int stateId, ColouredMarkerType markerType)
         {
-            //
+            int typeId = (int)ItemType.Marker + (int)markerType;
+            List<int> listId;
+            for (int i = 0; i < _states.Count; ++i)
+            {
+                if (_states[i].State.Id == stateId)
+                {
+                    for (int j = 0; j < _states[i].Markers.Count; ++i)
+                    {
+                        if (_states[i].Markers[j].Item1.TypeId == typeId)
+                        {
+                            listId = _states[i].Markers[j].Item2;
+                            for (int k = 0; k < listId.Count; ++k)
+                            {
+                                _petriNet.RemoveMarker(listId[k]);
+                            }
+                            _states[i].Markers.RemoveAt(j);
+                            return;
+                        }
+                    }
+                    return;
+                }
+            }
         }
 
         public bool RemoveState(int id)
         {
-            //
+            for (int i = 0; i < _states.Count; ++i)
+            {
+                if (_states[i].State.Id == id)
+                {
+                    RemoveLinksFromState(_states[i]);
+                    _petriNet.RemoveState(id);
+                    _states.RemoveAt(i);
+                    return true;
+                }
+            }
+            return false;
         }
 
-        public bool RemoveStates(ColouredStateType stateType)
+        public void RemoveStates(ColouredStateType stateType)
         {
-            //
+            int typeId = (int)ItemType.State + (int)stateType;
+            for (int i = _states.Count - 1; i >= 0; --i)
+            {
+                if (_states[i].State.TypeId == typeId)
+                {
+                    RemoveLinksFromState(_states[i]);
+                    _petriNet.RemoveState(_states[i].State.Id);
+                    _states.RemoveAt(i);
+                }
+            }
         }
 
         public bool RemoveTransition(int id)
         {
-            //
+            for (int i = 0; i < _transitions.Count; ++i)
+            {
+                if (_transitions[i].Transition.Id == id)
+                {
+                    RemoveLinksFromTransition(_transitions[i]);
+                    _petriNet.RemoveTransition(id);
+                    _transitions.RemoveAt(i);
+                    return true;
+                }
+            }
+            return false;
         }
 
-        public bool RemoveTransitions(ColouredStateType transitionType)
+        public void RemoveTransitions(ColouredStateType transitionType)
         {
-            //
+            int typeId = (int)ItemType.State + (int)transitionType;
+            for (int i = _transitions.Count - 1; i >= 0; --i)
+            {
+                if (_transitions[i].Transition.TypeId == typeId)
+                {
+                    RemoveLinksFromTransition(_transitions[i]);
+                    _petriNet.RemoveTransition(_transitions[i].Transition.Id);
+                    _transitions.RemoveAt(i);
+                }
+            }
         }
-        */
         #endregion
         
         #region Clear Functions
@@ -296,7 +424,6 @@ namespace ColouredPetriNet.Gui.Core
         }
         #endregion
 
-        /*
         #region Contains Functions
         public bool Contains(int id)
         {
@@ -311,12 +438,16 @@ namespace ColouredPetriNet.Gui.Core
 
         public bool Contains(ColouredMarkerType markerType)
         {
-            int type = (int)ItemType.Marker + (int)markerType;
-            for (int i = 0; i < _markers.Count; ++i)
+            int typeId = (int)ItemType.Marker + (int)markerType;
+            for (int i = 0; i < _states.Count; ++i)
             {
-                if (_markers[i].TypeId == type)
+                for (int j = 0; j < _states[i].Markers.Count; ++j)
                 {
-                    return true;
+                    if ((_states[i].Markers[j].Item1.TypeId == typeId)
+                        && (_states[i].Markers[j].Item2.Count > 0))
+                    {
+                        return true;
+                    }
                 }
             }
             return false;
@@ -327,7 +458,7 @@ namespace ColouredPetriNet.Gui.Core
             int type = (int)ItemType.State + (int)stateType;
             for (int i = 0; i < _states.Count; ++i)
             {
-                if (_states[i].TypeId == type)
+                if (_states[i].State.TypeId == type)
                 {
                     return true;
                 }
@@ -340,7 +471,7 @@ namespace ColouredPetriNet.Gui.Core
             int type = (int)ItemType.Transition + (int)transitionType;
             for (int i = 0; i < _transitions.Count; ++i)
             {
-                if (_transitions[i].TypeId == type)
+                if (_transitions[i].Transition.TypeId == type)
                 {
                     return true;
                 }
@@ -350,12 +481,24 @@ namespace ColouredPetriNet.Gui.Core
 
         public bool Contains(int id, ColouredMarkerType markerType)
         {
-            int type = (int)ItemType.Marker + (int)markerType;
-            for (int i = 0; i < _markers.Count; ++i)
+            int typeId = (int)ItemType.Marker + (int)markerType;
+            List<int> listId;
+            for (int i = 0; i < _states.Count; ++i)
             {
-                if (_markers[i].Id == id)
+                for (int j = 0; j < _states[i].Markers.Count; ++j)
                 {
-                    return (_markers[i].TypeId == type);
+                    if (_states[i].Markers[j].Item1.TypeId == typeId)
+                    {
+                        listId = _states[i].Markers[j].Item2;
+                        for (int k = 0; k < listId.Count; ++k)
+                        {
+                            if (listId[k] == id)
+                            {
+                                return true;
+                            }
+                        }
+                        break;
+                    }
                 }
             }
             return false;
@@ -366,9 +509,9 @@ namespace ColouredPetriNet.Gui.Core
             int type = (int)ItemType.State + (int)stateType;
             for (int i = 0; i < _states.Count; ++i)
             {
-                if (_states[i].Id == id)
+                if (_states[i].State.Id == id)
                 {
-                    return (_states[i].TypeId == type);
+                    return (_states[i].State.TypeId == type);
                 }
             }
             return false;
@@ -379,9 +522,9 @@ namespace ColouredPetriNet.Gui.Core
             int type = (int)ItemType.Transition + (int)transitionType;
             for (int i = 0; i < _transitions.Count; ++i)
             {
-                if (_transitions[i].Id == id)
+                if (_transitions[i].Transition.Id == id)
                 {
-                    return (_transitions[i].TypeId == type);
+                    return (_transitions[i].Transition.TypeId == type);
                 }
             }
             return false;
@@ -389,11 +532,19 @@ namespace ColouredPetriNet.Gui.Core
 
         public bool ContainsMarker(int id)
         {
-            for (int i = 0; i < _markers.Count; ++i)
+            List<int> listId;
+            for (int i = 0; i < _states.Count; ++i)
             {
-                if (_markers[i].Id == id)
+                for (int j = 0; j < _states[i].Markers.Count; ++j)
                 {
-                    return true;
+                    listId = _states[i].Markers[j].Item2;
+                    for (int k = 0; k < listId.Count; ++k)
+                    {
+                        if (listId[k] == id)
+                        {
+                            return true;
+                        }
+                    }
                 }
             }
             return false;
@@ -403,7 +554,7 @@ namespace ColouredPetriNet.Gui.Core
         {
             for (int i = 0; i < _states.Count; ++i)
             {
-                if (_states[i].Id == id)
+                if (_states[i].State.Id == id)
                 {
                     return true;
                 }
@@ -415,7 +566,7 @@ namespace ColouredPetriNet.Gui.Core
         {
             for (int i = 0; i < _transitions.Count; ++i)
             {
-                if (_transitions[i].Id == id)
+                if (_transitions[i].Transition.Id == id)
                 {
                     return true;
                 }
@@ -425,32 +576,86 @@ namespace ColouredPetriNet.Gui.Core
 
         public bool ContainsLink(int stateId, int transitionId)
         {
-            return _petriNet.IsLinkExist(stateId, transitionId);
+            var state = FindStateById(stateId);
+            if (ReferenceEquals(state, null))
+            {
+                return false;
+            }
+            for (int i = 0; i < state.InputLinks.Count; ++i)
+            {
+                if (state.InputLinks[i].Transition.Transition.Id == transitionId)
+                {
+                    return true;
+                }
+            }
+            for (int i = 0; i < state.OutputLinks.Count; ++i)
+            {
+                if (state.OutputLinks[i].Transition.Transition.Id == transitionId)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public bool ContainsLink(int stateId, int transitionId, LinkDirection direction)
         {
+            var state = FindStateById(stateId);
+            if (ReferenceEquals(state, null))
+            {
+                return false;
+            }
             if (direction == LinkDirection.FromStateToTransition)
             {
-                return _petriNet.IsOutputLinkExist(stateId, transitionId);
+                for (int i = 0; i < state.OutputLinks.Count; ++i)
+                {
+                    if (state.OutputLinks[i].Transition.Transition.Id == transitionId)
+                    {
+                        return true;
+                    }
+                }
             }
             else
             {
-                return _petriNet.IsInputLinkExist(stateId, transitionId);
+                for (int i = 0; i < state.InputLinks.Count; ++i)
+                {
+                    if (state.InputLinks[i].Transition.Transition.Id == transitionId)
+                    {
+                        return true;
+                    }
+                }
             }
+            return false;
         }
         #endregion
 
         #region Count Functions
+        public int GetMarkerCount()
+        {
+            int count = 0;
+            for (int i = 0; i < _states.Count; ++i)
+            {
+                for (int j = 0; j < _states[i].Markers.Count; ++j)
+                {
+                    count += _states[i].Markers[j].Item2.Count;
+                }
+            }
+            return count;
+        }
+
         public int GetMarkerCount(ColouredMarkerType markerType)
         {
-            int type = (int)ItemType.Marker + (int)markerType;
+            int typeId = (int)ItemType.Marker + (int)markerType;
             int count = 0;
-            for (int i = 0; i < _markers.Count; ++i)
+            for (int i = 0; i < _states.Count; ++i)
             {
-                if (_markers[i].TypeId == type)
+                for (int j = 0; j < _states[i].Markers.Count; ++j)
                 {
-                    ++count;
+                    if (_states[i].Markers[j].Item1.TypeId == typeId)
+                    {
+                        count += _states[i].Markers[j].Item2.Count;
+                        break;
+                    }
                 }
             }
             return count;
@@ -458,11 +663,11 @@ namespace ColouredPetriNet.Gui.Core
 
         public int GetTransitionCount(ColouredTransitionType transitionType)
         {
-            int type = (int)ItemType.Transition + (int)transitionType;
+            int typeId = (int)ItemType.Transition + (int)transitionType;
             int count = 0;
             for (int i = 0; i < _transitions.Count; ++i)
             {
-                if (_transitions[i].TypeId == type)
+                if (_transitions[i].Transition.TypeId == typeId)
                 {
                     ++count;
                 }
@@ -472,11 +677,11 @@ namespace ColouredPetriNet.Gui.Core
 
         public int GetStateCount(ColouredStateType stateType)
         {
-            int type = (int)ItemType.State + (int)stateType;
+            int typeId = (int)ItemType.State + (int)stateType;
             int count = 0;
             for (int i = 0; i < _states.Count; ++i)
             {
-                if (_states[i].TypeId == type)
+                if (_states[i].State.TypeId == typeId)
                 {
                     ++count;
                 }
@@ -486,86 +691,675 @@ namespace ColouredPetriNet.Gui.Core
 
         public int GetLinkCount(int stateId, int transitionId)
         {
-            return _petriNet.GetLinkCount(stateId, transitionId);
+            var state = FindStateById(stateId);
+            int count = 0;
+            if (ReferenceEquals(state, null))
+            {
+                return 0;
+            }
+            for (int i = 0; i < state.InputLinks.Count; ++i)
+            {
+                if (state.InputLinks[i].Transition.Transition.Id == transitionId)
+                {
+                    ++count;
+                    break;
+                }
+            }
+            for (int i = 0; i < state.OutputLinks.Count; ++i)
+            {
+                if (state.OutputLinks[i].Transition.Transition.Id == transitionId)
+                {
+                    ++count;
+                    break;
+                }
+            }
+            return count;
         }
 
         public int GetLinkCount(int stateId, int transitionId, LinkDirection direction)
         {
+            var state = FindStateById(stateId);
+            if (ReferenceEquals(state, null))
+            {
+                return 0;
+            }
             if (direction == LinkDirection.FromStateToTransition)
             {
-                return _petriNet.GetOutputLinkCount(stateId, transitionId);
+                for (int i = 0; i < state.OutputLinks.Count; ++i)
+                {
+                    if (state.OutputLinks[i].Transition.Transition.Id == transitionId)
+                    {
+                        return 1;
+                    }
+                }
             }
             else
             {
-                return _petriNet.GetInputLinkCount(stateId, transitionId);
+                for (int i = 0; i < state.InputLinks.Count; ++i)
+                {
+                    if (state.InputLinks[i].Transition.Transition.Id == transitionId)
+                    {
+                        return 1;
+                    }
+                }
             }
+            return 0;
         }
         #endregion
 
         #region Find Functions
-        public List<Gui.GraphicsItems.GraphicsItem> FindItems(int x, int y);
-        public List<Gui.GraphicsItems.GraphicsItem> FindLinks(int x, int y);
-        public List<Gui.GraphicsItems.GraphicsItem> FindMarkers(int x, int y);
-        public List<Gui.GraphicsItems.GraphicsItem> FindMarkers(int x, int y, ColouredMarkerType markerType);
-        public List<Gui.GraphicsItems.GraphicsItem> FindStates(int x, int y);
-        public List<Gui.GraphicsItems.GraphicsItem> FindStates(int x, int y, ColouredStateType stateType);
-        public List<Gui.GraphicsItems.GraphicsItem> FindTransitions(int x, int y);
-        public List<Gui.GraphicsItems.GraphicsItem> FindTransitions(int x, int y, ColouredTransitionType transitionType);
+        public List<GraphicsLinkWrapper> FindLinks(int x, int y)
+        {
+            var foundLinks = new List<GraphicsLinkWrapper>();
+            for (int i = 0; i < _links.Count; ++i)
+            {
+                if (_links[i].Link.IsCollision(x, y))
+                {
+                    foundLinks.Add(_links[i]);
+                }
+            }
+            return foundLinks;
+        }
+
+        public List<GraphicsLinkWrapper> FindLinks(int x, int y, LinkDirection direction)
+        {
+            var foundLinks = new List<GraphicsLinkWrapper>();
+            for (int i = 0; i < _links.Count; ++i)
+            {
+                if ((_links[i].Direction == direction) && _links[i].Link.IsCollision(x, y))
+                {
+                    foundLinks.Add(_links[i]);
+                }
+            }
+            return foundLinks;
+        }
+
+        public List<GraphicsLinkWrapper> FindLinks(int x, int y, int w, int h,
+            GraphicsItems.OverlapType overlap = GraphicsItems.OverlapType.Partial)
+        {
+            var foundLinks = new List<GraphicsLinkWrapper>();
+            for (int i = 0; i < _links.Count; ++i)
+            {
+                if (_links[i].Link.IsCollision(x, y, w, h, overlap))
+                {
+                    foundLinks.Add(_links[i]);
+                }
+            }
+            return foundLinks;
+        }
+
+        public List<GraphicsLinkWrapper> FindLinks(int x, int y, int w, int h, LinkDirection direction,
+            GraphicsItems.OverlapType overlap = GraphicsItems.OverlapType.Partial)
+        {
+            var foundLinks = new List<GraphicsLinkWrapper>();
+            for (int i = 0; i < _links.Count; ++i)
+            {
+                if ((_links[i].Direction == direction) && _links[i].Link.IsCollision(x, y, w, h, overlap))
+                {
+                    foundLinks.Add(_links[i]);
+                }
+            }
+            return foundLinks;
+        }
+
+        public List<GraphicsStateWrapper> FindStates(int x, int y)
+        {
+            var foundStates = new List<GraphicsStateWrapper>();
+            for (int i = 0; i < _states.Count; ++i)
+            {
+                if (_states[i].State.IsCollision(x, y))
+                {
+                    foundStates.Add(_states[i]);
+                }
+            }
+            return foundStates;
+        }
+
+        public List<GraphicsStateWrapper> FindStates(int x, int y, ColouredStateType stateType)
+        {
+            int typeId = (int)ItemType.State + (int)stateType;
+            var foundStates = new List<GraphicsStateWrapper>();
+            for (int i = 0; i < _states.Count; ++i)
+            {
+                if ((_states[i].State.TypeId == typeId) && _states[i].State.IsCollision(x, y))
+                {
+                    foundStates.Add(_states[i]);
+                }
+            }
+            return foundStates;
+        }
+
+        public List<GraphicsStateWrapper> FindStates(int x, int y, int w, int h,
+            GraphicsItems.OverlapType overlap = GraphicsItems.OverlapType.Partial)
+        {
+            var foundStates = new List<GraphicsStateWrapper>();
+            for (int i = 0; i < _states.Count; ++i)
+            {
+                if (_states[i].State.IsCollision(x, y, w, h, overlap))
+                {
+                    foundStates.Add(_states[i]);
+                }
+            }
+            return foundStates;
+        }
+
+        public List<GraphicsStateWrapper> FindStates(int x, int y, int w, int h, ColouredStateType stateType,
+            GraphicsItems.OverlapType overlap = GraphicsItems.OverlapType.Partial)
+        {
+            int typeId = (int)ItemType.State + (int)stateType;
+            var foundStates = new List<GraphicsStateWrapper>();
+            for (int i = 0; i < _states.Count; ++i)
+            {
+                if ((_states[i].State.TypeId == typeId)
+                    && _states[i].State.IsCollision(x, y, w, h, overlap))
+                {
+                    foundStates.Add(_states[i]);
+                }
+            }
+            return foundStates;
+        }
+
+        public List<GraphicsTransitionWrapper> FindTransitions(int x, int y)
+        {
+            var foundTransitions = new List<GraphicsTransitionWrapper>();
+            for (int i = 0; i < _transitions.Count; ++i)
+            {
+                if (_transitions[i].Transition.IsCollision(x, y))
+                {
+                    foundTransitions.Add(_transitions[i]);
+                }
+            }
+            return foundTransitions;
+        }
+
+        public List<GraphicsTransitionWrapper> FindTransitions(int x, int y, ColouredTransitionType transitionType)
+        {
+            int typeId = (int)ItemType.Transition + (int)transitionType;
+            var foundTransitions = new List<GraphicsTransitionWrapper>();
+            for (int i = 0; i < _transitions.Count; ++i)
+            {
+                if ((_transitions[i].Transition.TypeId == typeId) &&
+                    _transitions[i].Transition.IsCollision(x, y))
+                {
+                    foundTransitions.Add(_transitions[i]);
+                }
+            }
+            return foundTransitions;
+        }
+
+        public List<GraphicsTransitionWrapper> FindTransitions(int x, int y, int w, int h,
+            GraphicsItems.OverlapType overlap = GraphicsItems.OverlapType.Partial)
+        {
+            var foundTransitions = new List<GraphicsTransitionWrapper>();
+            for (int i = 0; i < _transitions.Count; ++i)
+            {
+                if (_transitions[i].Transition.IsCollision(x, y, w, h, overlap))
+                {
+                    foundTransitions.Add(_transitions[i]);
+                }
+            }
+            return foundTransitions;
+        }
+
+        public List<GraphicsTransitionWrapper> FindTransitions(int x, int y, int w, int h, ColouredTransitionType transitionType,
+            GraphicsItems.OverlapType overlap = GraphicsItems.OverlapType.Partial)
+        {
+            int typeId = (int)ItemType.Transition + (int)transitionType;
+            var foundTransitions = new List<GraphicsTransitionWrapper>();
+            for (int i = 0; i < _transitions.Count; ++i)
+            {
+                if ((_transitions[i].Transition.TypeId == typeId) &&
+                    _transitions[i].Transition.IsCollision(x, y, w, h, overlap))
+                {
+                    foundTransitions.Add(_transitions[i]);
+                }
+            }
+            return foundTransitions;
+        }
         #endregion
-        
+
         #region Select Functions
-        public void Select(int x, int y);
-        public void Select(int x, int y, int w, int h);
-        public void SelectItems();
-        public void SelectLinks();
-        public void SelectLinks(int stateId, int transitionId);
-        public void SelectLinks(int stateId, int transitionId, LinkDirection direction);
-        public void SelectMarkers();
-        public void SelectMarkers(int stateId);
-        public void SelectMarkers(ColouredMarkerType markerType);
-        public void SelectMarkers(int stateId, ColouredMarkerType markerType);
-        public void SelectStates();
-        public void SelectStates(ColouredStateType stateType);
-        public void SelectTransitions();
-        public void SelectTransitions(ColouredTransitionType transitionType);
+        public void Select(int x, int y)
+        {
+            for (int i = 0; i < _states.Count; ++i)
+            {
+                if ((!_states[i].State.IsSelected()) && _states[i].State.IsCollision(x, y))
+                {
+                    _states[i].State.Select();
+                    _selectedStates.Add(_states[i].State.Id);
+                }
+            }
+            for (int i = 0; i < _transitions.Count; ++i)
+            {
+                if ((!_transitions[i].Transition.IsSelected())
+                    && _transitions[i].Transition.IsCollision(x, y))
+                {
+                    _transitions[i].Transition.Select();
+                    _selectedTransitions.Add(_transitions[i].Transition.Id);
+                }
+            }
+            for (int i = 0; i < _links.Count; ++i)
+            {
+                if ((!_links[i].Link.IsSelected()) && _links[i].Link.IsCollision(x, y))
+                {
+                    _links[i].Link.Select();
+                    _selectedLinks.Add(_links[i].Link.Id);
+                }
+            }
+        }
+
+        public void Select(int x, int y, int w, int h)
+        {
+            var overlap = Style.SelectionMode;
+            for (int i = 0; i < _states.Count; ++i)
+            {
+                if ((!_states[i].State.IsSelected()) &&
+                    _states[i].State.IsCollision(x, y, w, h, overlap))
+                {
+                    _states[i].State.Select();
+                    _selectedStates.Add(_states[i].State.Id);
+                }
+            }
+            for(int i = 0; i < _transitions.Count; ++i)
+            {
+                if ((!_transitions[i].Transition.IsSelected())
+                    && _transitions[i].Transition.IsCollision(x, y, w, h, overlap))
+                {
+                    _transitions[i].Transition.Select();
+                    _selectedTransitions.Add(_transitions[i].Transition.Id);
+                }
+            }
+            for (int i = 0; i < _links.Count; ++i)
+            {
+                if ((!_links[i].Link.IsSelected()) && _links[i].Link.IsCollision(x, y, w, h, overlap))
+                {
+                    _links[i].Link.Select();
+                    _selectedLinks.Add(_links[i].Link.Id);
+                }
+            }
+        }
+
+        public void SelectItems()
+        {
+            SelectStates();
+            SelectTransitions();
+            SelectLinks();
+        }
+
+        public void SelectLinks()
+        {
+            _selectedLinks.Clear();
+            for (int i = 0; i < _links.Count; ++i)
+            {
+                _links[i].Link.Select();
+                _selectedLinks.Add(_links[i].Link.Id);
+            }
+        }
+
+        public void SelectLinks(int stateId, int transitionId)
+        {
+            var state = FindStateById(stateId);
+            if (ReferenceEquals(state, null))
+            {
+                return;
+            }
+            for (int i = 0; i < state.InputLinks.Count; ++i)
+            {
+                if (state.InputLinks[i].Transition.Transition.Id == transitionId)
+                {
+                    state.InputLinks[i].Link.Select();
+                    _selectedLinks.Add(state.InputLinks[i].Link.Id);
+                    break;
+                }
+            }
+            for (int i = 0; i < state.OutputLinks.Count; ++i)
+            {
+                if (state.OutputLinks[i].Transition.Transition.Id == transitionId)
+                {
+                    state.OutputLinks[i].Link.Select();
+                    _selectedLinks.Add(state.OutputLinks[i].Link.Id);
+                    break;
+                }
+            }
+        }
+
+        public void SelectLinks(int stateId, int transitionId, LinkDirection direction)
+        {
+            var state = FindStateById(stateId);
+            if (ReferenceEquals(state, null))
+            {
+                return;
+            }
+            if (direction == LinkDirection.FromStateToTransition)
+            {
+                for (int i = 0; i < state.OutputLinks.Count; ++i)
+                {
+                    if (state.OutputLinks[i].Transition.Transition.Id == transitionId)
+                    {
+                        state.OutputLinks[i].Link.Select();
+                        _selectedLinks.Add(state.OutputLinks[i].Link.Id);
+                        return;
+                    }
+                }
+            }
+            else
+            {
+                for (int i = 0; i < state.InputLinks.Count; ++i)
+                {
+                    if (state.InputLinks[i].Transition.Transition.Id == transitionId)
+                    {
+                        state.InputLinks[i].Link.Select();
+                        _selectedLinks.Add(state.InputLinks[i].Link.Id);
+                        return;
+                    }
+                }
+            }
+        }
+
+        public void SelectStates()
+        {
+            _selectedStates.Clear();
+            for (int i = 0; i < _states.Count; ++i)
+            {
+                _states[i].State.Select();
+                _selectedStates.Add(_states[i].State.Id);
+            }
+        }
+
+        public void SelectStates(ColouredStateType stateType)
+        {
+            int typeId = (int)ItemType.State + (int)stateType;
+            for (int i = 0; i < _states.Count; ++i)
+            {
+                if ((_states[i].State.TypeId == typeId) && (!_states[i].State.IsSelected()))
+                {
+                    _states[i].State.Select();
+                    _selectedStates.Add(_states[i].State.Id);
+                }
+            }
+        }
+
+        public void SelectTransitions()
+        {
+            _selectedTransitions.Clear();
+            for (int i = 0; i < _transitions.Count; ++i)
+            {
+                _transitions[i].Transition.Select();
+                _selectedTransitions.Add(_transitions[i].Transition.Id);
+            }
+        }
+
+        public void SelectTransitions(ColouredTransitionType transitionType)
+        {
+            int typeId = (int)ItemType.Transition + (int)transitionType;
+            for (int i = 0; i < _transitions.Count; ++i)
+            {
+                if ((_transitions[i].Transition.TypeId == typeId)
+                    && (!_transitions[i].Transition.IsSelected()))
+                {
+                    _transitions[i].Transition.Select();
+                    _selectedTransitions.Add(_transitions[i].Transition.Id);
+                }
+            }
+        }
         #endregion
-        
+
         #region Deselect Functions
-        public void Deselect(int x, int y);
-        public void Deselect(int x, int y, int w, int h);
-        public void DeselectItems();
-        public void DeselectLinks();
-        public void DeselectLinks(int stateId, int transitionId);
-        public void DeselectLinks(int stateId, int transitionId, LinkDirection direction);
-        public void DeselectMarkers();
-        public void DeselectMarkers(int stateId);
-        public void DeselectMarkers(ColouredMarkerType markerType);
-        public void DeselectMarkers(int stateId, ColouredMarkerType markerType);
-        public void DeselectStates();
-        public void DeselectStates(ColouredStateType stateType);
-        public void DeselectTransitions();
-        public void DeselectTransitions(ColouredTransitionType transitionType);
+        public void Deselect(int x, int y)
+        {
+            for (int i = 0; i < _states.Count; ++i)
+            {
+                if (_states[i].State.IsSelected() && _states[i].State.IsCollision(x, y))
+                {
+                    _states[i].State.Deselect();
+                    RemoveFromIdList(_states[i].State.Id, _selectedStates);
+                }
+            }
+            for (int i = 0; i < _transitions.Count; ++i)
+            {
+                if (_transitions[i].Transition.IsSelected()
+                    && _transitions[i].Transition.IsCollision(x, y))
+                {
+                    _transitions[i].Transition.Deselect();
+                    RemoveFromIdList(_transitions[i].Transition.Id, _selectedTransitions);
+                }
+            }
+            for (int i = 0; i < _links.Count; ++i)
+            {
+                if (_links[i].Link.IsSelected() && _links[i].Link.IsCollision(x, y))
+                {
+                    _links[i].Link.Deselect();
+                    RemoveFromIdList(_links[i].Link.Id, _selectedLinks);
+                }
+            }
+        }
+
+        public void Deselect(int x, int y, int w, int h)
+        {
+            var overlap = Style.SelectionMode;
+            for (int i = 0; i < _states.Count; ++i)
+            {
+                if (_states[i].State.IsSelected() && _states[i].State.IsCollision(x, y, w, h, overlap))
+                {
+                    _states[i].State.Deselect();
+                    RemoveFromIdList(_states[i].State.Id, _selectedStates);
+                }
+            }
+            for (int i = 0; i < _transitions.Count; ++i)
+            {
+                if (_transitions[i].Transition.IsSelected()
+                    && _transitions[i].Transition.IsCollision(x, y, w, h, overlap))
+                {
+                    _transitions[i].Transition.Deselect();
+                    RemoveFromIdList(_transitions[i].Transition.Id, _selectedTransitions);
+                }
+            }
+            for (int i = 0; i < _links.Count; ++i)
+            {
+                if (_links[i].Link.IsSelected() && _links[i].Link.IsCollision(x, y, w, h, overlap))
+                {
+                    _links[i].Link.Deselect();
+                    RemoveFromIdList(_links[i].Link.Id, _selectedLinks);
+                }
+            }
+        }
+
+        public void DeselectItems()
+        {
+            DeselectStates();
+            DeselectTransitions();
+            DeselectLinks();
+        }
+
+        public void DeselectLinks()
+        {
+            _selectedLinks.Clear();
+            for (int i = 0; i < _links.Count; ++i)
+            {
+                _links[i].Link.Deselect();
+            }
+        }
+
+        public void DeselectLinks(int stateId, int transitionId)
+        {
+            var state = FindStateById(stateId);
+            if (ReferenceEquals(state, null))
+            {
+                return;
+            }
+            for (int i = 0; i < state.InputLinks.Count; ++i)
+            {
+                if (state.InputLinks[i].Transition.Transition.Id == transitionId)
+                {
+                    state.InputLinks[i].Link.Deselect();
+                    RemoveFromIdList(state.InputLinks[i].Link.Id, _selectedLinks);
+                    break;
+                }
+            }
+            for (int i = 0; i < state.OutputLinks.Count; ++i)
+            {
+                if (state.OutputLinks[i].Transition.Transition.Id == transitionId)
+                {
+                    state.OutputLinks[i].Link.Deselect();
+                    RemoveFromIdList(state.OutputLinks[i].Link.Id, _selectedLinks);
+                    break;
+                }
+            }
+        }
+
+        public void DeselectLinks(int stateId, int transitionId, LinkDirection direction)
+        {
+            var state = FindStateById(stateId);
+            if (ReferenceEquals(state, null))
+            {
+                return;
+            }
+            if (direction == LinkDirection.FromStateToTransition)
+            {
+                for (int i = 0; i < state.OutputLinks.Count; ++i)
+                {
+                    if (state.OutputLinks[i].Transition.Transition.Id == transitionId)
+                    {
+                        state.OutputLinks[i].Link.Deselect();
+                        RemoveFromIdList(state.OutputLinks[i].Link.Id, _selectedLinks);
+                        return;
+                    }
+                }
+            }
+            else
+            {
+                for (int i = 0; i < state.InputLinks.Count; ++i)
+                {
+                    if (state.InputLinks[i].Transition.Transition.Id == transitionId)
+                    {
+                        state.InputLinks[i].Link.Deselect();
+                        RemoveFromIdList(state.InputLinks[i].Link.Id, _selectedLinks);
+                        return;
+                    }
+                }
+            }
+        }
+
+        public void DeselectStates()
+        {
+            _selectedStates.Clear();
+            for (int i = 0; i < _states.Count; ++i)
+            {
+                _states[i].State.Deselect();
+            }
+        }
+
+        public void DeselectStates(ColouredStateType stateType)
+        {
+            int typeId = (int)ItemType.State + (int)stateType;
+            for (int i = 0; i < _states.Count; ++i)
+            {
+                if ((_states[i].State.TypeId == typeId) && _states[i].State.IsSelected())
+                {
+                    _states[i].State.Deselect();
+                    RemoveFromIdList(_states[i].State.Id, _selectedStates);
+                }
+            }
+        }
+
+        public void DeselectTransitions()
+        {
+            _selectedTransitions.Clear();
+            for (int i = 0; i < _transitions.Count; ++i)
+            {
+                _transitions[i].Transition.Deselect();
+            }
+        }
+
+        public void DeselectTransitions(ColouredTransitionType transitionType)
+        {
+            int typeId = (int)ItemType.Transition + (int)transitionType;
+            for (int i = 0; i < _transitions.Count; ++i)
+            {
+                if ((_transitions[i].Transition.TypeId == typeId) && _transitions[i].Transition.IsSelected())
+                {
+                    _transitions[i].Transition.Deselect();
+                    RemoveFromIdList(_transitions[i].Transition.Id, _selectedTransitions);
+                }
+            }
+        }
         #endregion
-        
+
         #region Serialization Functions
         public bool Serialize(string filePath)
         {
+            // TODO
             return true;
         }
 
         public bool Deserialize(string filePath)
         {
+            // TODO
             return true;
         }
         #endregion
-        
+
         #region SelectionArea Functions
-        public void SetSelectionArea(int x, int y, int w, int h);
-        public void UpdateSelectionArea(int w, int h);
-        public void UpdateSelectionAreaByPos(int x, int y);
-        public void HideSelectionArea();
+        public void SetSelectionArea(int x, int y, int w, int h)
+        {
+            _selectionArea.X = x;
+            _selectionArea.Y = y;
+            _selectionArea.Width = w;
+            _selectionArea.Height = h;
+            _selectionArea.Visible = true;
+            _selectionArea.HorizontalDirection = HorizontalDirection.Right;
+            _selectionArea.VerticalDirection = VerticalDirection.Top;
+            Select(x, y, w, h);
+        }
+
+        public void UpdateSelectionAreaByPos(int x, int y)
+        {
+            int dx = x - _selectionArea.X;
+            int dy = y - _selectionArea.Y;
+            _selectionArea.Width = System.Math.Abs(dx);
+            _selectionArea.Height = System.Math.Abs(dy);
+            if (dx < 0)
+            {
+                _selectionArea.HorizontalDirection = HorizontalDirection.Left;
+                if (dy < 0)
+                {
+                    _selectionArea.VerticalDirection = VerticalDirection.Bottom;
+                    Select(x, y, _selectionArea.Width, _selectionArea.Height);
+                }
+                else
+                {
+                    _selectionArea.VerticalDirection = VerticalDirection.Top;
+                    Select(x, _selectionArea.Y, _selectionArea.Width, _selectionArea.Height);
+                }
+            }
+            else
+            {
+                _selectionArea.HorizontalDirection = HorizontalDirection.Right;
+                if (dy < 0)
+                {
+                    _selectionArea.VerticalDirection = VerticalDirection.Bottom;
+                    Select(_selectionArea.X, y, _selectionArea.Width, _selectionArea.Height);
+                }
+                else
+                {
+                    _selectionArea.VerticalDirection = VerticalDirection.Top;
+                    Select(_selectionArea.X, _selectionArea.Y, _selectionArea.Width, _selectionArea.Height);
+                }
+            }
+        }
+
+        public void UpdateSelectionArea(int w, int h)
+        {
+            _selectionArea.Width = w;
+            _selectionArea.Height = h;
+            Select(_selectionArea.X, _selectionArea.Y, w, h);
+        }
+
+        public void HideSelectionArea()
+        {
+            _selectionArea.Visible = false;
+        }
         #endregion
-        */
 
         public void Draw(Graphics graphics)
         {
@@ -606,6 +1400,120 @@ namespace ColouredPetriNet.Gui.Core
                 }
             }
             return null;
+        }
+
+        private bool RemoveOutputLink(GraphicsStateWrapper state, int stateId, int transitionId)
+        {
+            GraphicsTransitionWrapper transition;
+            for (int i = 0; i < state.OutputLinks.Count; ++i)
+            {
+                transition = state.OutputLinks[i].Transition;
+                if (transition.Transition.Id == transitionId)
+                {
+                    int id = state.OutputLinks[i].Link.Id;
+                    RemoveFromIdList(id, _selectedLinks);
+                    RemoveFromLinkList(id, transition.InputLinks);
+                    RemoveFromLinkList(id, _links);
+                    state.OutputLinks.RemoveAt(i);
+                    _petriNet.RemoveStateToTransitionLink(stateId, transitionId);
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private bool RemoveInputLink(GraphicsStateWrapper state, int stateId, int transitionId)
+        {
+            GraphicsTransitionWrapper transition;
+            for (int i = 0; i < state.InputLinks.Count; ++i)
+            {
+                transition = state.InputLinks[i].Transition;
+                if (transition.Transition.Id == transitionId)
+                {
+                    int id = state.InputLinks[i].Link.Id;
+                    RemoveFromIdList(id, _selectedLinks);
+                    RemoveFromLinkList(id, transition.OutputLinks);
+                    RemoveFromLinkList(id, _links);
+                    state.InputLinks.RemoveAt(i);
+                    _petriNet.RemoveTransitionToStateLink(stateId, transitionId);
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private void RemoveFromIdList(int id, List<int> listId)
+        {
+            for (int i = 0; i < listId.Count; ++i)
+            {
+                if (listId[i] == id)
+                {
+                    listId.RemoveAt(i);
+                    return;
+                }
+            }
+        }
+
+        private void RemoveFromLinkList(int id, List<GraphicsLinkWrapper> linkList)
+        {
+            for (int i = 0; i < linkList.Count; ++i)
+            {
+                if (linkList[i].Link.Id == id)
+                {
+                    linkList.RemoveAt(i);
+                    return;
+                }
+            }
+        }
+
+        private void RemoveLinksFromState(GraphicsStateWrapper stateItem)
+        {
+            int id;
+            for (int i = stateItem.InputLinks.Count - 1; i >= 0; --i)
+            {
+                id = stateItem.InputLinks[i].Link.Id;
+                RemoveFromIdList(id, _selectedLinks);
+                RemoveFromLinkList(id, stateItem.InputLinks[i].Transition.OutputLinks);
+                //_petriNet.RemoveTransitionToStateLink(stateItem.InputLinks[i].Transition.Transition.Id,
+                //    stateItem.InputLinks[i].State.State.Id);
+                RemoveFromLinkList(id, _links);
+                stateItem.InputLinks.RemoveAt(i);
+            }
+            for (int i = stateItem.OutputLinks.Count - 1; i >= 0; --i)
+            {
+                id = stateItem.OutputLinks[i].Link.Id;
+                RemoveFromIdList(id, _selectedLinks);
+                RemoveFromLinkList(id, stateItem.OutputLinks[i].Transition.InputLinks);
+                //_petriNet.RemoveStateToTransitionLink(stateItem.OutputLinks[i].State.State.Id,
+                //    stateItem.OutputLinks[i].Transition.Transition.Id);
+                RemoveFromLinkList(id, _links);
+                stateItem.OutputLinks.RemoveAt(i);
+            }
+        }
+
+        private void RemoveLinksFromTransition(GraphicsTransitionWrapper transitionItem)
+        {
+            int id;
+            for (int i = transitionItem.InputLinks.Count - 1; i >= 0; --i)
+            {
+                id = transitionItem.InputLinks[i].Link.Id;
+                RemoveFromIdList(id, _selectedLinks);
+                RemoveFromLinkList(id, transitionItem.InputLinks[i].State.OutputLinks);
+                RemoveFromLinkList(id, _links);
+                //_petriNet.RemoveStateToTransitionLink(transitionItem.InputLinks[i].State.State.Id,
+                //    transitionItem.InputLinks[i].Transition.Transition.Id);
+                transitionItem.InputLinks.RemoveAt(i);
+            }
+            for (int i = transitionItem.OutputLinks.Count - 1; i >= 0; --i)
+            {
+                id = transitionItem.OutputLinks[i].Link.Id;
+                RemoveFromIdList(id, _selectedLinks);
+                RemoveFromLinkList(id, transitionItem.OutputLinks[i].State.InputLinks);
+                RemoveFromLinkList(id, _links);
+                //_petriNet.RemoveTransitionToStateLink(transitionItem.OutputLinks[i].Transition.Transition.Id, 
+                //    transitionItem.OutputLinks[i].State.State.Id);
+                transitionItem.OutputLinks.RemoveAt(i);
+            }
         }
     }
 }
