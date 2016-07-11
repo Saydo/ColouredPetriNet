@@ -5,19 +5,25 @@ namespace ColouredPetriNet.Gui.Forms
 {
     public partial class MainForm : Form
     {
-        private enum ItemMapMode { View, Move, AddElement , Remove, RemoveMarker};
+        private enum ItemMapMode { View, Move, AddState, AddTransition, AddMarker, Remove, RemoveMarker};
 
-        //private GraphicsItemMap _itemMap;
+        private Core.PetriNetGraphicsMap _itemMap;
         private bool _mousePressed;
         private ItemMapMode _mapMode;
-        //private Core.ColouredElementType _elementType;
+        private Core.ColouredStateType _newStateType;
+        private Core.ColouredTransitionType _newTransitionType;
+        private Core.ColouredMarkerType _newMarkerType;
 
         public MainForm()
         {
             InitializeComponent();
-            //_itemMap = new GraphicsItemMap();
+            _itemMap = new Core.PetriNetGraphicsMap();
             //_itemMap.Overlap = GraphicsItems.OverlapType.Full;
             _mousePressed = false;
+            _mapMode = ItemMapMode.View;
+            _newStateType = Core.ColouredStateType.RoundState;
+            _newTransitionType = Core.ColouredTransitionType.RectangleTransition;
+            _newMarkerType = Core.ColouredMarkerType.RoundMarker;
             /*
             ImageList img_list = new ImageList();
             img_list.Images.Add(Properties.Resources.AddRoundStateIcon);
@@ -42,33 +48,28 @@ namespace ColouredPetriNet.Gui.Forms
 
         private void ItemMapPaint(object sender, PaintEventArgs e)
         {
-            //_itemMap.Draw(e.Graphics);
+            _itemMap.Draw(e.Graphics);
         }
 
         private void ItemMapMouseClick(object sender, MouseEventArgs e)
         {
             System.Console.WriteLine("ItemMapMouseClick");
-            if (_mapMode == ItemMapMode.AddElement)
+            switch (_mapMode)
             {
-                /*
-                switch (_elementType)
-                {
-                    case Core.ColouredElementType.RhombMarker:
-                        break;
-                    case Core.ColouredElementType.RoundMarker:
-                        break;
-                    case Core.ColouredElementType.TriangleMarker:
-                        break;
-                    case Core.ColouredElementType.RectangleTransition:
-                        break;
-                    case Core.ColouredElementType.RhombTransition:
-                        break;
-                    case Core.ColouredElementType.RoundState:
-                        break;
-                    case Core.ColouredElementType.ImageState:
-                        break;
-                }
-                */
+                case ItemMapMode.AddState:
+                    _itemMap.AddState(e.X, e.Y, _newStateType);
+                    break;
+                case ItemMapMode.AddTransition:
+                    _itemMap.AddTransition(e.X, e.Y, _newTransitionType);
+                    break;
+                case ItemMapMode.AddMarker:
+                    var selectedStates = _itemMap.FindStates(e.X, e.Y);
+                    if (selectedStates.Count > 0)
+                    {
+                        var state = selectedStates[selectedStates.Count - 1];
+                        _itemMap.AddMarker(state.State.Id, _newMarkerType);
+                    }
+                    break;
             }
         }
 
@@ -76,7 +77,7 @@ namespace ColouredPetriNet.Gui.Forms
         {
             System.Console.WriteLine("ItemMapMouseDown");
             _mousePressed = true;
-            //_itemMap.SetSelectionArea(e.X, e.Y, 1, 1);
+            _itemMap.SetSelectionArea(e.X, e.Y, 1, 1);
             this.pbMap.Refresh();
         }
 
@@ -85,7 +86,7 @@ namespace ColouredPetriNet.Gui.Forms
             if (_mousePressed)
             {
                 System.Console.WriteLine("ItemMapMouseMove");
-                //_itemMap.UpdateSelectionAreaByPos(e.X, e.Y);
+                _itemMap.UpdateSelectionAreaByPos(e.X, e.Y);
                 this.pbMap.Refresh();
             }
         }
@@ -94,8 +95,32 @@ namespace ColouredPetriNet.Gui.Forms
         {
             System.Console.WriteLine("ItemMapMouseUp");
             _mousePressed = false;
-            //_itemMap.HideSelectionArea();
+            _itemMap.HideSelectionArea();
             this.pbMap.Refresh();
+        }
+
+        private void SetItemMapMode(ItemMapMode mode)
+        {
+            System.Console.WriteLine("SetItemMapMode: " + mode);
+            _mapMode = mode;
+        }
+
+        private void SetNewStateType(Core.ColouredStateType type)
+        {
+            System.Console.WriteLine("SetNewStateType: " + type);
+            _newStateType = type;
+        }
+
+        private void SetNewTransitionType(Core.ColouredTransitionType type)
+        {
+            System.Console.WriteLine("SetNewTransitionType: " + type);
+            _newTransitionType = type;
+        }
+
+        private void SetNewMarkerType(Core.ColouredMarkerType type)
+        {
+            System.Console.WriteLine("SetNewMarkerType: " + type);
+            _newMarkerType = type;
         }
     }
 }

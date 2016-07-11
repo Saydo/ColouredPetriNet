@@ -104,6 +104,7 @@ namespace ColouredPetriNet.Gui.Forms
             tsbView.DisplayStyle = ToolStripItemDisplayStyle.Image;
             tsbView.Image = Properties.Resources.ViewIcon;
             tsbView.Text = "View";
+            tsbView.Click += (obj, e) => SetItemMapMode(ItemMapMode.View);
             //
             // Move (ToolStripButton)
             //
@@ -112,6 +113,7 @@ namespace ColouredPetriNet.Gui.Forms
             tsbMove.DisplayStyle = ToolStripItemDisplayStyle.Image;
             tsbMove.Image = Properties.Resources.MoveIcon;
             tsbMove.Text = "Move";
+            tsbMove.Click += (obj, e) => SetItemMapMode(ItemMapMode.Move);
             //
             // imageListAddState (StripImageList)
             //
@@ -119,6 +121,9 @@ namespace ColouredPetriNet.Gui.Forms
             imageListAddState.Size = new Size(33, 22);
             imageListAddState.AddItem(Properties.Resources.AddRoundStateIcon, "Add Round State");
             imageListAddState.AddItem(Properties.Resources.AddImageStateIcon, "Add Image State");
+            imageListAddState.Click += (obj, e) => SetItemMapMode(ItemMapMode.AddState);
+            imageListAddState.DropDown.Items[0].Click += (obj, e) => SetNewStateType(Core.ColouredStateType.RoundState);
+            imageListAddState.DropDown.Items[1].Click += (obj, e) => SetNewStateType(Core.ColouredStateType.ImageState);
             //
             // imageListAddTransition (StripImageList)
             //
@@ -126,6 +131,9 @@ namespace ColouredPetriNet.Gui.Forms
             imageListAddTransition.Size = new Size(33, 22);
             imageListAddTransition.AddItem(Properties.Resources.AddRectangleTransitionIcon, "Add Rectangle Transition");
             imageListAddTransition.AddItem(Properties.Resources.AddRhombTransitionIcon, "Add Rhomb Transition");
+            imageListAddTransition.Click += (obj, e) => SetItemMapMode(ItemMapMode.AddTransition);
+            imageListAddTransition.DropDown.Items[0].Click += (obj, e) => SetNewTransitionType(Core.ColouredTransitionType.RectangleTransition);
+            imageListAddTransition.DropDown.Items[1].Click += (obj, e) => SetNewTransitionType(Core.ColouredTransitionType.RhombTransition);
             //
             // imageListAddMarker (StripImageList)
             //
@@ -134,6 +142,10 @@ namespace ColouredPetriNet.Gui.Forms
             imageListAddMarker.AddItem(Properties.Resources.AddRoundMarkerIcon, "Add Round Marker");
             imageListAddMarker.AddItem(Properties.Resources.AddRhombMarkerIcon, "Add Rhomb Marker");
             imageListAddMarker.AddItem(Properties.Resources.AddTriangleMarkerIcon, "Add Triangle Marker");
+            imageListAddMarker.Click += (obj, e) => SetItemMapMode(ItemMapMode.AddMarker);
+            imageListAddMarker.DropDown.Items[0].Click += (obj, e) => SetNewMarkerType(Core.ColouredMarkerType.RoundMarker);
+            imageListAddMarker.DropDown.Items[1].Click += (obj, e) => SetNewMarkerType(Core.ColouredMarkerType.RhombMarker);
+            imageListAddMarker.DropDown.Items[2].Click += (obj, e) => SetNewMarkerType(Core.ColouredMarkerType.TriangleMarker);
             //
             // Remove (ToolStripButton)
             //
@@ -142,6 +154,7 @@ namespace ColouredPetriNet.Gui.Forms
             tsbRemove.DisplayStyle = ToolStripItemDisplayStyle.Image;
             tsbRemove.Image = Properties.Resources.RemoveIcon;
             tsbRemove.Text = "Remove";
+            tsbRemove.Click += (obj, e) => SetItemMapMode(ItemMapMode.Remove);
             //
             // RemoveMarker (ToolStripButton)
             //
@@ -150,6 +163,7 @@ namespace ColouredPetriNet.Gui.Forms
             tsbRemoveMarker.DisplayStyle = ToolStripItemDisplayStyle.Image;
             tsbRemoveMarker.Image = Properties.Resources.RemoveMarkerIcon;
             tsbRemoveMarker.Text = "Remove Marker";
+            tsbRemoveMarker.Click += (obj, e) => SetItemMapMode(ItemMapMode.RemoveMarker);
             //
             // tsSeparator1 (ToolStripSeparator)
             //
