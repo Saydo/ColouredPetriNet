@@ -66,15 +66,25 @@ namespace ColouredPetriNet.Gui.Core.GraphicsItems
             }
         }
 
-        public override void Move(int x, int y)
+        public override void SetPosition(int x, int y)
         {
             int dx = x - _center.X;
             int dy = y - _center.Y;
-            base.Move(x, y);
+            base.SetPosition(x, y);
             for (int i = 0; i < _arrowPoints.Length; ++i)
             {
                 _arrowPoints[i].X += dx;
                 _arrowPoints[i].Y += dy;
+            }
+        }
+
+        public override void Move(int x, int y)
+        {
+            base.SetPosition(x, y);
+            for (int i = 0; i < _arrowPoints.Length; ++i)
+            {
+                _arrowPoints[i].X += x;
+                _arrowPoints[i].Y += y;
             }
         }
 

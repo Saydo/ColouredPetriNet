@@ -55,6 +55,9 @@ namespace ColouredPetriNet.Gui.Core
         int GetStateCount(ColouredStateType stateType);
         int GetLinkCount(int stateId, int transitionId);
         int GetLinkCount(int stateId, int transitionId, LinkDirection direction);
+        int GetSelectedStatesCount();
+        int GetSelectedTransitionsCount();
+        int GetSelectedLinksCount();
         // Find
         List<GraphicsLinkWrapper> FindLinks(int x, int y);
         List<GraphicsLinkWrapper> FindLinks(int x, int y, LinkDirection direction);
@@ -96,6 +99,10 @@ namespace ColouredPetriNet.Gui.Core
         void DeselectStates(ColouredStateType stateType);
         void DeselectTransitions();
         void DeselectTransitions(ColouredTransitionType transitionType);
+        // Move
+        void Move(int dx, int dy);
+        bool Move(int dx, int dy, int id);
+        void MoveSelectedItems(int dx, int dy);
         // Serialization
         bool Serialize(string filePath);
         bool Deserialize(string filePath);

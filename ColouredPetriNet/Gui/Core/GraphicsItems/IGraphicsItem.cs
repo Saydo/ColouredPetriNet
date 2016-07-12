@@ -14,6 +14,7 @@ namespace ColouredPetriNet.Gui.Core.GraphicsItems
         int Extent { get; set; }
         Pen SelectionPen { get; set; }
         void Draw(Graphics graphics);
+        void SetPosition(int x, int y);
         void Move(int x, int y);
         bool IsCollision(int x, int y, int z = -1);
         bool IsCollision(int x, int y, int w, int h, OverlapType overlap = OverlapType.Partial, int z = -1);

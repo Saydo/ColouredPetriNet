@@ -81,7 +81,7 @@ namespace ColouredPetriNet.Gui.Core.GraphicsItems
             }
         }
 
-        public override void Move(int x, int y)
+        public override void SetPosition(int x, int y)
         {
             int dx = x - _center.X;
             int dy = y - _center.Y;
@@ -96,6 +96,21 @@ namespace ColouredPetriNet.Gui.Core.GraphicsItems
             }
             _center.X = x;
             _center.Y = y;
+        }
+
+        public override void Move(int x, int y)
+        {
+            _point1.X += x;
+            _point1.Y += y;
+            _point2.X += x;
+            _point2.Y += y;
+            for (int i = 0; i < _extentPoints.Length; ++i)
+            {
+                _extentPoints[i].X += x;
+                _extentPoints[i].Y += y;
+            }
+            _center.X += x;
+            _center.Y += y;
         }
 
         public override bool InShape(int x, int y)

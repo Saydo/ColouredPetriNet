@@ -762,6 +762,21 @@ namespace ColouredPetriNet.Gui.Core
             }
             return 0;
         }
+
+        public int GetSelectedStatesCount()
+        {
+            return _selectedStates.Count;
+        }
+
+        public int GetSelectedTransitionsCount()
+        {
+            return _selectedTransitions.Count;
+        }
+
+        public int GetSelectedLinksCount()
+        {
+            return _selectedLinks.Count;
+        }
         #endregion
 
         #region Find Functions
@@ -1302,6 +1317,69 @@ namespace ColouredPetriNet.Gui.Core
         }
         #endregion
 
+        #region Move Functions
+        public void Move(int dx, int dy)
+        {
+            for (int i = 0; i < _states.Count; ++i)
+            {
+                _states[i].State.Move(dx, dy);
+            }
+            for (int i = 0; i < _transitions.Count; ++i)
+            {
+                _transitions[i].Transition.Move(dx, dy);
+            }
+            for (int i = 0; i < _links.Count; ++i)
+            {
+                _links[i].Link.Move(dx, dy);
+            }
+        }
+
+        public bool Move(int dx, int dy, int id)
+        {
+            var state = FindStateById(id);
+            if (ReferenceEquals(state, null))
+            {
+                var transition = FindTransitionById(id);
+                if (ReferenceEquals(transition, null))
+                {
+                    var link = FindLinkById(id);
+                    if (ReferenceEquals(link, null))
+                    {
+                        return false;
+                    }
+                    MoveLink(dx, dy, link);
+                    return true;
+                }
+                MoveTransition(dx, dy, transition);
+                return true;
+            }
+            MoveState(dx, dy, state);
+            return true;
+        }
+
+        public void MoveSelectedItems(int dx, int dy)
+        {
+            var movedStates = new List<int>(_selectedStates);
+            var movedTransitions = new List<int>(_selectedTransitions);
+            GraphicsLinkWrapper link;
+            for (int i = 0; i < _selectedLinks.Count; ++i)
+            {
+                link = FindLinkById(_selectedLinks[i]);
+                RemoveFromIdList(link.State.State.Id, movedStates);
+                RemoveFromIdList(link.Transition.Transition.Id, movedTransitions);
+                MoveLink(dx, dy, link);
+            }
+            for (int i = 0; i < movedStates.Count; ++i)
+            {
+                MoveState(dx, dy, FindStateById(movedStates[i]));
+            }
+            for (int i = 0; i < movedTransitions.Count; ++i)
+            {
+                MoveTransition(dx, dy, FindTransitionById(movedTransitions[i]));
+            }
+        }
+        #endregion
+
         #region Serialization Functions
         public bool Serialize(string filePath)
         {
@@ -1419,6 +1497,18 @@ namespace ColouredPetriNet.Gui.Core
             return null;
         }
 
+        private GraphicsLinkWrapper FindLinkById(int id)
+        {
+            for (int i = 0; i < _links.Count; ++i)
+            {
+                if (_links[i].Link.Id == id)
+                {
+                    return _links[i];
+                }
+            }
+            return null;
+        }
+
         private bool RemoveOutputLink(GraphicsStateWrapper state, int stateId, int transitionId)
         {
             GraphicsTransitionWrapper transition;
@@ -1531,6 +1621,52 @@ namespace ColouredPetriNet.Gui.Core
                 //    transitionItem.OutputLinks[i].State.State.Id);
                 transitionItem.OutputLinks.RemoveAt(i);
             }
+        }
+
+        private void MoveState(int dx, int dy, GraphicsStateWrapper state)
+        {
+            Point p;
+            for (int i = 0; i < state.InputLinks.Count; ++i)
+            {
+                p = state.InputLinks[i].Link.Point2;
+                p.X += dx;
+                p.Y += dy;
+                state.InputLinks[i].Link.Point2 = p;
+            }
+            for (int i = 0; i < state.OutputLinks.Count; ++i)
+            {
+                p = state.OutputLinks[i].Link.Point2;
+                p.X += dx;
+                p.Y += dy;
+                state.OutputLinks[i].Link.Point2 = p;
+            }
+            state.State.Move(dx, dy);
+        }
+
+        private void MoveTransition(int dx, int dy, GraphicsTransitionWrapper transition)
+        {
+            Point p;
+            for (int i = 0; i < transition.InputLinks.Count; ++i)
+            {
+                p = transition.InputLinks[i].Link.Point1;
+                p.X += dx;
+                p.Y += dy;
+                transition.InputLinks[i].Link.Point1 = p;
+            }
+            for (int i = 0; i < transition.OutputLinks.Count; ++i)
+            {
+                p = transition.OutputLinks[i].Link.Point1;
+                p.X += dx;
+                p.Y += dy;
+                transition.OutputLinks[i].Link.Point1 = p;
+            }
+            transition.Transition.Move(dx, dy);
+        }
+
+        private void MoveLink(int dx, int dy, GraphicsLinkWrapper link)
+        {
+            MoveTransition(dx, dy, link.Transition);
+            MoveState(dx, dy, link.State);
         }
     }
 }

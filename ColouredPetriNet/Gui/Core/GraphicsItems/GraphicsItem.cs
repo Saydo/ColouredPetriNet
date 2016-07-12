@@ -19,7 +19,7 @@ namespace ColouredPetriNet.Gui.Core.GraphicsItems
             set {
                 if (_center != value)
                 {
-                    Move(value.X, value.Y);
+                    SetPosition(value.X, value.Y);
                 }
             }
         }
@@ -81,10 +81,16 @@ namespace ColouredPetriNet.Gui.Core.GraphicsItems
             }
         }
 
-        public virtual void Move(int x, int y)
+        public virtual void SetPosition(int x, int y)
         {
             _center.X = x;
             _center.Y = y;
+        }
+
+        public virtual void Move(int x, int y)
+        {
+            _center.X += x;
+            _center.Y += y;
         }
 
         public bool IsCollision(int x, int y, int z = -1)

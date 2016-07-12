@@ -1,5 +1,6 @@
 ﻿using System.Windows.Forms;
 using System.Drawing;
+using System.Collections.Generic;
 
 namespace ColouredPetriNet.Gui.Forms
 {
@@ -9,6 +10,8 @@ namespace ColouredPetriNet.Gui.Forms
 
         private Core.PetriNetGraphicsMap _itemMap;
         private bool _mousePressed;
+        private bool _itemSelected;
+        private Point _lastMousePosition;
         private ItemMapMode _mapMode;
         private Core.ColouredStateType _newStateType;
         private Core.ColouredTransitionType _newTransitionType;
@@ -20,6 +23,8 @@ namespace ColouredPetriNet.Gui.Forms
             _itemMap = new Core.PetriNetGraphicsMap();
             //_itemMap.Overlap = GraphicsItems.OverlapType.Full;
             _mousePressed = false;
+            _itemSelected = false;
+            _lastMousePosition = new Point();
             _mapMode = ItemMapMode.View;
             _newStateType = Core.ColouredStateType.RoundState;
             _newTransitionType = Core.ColouredTransitionType.RectangleTransition;
@@ -77,7 +82,62 @@ namespace ColouredPetriNet.Gui.Forms
         {
             System.Console.WriteLine("ItemMapMouseDown");
             _mousePressed = true;
-            _itemMap.SetSelectionArea(e.X, e.Y, 1, 1);
+            _lastMousePosition = e.Location;
+            if (_mapMode == ItemMapMode.Move)
+            {
+                var chosenStates = _itemMap.FindStates(e.X, e.Y);
+                if (chosenStates.Count > 0)
+                {
+                    var selectedState = GetSelectedState(chosenStates);
+                    if (ReferenceEquals(selectedState, null))
+                    {
+                        _itemMap.DeselectItems();
+                        _itemMap.SetSelectionArea(e.X, e.Y, 1, 1);
+                        _itemMap.HideSelectionArea();
+                    }
+                    _itemSelected = true;
+                }
+                else
+                {
+                    var chosenTransitions = _itemMap.FindTransitions(e.X, e.Y);
+                    if (chosenTransitions.Count > 0)
+                    {
+                        var selectedTransition = GetSelectedTransition(chosenTransitions);
+                        if (ReferenceEquals(selectedTransition, null))
+                        {
+                            _itemMap.DeselectItems();
+                            _itemMap.SetSelectionArea(e.X, e.Y, 1, 1);
+                            _itemMap.HideSelectionArea();
+                        }
+                        _itemSelected = true;
+                    }
+                    else
+                    {
+                        var chosenLinks = _itemMap.FindLinks(e.X, e.Y);
+                        if (chosenLinks.Count > 0)
+                        {
+                            var selectedLink = GetSelectedLink(chosenLinks);
+                            if (ReferenceEquals(selectedLink, null))
+                            {
+                                _itemMap.DeselectItems();
+                                _itemMap.SetSelectionArea(e.X, e.Y, 1, 1);
+                                _itemMap.HideSelectionArea();
+                            }
+                            _itemSelected = true;
+                        }
+                        else
+                        {
+                            _itemMap.DeselectItems();
+                            _itemMap.SetSelectionArea(e.X, e.Y, 1, 1);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                _itemMap.DeselectItems();
+                _itemMap.SetSelectionArea(e.X, e.Y, 1, 1);
+            }
             this.pbMap.Refresh();
         }
 
@@ -86,7 +146,15 @@ namespace ColouredPetriNet.Gui.Forms
             if (_mousePressed)
             {
                 System.Console.WriteLine("ItemMapMouseMove");
-                _itemMap.UpdateSelectionAreaByPos(e.X, e.Y);
+                if ((_mapMode == ItemMapMode.Move) && (_itemSelected))
+                {
+                    _itemMap.MoveSelectedItems(e.X - _lastMousePosition.X, e.Y - _lastMousePosition.Y);
+                }
+                else
+                {
+                    _itemMap.UpdateSelectionAreaByPos(e.X, e.Y);
+                }
+                _lastMousePosition = e.Location;
                 this.pbMap.Refresh();
             }
         }
@@ -95,6 +163,7 @@ namespace ColouredPetriNet.Gui.Forms
         {
             System.Console.WriteLine("ItemMapMouseUp");
             _mousePressed = false;
+            _itemSelected = false;
             _itemMap.HideSelectionArea();
             this.pbMap.Refresh();
         }
@@ -103,6 +172,9 @@ namespace ColouredPetriNet.Gui.Forms
         {
             System.Console.WriteLine("SetItemMapMode: " + mode);
             _mapMode = mode;
+            _itemMap.DeselectItems();
+            _itemMap.HideSelectionArea();
+            pbMap.Refresh();
         }
 
         private void SetNewStateType(Core.ColouredStateType type)
@@ -121,6 +193,42 @@ namespace ColouredPetriNet.Gui.Forms
         {
             System.Console.WriteLine("SetNewMarkerType: " + type);
             _newMarkerType = type;
+        }
+
+        private Core.GraphicsStateWrapper GetSelectedState(List<Core.GraphicsStateWrapper> stateList)
+        {
+            for (int i = 0; i < stateList.Count; ++i)
+            {
+                if (stateList[i].State.IsSelected())
+                {
+                    return stateList[i];
+                }
+            }
+            return null;
+        }
+
+        private Core.GraphicsTransitionWrapper GetSelectedTransition(List<Core.GraphicsTransitionWrapper> transitionList)
+        {
+            for (int i = 0; i < transitionList.Count; ++i)
+            {
+                if (transitionList[i].Transition.IsSelected())
+                {
+                    return transitionList[i];
+                }
+            }
+            return null;
+        }
+
+        private Core.GraphicsLinkWrapper GetSelectedLink(List<Core.GraphicsLinkWrapper> linkList)
+        {
+            for (int i = 0; i < linkList.Count; ++i)
+            {
+                if (linkList[i].Link.IsSelected())
+                {
+                    return linkList[i];
+                }
+            }
+            return null;
         }
     }
 }
