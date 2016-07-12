@@ -6,7 +6,7 @@ namespace ColouredPetriNet.Gui.Forms
 {
     public partial class MainForm : Form
     {
-        private enum ItemMapMode { View, Move, AddState, AddTransition, AddMarker, Remove, RemoveMarker};
+        private enum ItemMapMode { View, Move, AddState, AddTransition, AddMarker, AddLink, Remove, RemoveMarker};
 
         private Core.PetriNetGraphicsMap _itemMap;
         private bool _mousePressed;
@@ -16,6 +16,8 @@ namespace ColouredPetriNet.Gui.Forms
         private Core.ColouredStateType _newStateType;
         private Core.ColouredTransitionType _newTransitionType;
         private Core.ColouredMarkerType _newMarkerType;
+        private Core.GraphicsStateWrapper _selectedState;
+        private Core.GraphicsTransitionWrapper _selectedTransition;
 
         public MainForm()
         {
@@ -24,6 +26,8 @@ namespace ColouredPetriNet.Gui.Forms
             //_itemMap.Overlap = GraphicsItems.OverlapType.Full;
             _mousePressed = false;
             _itemSelected = false;
+            _selectedState = null;
+            _selectedTransition = null;
             _lastMousePosition = new Point();
             _mapMode = ItemMapMode.View;
             _newStateType = Core.ColouredStateType.RoundState;
@@ -63,9 +67,11 @@ namespace ColouredPetriNet.Gui.Forms
             {
                 case ItemMapMode.AddState:
                     _itemMap.AddState(e.X, e.Y, _newStateType);
+                    pbMap.Refresh();
                     break;
                 case ItemMapMode.AddTransition:
                     _itemMap.AddTransition(e.X, e.Y, _newTransitionType);
+                    pbMap.Refresh();
                     break;
                 case ItemMapMode.AddMarker:
                     var selectedStates = _itemMap.FindStates(e.X, e.Y);
@@ -74,6 +80,57 @@ namespace ColouredPetriNet.Gui.Forms
                         var state = selectedStates[selectedStates.Count - 1];
                         _itemMap.AddMarker(state.State.Id, _newMarkerType);
                     }
+                    pbMap.Refresh();
+                    break;
+                case ItemMapMode.AddLink:
+                    if (_itemSelected)
+                    {
+                        System.Console.WriteLine("AddLine: select");
+                        if (!ReferenceEquals(_selectedState, null))
+                        {
+                            var chosenTransitions = _itemMap.FindTransitions(e.X, e.Y);
+                            if (chosenTransitions.Count > 0)
+                            {
+                                _itemMap.AddLink(_selectedState.State.Id, chosenTransitions[0].Transition.Id,
+                                    Core.LinkDirection.FromStateToTransition);
+                            }
+                        }
+                        else
+                        {
+                            var chosenStates = _itemMap.FindStates(e.X, e.Y);
+                            if (chosenStates.Count > 0)
+                            {
+                                _itemMap.AddLink(chosenStates[0].State.Id, _selectedTransition.Transition.Id,
+                                    Core.LinkDirection.FromTransitionToState);
+                            }
+                        }
+                        _itemMap.DeselectItems();
+                        _selectedState = null;
+                        _selectedTransition = null;
+                        _itemSelected = false;
+                    }
+                    else
+                    {
+                        System.Console.WriteLine("AddLine: non select");
+                        var chosenStates = _itemMap.FindStates(e.X, e.Y);
+                        if (chosenStates.Count > 0)
+                        {
+                            System.Console.WriteLine("AddLine: find states");
+                            _selectedState = chosenStates[0];
+                            _itemSelected = true;
+                        }
+                        else
+                        {
+                            var chosenTransitions = _itemMap.FindTransitions(e.X, e.Y);
+                            if (chosenTransitions.Count > 0)
+                            {
+                                System.Console.WriteLine("AddLine: find transitions");
+                                _selectedTransition = chosenTransitions[0];
+                                _itemSelected = true;
+                            }
+                        }
+                    }
+                    pbMap.Refresh();
                     break;
             }
         }
@@ -133,8 +190,10 @@ namespace ColouredPetriNet.Gui.Forms
                     }
                 }
             }
-            else
+            else if ((_mapMode == ItemMapMode.View) || (_mapMode == ItemMapMode.Move)
+                || (_mapMode == ItemMapMode.Remove) || (_mapMode == ItemMapMode.RemoveMarker))
             {
+
                 _itemMap.DeselectItems();
                 _itemMap.SetSelectionArea(e.X, e.Y, 1, 1);
             }
@@ -149,12 +208,12 @@ namespace ColouredPetriNet.Gui.Forms
                 if ((_mapMode == ItemMapMode.Move) && (_itemSelected))
                 {
                     _itemMap.MoveSelectedItems(e.X - _lastMousePosition.X, e.Y - _lastMousePosition.Y);
+                    _lastMousePosition = e.Location;
                 }
                 else
                 {
                     _itemMap.UpdateSelectionAreaByPos(e.X, e.Y);
                 }
-                _lastMousePosition = e.Location;
                 this.pbMap.Refresh();
             }
         }
@@ -163,7 +222,10 @@ namespace ColouredPetriNet.Gui.Forms
         {
             System.Console.WriteLine("ItemMapMouseUp");
             _mousePressed = false;
-            _itemSelected = false;
+            if (_mapMode != ItemMapMode.AddLink)
+            {
+                _itemSelected = false;
+            }
             _itemMap.HideSelectionArea();
             this.pbMap.Refresh();
         }
@@ -174,6 +236,8 @@ namespace ColouredPetriNet.Gui.Forms
             _mapMode = mode;
             _itemMap.DeselectItems();
             _itemMap.HideSelectionArea();
+            _mousePressed = false;
+            _itemSelected = false;
             pbMap.Refresh();
         }
 

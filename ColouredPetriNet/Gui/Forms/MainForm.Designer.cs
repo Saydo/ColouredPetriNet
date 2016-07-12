@@ -19,6 +19,7 @@ namespace ColouredPetriNet.Gui.Forms
             imageListAddState = new StripImageList();
             imageListAddTransition = new StripImageList();
             imageListAddMarker = new StripImageList();
+            tsbAddLink = new ToolStripButton();
             tsbRemove = new ToolStripButton();
             tsbRemoveMarker = new ToolStripButton();
             tsSeparator1 = new ToolStripSeparator();
@@ -87,6 +88,7 @@ namespace ColouredPetriNet.Gui.Forms
                 imageListAddState,
                 imageListAddTransition,
                 imageListAddMarker,
+                tsbAddLink,
                 tsbRemove,
                 tsbRemoveMarker,
                 tsSeparator1,
@@ -146,6 +148,15 @@ namespace ColouredPetriNet.Gui.Forms
             imageListAddMarker.DropDown.Items[0].Click += (obj, e) => SetNewMarkerType(Core.ColouredMarkerType.RoundMarker);
             imageListAddMarker.DropDown.Items[1].Click += (obj, e) => SetNewMarkerType(Core.ColouredMarkerType.RhombMarker);
             imageListAddMarker.DropDown.Items[2].Click += (obj, e) => SetNewMarkerType(Core.ColouredMarkerType.TriangleMarker);
+            //
+            // AddLink (ToolStripButton)
+            //
+            tsbAddLink.Name = "tsbAddLink";
+            tsbAddLink.Size = new Size(23, 22);
+            tsbAddLink.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            tsbAddLink.Image = Properties.Resources.AddImageStateIcon;
+            tsbAddLink.Text = "Add Link";
+            tsbAddLink.Click += (obj, e) => SetItemMapMode(ItemMapMode.AddLink);
             //
             // Remove (ToolStripButton)
             //
@@ -283,6 +294,7 @@ namespace ColouredPetriNet.Gui.Forms
         private ToolStrip tlsMain;
         private ToolStripButton tsbView;
         private ToolStripButton tsbMove;
+        private ToolStripButton tsbAddLink;
         private ToolStripButton tsbRemove;
         private ToolStripButton tsbRemoveMarker;
         private ToolStripSeparator tsSeparator1;

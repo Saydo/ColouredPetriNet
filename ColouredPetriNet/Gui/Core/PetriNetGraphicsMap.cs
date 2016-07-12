@@ -1473,6 +1473,7 @@ namespace ColouredPetriNet.Gui.Core
             _selectionArea.Draw(graphics);
         }
 
+        #region Helpful functions
         private GraphicsStateWrapper FindStateById(int id)
         {
             for (int i = 0; i < _states.Count; ++i)
@@ -1668,5 +1669,6 @@ namespace ColouredPetriNet.Gui.Core
             MoveTransition(dx, dy, link.Transition);
             MoveState(dx, dy, link.State);
         }
+        #endregion
     }
 }
