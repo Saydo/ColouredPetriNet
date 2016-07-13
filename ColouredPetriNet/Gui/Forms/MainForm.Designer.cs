@@ -15,29 +15,29 @@ namespace ColouredPetriNet.Gui.Forms
             mniExit = new ToolStripMenuItem();
             mniMap = new ToolStripMenuItem();
             mniSetMode = new ToolStripMenuItem();
-            mniSetModeView = new ToolStripMenuItem();
-            mniSetModeMove = new ToolStripMenuItem();
-            mniSetModeAddState = new ToolStripMenuItem();
-            mniSetModeAddRoundState = new ToolStripMenuItem();
-            mniSetModeAddImageState = new ToolStripMenuItem();
-            mniSetModeAddTransition = new ToolStripMenuItem();
-            mniSetModeAddRectangleTransition = new ToolStripMenuItem();
-            mniSetModeAddRhombTransition = new ToolStripMenuItem();
-            mniSetModeAddMarker = new ToolStripMenuItem();
-            mniSetModeAddRoundMarker = new ToolStripMenuItem();
-            mniSetModeAddRhombMarker = new ToolStripMenuItem();
-            mniSetModeAddTriangleMarker = new ToolStripMenuItem();
-            mniSetModeAddLink = new ToolStripMenuItem();
-            mniSetModeRemove = new ToolStripMenuItem();
-            mniSetModeRemoveMarker = new ToolStripMenuItem();
+            mniSetModeView = new ToolStripRadioButtonMenuItem();
+            mniSetModeMove = new ToolStripRadioButtonMenuItem();
+            mniSetModeAddState = new ToolStripRadioButtonMenuItem();
+            mniSetModeAddRoundState = new ToolStripRadioButtonMenuItem();
+            mniSetModeAddImageState = new ToolStripRadioButtonMenuItem();
+            mniSetModeAddTransition = new ToolStripRadioButtonMenuItem();
+            mniSetModeAddRectangleTransition = new ToolStripRadioButtonMenuItem();
+            mniSetModeAddRhombTransition = new ToolStripRadioButtonMenuItem();
+            mniSetModeAddMarker = new ToolStripRadioButtonMenuItem();
+            mniSetModeAddRoundMarker = new ToolStripRadioButtonMenuItem();
+            mniSetModeAddRhombMarker = new ToolStripRadioButtonMenuItem();
+            mniSetModeAddTriangleMarker = new ToolStripRadioButtonMenuItem();
+            mniSetModeAddLink = new ToolStripRadioButtonMenuItem();
+            mniSetModeRemove = new ToolStripRadioButtonMenuItem();
+            mniSetModeRemoveMarker = new ToolStripRadioButtonMenuItem();
             mniShowInfo = new ToolStripMenuItem();
             mniShowStateInfo = new ToolStripMenuItem();
             mniShowTransitionInfo = new ToolStripMenuItem();
             mniShowMarkerInfo = new ToolStripMenuItem();
             mniView = new ToolStripMenuItem();
             mniSelectionMode = new ToolStripMenuItem();
-            mniSelectionModeFull = new ToolStripMenuItem();
-            mniSelectionModePartial = new ToolStripMenuItem();
+            mniSelectionModeFull = new ToolStripRadioButtonMenuItem();
+            mniSelectionModePartial = new ToolStripRadioButtonMenuItem();
             mniItemStyle = new ToolStripMenuItem();
             mniStateStyle = new ToolStripMenuItem();
             mniTransitionStyle = new ToolStripMenuItem();
@@ -152,18 +152,22 @@ namespace ColouredPetriNet.Gui.Forms
             mniSetModeView.Name = "mniSetModeView";
             mniSetModeView.Size = new Size(152, 22);
             mniSetModeView.Text = "View";
+            mniSetModeView.Checked = true;
+            mniSetModeView.Click += (obj, e) => SetItemMapMode(ItemMapMode.View);
             //
             // SetModeMove (ToolStripMenuItem)
             //
             mniSetModeMove.Name = "mniSetModeMove";
             mniSetModeMove.Size = new Size(152, 22);
             mniSetModeMove.Text = "Move";
+            mniSetModeMove.Click += (obj, e) => SetItemMapMode(ItemMapMode.Move);
             //
             // SetModeAddState (ToolStripMenuItem)
             //
             mniSetModeAddState.Name = "mniSetModeAddState";
             mniSetModeAddState.Size = new Size(152, 22);
             mniSetModeAddState.Text = "Add State";
+            mniSetModeAddState.Click += (obj, e) => SetItemMapMode(ItemMapMode.AddState);
             mniSetModeAddState.DropDownItems.AddRange(new ToolStripItem[] {
                 mniSetModeAddRoundState,
                 mniSetModeAddImageState
@@ -174,18 +178,21 @@ namespace ColouredPetriNet.Gui.Forms
             mniSetModeAddRoundState.Name = "mniSetModeAddRoundState";
             mniSetModeAddRoundState.Size = new Size(152, 22);
             mniSetModeAddRoundState.Text = "Round State";
+            mniSetModeAddRoundState.Click += (obj, e) => SetNewStateType(Core.ColouredStateType.RoundState);
             //
             // SetModeAddImageState (ToolStripMenuItem)
             //
             mniSetModeAddImageState.Name = "mniSetModeAddImageState";
             mniSetModeAddImageState.Size = new Size(152, 22);
             mniSetModeAddImageState.Text = "Image State";
+            mniSetModeAddImageState.Click += (obj, e) => SetNewStateType(Core.ColouredStateType.ImageState);
             //
             // SetModeAddTransition (ToolStripMenuItem)
             //
             mniSetModeAddTransition.Name = "mniSetModeAddTransition";
             mniSetModeAddTransition.Size = new Size(152, 22);
             mniSetModeAddTransition.Text = "Add Transition";
+            mniSetModeAddTransition.Click += (obj, e) => SetItemMapMode(ItemMapMode.AddTransition);
             mniSetModeAddTransition.DropDownItems.AddRange(new ToolStripItem[] {
                 mniSetModeAddRectangleTransition,
                 mniSetModeAddRhombTransition
@@ -196,18 +203,21 @@ namespace ColouredPetriNet.Gui.Forms
             mniSetModeAddRectangleTransition.Name = "mniSetModeAddRectangleTransition";
             mniSetModeAddRectangleTransition.Size = new Size(152, 22);
             mniSetModeAddRectangleTransition.Text = "Rectangle Transition";
+            mniSetModeAddRectangleTransition.Click += (obj, e) => SetNewTransitionType(Core.ColouredTransitionType.RectangleTransition);
             //
             // SetModeAddRhombTransition (ToolStripMenuItem)
             //
             mniSetModeAddRhombTransition.Name = "mniSetModeAddRhombTransition";
             mniSetModeAddRhombTransition.Size = new Size(152, 22);
             mniSetModeAddRhombTransition.Text = "Rhomb Transition";
+            mniSetModeAddRhombTransition.Click += (obj, e) => SetNewTransitionType(Core.ColouredTransitionType.RhombTransition);
             //
             // SetModeAddMarker (ToolStripMenuItem)
             //
             mniSetModeAddMarker.Name = "mniSetModeAddMarker";
             mniSetModeAddMarker.Size = new Size(152, 22);
             mniSetModeAddMarker.Text = "Add Marker";
+            mniSetModeAddMarker.Click += (obj, e) => SetItemMapMode(ItemMapMode.AddMarker);
             mniSetModeAddMarker.DropDownItems.AddRange(new ToolStripItem[] {
                 mniSetModeAddRoundMarker,
                 mniSetModeAddRhombMarker,
@@ -219,36 +229,42 @@ namespace ColouredPetriNet.Gui.Forms
             mniSetModeAddRoundMarker.Name = "mniSetModeAddRoundMarker";
             mniSetModeAddRoundMarker.Size = new Size(152, 22);
             mniSetModeAddRoundMarker.Text = "Round Marker";
+            mniSetModeAddRoundMarker.Click += (obj, e) => SetNewMarkerType(Core.ColouredMarkerType.RoundMarker);
             //
             // SetModeAddRhombMarker (ToolStripMenuItem)
             //
             mniSetModeAddRhombMarker.Name = "mniSetModeAddRhombMarker";
             mniSetModeAddRhombMarker.Size = new Size(152, 22);
             mniSetModeAddRhombMarker.Text = "Rhomb Marker";
+            mniSetModeAddRhombMarker.Click += (obj, e) => SetNewMarkerType(Core.ColouredMarkerType.RhombMarker);
             //
             // SetModeAddTriangleMarker (ToolStripMenuItem)
             //
             mniSetModeAddTriangleMarker.Name = "mniSetModeAddTriangleMarker";
             mniSetModeAddTriangleMarker.Size = new Size(152, 22);
             mniSetModeAddTriangleMarker.Text = "Triangle Marker";
+            mniSetModeAddTriangleMarker.Click += (obj, e) => SetNewMarkerType(Core.ColouredMarkerType.TriangleMarker);
             //
             // SetModeAddLink (ToolStripMenuItem)
             //
             mniSetModeAddLink.Name = "mniSetModeAddLink";
             mniSetModeAddLink.Size = new Size(152, 22);
             mniSetModeAddLink.Text = "Add Link";
+            mniSetModeAddLink.Click += (obj, e) => SetItemMapMode(ItemMapMode.AddLink);
             //
             // SetModeRemove (ToolStripMenuItem)
             //
             mniSetModeRemove.Name = "mniSetModeRemove";
             mniSetModeRemove.Size = new Size(152, 22);
             mniSetModeRemove.Text = "Remove";
+            mniSetModeRemove.Click += (obj, e) => SetItemMapMode(ItemMapMode.Remove);
             //
             // SetModeRemoveMarker (ToolStripMenuItem)
             //
             mniSetModeRemoveMarker.Name = "mniSetModeRemoveMarker";
             mniSetModeRemoveMarker.Size = new Size(152, 22);
             mniSetModeRemoveMarker.Text = "Remove Marker";
+            mniSetModeRemoveMarker.Click += (obj, e) => SetItemMapMode(ItemMapMode.RemoveMarker);
             //
             // ShowInfo (ToolStripMenuItem)
             //
@@ -305,13 +321,14 @@ namespace ColouredPetriNet.Gui.Forms
             mniSelectionModeFull.Name = "mniSelectionModeFull";
             mniSelectionModeFull.Size = new Size(152, 22);
             mniSelectionModeFull.Text = "Full";
+            mniSelectionModeFull.Click += (obj, e) => SetSelectionMode(Core.GraphicsItems.OverlapType.Full);
             //
             // SelectionModePartial (ToolStripMenuItem)
             //
             mniSelectionModePartial.Name = "mniSelectionModePartial";
             mniSelectionModePartial.Size = new Size(152, 22);
             mniSelectionModePartial.Text = "Partial";
-            mniSelectionModePartial.Checked = true;
+            mniSelectionModeFull.Click += (obj, e) => SetSelectionMode(Core.GraphicsItems.OverlapType.Partial);
             //
             // ItemStyle (ToolStripMenuItem)
             //
@@ -567,7 +584,7 @@ namespace ColouredPetriNet.Gui.Forms
             ((System.ComponentModel.ISupportInitialize)(pbMap)).EndInit();
             ResumeLayout(false);
             PerformLayout();
-
+            this.Load += new System.EventHandler(MainFormLoad);
         }
 
         private MenuStrip mnsMain;
@@ -581,21 +598,21 @@ namespace ColouredPetriNet.Gui.Forms
         private ToolStripMenuItem mniMap;
         private ToolStripMenuItem mniSetMode;
 
-        private ToolStripMenuItem mniSetModeView;
-        private ToolStripMenuItem mniSetModeMove;
-        private ToolStripMenuItem mniSetModeAddState;
-        private ToolStripMenuItem mniSetModeAddRoundState;
-        private ToolStripMenuItem mniSetModeAddImageState;
-        private ToolStripMenuItem mniSetModeAddTransition;
-        private ToolStripMenuItem mniSetModeAddRectangleTransition;
-        private ToolStripMenuItem mniSetModeAddRhombTransition;
-        private ToolStripMenuItem mniSetModeAddMarker;
-        private ToolStripMenuItem mniSetModeAddRoundMarker;
-        private ToolStripMenuItem mniSetModeAddRhombMarker;
-        private ToolStripMenuItem mniSetModeAddTriangleMarker;
-        private ToolStripMenuItem mniSetModeAddLink;
-        private ToolStripMenuItem mniSetModeRemove;
-        private ToolStripMenuItem mniSetModeRemoveMarker;
+        private ToolStripRadioButtonMenuItem mniSetModeView;
+        private ToolStripRadioButtonMenuItem mniSetModeMove;
+        private ToolStripRadioButtonMenuItem mniSetModeAddState;
+        private ToolStripRadioButtonMenuItem mniSetModeAddRoundState;
+        private ToolStripRadioButtonMenuItem mniSetModeAddImageState;
+        private ToolStripRadioButtonMenuItem mniSetModeAddTransition;
+        private ToolStripRadioButtonMenuItem mniSetModeAddRectangleTransition;
+        private ToolStripRadioButtonMenuItem mniSetModeAddRhombTransition;
+        private ToolStripRadioButtonMenuItem mniSetModeAddMarker;
+        private ToolStripRadioButtonMenuItem mniSetModeAddRoundMarker;
+        private ToolStripRadioButtonMenuItem mniSetModeAddRhombMarker;
+        private ToolStripRadioButtonMenuItem mniSetModeAddTriangleMarker;
+        private ToolStripRadioButtonMenuItem mniSetModeAddLink;
+        private ToolStripRadioButtonMenuItem mniSetModeRemove;
+        private ToolStripRadioButtonMenuItem mniSetModeRemoveMarker;
 
         private ToolStripMenuItem mniShowInfo;
         private ToolStripMenuItem mniShowStateInfo;
@@ -604,8 +621,8 @@ namespace ColouredPetriNet.Gui.Forms
 
         private ToolStripMenuItem mniView;
         private ToolStripMenuItem mniSelectionMode;
-        private ToolStripMenuItem mniSelectionModeFull;
-        private ToolStripMenuItem mniSelectionModePartial;
+        private ToolStripRadioButtonMenuItem mniSelectionModeFull;
+        private ToolStripRadioButtonMenuItem mniSelectionModePartial;
         private ToolStripMenuItem mniItemStyle;
         private ToolStripMenuItem mniStateStyle;
         private ToolStripMenuItem mniTransitionStyle;

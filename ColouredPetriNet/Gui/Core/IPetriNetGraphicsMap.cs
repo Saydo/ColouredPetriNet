@@ -9,7 +9,6 @@ namespace ColouredPetriNet.Gui.Core
         int LinkCount { get; }
         int TransitionCount { get; }
         int StateCount { get; }
-        Style.ColouredPetriNetStyle Style { get; set; }
         void SetDefaultStyle();
         // Add
         void AddState(int x, int y, ColouredStateType stateType);

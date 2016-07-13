@@ -55,6 +55,11 @@ namespace ColouredPetriNet.Gui.Forms
             //_itemMap.AddItem(triangle);
         }
 
+        private void MainFormLoad(object sender, System.EventArgs e)
+        {
+            UpdateSelectionModeGui();
+        }
+
         private void ItemMapPaint(object sender, PaintEventArgs e)
         {
             _itemMap.Draw(e.Graphics);
@@ -232,13 +237,73 @@ namespace ColouredPetriNet.Gui.Forms
 
         private void SetItemMapMode(ItemMapMode mode)
         {
-            System.Console.WriteLine("SetItemMapMode: " + mode);
-            _mapMode = mode;
             _itemMap.DeselectItems();
             _itemMap.HideSelectionArea();
             _mousePressed = false;
             _itemSelected = false;
             pbMap.Refresh();
+            if (_mapMode == mode)
+                return;
+            switch (_mapMode)
+            {
+                case ItemMapMode.AddState:
+                    mniSetModeAddRoundState.Checked = false;
+                    mniSetModeAddImageState.Checked = false;
+                    break;
+                case ItemMapMode.AddTransition:
+                    mniSetModeAddRectangleTransition.Checked = false;
+                    mniSetModeAddRhombTransition.Checked = false;
+                    break;
+                case ItemMapMode.AddMarker:
+                    mniSetModeAddRoundMarker.Checked = false;
+                    mniSetModeAddRhombMarker.Checked = false;
+                    mniSetModeAddTriangleMarker.Checked = false;
+                    break;
+            }
+            switch (mode)
+            {
+                case ItemMapMode.AddState:
+                    if (_newStateType == Core.ColouredStateType.RoundState)
+                    {
+                        mniSetModeAddRoundState.Checked = true;
+                    }
+                    else
+                    {
+                        mniSetModeAddImageState.Checked = true;
+                    }
+                    break;
+                case ItemMapMode.AddTransition:
+                    if (_newTransitionType == Core.ColouredTransitionType.RectangleTransition)
+                    {
+                        mniSetModeAddRectangleTransition.Checked = true;
+                    }
+                    else
+                    {
+                        mniSetModeAddRhombTransition.Checked = true;
+                    }
+                    break;
+                case ItemMapMode.AddMarker:
+                    if (_newMarkerType == Core.ColouredMarkerType.RoundMarker)
+                    {
+                        mniSetModeAddRoundMarker.Checked = true;
+                    }
+                    else if (_newMarkerType == Core.ColouredMarkerType.RhombMarker)
+                    {
+                        mniSetModeAddRhombMarker.Checked = true;
+                    }
+                    else
+                    {
+                        mniSetModeAddTriangleMarker.Checked = true;
+                    }
+                    break;
+            }
+            _mapMode = mode;
+
+        }
+
+        private void SetSelectionMode(Core.GraphicsItems.OverlapType overlap)
+        {
+            _itemMap.Style.SelectionMode = overlap;
         }
 
         private void SetNewStateType(Core.ColouredStateType type)
@@ -293,6 +358,18 @@ namespace ColouredPetriNet.Gui.Forms
                 }
             }
             return null;
+        }
+
+        private void UpdateSelectionModeGui()
+        {
+            if (_itemMap.Style.SelectionMode == Core.GraphicsItems.OverlapType.Full)
+            {
+                this.mniSelectionModeFull.Checked = true;
+            }
+            else
+            {
+                this.mniSelectionModePartial.Checked = true;
+            }
         }
     }
 }
