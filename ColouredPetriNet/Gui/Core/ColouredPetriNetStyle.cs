@@ -34,7 +34,7 @@ namespace ColouredPetriNet.Gui.Core.Style
         {
             Radius = radius;
         }
-        
+
         public RoundShapeStyle(int radius, Brush fillBrush, Pen borderPen)
             : base(fillBrush, borderPen)
         {
@@ -118,16 +118,22 @@ namespace ColouredPetriNet.Gui.Core.Style
         }
     }
 
+    public enum PetriNetField
+    {
+        RoundState, ImageState, RectangleTransition, RhombTransition,
+        RoundMarker, RhombMarker, TriangleMarker
+    };
+
     public struct ColouredPetriNetStyle
     {
+        public GraphicsItems.OverlapType SelectionMode;
+        public Pen SelectionPen;
+        public RoundShapeStyle RoundState;
+        public ImageShapeStyle ImageState;
+        public RectangleShapeStyle RectangleTransition;
+        public RectangleShapeStyle RhombTransition;
         public RoundShapeStyle RoundMarker;
         public RectangleShapeStyle RhombMarker;
         public TriangleShapeStyle TriangleMarker;
-        public RectangleShapeStyle RectangleTransition;
-        public RectangleShapeStyle RhombTransition;
-        public RoundShapeStyle RoundState;
-        public ImageShapeStyle ImageState;
-        public GraphicsItems.OverlapType SelectionMode;
-        public Pen SelectionPen;
     }
 }

@@ -1383,13 +1383,21 @@ namespace ColouredPetriNet.Gui.Core
         #region Serialization Functions
         public bool Serialize(string filePath)
         {
-            // TODO
-            return true;
+            var petriNetXml = new Core.Serialize.ColouredPetriNetXml();
+            petriNetXml.Style = Core.Serialize.PetriNetXmlSerializer.ToXml(_style);
+            petriNetXml.Items = ConvertItemsToXml();
+            return Core.Serialize.PetriNetXmlSerializer.Serialize(filePath, petriNetXml);
         }
 
         public bool Deserialize(string filePath)
         {
-            // TODO
+            Core.Serialize.ColouredPetriNetXml petriNetXml;
+            if (!Core.Serialize.PetriNetXmlSerializer.Deserialize(filePath, out petriNetXml))
+            {
+                return false;
+            }
+            _style = Core.Serialize.PetriNetXmlSerializer.FromXml(petriNetXml.Style);
+            GetItemsFromXml(petriNetXml.Items);
             return true;
         }
         #endregion
@@ -1668,6 +1676,177 @@ namespace ColouredPetriNet.Gui.Core
         {
             MoveTransition(dx, dy, link.Transition);
             MoveState(dx, dy, link.State);
+        }
+
+        private void GetItemsFromXml(Core.Serialize.PetriNetItemsXml itemsXml)
+        {
+            Core.Serialize.StateXml stateXml;
+            GraphicsStateWrapper state;
+            GraphicsTransitionWrapper transition;
+            GraphicsItems.LinkGraphicsItem.LinkDirection graphicsLinkDirection;
+            LinkDirection wrapperLinkDirection;
+            this.Clear();
+            for (int i = 0; i < itemsXml.StateList.Count; ++i)
+            {
+                stateXml = itemsXml.StateList[i];
+                state = new GraphicsStateWrapper(GetStateGraphicsItemFromXml(stateXml));
+                for (int j = 0; j < stateXml.Markers.Count; ++j)
+                {
+                    state.AddMarker(GetMarkerGraphicsItemFromXml(stateXml.Markers[j]));
+                }
+                _states.Add(state);
+            }
+            for (int i = 0; i < itemsXml.TransitionList.Count; ++i)
+            {
+                _transitions.Add(new GraphicsTransitionWrapper(GetTransitionGraphicsItemFromXml(itemsXml.TransitionList[i])));
+            }
+            for (int i = 0; i < itemsXml.LinkList.Count; ++i)
+            {
+                if (itemsXml.LinkList[i].Direction.Equals("FromState"))
+                {
+                    graphicsLinkDirection = GraphicsItems.LinkGraphicsItem.LinkDirection.FromP1toP2;
+                    wrapperLinkDirection = LinkDirection.FromStateToTransition;
+                }
+                else
+                {
+                    graphicsLinkDirection = GraphicsItems.LinkGraphicsItem.LinkDirection.FromP2toP1;
+                    wrapperLinkDirection = LinkDirection.FromTransitionToState;
+                }
+                state = FindStateById(itemsXml.LinkList[i].StateId);
+                transition = FindTransitionById(itemsXml.LinkList[i].TransitionId);
+                _links.Add(new GraphicsLinkWrapper(state, transition,
+                    new GraphicsItems.LinkGraphicsItem(itemsXml.LinkList[i].Id, (int)ItemType.Link,
+                    state.State.Center, transition.Transition.Center, graphicsLinkDirection),
+                    wrapperLinkDirection));
+            }
+        }
+
+        private GraphicsItems.GraphicsItem GetStateGraphicsItemFromXml(Core.Serialize.StateXml stateXml)
+        {
+            switch (stateXml.Type)
+            {
+                case "RoundState":
+                    return new GraphicsItems.RoundGraphicsItem(stateXml.Id,
+                        (int)ItemType.State + (int)ColouredStateType.RoundState, _stateZ);
+                case "ImageState":
+                    return new GraphicsItems.ImageGraphicsItem(stateXml.Id,
+                        (int)ItemType.State + (int)ColouredStateType.ImageState, null, _stateZ);
+            }
+            return null;
+        }
+
+        private GraphicsItems.GraphicsItem GetTransitionGraphicsItemFromXml(Core.Serialize.TransitionXml transitionXml)
+        {
+            switch (transitionXml.Type)
+            {
+                case "RectangleTransition":
+                    return new GraphicsItems.RectangleGraphicsItem(transitionXml.Id,
+                        (int)ItemType.Transition + (int)ColouredTransitionType.RectangleTransition,
+                        10, 10, _stateZ);
+                case "RhombTransition":
+                    return new GraphicsItems.RhombGraphicsItem(transitionXml.Id,
+                        (int)ItemType.Transition + (int)ColouredTransitionType.RhombTransition, _stateZ);
+            }
+            return null;
+        }
+
+        private GraphicsItems.GraphicsItem GetMarkerGraphicsItemFromXml(Core.Serialize.MarkerXml markerXml)
+        {
+            switch (markerXml.Type)
+            {
+                case "RoundMarker":
+                    return new GraphicsItems.RoundGraphicsItem(markerXml.Id,
+                        (int)ItemType.Marker + (int)ColouredMarkerType.RoundMarker, _stateZ);
+                case "RhombMarker":
+                    return new GraphicsItems.RhombGraphicsItem(markerXml.Id,
+                        (int)ItemType.Marker + (int)ColouredMarkerType.RhombMarker, _stateZ);
+                case "TriangleMarker":
+                    return new GraphicsItems.TriangleGraphicsItem(markerXml.Id,
+                        (int)ItemType.Marker + (int)ColouredMarkerType.TriangleMarker,
+                        new Point(0, 0), 10, _stateZ);
+            }
+            return null;
+        }
+
+        private Core.Serialize.PetriNetItemsXml ConvertItemsToXml()
+        {
+            var itemsXml = new Core.Serialize.PetriNetItemsXml();
+            Core.Serialize.StateXml stateXml;
+            List<int> listId;
+            string markerType;
+            // Add States
+            for (int i = 0; i < _states.Count; ++i)
+            {
+                stateXml = new Core.Serialize.StateXml(_states[i].State.Id, _states[i].State.Center.X,
+                    _states[i].State.Center.Y, GetStateTypeName(_states[i].State.TypeId));
+                // Add Markers
+                for (int j = 0; j < _states[i].Markers.Count; ++j)
+                {
+                    markerType = GetMarkerTypeName(_states[i].Markers[j].Item1.TypeId);
+                    listId = _states[i].Markers[j].Item2;
+                    for (int k = 0; k < listId.Count; ++k)
+                    {
+                        stateXml.Markers.Add(new Core.Serialize.MarkerXml(listId[k], markerType));
+                    }
+                }
+                itemsXml.StateList.Add(stateXml);
+            }
+            // Add Transitions
+            for (int i = 0; i < _transitions.Count; ++i)
+            {
+                itemsXml.TransitionList.Add(new Core.Serialize.TransitionXml(_transitions[i].Transition.Id,
+                    _transitions[i].Transition.Center.X, _transitions[i].Transition.Center.Y,
+                    GetTransitionTypeName(_transitions[i].Transition.TypeId)));
+            }
+            // Add Links
+            for (int i = 0; i < _links.Count; ++i)
+            {
+                itemsXml.LinkList.Add(new Core.Serialize.LinkXml(_links[i].Link.Id,
+                    _links[i].State.State.Id, _links[i].Transition.Transition.Id,
+                    (_links[i].Direction == LinkDirection.FromStateToTransition ? "FromState" : "ToState")));
+            }
+            return itemsXml;
+        }
+
+        private string GetStateTypeName(int typeId)
+        {
+            int stateType = typeId - (int)ItemType.State;
+            switch (stateType)
+            {
+                case (int)ColouredStateType.RoundState:
+                    return "RoundState";
+                case (int)ColouredStateType.ImageState:
+                    return "ImageState";
+            }
+            return "";
+        }
+
+        private string GetTransitionTypeName(int typeId)
+        {
+            int transitionType = typeId - (int)ItemType.Transition;
+            switch (transitionType)
+            {
+                case (int)ColouredTransitionType.RectangleTransition:
+                    return "RectangleTransition";
+                case (int)ColouredTransitionType.RhombTransition:
+                    return "RhombTransition";
+            }
+            return "";
+        }
+
+        private string GetMarkerTypeName(int typeId)
+        {
+            int markerType = typeId - (int)ItemType.Marker;
+            switch (markerType)
+            {
+                case (int)ColouredMarkerType.RoundMarker:
+                    return "RoundMarker";
+                case (int)ColouredMarkerType.RhombMarker:
+                    return "RhombMarker";
+                case (int)ColouredMarkerType.TriangleMarker:
+                    return "TriangleMarker";
+            }
+            return "";
         }
         #endregion
     }

@@ -154,7 +154,7 @@ namespace ColouredPetriNet.Gui.Forms
             tsbAddLink.Name = "tsbAddLink";
             tsbAddLink.Size = new Size(23, 22);
             tsbAddLink.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            tsbAddLink.Image = Properties.Resources.AddImageStateIcon;
+            tsbAddLink.Image = Properties.Resources.AddLinkIcon;
             tsbAddLink.Text = "Add Link";
             tsbAddLink.Click += (obj, e) => SetItemMapMode(ItemMapMode.AddLink);
             //

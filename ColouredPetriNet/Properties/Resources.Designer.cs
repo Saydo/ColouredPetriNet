@@ -73,6 +73,16 @@ namespace ColouredPetriNet.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap AddLinkIcon {
+            get {
+                object obj = ResourceManager.GetObject("AddLinkIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap AddRectangleTransitionIcon {
             get {
                 object obj = ResourceManager.GetObject("AddRectangleTransitionIcon", resourceCulture);

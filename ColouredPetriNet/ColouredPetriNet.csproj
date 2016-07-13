@@ -93,6 +93,8 @@
     <Compile Include="Gui\Core\GraphicsItems\RoundGraphicsItem.cs" />
     <Compile Include="Gui\Core\GraphicsItems\TriangleGraphicsItem.cs" />
     <Compile Include="Gui\Core\LinearAlgebra\Algorithm.cs" />
+    <Compile Include="Gui\Core\Serialize\ColouredPetriNetXml.cs" />
+    <Compile Include="Gui\Core\Serialize\PetriNetXmlSerializer.cs" />
     <Compile Include="Gui\Forms\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -172,7 +174,9 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\AddLink.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
