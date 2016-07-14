@@ -9,6 +9,11 @@ namespace ColouredPetriNet
         static void Main()
         {
             /*
+            string appDir = System.AppDomain.CurrentDomain.BaseDirectory;
+            string projectDir = appDir.Substring(0, appDir.Length - "/bin/Debug".Length);
+            Console.WriteLine("Dir:{0}", projectDir + "Resources");
+            */
+            /*
             var petriNetXml = new Gui.Core.Serialize.ColouredPetriNetXml();
             // style
             petriNetXml.Style.ItemStyleList.Add(new Gui.Core.Serialize.RoundItemStyleXml("RoundState", 5));

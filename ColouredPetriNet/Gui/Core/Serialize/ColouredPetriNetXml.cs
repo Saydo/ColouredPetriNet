@@ -151,7 +151,7 @@ namespace ColouredPetriNet.Gui.Core.Serialize
             FillBrush = new BrushXml("FillBrush", System.Drawing.Color.FromArgb(0, 0, 0));
         }
 
-        public ItemStyleXml(string name)
+        public ItemStyleXml(string name) : this()
         {
             Name = name;
         }

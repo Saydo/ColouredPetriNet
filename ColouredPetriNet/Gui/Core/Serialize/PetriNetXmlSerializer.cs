@@ -58,38 +58,30 @@ namespace ColouredPetriNet.Gui.Core.Serialize
                 : GraphicsItems.OverlapType.Partial);
             style.SelectionPen = styleXml.SelectionPen.ToPen();
             var roundItemXml = (RoundItemStyleXml)styleXml.ItemStyleList[(int)Style.PetriNetField.RoundState];
-            style.RoundState.Radius = roundItemXml.Radius;
-            style.RoundState.BorderPen = roundItemXml.BorderPen.ToPen();
-            style.RoundState.FillBrush = roundItemXml.FillBrush.ToBrush();
+            style.RoundState = new Style.RoundShapeStyle(roundItemXml.Radius,
+                roundItemXml.FillBrush.ToBrush(), roundItemXml.BorderPen.ToPen());
             var imageItemXml = (ImageItemStyleXml)styleXml.ItemStyleList[(int)Style.PetriNetField.ImageState];
-            style.ImageState.ImageName = imageItemXml.Image;
-            style.ImageState.Width = imageItemXml.Width;
-            style.ImageState.Height = imageItemXml.Height;
-            style.ImageState.BorderPen = imageItemXml.BorderPen.ToPen();
-            style.ImageState.FillBrush = imageItemXml.FillBrush.ToBrush();
+            style.ImageState = new Style.ImageShapeStyle(imageItemXml.Image,
+                imageItemXml.Width, imageItemXml.Height, imageItemXml.FillBrush.ToBrush(),
+                imageItemXml.BorderPen.ToPen());
             var rectangleItemXml = (RectangleItemStyleXml)styleXml.ItemStyleList[(int)Style.PetriNetField.RectangleTransition];
-            style.RectangleTransition.Width = rectangleItemXml.Width;
-            style.RectangleTransition.Height = rectangleItemXml.Height;
-            style.RectangleTransition.BorderPen = rectangleItemXml.BorderPen.ToPen();
-            style.RectangleTransition.FillBrush = rectangleItemXml.FillBrush.ToBrush();
+            style.RectangleTransition = new Style.RectangleShapeStyle(rectangleItemXml.Width,
+                rectangleItemXml.Height, rectangleItemXml.FillBrush.ToBrush(),
+                rectangleItemXml.BorderPen.ToPen());
             rectangleItemXml = (RectangleItemStyleXml)styleXml.ItemStyleList[(int)Style.PetriNetField.RhombTransition];
-            style.RhombTransition.Width = rectangleItemXml.Width;
-            style.RhombTransition.Height = rectangleItemXml.Height;
-            style.RhombTransition.BorderPen = rectangleItemXml.BorderPen.ToPen();
-            style.RhombTransition.FillBrush = rectangleItemXml.FillBrush.ToBrush();
+            style.RhombTransition = new Style.RectangleShapeStyle(rectangleItemXml.Width,
+                rectangleItemXml.Height, rectangleItemXml.FillBrush.ToBrush(),
+                rectangleItemXml.BorderPen.ToPen());
             roundItemXml = (RoundItemStyleXml)styleXml.ItemStyleList[(int)Style.PetriNetField.RoundMarker];
-            style.RoundMarker.Radius = roundItemXml.Radius;
-            style.RoundMarker.BorderPen = roundItemXml.BorderPen.ToPen();
-            style.RoundMarker.FillBrush = roundItemXml.FillBrush.ToBrush();
+            style.RoundMarker = new Style.RoundShapeStyle(roundItemXml.Radius,
+                roundItemXml.FillBrush.ToBrush(), roundItemXml.BorderPen.ToPen());
             rectangleItemXml = (RectangleItemStyleXml)styleXml.ItemStyleList[(int)Style.PetriNetField.RhombMarker];
-            style.RhombMarker.Width = rectangleItemXml.Width;
-            style.RhombMarker.Height = rectangleItemXml.Height;
-            style.RhombMarker.BorderPen = rectangleItemXml.BorderPen.ToPen();
-            style.RhombMarker.FillBrush = rectangleItemXml.FillBrush.ToBrush();
+            style.RhombMarker = new Style.RectangleShapeStyle(rectangleItemXml.Width,
+                rectangleItemXml.Height, rectangleItemXml.FillBrush.ToBrush(),
+                rectangleItemXml.BorderPen.ToPen());
             var triangleItemXml = (TriangleItemStyleXml)styleXml.ItemStyleList[(int)Style.PetriNetField.TriangleMarker];
-            style.TriangleMarker.Side = triangleItemXml.Side;
-            style.TriangleMarker.BorderPen = triangleItemXml.BorderPen.ToPen();
-            style.TriangleMarker.FillBrush = triangleItemXml.FillBrush.ToBrush();
+            style.TriangleMarker = new Style.TriangleShapeStyle(triangleItemXml.Side,
+                triangleItemXml.FillBrush.ToBrush(), triangleItemXml.BorderPen.ToPen());
             return style;
         }
 

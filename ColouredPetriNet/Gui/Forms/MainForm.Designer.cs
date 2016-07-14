@@ -58,6 +58,9 @@ namespace ColouredPetriNet.Gui.Forms
             tsbOneStepSimulation = new ToolStripButton();
             tsbRunSimulation = new ToolStripButton();
             tsbStopSimulation = new ToolStripButton();
+            dlgBackground = new BackgroundForm();
+            dlgOpenFile = new OpenFileDialog();
+            dlgSaveFile = new SaveFileDialog();
 
             pbMap = new PictureBox();
             stsStatus = new StatusStrip();
@@ -102,24 +105,28 @@ namespace ColouredPetriNet.Gui.Forms
             mniOpen.Name = "mniOpen";
             mniOpen.Size = new Size(152, 22);
             mniOpen.Text = "Open";
+            mniOpen.Click += (obj, e) => LoadFromFile();
             //
             // Save (ToolStripMenuItem)
             //
             mniSave.Name = "mniSave";
             mniSave.Size = new Size(152, 22);
             mniSave.Text = "Save";
+            mniSave.Click += (obj, e) => SaveToFile();
             //
             // SaveAs (ToolStripMenuItem)
             //
             mniSaveAs.Name = "mniSaveAs";
             mniSaveAs.Size = new Size(152, 22);
             mniSaveAs.Text = "Save As...";
+            mniSaveAs.Click += (obj, e) => SaveFileAs();
             //
             // Exit (ToolStripMenuItem)
             //
             mniExit.Name = "mniExit";
             mniExit.Size = new Size(152, 22);
             mniExit.Text = "Exit";
+            mniExit.Click += (obj, e) => this.Close();
             //
             // Map (ToolStripMenuItem)
             //
@@ -371,6 +378,7 @@ namespace ColouredPetriNet.Gui.Forms
             mniBackground.Name = "mniBackground";
             mniBackground.Size = new Size(152, 22);
             mniBackground.Text = "Background";
+            mniBackground.Click += (obj, e) => OpenBackgroundForm();
             //
             // About (ToolStripMenuItem)
             //
@@ -534,6 +542,13 @@ namespace ColouredPetriNet.Gui.Forms
             trvStates.Size = new Size(121, 105);
             trvStates.Location = new Point(360, 71);
             trvStates.TabIndex = 4;
+            ImageList stateImageList = new ImageList();
+            stateImageList.Images.Add(Properties.Resources.RoundStateIcon);
+            stateImageList.Images.Add(Properties.Resources.ImageStateIcon);
+            stateImageList.Images.Add(Properties.Resources.RoundMarkerIcon);
+            stateImageList.Images.Add(Properties.Resources.RhombMarkerIcon);
+            stateImageList.Images.Add(Properties.Resources.TriangleMarkerIcon);
+            trvStates.ImageList = stateImageList;
             //
             // trvTransitions (TreeView)
             //
@@ -541,6 +556,10 @@ namespace ColouredPetriNet.Gui.Forms
             trvTransitions.Size = new Size(121, 101);
             trvTransitions.Location = new Point(360, 195);
             trvTransitions.TabIndex = 5;
+            ImageList transitionImageList = new ImageList();
+            transitionImageList.Images.Add(Properties.Resources.RectangleTransitionIcon);
+            transitionImageList.Images.Add(Properties.Resources.RhombTransitionIcon);
+            trvTransitions.ImageList = transitionImageList;
             //
             // lblStates (Label)
             //
@@ -559,6 +578,20 @@ namespace ColouredPetriNet.Gui.Forms
             lblTransitions.AutoSize = true;
             lblTransitions.TabIndex = 7;
             lblTransitions.Text = "Transitions";
+            //
+            // dlgOpenFile (OpenFileDialog)
+            //
+            dlgOpenFile = new OpenFileDialog();
+            dlgOpenFile.Filter = "Coloured petri net files (*.cpn)|*.cpn|All files (*.*)|*.*";
+            dlgOpenFile.FilterIndex = 1;
+            dlgOpenFile.RestoreDirectory = true;
+            //
+            // dlgSaveFile (SaveFileDialog)
+            //
+            dlgSaveFile = new SaveFileDialog();
+            dlgSaveFile.Filter = "Coloured petri net files (*.cpn)|*.cpn|All files (*.*)|*.*";
+            dlgSaveFile.FilterIndex = 1;
+            dlgSaveFile.RestoreDirectory = true;
             //
             // MainForm
             //
@@ -650,5 +683,8 @@ namespace ColouredPetriNet.Gui.Forms
         private TreeView trvTransitions;
         private Label lblStates;
         private Label lblTransitions;
+        private BackgroundForm dlgBackground;
+        private OpenFileDialog dlgOpenFile;
+        private SaveFileDialog dlgSaveFile;
     }
 }

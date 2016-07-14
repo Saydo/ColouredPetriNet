@@ -95,6 +95,12 @@
     <Compile Include="Gui\Core\LinearAlgebra\Algorithm.cs" />
     <Compile Include="Gui\Core\Serialize\ColouredPetriNetXml.cs" />
     <Compile Include="Gui\Core\Serialize\PetriNetXmlSerializer.cs" />
+    <Compile Include="Gui\Forms\BackgroundForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\Forms\BackgroundForm.Designer.cs">
+      <DependentUpon>BackgroundForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Gui\Forms\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -121,6 +127,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Gui\Forms\BackgroundForm.resx">
+      <DependentUpon>BackgroundForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -188,6 +197,27 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Remove32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ImageState32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RectangleTransition32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RhombMarker32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RhombTransition32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RoundMarker32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RoundState32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TriangleMarker32x32.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

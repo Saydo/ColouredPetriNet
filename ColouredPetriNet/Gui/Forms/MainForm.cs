@@ -6,7 +6,12 @@ namespace ColouredPetriNet.Gui.Forms
 {
     public partial class MainForm : Form
     {
-        private enum ItemMapMode { View, Move, AddState, AddTransition, AddMarker, AddLink, Remove, RemoveMarker};
+        private enum ItemMapMode
+        {
+            View, Move, AddState, AddTransition, AddMarker, AddLink, Remove, RemoveMarker
+        };
+        private enum StateTreeImage { RoundState, ImageState, RoundMarker, RhombMarker, TriangleMarker };
+        private enum TransitionTreeImage { RectangleTransition, RhombTransition };
 
         private Core.PetriNetGraphicsMap _itemMap;
         private bool _mousePressed;
@@ -18,12 +23,12 @@ namespace ColouredPetriNet.Gui.Forms
         private Core.ColouredMarkerType _newMarkerType;
         private Core.GraphicsStateWrapper _selectedState;
         private Core.GraphicsTransitionWrapper _selectedTransition;
+        private string currentFile;
 
         public MainForm()
         {
             InitializeComponent();
             _itemMap = new Core.PetriNetGraphicsMap();
-            //_itemMap.Overlap = GraphicsItems.OverlapType.Full;
             _mousePressed = false;
             _itemSelected = false;
             _selectedState = null;
@@ -33,26 +38,7 @@ namespace ColouredPetriNet.Gui.Forms
             _newStateType = Core.ColouredStateType.RoundState;
             _newTransitionType = Core.ColouredTransitionType.RectangleTransition;
             _newMarkerType = Core.ColouredMarkerType.RoundMarker;
-            /*
-            ImageList img_list = new ImageList();
-            img_list.Images.Add(Properties.Resources.AddRoundStateIcon);
-            img_list.Images.Add(Properties.Resources.RemoveIcon);
-            trvStates.ImageList = img_list;
-            trvStates.Nodes.Add(new TreeNode("State 1", 1, 1));
-            trvStates.Nodes.Add(new TreeNode("State 2", 0, 0));
-            */
-            //_itemMap.AddItem(new GraphicsItems.RoundGraphicsItem(1, 1, new Point(100, 100), 10));
-            //_itemMap.AddItem(new GraphicsItems.RhombGraphicsItem(1, 1, new Point(100, 100), 20, 4));
-            //_itemMap.AddItem(new GraphicsItems.RectangleGraphicsItem(1, 1, new Point(100, 100), 20, 40));
-
-            //_itemMap.AddItem(new GraphicsItems.LinkGraphicsItem(2, 1, new Point(50, 50), new Point(100, 100),
-            //    GraphicsItems.LinkGraphicsItem.LinkDirection.Both));
-            //_itemMap.AddItem(new GraphicsItems.LineGraphicsItem(2, 1, new Point(50, 50), new Point(100, 100)));
-            //GraphicsItems.TriangleGraphicsItem triangle = new GraphicsItems.TriangleGraphicsItem(0, 0, new Point(100, 100), 40);
-            //GraphicsItems.TriangleGraphicsItem triangle = new GraphicsItems.TriangleGraphicsItem(0, 0,
-            //    new Point(80, 111), new Point(100, 77), new Point(120, 111));
-            //    new Point(10, 10), new Point(10, 50), new Point(40, 50));
-            //_itemMap.AddItem(triangle);
+            currentFile = null;
         }
 
         private void MainFormLoad(object sender, System.EventArgs e)
@@ -67,15 +53,47 @@ namespace ColouredPetriNet.Gui.Forms
 
         private void ItemMapMouseClick(object sender, MouseEventArgs e)
         {
-            System.Console.WriteLine("ItemMapMouseClick");
+            //System.Console.WriteLine("ItemMapMouseClick");
+            int id;
+            TreeNode treeNode;
             switch (_mapMode)
             {
                 case ItemMapMode.AddState:
-                    _itemMap.AddState(e.X, e.Y, _newStateType);
+                    id = _itemMap.AddState(e.X, e.Y, _newStateType);
+                    if (_newStateType == Core.ColouredStateType.RoundState)
+                    {
+                        treeNode = new TreeNode("State " + id.ToString(),
+                            (int)StateTreeImage.RoundState, (int)StateTreeImage.RoundState);
+                        treeNode.Tag = id;
+                        trvStates.Nodes.Add(treeNode);
+                    }
+                    else if (_newStateType == Core.ColouredStateType.ImageState)
+                    {
+                        treeNode = new TreeNode("State " + id.ToString(),
+                            (int)StateTreeImage.ImageState, (int)StateTreeImage.ImageState);
+                        treeNode.Tag = id;
+                        trvStates.Nodes.Add(treeNode);
+                    }
                     pbMap.Refresh();
                     break;
                 case ItemMapMode.AddTransition:
-                    _itemMap.AddTransition(e.X, e.Y, _newTransitionType);
+                    id = _itemMap.AddTransition(e.X, e.Y, _newTransitionType);
+                    if (_newTransitionType == Core.ColouredTransitionType.RectangleTransition)
+                    {
+                        treeNode = new TreeNode("Transition " + id.ToString(),
+                            (int)TransitionTreeImage.RectangleTransition,
+                            (int)TransitionTreeImage.RectangleTransition);
+                        treeNode.Tag = id;
+                        trvTransitions.Nodes.Add(treeNode);
+                    }
+                    else if (_newTransitionType == Core.ColouredTransitionType.RhombTransition)
+                    {
+                        treeNode = new TreeNode("Transition " + id.ToString(),
+                            (int)TransitionTreeImage.RhombTransition,
+                            (int)TransitionTreeImage.RhombTransition);
+                        treeNode.Tag = id;
+                        trvTransitions.Nodes.Add(treeNode);
+                    }
                     pbMap.Refresh();
                     break;
                 case ItemMapMode.AddMarker:
@@ -83,14 +101,36 @@ namespace ColouredPetriNet.Gui.Forms
                     if (selectedStates.Count > 0)
                     {
                         var state = selectedStates[selectedStates.Count - 1];
-                        _itemMap.AddMarker(state.State.Id, _newMarkerType);
+                        id = _itemMap.AddMarker(state.State.Id, _newMarkerType);
+                        int stateIndex= FindStateIndexInTreeView(state.State.Id);
+                        if (_newMarkerType == Core.ColouredMarkerType.RoundMarker)
+                        {
+                            treeNode = new TreeNode("Marker " + id.ToString(),
+                                (int)StateTreeImage.RoundMarker, (int)StateTreeImage.RoundMarker);
+                            treeNode.Tag = id;
+                            trvStates.Nodes[stateIndex].Nodes.Add(treeNode);
+                        }
+                        else if (_newMarkerType == Core.ColouredMarkerType.RhombMarker)
+                        {
+                            treeNode = new TreeNode("Marker " + id.ToString(),
+                                (int)StateTreeImage.RhombMarker, (int)StateTreeImage.RhombMarker);
+                            treeNode.Tag = id;
+                            trvStates.Nodes[stateIndex].Nodes.Add(treeNode);
+                        }
+                        else if (_newMarkerType == Core.ColouredMarkerType.TriangleMarker)
+                        {
+                            treeNode = new TreeNode("Marker " + id.ToString(),
+                                (int)StateTreeImage.TriangleMarker, (int)StateTreeImage.TriangleMarker);
+                            treeNode.Tag = id;
+                            trvStates.Nodes[stateIndex].Nodes.Add(treeNode);
+                        }
                     }
                     pbMap.Refresh();
                     break;
                 case ItemMapMode.AddLink:
                     if (_itemSelected)
                     {
-                        System.Console.WriteLine("AddLine: select");
+                        //System.Console.WriteLine("AddLine: select");
                         if (!ReferenceEquals(_selectedState, null))
                         {
                             var chosenTransitions = _itemMap.FindTransitions(e.X, e.Y);
@@ -116,11 +156,11 @@ namespace ColouredPetriNet.Gui.Forms
                     }
                     else
                     {
-                        System.Console.WriteLine("AddLine: non select");
+                        //System.Console.WriteLine("AddLine: non select");
                         var chosenStates = _itemMap.FindStates(e.X, e.Y);
                         if (chosenStates.Count > 0)
                         {
-                            System.Console.WriteLine("AddLine: find states");
+                            //System.Console.WriteLine("AddLine: find states");
                             _selectedState = chosenStates[0];
                             _itemSelected = true;
                         }
@@ -129,7 +169,7 @@ namespace ColouredPetriNet.Gui.Forms
                             var chosenTransitions = _itemMap.FindTransitions(e.X, e.Y);
                             if (chosenTransitions.Count > 0)
                             {
-                                System.Console.WriteLine("AddLine: find transitions");
+                                //System.Console.WriteLine("AddLine: find transitions");
                                 _selectedTransition = chosenTransitions[0];
                                 _itemSelected = true;
                             }
@@ -142,7 +182,7 @@ namespace ColouredPetriNet.Gui.Forms
 
         private void ItemMapMouseDown(object sender, MouseEventArgs e)
         {
-            System.Console.WriteLine("ItemMapMouseDown");
+            //System.Console.WriteLine("ItemMapMouseDown");
             _mousePressed = true;
             _lastMousePosition = e.Location;
             if (_mapMode == ItemMapMode.Move)
@@ -209,7 +249,7 @@ namespace ColouredPetriNet.Gui.Forms
         {
             if (_mousePressed)
             {
-                System.Console.WriteLine("ItemMapMouseMove");
+                //System.Console.WriteLine("ItemMapMouseMove");
                 if ((_mapMode == ItemMapMode.Move) && (_itemSelected))
                 {
                     _itemMap.MoveSelectedItems(e.X - _lastMousePosition.X, e.Y - _lastMousePosition.Y);
@@ -225,7 +265,7 @@ namespace ColouredPetriNet.Gui.Forms
 
         private void ItemMapMouseUp(object sender, MouseEventArgs e)
         {
-            System.Console.WriteLine("ItemMapMouseUp");
+            //System.Console.WriteLine("ItemMapMouseUp");
             _mousePressed = false;
             if (_mapMode != ItemMapMode.AddLink)
             {
@@ -308,19 +348,19 @@ namespace ColouredPetriNet.Gui.Forms
 
         private void SetNewStateType(Core.ColouredStateType type)
         {
-            System.Console.WriteLine("SetNewStateType: " + type);
+            //System.Console.WriteLine("SetNewStateType: " + type);
             _newStateType = type;
         }
 
         private void SetNewTransitionType(Core.ColouredTransitionType type)
         {
-            System.Console.WriteLine("SetNewTransitionType: " + type);
+            //System.Console.WriteLine("SetNewTransitionType: " + type);
             _newTransitionType = type;
         }
 
         private void SetNewMarkerType(Core.ColouredMarkerType type)
         {
-            System.Console.WriteLine("SetNewMarkerType: " + type);
+            //System.Console.WriteLine("SetNewMarkerType: " + type);
             _newMarkerType = type;
         }
 
@@ -370,6 +410,69 @@ namespace ColouredPetriNet.Gui.Forms
             {
                 this.mniSelectionModePartial.Checked = true;
             }
+        }
+
+        private int FindStateIndexInTreeView(int id)
+        {
+            for (int i = 0;  i < trvStates.Nodes.Count; ++i)
+            {
+                if ((int)trvStates.Nodes[i].Tag == id)
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        private void LoadFromFile()
+        {
+            if (dlgOpenFile.ShowDialog() == DialogResult.OK)
+            {
+                if(_itemMap.Deserialize(dlgOpenFile.FileName))
+                {
+                    currentFile = dlgOpenFile.FileName;
+                }
+                else
+                {
+                    MessageBox.Show("Error: Could not load file!");
+                }
+            }
+        }
+
+        private void SaveToFile()
+        {
+            if (currentFile == null)
+            {
+                SaveFileAs();
+            }
+            else
+            {
+                if (!_itemMap.Serialize(currentFile))
+                {
+                    MessageBox.Show("Error: Could not save file!");
+                }
+            }
+        }
+
+        private void SaveFileAs()
+        {
+            if (dlgSaveFile.ShowDialog() == DialogResult.OK)
+            {
+                System.Console.WriteLine("File:{0}", dlgSaveFile.FileName);
+                if (_itemMap.Serialize(dlgSaveFile.FileName))
+                {
+                    currentFile = dlgSaveFile.FileName;
+                }
+                else
+                {
+                    MessageBox.Show("Error: Could not save file!");
+                }
+            }
+        }
+
+        private void OpenBackgroundForm()
+        {
+            dlgBackground.ShowDialog();
         }
     }
 }

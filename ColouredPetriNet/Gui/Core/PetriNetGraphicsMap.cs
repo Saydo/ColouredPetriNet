@@ -41,19 +41,27 @@ namespace ColouredPetriNet.Gui.Core
 
         public void SetDefaultStyle()
         {
-            Style.RoundMarker = new Style.RoundShapeStyle();
-            Style.RhombMarker = new Style.RectangleShapeStyle();
-            Style.TriangleMarker = new Style.TriangleShapeStyle();
-            Style.RectangleTransition = new Style.RectangleShapeStyle();
-            Style.RhombTransition = new Style.RectangleShapeStyle();
-            Style.RoundState = new Style.RoundShapeStyle();
-            Style.ImageState = new Style.ImageShapeStyle("");
+            string appDir = System.AppDomain.CurrentDomain.BaseDirectory;
+            string projectDir = appDir.Substring(0, appDir.Length - "/bin/Debug".Length);
+            Style.RoundMarker = new Style.RoundShapeStyle(4, new SolidBrush(Color.FromArgb(150, 0, 220)),
+                new Pen(Color.FromArgb(0, 0, 0), 1.0F));
+            Style.RhombMarker = new Style.RectangleShapeStyle(8, 8,
+                new SolidBrush(Color.FromArgb(150, 0, 220)), new Pen(Color.FromArgb(0, 0, 0), 1.0F));
+            Style.TriangleMarker = new Style.TriangleShapeStyle(8,
+                new SolidBrush(Color.FromArgb(150, 0, 220)), new Pen(Color.FromArgb(0, 0, 0), 1.0F));
+            Style.RectangleTransition = new Style.RectangleShapeStyle(20, 20,
+                new SolidBrush(Color.FromArgb(220, 220, 0)), new Pen(Color.FromArgb(0, 0, 0), 1.0F));
+            Style.RhombTransition = new Style.RectangleShapeStyle(20, 20,
+                new SolidBrush(Color.FromArgb(220, 220, 0)), new Pen(Color.FromArgb(0, 0, 0), 1.0F));
+            Style.RoundState = new Style.RoundShapeStyle(10, new SolidBrush(Color.FromArgb(0, 240, 0)),
+                new Pen(Color.FromArgb(0, 0, 0), 1.0F));
+            Style.ImageState = new Style.ImageShapeStyle(projectDir + "Resources/ImageState32x32.png", 22, 22);
             Style.SelectionMode = GraphicsItems.OverlapType.Partial;
             Style.SelectionPen = new Pen(Color.FromArgb(0, 0, 0), 1.0F);
         }
 
         #region Add Functions
-        public void AddState(int x, int y, ColouredStateType stateType)
+        public int AddState(int x, int y, ColouredStateType stateType)
         {
             int id;
             switch (stateType)
@@ -67,7 +75,7 @@ namespace ColouredPetriNet.Gui.Core
                     roundState.BorderPen = Style.RoundState.BorderPen;
                     roundState.FillBrush = Style.RoundState.FillBrush;
                     _states.Add(new GraphicsStateWrapper(roundState));
-                    break;
+                    return id;
                 case ColouredStateType.ImageState:
                     id = _petriNet.AddState<ImageState>(new ImageState());
                     var imageState = new GraphicsItems.ImageGraphicsItem(id,
@@ -76,11 +84,12 @@ namespace ColouredPetriNet.Gui.Core
                         new Point(x, y), Style.ImageState.Width, Style.ImageState.Height, _stateZ);
                     imageState.SelectionPen = Style.SelectionPen;
                     _states.Add(new GraphicsStateWrapper(imageState));
-                    break;
+                    return id;
             }
+            return -1;
         }
 
-        public void AddTransition(int x, int y, ColouredTransitionType transitionType)
+        public int AddTransition(int x, int y, ColouredTransitionType transitionType)
         {
             int id;
             switch (transitionType)
@@ -95,7 +104,7 @@ namespace ColouredPetriNet.Gui.Core
                     rectangleTransition.BorderPen = Style.RectangleTransition.BorderPen;
                     rectangleTransition.FillBrush = Style.RectangleTransition.FillBrush;
                     _transitions.Add(new GraphicsTransitionWrapper(rectangleTransition));
-                    break;
+                    return id;
                 case ColouredTransitionType.RhombTransition:
                     id = _petriNet.AddTransition<RhombTransition>(new RhombTransition());
                     var rhombTransition = new GraphicsItems.RhombGraphicsItem(id,
@@ -106,17 +115,18 @@ namespace ColouredPetriNet.Gui.Core
                     rhombTransition.BorderPen = Style.RhombTransition.BorderPen;
                     rhombTransition.FillBrush = Style.RhombTransition.FillBrush;
                     _transitions.Add(new GraphicsTransitionWrapper(rhombTransition));
-                    break;
+                    return id;
             }
+            return -1;
         }
 
-        public void AddMarker(int stateId, ColouredMarkerType markerType)
+        public int AddMarker(int stateId, ColouredMarkerType markerType)
         {
             int id;
             var state = FindStateById(stateId);
             if (ReferenceEquals(state, null))
             {
-                return;
+                return -1;
             }
             switch (markerType)
             {
@@ -130,7 +140,7 @@ namespace ColouredPetriNet.Gui.Core
                     roundMarker.BorderPen = Style.RoundMarker.BorderPen;
                     roundMarker.FillBrush = Style.RoundMarker.FillBrush;
                     state.AddMarker(roundMarker);
-                    break;
+                    return id;
                 case ColouredMarkerType.RhombMarker:
                     id = _petriNet.AddMarker<RhombMarker>(stateId, new RhombMarker());
                     var rhombMarker = new GraphicsItems.RhombGraphicsItem(id,
@@ -141,7 +151,7 @@ namespace ColouredPetriNet.Gui.Core
                     rhombMarker.BorderPen = Style.RhombMarker.BorderPen;
                     rhombMarker.FillBrush = Style.RhombMarker.FillBrush;
                     state.AddMarker(rhombMarker);
-                    break;
+                    return id;
                 case ColouredMarkerType.TriangleMarker:
                     id = _petriNet.AddMarker<TriangleMarker>(stateId, new TriangleMarker());
                     var triangleMarker = new GraphicsItems.TriangleGraphicsItem(id,
@@ -151,8 +161,9 @@ namespace ColouredPetriNet.Gui.Core
                     triangleMarker.BorderPen = Style.TriangleMarker.BorderPen;
                     triangleMarker.FillBrush = Style.TriangleMarker.FillBrush;
                     state.AddMarker(triangleMarker);
-                    break;
+                    return id;
             }
+            return -1;
         }
 
         public void AddLink(int stateId, int transitionId, LinkDirection direction)

@@ -106,7 +106,7 @@ namespace ColouredPetriNet.Gui.Core.Style
         {
         }
 
-        public ImageShapeStyle(string imageName, int width, int height) : base()
+        public ImageShapeStyle(string imageName, int width, int height) : base(width, height)
         {
             ImageName = imageName;
         }
@@ -120,7 +120,7 @@ namespace ColouredPetriNet.Gui.Core.Style
 
     public enum PetriNetField
     {
-        RoundState, ImageState, RectangleTransition, RhombTransition,
+        RoundState = 0, ImageState, RectangleTransition, RhombTransition,
         RoundMarker, RhombMarker, TriangleMarker
     };
 
@@ -135,5 +135,18 @@ namespace ColouredPetriNet.Gui.Core.Style
         public RoundShapeStyle RoundMarker;
         public RectangleShapeStyle RhombMarker;
         public TriangleShapeStyle TriangleMarker;
+
+        public void Initialize()
+        {
+            SelectionMode = GraphicsItems.OverlapType.Partial;
+            SelectionPen = new Pen(Color.FromArgb(0, 0, 0));
+            RoundState = new RoundShapeStyle();
+            ImageState = new ImageShapeStyle("");
+            RectangleTransition = new RectangleShapeStyle();
+            RhombTransition = new RectangleShapeStyle();
+            RoundMarker = new RoundShapeStyle();
+            RhombMarker = new RectangleShapeStyle();
+            TriangleMarker = new TriangleShapeStyle();
+        }
     }
 }

@@ -11,9 +11,9 @@ namespace ColouredPetriNet.Gui.Core
         int StateCount { get; }
         void SetDefaultStyle();
         // Add
-        void AddState(int x, int y, ColouredStateType stateType);
-        void AddTransition(int x, int y, ColouredTransitionType transitionType);
-        void AddMarker(int stateId, ColouredMarkerType markerType);
+        int AddState(int x, int y, ColouredStateType stateType);
+        int AddTransition(int x, int y, ColouredTransitionType transitionType);
+        int AddMarker(int stateId, ColouredMarkerType markerType);
         void AddLink(int stateId, int transitionId, LinkDirection direction);
         // Remove
         bool RemoveLink(int id);
