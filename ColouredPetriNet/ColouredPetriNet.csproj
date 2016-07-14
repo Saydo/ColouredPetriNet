@@ -130,42 +130,6 @@
     <None Include="Resources\AppIcon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="icon.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\AddRoundState.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Remove.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\View.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\AddImageState.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\AddRectangleTransition.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\AddRhombMarker.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\AddRhombTransition.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\AddRoundMarker.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\AddTriangleMarker.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Move.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\RemoveMarker.png" />
-  </ItemGroup>
-  <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">
       <Visible>False</Visible>
       <ProductName>Microsoft .NET Framework 4.5 %28x86 и x64%29</ProductName>
@@ -178,7 +142,52 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\AddLink.png" />
+    <None Include="Resources\AddRectangleTransition32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AddRhombMarker32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AddRhombTransition32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AddRoundMarker32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AddRoundState32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AddTriangleMarker32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Move32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\OneStep32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Pause32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Play32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Stop32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\View32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AddImageState32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AddLink32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RemoveMarker32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Remove32x32.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

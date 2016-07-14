@@ -487,7 +487,7 @@ namespace ColouredPetriNet.Gui.Forms
             tsbOneStepSimulation.Name = "tsbOneStepSimulation";
             tsbOneStepSimulation.Size = new Size(23, 22);
             tsbOneStepSimulation.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            tsbOneStepSimulation.Image = Properties.Resources.AddImageStateIcon;
+            tsbOneStepSimulation.Image = Properties.Resources.OneStepIcon;
             tsbOneStepSimulation.Text = "One Step Simulation";
             //
             // tsbRunSimulation (ToolStripButton)
@@ -495,7 +495,7 @@ namespace ColouredPetriNet.Gui.Forms
             tsbRunSimulation.Name = "tsbRunSimulation";
             tsbRunSimulation.Size = new Size(23, 22);
             tsbRunSimulation.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            tsbRunSimulation.Image = Properties.Resources.AddImageStateIcon;
+            tsbRunSimulation.Image = Properties.Resources.PlayIcon;
             tsbRunSimulation.Text = "Run Simulation";
             //
             // tsbStopSimulation (ToolStripButton)
@@ -503,7 +503,7 @@ namespace ColouredPetriNet.Gui.Forms
             tsbStopSimulation.Name = "tsbStopSimulation";
             tsbStopSimulation.Size = new Size(23, 22);
             tsbStopSimulation.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            tsbStopSimulation.Image = Properties.Resources.AddImageStateIcon;
+            tsbStopSimulation.Image = Properties.Resources.StopIcon;
             tsbStopSimulation.Text = "Stop Simulation";
             //
             // pbMap (PictureBox)

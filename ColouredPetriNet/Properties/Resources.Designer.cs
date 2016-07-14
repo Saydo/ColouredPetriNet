@@ -163,6 +163,36 @@ namespace ColouredPetriNet.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap OneStepIcon {
+            get {
+                object obj = ResourceManager.GetObject("OneStepIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap PauseIcon {
+            get {
+                object obj = ResourceManager.GetObject("PauseIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap PlayIcon {
+            get {
+                object obj = ResourceManager.GetObject("PlayIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap RemoveIcon {
             get {
                 object obj = ResourceManager.GetObject("RemoveIcon", resourceCulture);
@@ -176,6 +206,16 @@ namespace ColouredPetriNet.Properties {
         internal static System.Drawing.Bitmap RemoveMarkerIcon {
             get {
                 object obj = ResourceManager.GetObject("RemoveMarkerIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap StopIcon {
+            get {
+                object obj = ResourceManager.GetObject("StopIcon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
