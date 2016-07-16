@@ -193,42 +193,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Gui\Forms\AboutForm.resx">
-      <DependentUpon>AboutForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\Forms\BackgroundForm.resx">
-      <DependentUpon>BackgroundForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\Forms\ImageItemStyleForm.resx">
-      <DependentUpon>ImageItemStyleForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\Forms\ItemStyleForm.resx">
-      <DependentUpon>ItemStyleForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\Forms\LinkStyleForm.resx">
-      <DependentUpon>LinkStyleForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\Forms\MarkerInfoForm.resx">
-      <DependentUpon>MarkerInfoForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\Forms\RectangleItemStyleForm.resx">
-      <DependentUpon>RectangleItemStyleForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\Forms\RoundItemStyleForm.resx">
-      <DependentUpon>RoundItemStyleForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\Forms\ShowItemInfoForm.resx">
-      <DependentUpon>ShowItemInfoForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\Forms\TransitionInfoForm.resx">
-      <DependentUpon>TransitionInfoForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\Forms\StateInfoForm.resx">
-      <DependentUpon>StateInfoForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\Forms\TriangleItemStyleForm.resx">
-      <DependentUpon>TriangleItemStyleForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

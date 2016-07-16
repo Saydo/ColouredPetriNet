@@ -75,8 +75,8 @@ namespace ColouredPetriNet.Gui.Forms
 
             mnsMain.SuspendLayout();
             tlsMain.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbMap)).BeginInit();
-            SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(pbMap)).BeginInit();
+            this.SuspendLayout();
             //
             // Main (MenuStrip)
             //
@@ -607,42 +607,39 @@ namespace ColouredPetriNet.Gui.Forms
             //
             // MainForm
             //
-            Name = "MainForm"; 
-            AutoScaleDimensions = new SizeF(6F, 13F);
-            AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(489, 331);
-            Controls.Add(lblTransitions);
-            Controls.Add(lblStates);
-            Controls.Add(trvTransitions);
-            Controls.Add(trvStates);
-            Controls.Add(stsStatus);
-            Controls.Add(pbMap);
-            Controls.Add(tlsMain);
-            Controls.Add(mnsMain);
-            Icon = Properties.Resources.AppIcon;
-            MainMenuStrip = mnsMain;
-            Text = "Coloured Petri Net";
+            this.Name = "MainForm"; 
+            this.AutoScaleDimensions = new SizeF(6F, 13F);
+            this.AutoScaleMode = AutoScaleMode.Font;
+            this.ClientSize = new Size(489, 331);
+            this.Controls.Add(lblTransitions);
+            this.Controls.Add(lblStates);
+            this.Controls.Add(trvTransitions);
+            this.Controls.Add(trvStates);
+            this.Controls.Add(stsStatus);
+            this.Controls.Add(pbMap);
+            this.Controls.Add(tlsMain);
+            this.Controls.Add(mnsMain);
+            this.Icon = Properties.Resources.AppIcon;
+            this.MainMenuStrip = mnsMain;
+            this.Text = "Coloured Petri Net";
             mnsMain.ResumeLayout(false);
             mnsMain.PerformLayout();
             tlsMain.ResumeLayout(false);
             tlsMain.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(pbMap)).EndInit();
-            ResumeLayout(false);
-            PerformLayout();
+            this.ResumeLayout(false);
+            this.PerformLayout();
             this.Load += new System.EventHandler(MainFormLoad);
         }
 
         private MenuStrip mnsMain;
-
         private ToolStripMenuItem mniFile;
         private ToolStripMenuItem mniOpen;
         private ToolStripMenuItem mniSave;
         private ToolStripMenuItem mniSaveAs;
         private ToolStripMenuItem mniExit;
-
         private ToolStripMenuItem mniMap;
         private ToolStripMenuItem mniSetMode;
-
         private ToolStripRadioButtonMenuItem mniSetModeView;
         private ToolStripRadioButtonMenuItem mniSetModeMove;
         private ToolStripRadioButtonMenuItem mniSetModeAddState;
@@ -658,12 +655,10 @@ namespace ColouredPetriNet.Gui.Forms
         private ToolStripRadioButtonMenuItem mniSetModeAddLink;
         private ToolStripRadioButtonMenuItem mniSetModeRemove;
         private ToolStripRadioButtonMenuItem mniSetModeRemoveMarker;
-
         private ToolStripMenuItem mniShowInfo;
         private ToolStripMenuItem mniShowStateInfo;
         private ToolStripMenuItem mniShowTransitionInfo;
         private ToolStripMenuItem mniShowMarkerInfo;
-
         private ToolStripMenuItem mniView;
         private ToolStripMenuItem mniSelectionMode;
         private ToolStripRadioButtonMenuItem mniSelectionModeFull;
@@ -674,7 +669,6 @@ namespace ColouredPetriNet.Gui.Forms
         private ToolStripMenuItem mniMarkerStyle;
         private ToolStripMenuItem mniLinkStyle;
         private ToolStripMenuItem mniBackground;
-
         private ToolStripMenuItem mniAbout;
         private ToolStrip tlsMain;
         private ToolStripButton tsbView;

@@ -16,10 +16,5 @@ namespace ColouredPetriNet.Gui.Forms
         {
             InitializeComponent();
         }
-
-        private void ImageItemStyleForm_Load(object sender, EventArgs e)
-        {
-
-        }
     }
 }
