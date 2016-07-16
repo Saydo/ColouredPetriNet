@@ -10,22 +10,16 @@ using System.Windows.Forms;
 
 namespace ColouredPetriNet.Gui.Forms
 {
-    public partial class BackgroundForm : Form
+    public partial class ImageItemStyleForm : Form
     {
-        public BackgroundForm()
+        public ImageItemStyleForm()
         {
             InitializeComponent();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void ImageItemStyleForm_Load(object sender, EventArgs e)
         {
-            //
-        }
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-            //colorDialog1.ShowDialog();
-            //colorPanel.BackColor = colorDialog1.Color;
         }
     }
 }

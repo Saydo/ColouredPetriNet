@@ -470,9 +470,49 @@ namespace ColouredPetriNet.Gui.Forms
             }
         }
 
+        private void OpenShowStateInfoForm()
+        {
+            dlgShowIteminfo.ShowDialog();
+        }
+
+        private void OpenShowTransitionInfoForm()
+        {
+            dlgShowIteminfo.ShowDialog();
+        }
+
+        private void OpenShowMarkerInfoForm()
+        {
+            dlgShowIteminfo.ShowDialog();
+        }
+
+        private void OpenLinkStyleForm()
+        {
+            dlgLinkStyle.ShowDialog();
+        }
+
+        private void OpenStateStyleForm()
+        {
+            dlgItemStyle.ShowDialog();
+        }
+
+        private void OpenTransitionStyleForm()
+        {
+            dlgItemStyle.ShowDialog();
+        }
+
+        private void OpenMarkerStyleForm()
+        {
+            dlgItemStyle.ShowDialog();
+        }
+
         private void OpenBackgroundForm()
         {
             dlgBackground.ShowDialog();
+        }
+
+        private void OpenAboutForm()
+        {
+            dlgAbout.ShowDialog();
         }
     }
 }

@@ -95,11 +95,35 @@
     <Compile Include="Gui\Core\LinearAlgebra\Algorithm.cs" />
     <Compile Include="Gui\Core\Serialize\ColouredPetriNetXml.cs" />
     <Compile Include="Gui\Core\Serialize\PetriNetXmlSerializer.cs" />
+    <Compile Include="Gui\Forms\AboutForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\Forms\AboutForm.Designer.cs">
+      <DependentUpon>AboutForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Gui\Forms\BackgroundForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Gui\Forms\BackgroundForm.Designer.cs">
       <DependentUpon>BackgroundForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gui\Forms\ImageItemStyleForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\Forms\ImageItemStyleForm.Designer.cs">
+      <DependentUpon>ImageItemStyleForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gui\Forms\ItemStyleForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\Forms\ItemStyleForm.Designer.cs">
+      <DependentUpon>ItemStyleForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gui\Forms\LinkStyleForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\Forms\LinkStyleForm.Designer.cs">
+      <DependentUpon>LinkStyleForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Gui\Forms\MainForm.cs">
       <SubType>Form</SubType>
@@ -109,11 +133,53 @@
     </Compile>
     <Compile Include="Gui\Core\PetriNetGraphicsMap.cs" />
     <Compile Include="Gui\Core\SelectionArea.cs" />
+    <Compile Include="Gui\Forms\MarkerInfoForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\Forms\MarkerInfoForm.Designer.cs">
+      <DependentUpon>MarkerInfoForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gui\Forms\RectangleItemStyleForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\Forms\RectangleItemStyleForm.Designer.cs">
+      <DependentUpon>RectangleItemStyleForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gui\Forms\RoundItemStyleForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\Forms\RoundItemStyleForm.Designer.cs">
+      <DependentUpon>RoundItemStyleForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gui\Forms\ShowItemInfoForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\Forms\ShowItemInfoForm.Designer.cs">
+      <DependentUpon>ShowItemInfoForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gui\Forms\TransitionInfoForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\Forms\TransitionInfoForm.Designer.cs">
+      <DependentUpon>TransitionInfoForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gui\Forms\StateInfoForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\Forms\StateInfoForm.Designer.cs">
+      <DependentUpon>StateInfoForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Gui\Forms\StripImageList.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Gui\Forms\ToolStripRadioButtonMenuItem.cs">
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Gui\Forms\TriangleItemStyleForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\Forms\TriangleItemStyleForm.Designer.cs">
+      <DependentUpon>TriangleItemStyleForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -127,8 +193,41 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Gui\Forms\AboutForm.resx">
+      <DependentUpon>AboutForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Gui\Forms\BackgroundForm.resx">
       <DependentUpon>BackgroundForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\Forms\ImageItemStyleForm.resx">
+      <DependentUpon>ImageItemStyleForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\Forms\ItemStyleForm.resx">
+      <DependentUpon>ItemStyleForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\Forms\LinkStyleForm.resx">
+      <DependentUpon>LinkStyleForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\Forms\MarkerInfoForm.resx">
+      <DependentUpon>MarkerInfoForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\Forms\RectangleItemStyleForm.resx">
+      <DependentUpon>RectangleItemStyleForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\Forms\RoundItemStyleForm.resx">
+      <DependentUpon>RoundItemStyleForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\Forms\ShowItemInfoForm.resx">
+      <DependentUpon>ShowItemInfoForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\Forms\TransitionInfoForm.resx">
+      <DependentUpon>TransitionInfoForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\Forms\StateInfoForm.resx">
+      <DependentUpon>StateInfoForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\Forms\TriangleItemStyleForm.resx">
+      <DependentUpon>TriangleItemStyleForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

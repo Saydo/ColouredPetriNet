@@ -58,7 +58,11 @@ namespace ColouredPetriNet.Gui.Forms
             tsbOneStepSimulation = new ToolStripButton();
             tsbRunSimulation = new ToolStripButton();
             tsbStopSimulation = new ToolStripButton();
+            dlgShowIteminfo = new ShowItemInfoForm();
+            dlgLinkStyle = new LinkStyleForm();
+            dlgItemStyle = new ItemStyleForm();
             dlgBackground = new BackgroundForm();
+            dlgAbout = new AboutForm();
             dlgOpenFile = new OpenFileDialog();
             dlgSaveFile = new SaveFileDialog();
 
@@ -289,18 +293,21 @@ namespace ColouredPetriNet.Gui.Forms
             mniShowStateInfo.Name = "mniShowStateInfo";
             mniShowStateInfo.Size = new Size(152, 22);
             mniShowStateInfo.Text = "About State";
+            mniShowStateInfo.Click += (obj, e) => OpenShowStateInfoForm();
             //
             // ShowTransitionInfo (ToolStripMenuItem)
             //
             mniShowTransitionInfo.Name = "mniShowTransitionInfo";
             mniShowTransitionInfo.Size = new Size(152, 22);
             mniShowTransitionInfo.Text = "About Transition";
+            mniShowTransitionInfo.Click += (obj, e) => OpenShowTransitionInfoForm();
             //
             // ShowMarkerInfo (ToolStripMenuItem)
             //
             mniShowMarkerInfo.Name = "mniShowMarkerInfo";
             mniShowMarkerInfo.Size = new Size(152, 22);
             mniShowMarkerInfo.Text = "About Marker";
+            mniShowMarkerInfo.Click += (obj, e) => OpenShowMarkerInfoForm();
             //
             // View (ToolStripMenuItem)
             //
@@ -354,24 +361,28 @@ namespace ColouredPetriNet.Gui.Forms
             mniStateStyle.Name = "mniStateStyle";
             mniStateStyle.Size = new Size(152, 22);
             mniStateStyle.Text = "States";
+            mniStateStyle.Click += (obj, e) => OpenStateStyleForm();
             //
             // TransitionStyle (ToolStripMenuItem)
             //
             mniTransitionStyle.Name = "mniTransitionStyle";
             mniTransitionStyle.Size = new Size(152, 22);
             mniTransitionStyle.Text = "Transitions";
+            mniTransitionStyle.Click += (obj, e) => OpenTransitionStyleForm();
             //
             // MarkerStyle (ToolStripMenuItem)
             //
             mniMarkerStyle.Name = "mniMarkerStyle";
             mniMarkerStyle.Size = new Size(152, 22);
             mniMarkerStyle.Text = "Markers";
+            mniMarkerStyle.Click += (obj, e) => OpenMarkerStyleForm();
             //
             // mniLinkStyle (ToolStripMenuItem)
             //
             mniLinkStyle.Name = "mniLinkStyle";
             mniLinkStyle.Size = new Size(152, 22);
             mniLinkStyle.Text = "Links";
+            mniLinkStyle.Click += (obj, e) => OpenLinkStyleForm();
             //
             // Background (ToolStripMenuItem)
             //
@@ -385,6 +396,7 @@ namespace ColouredPetriNet.Gui.Forms
             mniAbout.Name = "mniAbout";
             mniAbout.Size = new Size(52, 20);
             mniAbout.Text = "About";
+            mniAbout.Click += (obj, e) => OpenAboutForm();
             //
             // Main (ToolStrip)
             //
@@ -683,7 +695,11 @@ namespace ColouredPetriNet.Gui.Forms
         private TreeView trvTransitions;
         private Label lblStates;
         private Label lblTransitions;
+        private ShowItemInfoForm dlgShowIteminfo;
+        private LinkStyleForm dlgLinkStyle;
+        private ItemStyleForm dlgItemStyle;
         private BackgroundForm dlgBackground;
+        private AboutForm dlgAbout;
         private OpenFileDialog dlgOpenFile;
         private SaveFileDialog dlgSaveFile;
     }
