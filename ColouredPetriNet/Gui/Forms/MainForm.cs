@@ -23,7 +23,7 @@ namespace ColouredPetriNet.Gui.Forms
         private Core.ColouredMarkerType _newMarkerType;
         private Core.GraphicsStateWrapper _selectedState;
         private Core.GraphicsTransitionWrapper _selectedTransition;
-        private string currentFile;
+        private string _currentFile;
 
         public MainForm()
         {
@@ -38,7 +38,7 @@ namespace ColouredPetriNet.Gui.Forms
             _newStateType = Core.ColouredStateType.RoundState;
             _newTransitionType = Core.ColouredTransitionType.RectangleTransition;
             _newMarkerType = Core.ColouredMarkerType.RoundMarker;
-            currentFile = null;
+            _currentFile = null;
         }
 
         private void MainFormLoad(object sender, System.EventArgs e)
@@ -163,6 +163,7 @@ namespace ColouredPetriNet.Gui.Forms
                             //System.Console.WriteLine("AddLine: find states");
                             _selectedState = chosenStates[0];
                             _itemSelected = true;
+                            _selectedState.State.Select();
                         }
                         else
                         {
@@ -172,6 +173,7 @@ namespace ColouredPetriNet.Gui.Forms
                                 //System.Console.WriteLine("AddLine: find transitions");
                                 _selectedTransition = chosenTransitions[0];
                                 _itemSelected = true;
+                                _selectedTransition.Transition.Select();
                             }
                         }
                     }
@@ -182,6 +184,11 @@ namespace ColouredPetriNet.Gui.Forms
 
         private void ItemMapMouseDown(object sender, MouseEventArgs e)
         {
+            if ((_mapMode == ItemMapMode.AddState) || (_mapMode == ItemMapMode.AddTransition)
+                || (_mapMode == ItemMapMode.AddMarker) || (_mapMode == ItemMapMode.AddLink))
+            {
+                return;
+            }
             //System.Console.WriteLine("ItemMapMouseDown");
             _mousePressed = true;
             _lastMousePosition = e.Location;
@@ -235,8 +242,7 @@ namespace ColouredPetriNet.Gui.Forms
                     }
                 }
             }
-            else if ((_mapMode == ItemMapMode.View) || (_mapMode == ItemMapMode.Move)
-                || (_mapMode == ItemMapMode.Remove) || (_mapMode == ItemMapMode.RemoveMarker))
+            else
             {
 
                 _itemMap.DeselectItems();
@@ -249,7 +255,11 @@ namespace ColouredPetriNet.Gui.Forms
         {
             if (_mousePressed)
             {
-                //System.Console.WriteLine("ItemMapMouseMove");
+                if (_mapMode == ItemMapMode.AddLink)
+                {
+                    return;
+                }
+                System.Console.WriteLine("ItemMapMouseMove");
                 if ((_mapMode == ItemMapMode.Move) && (_itemSelected))
                 {
                     _itemMap.MoveSelectedItems(e.X - _lastMousePosition.X, e.Y - _lastMousePosition.Y);
@@ -265,6 +275,11 @@ namespace ColouredPetriNet.Gui.Forms
 
         private void ItemMapMouseUp(object sender, MouseEventArgs e)
         {
+            if ((_mapMode == ItemMapMode.AddState) || (_mapMode == ItemMapMode.AddTransition)
+                || (_mapMode == ItemMapMode.AddMarker))
+            {
+                return;
+            }
             //System.Console.WriteLine("ItemMapMouseUp");
             _mousePressed = false;
             if (_mapMode != ItemMapMode.AddLink)
@@ -273,6 +288,39 @@ namespace ColouredPetriNet.Gui.Forms
             }
             _itemMap.HideSelectionArea();
             this.pbMap.Refresh();
+        }
+
+        private void MainFormKeyDown(object sender, KeyEventArgs e)
+        {
+            if ((_mapMode == ItemMapMode.Remove) && (e.KeyCode == Keys.Delete))
+            {
+                var setecledStates = _itemMap.GetSelectedStates();
+                for (int i = 0; i < setecledStates.Count; ++i)
+                {
+                    for (int j = trvStates.Nodes.Count - 1; j >= 0; --j)
+                    {
+                        if ((int)trvStates.Nodes[j].Tag == setecledStates[i])
+                        {
+                            trvStates.Nodes.RemoveAt(j);
+                            break;
+                        }
+                    }
+                }
+                var setecledTransitions = _itemMap.GetSelectedTransitions();
+                for (int i = 0; i < setecledTransitions.Count; ++i)
+                {
+                    for (int j = trvTransitions.Nodes.Count - 1; j >= 0; --j)
+                    {
+                        if ((int)trvTransitions.Nodes[j].Tag == setecledTransitions[i])
+                        {
+                            trvTransitions.Nodes.RemoveAt(j);
+                            break;
+                        }
+                    }
+                }
+                _itemMap.RemoveSelectedItems();
+                pbMap.Refresh();
+            }
         }
 
         private void SetItemMapMode(ItemMapMode mode)
@@ -430,7 +478,7 @@ namespace ColouredPetriNet.Gui.Forms
             {
                 if(_itemMap.Deserialize(dlgOpenFile.FileName))
                 {
-                    currentFile = dlgOpenFile.FileName;
+                    _currentFile = dlgOpenFile.FileName;
                 }
                 else
                 {
@@ -441,13 +489,13 @@ namespace ColouredPetriNet.Gui.Forms
 
         private void SaveToFile()
         {
-            if (currentFile == null)
+            if (_currentFile == null)
             {
                 SaveFileAs();
             }
             else
             {
-                if (!_itemMap.Serialize(currentFile))
+                if (!_itemMap.Serialize(_currentFile))
                 {
                     MessageBox.Show("Error: Could not save file!");
                 }
@@ -461,7 +509,7 @@ namespace ColouredPetriNet.Gui.Forms
                 System.Console.WriteLine("File:{0}", dlgSaveFile.FileName);
                 if (_itemMap.Serialize(dlgSaveFile.FileName))
                 {
-                    currentFile = dlgSaveFile.FileName;
+                    _currentFile = dlgSaveFile.FileName;
                 }
                 else
                 {

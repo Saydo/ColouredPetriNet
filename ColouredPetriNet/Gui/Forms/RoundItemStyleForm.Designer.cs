@@ -141,7 +141,11 @@ namespace ColouredPetriNet.Gui.Forms
             numRadius.TabIndex = 17;
             // 
             // RoundItemStyleForm
-            // 
+            //
+            this.FormBorderStyle = FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+            this.StartPosition = FormStartPosition.CenterScreen;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(239, 233);

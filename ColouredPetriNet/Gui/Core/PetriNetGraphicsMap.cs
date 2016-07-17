@@ -402,8 +402,39 @@ namespace ColouredPetriNet.Gui.Core
                 }
             }
         }
+
+        public void RemoveSelectedStates()
+        {
+            for (int i = 0; i < _selectedStates.Count; ++i)
+            {
+                RemoveState(_selectedStates[i]);
+            }
+        }
+
+        public void RemoveSelectedTransitions()
+        {
+            for (int i = 0; i < _selectedTransitions.Count; ++i)
+            {
+                RemoveTransition(_selectedTransitions[i]);
+            }
+        }
+
+        public void RemoveSelectedLinks()
+        {
+            for (int i = 0; i < _selectedLinks.Count; ++i)
+            {
+                RemoveLink(_selectedLinks[i]);
+            }
+        }
+
+        public void RemoveSelectedItems()
+        {
+            RemoveSelectedLinks();
+            RemoveSelectedTransitions();
+            RemoveSelectedStates();
+        }
         #endregion
-        
+
         #region Clear Functions
         public void Clear()
         {
@@ -954,6 +985,21 @@ namespace ColouredPetriNet.Gui.Core
             }
             return foundTransitions;
         }
+
+        public List<int> GetSelectedStates()
+        {
+            return new List<int>(_selectedStates);
+        }
+
+        public List<int> GetSelectedTransitions()
+        {
+            return new List<int>(_selectedTransitions);
+        }
+
+        public List<int> GetSelectedLinks()
+        {
+            return new List<int>(_selectedLinks);
+        }
         #endregion
 
         #region Select Functions
@@ -1482,7 +1528,7 @@ namespace ColouredPetriNet.Gui.Core
             }
             for (int i = 0; i < _states.Count; ++i)
             {
-                _states[i].State.Draw(graphics);
+                _states[i].Draw(graphics);
             }
             _selectionArea.Draw(graphics);
         }

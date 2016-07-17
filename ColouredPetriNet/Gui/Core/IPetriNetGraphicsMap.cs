@@ -28,6 +28,10 @@ namespace ColouredPetriNet.Gui.Core
         void RemoveStates(ColouredStateType stateType);
         bool RemoveTransition(int id);
         void RemoveTransitions(ColouredStateType transitionType);
+        void RemoveSelectedStates();
+        void RemoveSelectedTransitions();
+        void RemoveSelectedLinks();
+        void RemoveSelectedItems();
         // Clear
         void Clear();
         void ClearLinks();
@@ -76,6 +80,9 @@ namespace ColouredPetriNet.Gui.Core
             GraphicsItems.OverlapType overlap = GraphicsItems.OverlapType.Partial);
         List<GraphicsTransitionWrapper> FindTransitions(int x, int y, int w, int h, ColouredTransitionType transitionType,
             GraphicsItems.OverlapType overlap = GraphicsItems.OverlapType.Partial);
+        List<int> GetSelectedStates();
+        List<int> GetSelectedTransitions();
+        List<int> GetSelectedLinks();
         // Select
         void Select(int x, int y);
         void Select(int x, int y, int w, int h);

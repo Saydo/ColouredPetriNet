@@ -607,7 +607,8 @@ namespace ColouredPetriNet.Gui.Forms
             //
             // MainForm
             //
-            this.Name = "MainForm"; 
+            this.Name = "MainForm";
+            this.StartPosition = FormStartPosition.CenterScreen;
             this.AutoScaleDimensions = new SizeF(6F, 13F);
             this.AutoScaleMode = AutoScaleMode.Font;
             this.ClientSize = new Size(489, 331);
@@ -629,7 +630,9 @@ namespace ColouredPetriNet.Gui.Forms
             ((System.ComponentModel.ISupportInitialize)(pbMap)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
+            this.KeyPreview = true;
             this.Load += new System.EventHandler(MainFormLoad);
+            this.KeyDown += new KeyEventHandler(MainFormKeyDown);
         }
 
         private MenuStrip mnsMain;

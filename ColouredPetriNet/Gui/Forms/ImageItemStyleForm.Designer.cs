@@ -179,7 +179,11 @@ namespace ColouredPetriNet.Gui.Forms
             numImage.TabIndex = 27;
             // 
             // ImageItemStyleForm
-            // 
+            //
+            this.FormBorderStyle = FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+            this.StartPosition = FormStartPosition.CenterScreen;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(237, 272);

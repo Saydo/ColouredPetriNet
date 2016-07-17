@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 
 namespace ColouredPetriNet.Gui.Core
 {
     public class GraphicsStateWrapper
     {
+        private Font textFont;
+        private Brush textBrush;
         public GraphicsItems.GraphicsItem State;
         public List<GraphicsLinkWrapper> OutputLinks;
         public List<GraphicsLinkWrapper> InputLinks;
@@ -12,10 +15,23 @@ namespace ColouredPetriNet.Gui.Core
 
         public GraphicsStateWrapper(GraphicsItems.GraphicsItem state)
         {
+            textFont = new Font("Arial", 10);
+            textBrush = new SolidBrush(Color.FromArgb(0, 0, 0));
             State = state;
             Markers = new List<Tuple<GraphicsItems.GraphicsItem, List<int>>>();
             OutputLinks = new List<GraphicsLinkWrapper>();
             InputLinks = new List<GraphicsLinkWrapper>();
+        }
+
+        public void Draw(Graphics graphics)
+        {
+            State.Draw(graphics);
+            for (int i = 0; ((i < 3) && (i < Markers.Count)); ++i)
+            {
+                Markers[i].Item1.Draw(graphics);
+                graphics.DrawString(Markers[i].Item2.Count.ToString(), textFont,
+                    textBrush, Markers[i].Item1.Center.X, Markers[i].Item1.Center.Y);
+            }
         }
 
         public void AddMarker(GraphicsItems.GraphicsItem marker)
@@ -23,6 +39,7 @@ namespace ColouredPetriNet.Gui.Core
             List<int> list = new List<int>();
             list.Add(marker.Id);
             AddMarker(marker, list);
+            UpdateMarkerPosition();
         }
 
         public void AddMarker(GraphicsItems.GraphicsItem marker, List<int> listId)
@@ -38,6 +55,7 @@ namespace ColouredPetriNet.Gui.Core
                 }
             }
             Markers.Add(new Tuple<GraphicsItems.GraphicsItem, List<int>>(marker, listId));
+            UpdateMarkerPosition();
         }
 
         public bool RemoveMarker(int id)
@@ -49,6 +67,7 @@ namespace ColouredPetriNet.Gui.Core
                     if (Markers[i].Item2[j] == id)
                     {
                         Markers[i].Item2.RemoveAt(j);
+                        UpdateMarkerPosition();
                         return true;
                     }
                 }
@@ -67,6 +86,7 @@ namespace ColouredPetriNet.Gui.Core
                         if (Markers[i].Item2[j] == id)
                         {
                             Markers[i].Item2.RemoveAt(j);
+                            UpdateMarkerPosition();
                             return true;
                         }
                     }
@@ -93,6 +113,7 @@ namespace ColouredPetriNet.Gui.Core
                             }
                         }
                     }
+                    UpdateMarkerPosition();
                     return;
                 }
             }
@@ -109,8 +130,53 @@ namespace ColouredPetriNet.Gui.Core
                         count = Markers[i].Item2.Count;
                     }
                     Markers[i].Item2.RemoveRange(Markers[i].Item2.Count - count, count);
+                    UpdateMarkerPosition();
                     return;
                 }
+            }
+        }
+
+        private void UpdateMarkerPosition()
+        {
+            Point p;
+            int halfWeight, halfHeight;
+            switch (Markers.Count)
+            {
+                case 0:
+                    break;
+                case 1:
+                    Markers[0].Item1.Center = State.Center;
+                    break;
+                case 2:
+                    p = State.Center;
+                    halfWeight = (Markers[0].Item1.GetBorder(GraphicsItems.BorderSide.Right) - Markers[0].Item1.GetBorder(GraphicsItems.BorderSide.Left)) / 2;
+                    halfHeight = (Markers[0].Item1.GetBorder(GraphicsItems.BorderSide.Top) - Markers[0].Item1.GetBorder(GraphicsItems.BorderSide.Bottom)) / 2;
+                    p.X -= (State.GetBorder(GraphicsItems.BorderSide.Right) - State.GetBorder(GraphicsItems.BorderSide.Left)) / 2 - halfWeight;
+                    p.Y += (State.GetBorder(GraphicsItems.BorderSide.Top) - State.GetBorder(GraphicsItems.BorderSide.Bottom)) / 2 - halfHeight;
+                    Markers[0].Item1.Center = p;
+                    p = State.Center;
+                    halfWeight = (Markers[1].Item1.GetBorder(GraphicsItems.BorderSide.Right) - Markers[1].Item1.GetBorder(GraphicsItems.BorderSide.Left)) / 2;
+                    halfHeight = (Markers[1].Item1.GetBorder(GraphicsItems.BorderSide.Top) - Markers[1].Item1.GetBorder(GraphicsItems.BorderSide.Bottom)) / 2;
+                    p.X += (State.GetBorder(GraphicsItems.BorderSide.Right) - State.GetBorder(GraphicsItems.BorderSide.Left)) / 2 - halfWeight;
+                    p.Y -= (State.GetBorder(GraphicsItems.BorderSide.Top) - State.GetBorder(GraphicsItems.BorderSide.Bottom)) / 2 - halfHeight;
+                    Markers[1].Item1.Center = p;
+                    break;
+                default:
+                    p = State.Center;
+                    halfWeight = (Markers[0].Item1.GetBorder(GraphicsItems.BorderSide.Right) - Markers[0].Item1.GetBorder(GraphicsItems.BorderSide.Left)) / 2;
+                    halfHeight = (Markers[0].Item1.GetBorder(GraphicsItems.BorderSide.Top) - Markers[0].Item1.GetBorder(GraphicsItems.BorderSide.Bottom)) / 2;
+                    p.X -= (State.GetBorder(GraphicsItems.BorderSide.Right) - State.GetBorder(GraphicsItems.BorderSide.Left)) / 2 - halfWeight;
+                    p.Y -= (State.GetBorder(GraphicsItems.BorderSide.Top) - State.GetBorder(GraphicsItems.BorderSide.Bottom)) / 2 - halfHeight;
+                    Markers[0].Item1.Center = p;
+                    p.X -= halfWeight;
+                    halfWeight = (Markers[1].Item1.GetBorder(GraphicsItems.BorderSide.Right) - Markers[1].Item1.GetBorder(GraphicsItems.BorderSide.Left)) / 2;
+                    p.X += State.GetBorder(GraphicsItems.BorderSide.Right) - State.GetBorder(GraphicsItems.BorderSide.Left) - halfWeight;
+                    Markers[1].Item1.Center = p;
+                    p = State.Center;
+                    halfHeight = (Markers[2].Item1.GetBorder(GraphicsItems.BorderSide.Top) - Markers[2].Item1.GetBorder(GraphicsItems.BorderSide.Bottom)) / 2;
+                    p.Y += (State.GetBorder(GraphicsItems.BorderSide.Top) - State.GetBorder(GraphicsItems.BorderSide.Bottom)) / 2 - halfHeight;
+                    Markers[2].Item1.Center = p;
+                    break;
             }
         }
     }
