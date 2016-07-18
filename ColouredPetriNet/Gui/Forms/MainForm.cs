@@ -413,21 +413,18 @@ namespace ColouredPetriNet.Gui.Forms
 
         private void SetNewStateType(Core.ColouredStateType type)
         {
-            //System.Console.WriteLine("SetNewStateType: " + type);
             _newStateType = type;
             UpdateStatus(GetCurrentMapModeName());
         }
 
         private void SetNewTransitionType(Core.ColouredTransitionType type)
         {
-            //System.Console.WriteLine("SetNewTransitionType: " + type);
             _newTransitionType = type;
             UpdateStatus(GetCurrentMapModeName());
         }
 
         private void SetNewMarkerType(Core.ColouredMarkerType type)
         {
-            //System.Console.WriteLine("SetNewMarkerType: " + type);
             _newMarkerType = type;
             UpdateStatus(GetCurrentMapModeName());
         }
@@ -593,9 +590,11 @@ namespace ColouredPetriNet.Gui.Forms
                 if(_itemMap.Deserialize(dlgOpenFile.FileName))
                 {
                     _currentFile = dlgOpenFile.FileName;
+                    pbMap.Refresh();
                 }
                 else
                 {
+                    pbMap.Refresh();
                     MessageBox.Show("Error: Could not load file!");
                 }
             }

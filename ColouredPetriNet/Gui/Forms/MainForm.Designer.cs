@@ -343,7 +343,7 @@ namespace ColouredPetriNet.Gui.Forms
             mniSelectionModePartial.Name = "mniSelectionModePartial";
             mniSelectionModePartial.Size = new Size(152, 22);
             mniSelectionModePartial.Text = "Partial";
-            mniSelectionModeFull.Click += (obj, e) => SetSelectionMode(Core.GraphicsItems.OverlapType.Partial);
+            mniSelectionModePartial.Click += (obj, e) => SetSelectionMode(Core.GraphicsItems.OverlapType.Partial);
             //
             // ItemStyle (ToolStripMenuItem)
             //

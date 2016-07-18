@@ -1,6 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 
+using System.Text;
+using System.IO;
+using System.Xml.Serialization;
+
 namespace ColouredPetriNet.Gui.Core
 {
     public class PetriNetGraphicsMap : IPetriNetGraphicsMap
@@ -56,6 +60,7 @@ namespace ColouredPetriNet.Gui.Core
             Style.RoundState = new Style.RoundShapeStyle(10, new SolidBrush(Color.FromArgb(0, 240, 0)),
                 new Pen(Color.FromArgb(0, 0, 0), 1.0F));
             Style.ImageState = new Style.ImageShapeStyle(projectDir + "Resources/ImageState32x32.png", 22, 22);
+            Style.LinePen = new Pen(Color.FromArgb(0, 0, 0), 1.0F);
             Style.SelectionMode = GraphicsItems.OverlapType.Partial;
             Style.SelectionPen = new Pen(Color.FromArgb(0, 0, 0), 1.0F);
         }
@@ -1460,6 +1465,27 @@ namespace ColouredPetriNet.Gui.Core
             }
             Style = Core.Serialize.PetriNetXmlSerializer.FromXml(petriNetXml.Style);
             GetItemsFromXml(petriNetXml.Items);
+            /*
+            var petriNetXml2 = new Core.Serialize.ColouredPetriNetXml();
+            petriNetXml2.Style = Core.Serialize.PetriNetXmlSerializer.ToXml(Style);
+            petriNetXml2.Items = ConvertItemsToXml();
+            System.Type[] itemStyleTypes = {
+                typeof(Core.Serialize.RoundItemStyleXml),
+                typeof(Core.Serialize.ImageItemStyleXml),
+                typeof(Core.Serialize.RectangleItemStyleXml),
+                typeof(Core.Serialize.RectangleItemStyleXml),
+                typeof(Core.Serialize.RoundItemStyleXml),
+                typeof(Core.Serialize.RectangleItemStyleXml),
+                typeof(Core.Serialize.TriangleItemStyleXml)
+            };
+            XmlSerializer serializer = new XmlSerializer(typeof(Core.Serialize.ColouredPetriNetXml), itemStyleTypes);
+            using (Core.Serialize.Utf8StringWriter textWriter = new Core.Serialize.Utf8StringWriter())
+            {
+                var fileStream = new FileStream("test_out.txt", FileMode.Create);
+                serializer.Serialize(fileStream, petriNetXml2);
+            }
+            System.Console.WriteLine("Map::Deserialize() => true");
+            */
             return true;
         }
         #endregion
@@ -1716,7 +1742,7 @@ namespace ColouredPetriNet.Gui.Core
             {
                 state.OutputLinks[i].Link.MovePoint1(dx, dy);
             }
-            state.State.Move(dx, dy);
+            state.Move(dx, dy);
         }
 
         private void MoveTransition(int dx, int dy, GraphicsTransitionWrapper transition)
@@ -1786,11 +1812,20 @@ namespace ColouredPetriNet.Gui.Core
             switch (stateXml.Type)
             {
                 case "RoundState":
-                    return new GraphicsItems.RoundGraphicsItem(stateXml.Id,
-                        (int)ItemType.State + (int)ColouredStateType.RoundState, _stateZ);
+                    var roundState = new GraphicsItems.RoundGraphicsItem(stateXml.Id,
+                            (int)ItemType.State + (int)ColouredStateType.RoundState,
+                            new Point(stateXml.X, stateXml.Y), Style.RoundState.Radius, _stateZ);
+                    roundState.SelectionPen = Style.SelectionPen;
+                    roundState.BorderPen = Style.RoundState.BorderPen;
+                    roundState.FillBrush = Style.RoundState.FillBrush;
+                    return roundState;
                 case "ImageState":
-                    return new GraphicsItems.ImageGraphicsItem(stateXml.Id,
-                        (int)ItemType.State + (int)ColouredStateType.ImageState, null, _stateZ);
+                    var imageState = new GraphicsItems.ImageGraphicsItem(stateXml.Id,
+                        (int)ItemType.State + (int)ColouredStateType.ImageState,
+                        Image.FromFile(Style.ImageState.ImageName),
+                        new Point(stateXml.X, stateXml.Y), Style.ImageState.Width, Style.ImageState.Height, _stateZ);
+                    imageState.SelectionPen = Style.SelectionPen;
+                    return imageState;
             }
             return null;
         }
@@ -1800,12 +1835,23 @@ namespace ColouredPetriNet.Gui.Core
             switch (transitionXml.Type)
             {
                 case "RectangleTransition":
-                    return new GraphicsItems.RectangleGraphicsItem(transitionXml.Id,
-                        (int)ItemType.Transition + (int)ColouredTransitionType.RectangleTransition,
-                        10, 10, _stateZ);
+                    var rectangleTransition = new GraphicsItems.RectangleGraphicsItem(transitionXml.Id,
+                            (int)ItemType.Transition + (int)ColouredTransitionType.RectangleTransition,
+                            new Point(transitionXml.X, transitionXml.Y),
+                            Style.RectangleTransition.Width, Style.RectangleTransition.Height, _stateZ);
+                    rectangleTransition.SelectionPen = Style.SelectionPen;
+                    rectangleTransition.BorderPen = Style.RectangleTransition.BorderPen;
+                    rectangleTransition.FillBrush = Style.RectangleTransition.FillBrush;
+                    return rectangleTransition;
                 case "RhombTransition":
-                    return new GraphicsItems.RhombGraphicsItem(transitionXml.Id,
-                        (int)ItemType.Transition + (int)ColouredTransitionType.RhombTransition, _stateZ);
+                    var rhombTransition = new GraphicsItems.RhombGraphicsItem(transitionXml.Id,
+                        (int)ItemType.Transition + (int)ColouredTransitionType.RhombTransition,
+                        new Point(transitionXml.X, transitionXml.Y),
+                        Style.RhombTransition.Width, Style.RhombTransition.Height, _stateZ);
+                    rhombTransition.SelectionPen = Style.SelectionPen;
+                    rhombTransition.BorderPen = Style.RhombTransition.BorderPen;
+                    rhombTransition.FillBrush = Style.RhombTransition.FillBrush;
+                    return rhombTransition;
             }
             return null;
         }
@@ -1815,15 +1861,31 @@ namespace ColouredPetriNet.Gui.Core
             switch (markerXml.Type)
             {
                 case "RoundMarker":
-                    return new GraphicsItems.RoundGraphicsItem(markerXml.Id,
-                        (int)ItemType.Marker + (int)ColouredMarkerType.RoundMarker, _stateZ);
+                    var roundMarker = new GraphicsItems.RoundGraphicsItem(markerXml.Id,
+                        (int)ItemType.Marker + (int)ColouredMarkerType.RoundMarker,
+                        new Point(0, 0),
+                        Style.RoundMarker.Radius, _stateZ);
+                    roundMarker.SelectionPen = Style.SelectionPen;
+                    roundMarker.BorderPen = Style.RoundMarker.BorderPen;
+                    roundMarker.FillBrush = Style.RoundMarker.FillBrush;
+                    return roundMarker;
                 case "RhombMarker":
-                    return new GraphicsItems.RhombGraphicsItem(markerXml.Id,
-                        (int)ItemType.Marker + (int)ColouredMarkerType.RhombMarker, _stateZ);
+                    var rhombMarker = new GraphicsItems.RhombGraphicsItem(markerXml.Id,
+                        (int)ItemType.Marker + (int)ColouredMarkerType.RhombMarker,
+                        new Point(0, 0),
+                        Style.RhombMarker.Width, Style.RhombMarker.Height, _stateZ);
+                    rhombMarker.SelectionPen = Style.SelectionPen;
+                    rhombMarker.BorderPen = Style.RhombMarker.BorderPen;
+                    rhombMarker.FillBrush = Style.RhombMarker.FillBrush;
+                    return rhombMarker;
                 case "TriangleMarker":
-                    return new GraphicsItems.TriangleGraphicsItem(markerXml.Id,
+                    var triangleMarker = new GraphicsItems.TriangleGraphicsItem(markerXml.Id,
                         (int)ItemType.Marker + (int)ColouredMarkerType.TriangleMarker,
-                        new Point(0, 0), 10, _stateZ);
+                        new Point(0, 0), Style.TriangleMarker.Side, _stateZ);
+                    triangleMarker.SelectionPen = Style.SelectionPen;
+                    triangleMarker.BorderPen = Style.TriangleMarker.BorderPen;
+                    triangleMarker.FillBrush = Style.TriangleMarker.FillBrush;
+                    return triangleMarker;
             }
             return null;
         }

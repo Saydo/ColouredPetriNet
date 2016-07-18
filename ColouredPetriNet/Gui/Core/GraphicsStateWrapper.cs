@@ -164,6 +164,12 @@ namespace ColouredPetriNet.Gui.Core
             }
         }
 
+        public void Move(int dx, int dy)
+        {
+            State.Move(dx, dy);
+            UpdateMarkerPosition();
+        }
+
         private void UpdateMarkerPosition()
         {
             Point p;

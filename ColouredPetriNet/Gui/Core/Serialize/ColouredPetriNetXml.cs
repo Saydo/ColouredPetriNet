@@ -3,6 +3,8 @@ using System.Collections.Generic;
 
 namespace ColouredPetriNet.Gui.Core.Serialize
 {
+    public enum PenListItem { SelectionPen, LinePen };
+
     [XmlRoot("ColouredPetriNet")]
     public class ColouredPetriNetXml
     {
@@ -20,17 +22,20 @@ namespace ColouredPetriNet.Gui.Core.Serialize
 
     public class PetriNetStyleXml
     {
-        [XmlElement("Pen")]
-        public PenXml SelectionPen;
         [XmlElement("SelectionMode")]
         public SelectionModeXml SelectionMode;
+        [XmlElement("Pen")]
+        public PenXml[] PenList;
         [XmlArray("ItemsStyle")]
         [XmlArrayItem("ItemStyle")]
-        public List<ItemStyleXml> ItemStyleList; 
+        public List<ItemStyleXml> ItemStyleList;
 
         public PetriNetStyleXml()
         {
-            SelectionPen = new PenXml("SelectionPen", System.Drawing.Color.FromArgb(0, 0, 0));
+            PenList = new PenXml[2] {
+                new PenXml("SelectionPen", System.Drawing.Color.FromArgb(0, 0, 0)),
+                new PenXml("LinePen", System.Drawing.Color.FromArgb(0, 0, 0))
+            };
             SelectionMode = new SelectionModeXml();
             ItemStyleList = new List<ItemStyleXml>();
         }

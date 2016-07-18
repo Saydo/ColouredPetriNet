@@ -15,7 +15,8 @@ namespace ColouredPetriNet.Gui.Core.Serialize
         {
             var styleXml = new PetriNetStyleXml();
             styleXml.SelectionMode.Value = (style.SelectionMode == GraphicsItems.OverlapType.Full ? "Full" : "Partial");
-            styleXml.SelectionPen.FromPen(style.SelectionPen);
+            styleXml.PenList[(int)PenListItem.SelectionPen].FromPen(style.SelectionPen);
+            styleXml.PenList[(int)PenListItem.LinePen].FromPen(style.LinePen);
             ItemStyleXml itemStyle = new RoundItemStyleXml("RoundState", style.RoundState.Radius);
             itemStyle.BorderPen.FromPen(style.RoundState.BorderPen);
             itemStyle.FillBrush.FromBrush((System.Drawing.SolidBrush)style.RoundState.FillBrush);
@@ -56,7 +57,8 @@ namespace ColouredPetriNet.Gui.Core.Serialize
             var style = new Style.ColouredPetriNetStyle();
             style.SelectionMode = (styleXml.SelectionMode.Value.Equals("Full") ? GraphicsItems.OverlapType.Full
                 : GraphicsItems.OverlapType.Partial);
-            style.SelectionPen = styleXml.SelectionPen.ToPen();
+            style.SelectionPen = styleXml.PenList[(int)PenListItem.SelectionPen].ToPen();
+            style.LinePen = styleXml.PenList[(int)PenListItem.LinePen].ToPen();
             var roundItemXml = (RoundItemStyleXml)styleXml.ItemStyleList[(int)Style.PetriNetField.RoundState];
             style.RoundState = new Style.RoundShapeStyle(roundItemXml.Radius,
                 roundItemXml.FillBrush.ToBrush(), roundItemXml.BorderPen.ToPen());

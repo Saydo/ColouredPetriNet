@@ -128,6 +128,7 @@ namespace ColouredPetriNet.Gui.Core.Style
     {
         public GraphicsItems.OverlapType SelectionMode;
         public Pen SelectionPen;
+        public Pen LinePen;
         public RoundShapeStyle RoundState;
         public ImageShapeStyle ImageState;
         public RectangleShapeStyle RectangleTransition;
@@ -140,6 +141,7 @@ namespace ColouredPetriNet.Gui.Core.Style
         {
             SelectionMode = GraphicsItems.OverlapType.Partial;
             SelectionPen = new Pen(Color.FromArgb(0, 0, 0));
+            LinePen = new Pen(Color.FromArgb(0, 0, 0));
             RoundState = new RoundShapeStyle();
             ImageState = new ImageShapeStyle("");
             RectangleTransition = new RectangleShapeStyle();
