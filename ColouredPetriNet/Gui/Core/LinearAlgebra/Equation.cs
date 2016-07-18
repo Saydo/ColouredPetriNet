@@ -112,11 +112,11 @@ namespace ColouredPetriNet.Gui.Core.LinearAlgebra
             {
                 if (p2.X > p1.X)
                 {
-                    resultPoint.X = p1.X + 1000;
+                    resultPoint.X = p1.X + 10;
                 }
                 else
                 {
-                    resultPoint.X = p1.X - 1000;
+                    resultPoint.X = p1.X - 10;
                 }
                 resultPoint.Y = (int)(k * resultPoint.X + b);
                 Algorithm.ResizeLine(p1, ref resultPoint, length);
@@ -146,13 +146,13 @@ namespace ColouredPetriNet.Gui.Core.LinearAlgebra
             {
                 if (length >= 0)
                 {
-                    resultPoint.X = p.X + 1;
+                    resultPoint.X = p.X + 10;
                     resultPoint.Y = (int)(k * resultPoint.X + b);
                     Algorithm.ResizeLine(p, ref resultPoint, length);
                 }
                 else
                 {
-                    resultPoint.X = p.X - 1;
+                    resultPoint.X = p.X - 10;
                     resultPoint.Y = (int)(k * resultPoint.X + b);
                     Algorithm.ResizeLine(p, ref resultPoint, -length);
                 }

@@ -78,9 +78,27 @@ namespace ColouredPetriNet.Gui.Core.GraphicsItems
             }
         }
 
+        public void MovePoint1(int x, int y)
+        {
+            _point1.X += x;
+            _point1.Y += y;
+            _center.X = (_point2.X + _point1.X) / 2;
+            _center.Y = (_point2.Y + _point1.Y) / 2;
+            UpdateBorder();
+        }
+
+        public void MovePoint2(int x, int y)
+        {
+            _point2.X += x;
+            _point2.Y += y;
+            _center.X = (_point2.X + _point1.X) / 2;
+            _center.Y = (_point2.Y + _point1.Y) / 2;
+            UpdateBorder();
+        }
+
         public override void Move(int x, int y)
         {
-            base.SetPosition(x, y);
+            base.Move(x, y);
             for (int i = 0; i < _arrowPoints.Length; ++i)
             {
                 _arrowPoints[i].X += x;

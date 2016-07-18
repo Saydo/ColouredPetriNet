@@ -58,6 +58,18 @@ namespace ColouredPetriNet.Gui.Core
             UpdateMarkerPosition();
         }
 
+        public void ClearMarkers()
+        {
+            Markers.Clear();
+            UpdateMarkerPosition();
+        }
+
+        public void RemoveMarkerAt(int index)
+        {
+            Markers.RemoveAt(index);
+            UpdateMarkerPosition();
+        }
+
         public bool RemoveMarker(int id)
         {
             for (int i = 0; i < Markers.Count; ++i)
@@ -67,6 +79,10 @@ namespace ColouredPetriNet.Gui.Core
                     if (Markers[i].Item2[j] == id)
                     {
                         Markers[i].Item2.RemoveAt(j);
+                        if (Markers[i].Item2.Count == 0)
+                        {
+                            Markers.RemoveAt(i);
+                        }
                         UpdateMarkerPosition();
                         return true;
                     }
@@ -86,6 +102,10 @@ namespace ColouredPetriNet.Gui.Core
                         if (Markers[i].Item2[j] == id)
                         {
                             Markers[i].Item2.RemoveAt(j);
+                            if (Markers[i].Item2.Count == 0)
+                            {
+                                Markers.RemoveAt(i);
+                            }
                             UpdateMarkerPosition();
                             return true;
                         }
@@ -98,7 +118,7 @@ namespace ColouredPetriNet.Gui.Core
 
         public void RemoveMarkers(int typeId, List<int> listId)
         {
-            for (int i = 0; i < Markers.Count; ++i)
+            for (int i = Markers.Count - 1; i >= 0; --i)
             {
                 if (Markers[i].Item1.TypeId == typeId)
                 {
@@ -109,6 +129,10 @@ namespace ColouredPetriNet.Gui.Core
                             if (Markers[i].Item2[k] == listId[j])
                             {
                                 Markers[i].Item2.RemoveAt(k);
+                                if (Markers[i].Item2.Count == 0)
+                                {
+                                    Markers.RemoveAt(i);
+                                }
                                 break;
                             }
                         }
@@ -121,7 +145,7 @@ namespace ColouredPetriNet.Gui.Core
 
         public void RemoveMarkers(int typeId, int count = 1)
         {
-            for (int i = 0; i < Markers.Count; ++i)
+            for (int i = Markers.Count - 1; i >= 0; --i)
             {
                 if (Markers[i].Item1.TypeId == typeId)
                 {
@@ -130,6 +154,10 @@ namespace ColouredPetriNet.Gui.Core
                         count = Markers[i].Item2.Count;
                     }
                     Markers[i].Item2.RemoveRange(Markers[i].Item2.Count - count, count);
+                    if (Markers[i].Item2.Count == 0)
+                    {
+                        Markers.RemoveAt(i);
+                    }
                     UpdateMarkerPosition();
                     return;
                 }

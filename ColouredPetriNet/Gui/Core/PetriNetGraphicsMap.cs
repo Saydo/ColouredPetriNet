@@ -5,7 +5,7 @@ namespace ColouredPetriNet.Gui.Core
 {
     public class PetriNetGraphicsMap : IPetriNetGraphicsMap
     {
-        private enum ItemType { Link, Marker = 100, Transition = 200, State = 300 };
+        public enum ItemType { Link, Marker = 100, Transition = 200, State = 300 };
 
         private const int _linkZ = 1;
         private const int _stateZ = 2;
@@ -189,10 +189,21 @@ namespace ColouredPetriNet.Gui.Core
                 _petriNet.AddTransitionToStateLink(transitionId, stateId);
                 linkDirection = GraphicsItems.LinkGraphicsItem.LinkDirection.FromP2toP1;
             }
-            _links.Add(new GraphicsLinkWrapper(state, transition,
+            var link = new GraphicsLinkWrapper(state, transition,
                 new GraphicsItems.LinkGraphicsItem(_linkIdGenerator.GetNextId(),
                 (int)ItemType.Link, state.State.Center, transition.Transition.Center,
-                linkDirection, _stateZ), direction));
+                linkDirection, _stateZ), direction);
+            _links.Add(link);
+            if (direction == LinkDirection.FromStateToTransition)
+            {
+                state.OutputLinks.Add(link);
+                transition.InputLinks.Add(link);
+            }
+            else
+            {
+                state.InputLinks.Add(link);
+                transition.OutputLinks.Add(link);
+            }
         }
         #endregion
 
@@ -289,7 +300,7 @@ namespace ColouredPetriNet.Gui.Core
             {
                 if (_states[i].State.Id == stateId)
                 {
-                    _states[i].Markers.Clear();
+                    _states[i].ClearMarkers();
                     _petriNet.RemoveMarkersFromState(stateId);
                     return true;
                 }
@@ -312,7 +323,7 @@ namespace ColouredPetriNet.Gui.Core
                         {
                             _petriNet.RemoveMarker(listId[k]);
                         }
-                        _states[i].Markers.RemoveAt(j);
+                        _states[i].RemoveMarkerAt(j);
                         break;
                     }
                 }
@@ -336,7 +347,7 @@ namespace ColouredPetriNet.Gui.Core
                             {
                                 _petriNet.RemoveMarker(listId[k]);
                             }
-                            _states[i].Markers.RemoveAt(j);
+                            _states[i].RemoveMarkerAt(j);
                             return;
                         }
                     }
@@ -1417,9 +1428,8 @@ namespace ColouredPetriNet.Gui.Core
             for (int i = 0; i < _selectedLinks.Count; ++i)
             {
                 link = FindLinkById(_selectedLinks[i]);
-                RemoveFromIdList(link.State.State.Id, movedStates);
-                RemoveFromIdList(link.Transition.Transition.Id, movedTransitions);
-                MoveLink(dx, dy, link);
+                AddToIdList(link.State.State.Id, movedStates);
+                AddToIdList(link.Transition.Transition.Id, movedTransitions);
             }
             for (int i = 0; i < movedStates.Count; ++i)
             {
@@ -1610,6 +1620,18 @@ namespace ColouredPetriNet.Gui.Core
             return false;
         }
 
+        private void AddToIdList(int id, List<int> listId)
+        {
+            for (int i = 0; i < listId.Count; ++i)
+            {
+                if (listId[i] == id)
+                {
+                    return;
+                }
+            }
+            listId.Add(id);
+        }
+
         private void RemoveFromIdList(int id, List<int> listId)
         {
             for (int i = 0; i < listId.Count; ++i)
@@ -1686,40 +1708,26 @@ namespace ColouredPetriNet.Gui.Core
 
         private void MoveState(int dx, int dy, GraphicsStateWrapper state)
         {
-            Point p;
             for (int i = 0; i < state.InputLinks.Count; ++i)
             {
-                p = state.InputLinks[i].Link.Point2;
-                p.X += dx;
-                p.Y += dy;
-                state.InputLinks[i].Link.Point2 = p;
+                state.InputLinks[i].Link.MovePoint1(dx, dy);
             }
             for (int i = 0; i < state.OutputLinks.Count; ++i)
             {
-                p = state.OutputLinks[i].Link.Point2;
-                p.X += dx;
-                p.Y += dy;
-                state.OutputLinks[i].Link.Point2 = p;
+                state.OutputLinks[i].Link.MovePoint1(dx, dy);
             }
             state.State.Move(dx, dy);
         }
 
         private void MoveTransition(int dx, int dy, GraphicsTransitionWrapper transition)
         {
-            Point p;
             for (int i = 0; i < transition.InputLinks.Count; ++i)
             {
-                p = transition.InputLinks[i].Link.Point1;
-                p.X += dx;
-                p.Y += dy;
-                transition.InputLinks[i].Link.Point1 = p;
+                transition.InputLinks[i].Link.MovePoint2(dx, dy);
             }
             for (int i = 0; i < transition.OutputLinks.Count; ++i)
             {
-                p = transition.OutputLinks[i].Link.Point1;
-                p.X += dx;
-                p.Y += dy;
-                transition.OutputLinks[i].Link.Point1 = p;
+                transition.OutputLinks[i].Link.MovePoint2(dx, dy);
             }
             transition.Transition.Move(dx, dy);
         }

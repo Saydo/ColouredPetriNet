@@ -41,6 +41,20 @@ namespace ColouredPetriNet.Gui.Forms
             _currentFile = null;
         }
 
+        public void ClearMarkers(int stateId)
+        {
+            ClearMarkersFromStateTree(stateId);
+            _itemMap.RemoveMarkers(stateId);
+            pbMap.Refresh();
+        }
+
+        public void RemoveMarker(int id, int stateId)
+        {
+            RemoveMarkerFromStateTree(id, stateId);
+            _itemMap.RemoveMarker(id, stateId);
+            pbMap.Refresh();
+        }
+
         private void MainFormLoad(object sender, System.EventArgs e)
         {
             UpdateSelectionModeGui();
@@ -130,7 +144,6 @@ namespace ColouredPetriNet.Gui.Forms
                 case ItemMapMode.AddLink:
                     if (_itemSelected)
                     {
-                        //System.Console.WriteLine("AddLine: select");
                         if (!ReferenceEquals(_selectedState, null))
                         {
                             var chosenTransitions = _itemMap.FindTransitions(e.X, e.Y);
@@ -156,11 +169,9 @@ namespace ColouredPetriNet.Gui.Forms
                     }
                     else
                     {
-                        //System.Console.WriteLine("AddLine: non select");
                         var chosenStates = _itemMap.FindStates(e.X, e.Y);
                         if (chosenStates.Count > 0)
                         {
-                            //System.Console.WriteLine("AddLine: find states");
                             _selectedState = chosenStates[0];
                             _itemSelected = true;
                             _selectedState.State.Select();
@@ -170,7 +181,6 @@ namespace ColouredPetriNet.Gui.Forms
                             var chosenTransitions = _itemMap.FindTransitions(e.X, e.Y);
                             if (chosenTransitions.Count > 0)
                             {
-                                //System.Console.WriteLine("AddLine: find transitions");
                                 _selectedTransition = chosenTransitions[0];
                                 _itemSelected = true;
                                 _selectedTransition.Transition.Select();
@@ -179,13 +189,22 @@ namespace ColouredPetriNet.Gui.Forms
                     }
                     pbMap.Refresh();
                     break;
+                case ItemMapMode.RemoveMarker:
+                    var chosenStates2 = _itemMap.FindStates(e.X, e.Y);
+                    if (chosenStates2.Count > 0)
+                    {
+                        dlgRemoveMarker.SelectedState = chosenStates2[0];
+                        dlgRemoveMarker.ShowDialog();
+                    }
+                    break;
             }
         }
 
         private void ItemMapMouseDown(object sender, MouseEventArgs e)
         {
             if ((_mapMode == ItemMapMode.AddState) || (_mapMode == ItemMapMode.AddTransition)
-                || (_mapMode == ItemMapMode.AddMarker) || (_mapMode == ItemMapMode.AddLink))
+                || (_mapMode == ItemMapMode.AddMarker) || (_mapMode == ItemMapMode.AddLink)
+                || (_mapMode == ItemMapMode.RemoveMarker))
             {
                 return;
             }
@@ -255,10 +274,6 @@ namespace ColouredPetriNet.Gui.Forms
         {
             if (_mousePressed)
             {
-                if (_mapMode == ItemMapMode.AddLink)
-                {
-                    return;
-                }
                 System.Console.WriteLine("ItemMapMouseMove");
                 if ((_mapMode == ItemMapMode.Move) && (_itemSelected))
                 {
@@ -275,8 +290,7 @@ namespace ColouredPetriNet.Gui.Forms
 
         private void ItemMapMouseUp(object sender, MouseEventArgs e)
         {
-            if ((_mapMode == ItemMapMode.AddState) || (_mapMode == ItemMapMode.AddTransition)
-                || (_mapMode == ItemMapMode.AddMarker))
+            if (!_mousePressed)
             {
                 return;
             }
@@ -329,6 +343,8 @@ namespace ColouredPetriNet.Gui.Forms
             _itemMap.HideSelectionArea();
             _mousePressed = false;
             _itemSelected = false;
+            _selectedState = null;
+            _selectedTransition = null;
             pbMap.Refresh();
             if (_mapMode == mode)
                 return;
@@ -561,6 +577,37 @@ namespace ColouredPetriNet.Gui.Forms
         private void OpenAboutForm()
         {
             dlgAbout.ShowDialog();
+        }
+
+        private void ClearMarkersFromStateTree(int stateId)
+        {
+            for (int i = 0; i < trvStates.Nodes.Count; ++i)
+            {
+                if ((int)trvStates.Nodes[i].Tag == stateId)
+                {
+                    trvStates.Nodes[i].Nodes.Clear();
+                    return;
+                }
+            }
+        }
+
+        private void RemoveMarkerFromStateTree(int id, int stateId)
+        {
+            for (int i = 0; i < trvStates.Nodes.Count; ++i)
+            {
+                if ((int)trvStates.Nodes[i].Tag == stateId)
+                {
+                    for (int j = 0; j < trvStates.Nodes[i].Nodes.Count; ++j)
+                    {
+                        if ((int)trvStates.Nodes[i].Nodes[j].Tag == id)
+                        {
+                            trvStates.Nodes[i].Nodes.RemoveAt(j);
+                            return;
+                        }
+                    }
+                    return;
+                }
+            }
         }
     }
 }

@@ -145,6 +145,12 @@
     <Compile Include="Gui\Forms\RectangleItemStyleForm.Designer.cs">
       <DependentUpon>RectangleItemStyleForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Gui\Forms\RemoveMarkerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\Forms\RemoveMarkerForm.Designer.cs">
+      <DependentUpon>RemoveMarkerForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Gui\Forms\RoundItemStyleForm.cs">
       <SubType>Form</SubType>
     </Compile>

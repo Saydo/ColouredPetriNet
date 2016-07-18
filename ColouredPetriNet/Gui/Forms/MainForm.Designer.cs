@@ -65,6 +65,7 @@ namespace ColouredPetriNet.Gui.Forms
             dlgAbout = new AboutForm();
             dlgOpenFile = new OpenFileDialog();
             dlgSaveFile = new SaveFileDialog();
+            dlgRemoveMarker = new RemoveMarkerForm(this);
 
             pbMap = new PictureBox();
             stsStatus = new StatusStrip();
@@ -699,5 +700,6 @@ namespace ColouredPetriNet.Gui.Forms
         private AboutForm dlgAbout;
         private OpenFileDialog dlgOpenFile;
         private SaveFileDialog dlgSaveFile;
+        private RemoveMarkerForm dlgRemoveMarker;
     }
 }

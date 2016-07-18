@@ -161,7 +161,11 @@ namespace ColouredPetriNet.Gui.Forms
             numBorderWidth.TabIndex = 15;
             // 
             // RectangleItemStyleForm
-            // 
+            //
+            this.FormBorderStyle = FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+            this.StartPosition = FormStartPosition.CenterScreen;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(234, 257);

@@ -58,14 +58,8 @@ namespace ColouredPetriNet.Gui.Core.GraphicsItems
             {
                 _extentPoints[i] = new Point();
             }
-            System.Console.WriteLine("LineGraphicsItem(0): p1={0}, p2={1}", _point1, _point2);
             _extentPoints = LinearAlgebra.Algorithm.GetLineBorder(_point1, _point2,
                 (_selected ? _extent : 2));
-            System.Console.WriteLine("LineGraphicsItem(1): _ep[0]={0}, _ep[1]={1}, _ep[2]={2}, _ep[3]={3}",
-                _extentPoints[0], _extentPoints[1], _extentPoints[2], _extentPoints[3]);
-            System.Console.WriteLine("LineGraphicsItem(2): b[Left]={0}, b[Right]={1}, b[Bottom]={2}, b[Top]={3}",
-                _borderPoints[(int)BorderSide.Left], _borderPoints[(int)BorderSide.Right],
-                _borderPoints[(int)BorderSide.Bottom], _borderPoints[(int)BorderSide.Top]);
             base.SetBorder(LinearAlgebra.Algorithm.MinX(_extentPoints) - _center.X,
                 LinearAlgebra.Algorithm.MaxX(_extentPoints) - _center.X,
                 LinearAlgebra.Algorithm.MinY(_extentPoints) - _center.Y,
@@ -123,12 +117,10 @@ namespace ColouredPetriNet.Gui.Core.GraphicsItems
             if ((eq[0].InLineByY(x, y) <= 0) && (eq[1].InLineByX(x, y) <= 0)
                && (eq[2].InLineByY(x, y) >= 0) && (eq[3].InLineByX(x, y) >= 0))
             {
-                System.Console.WriteLine("InShape(x, y) true");
                 return true;
             }
             else
             {
-                System.Console.WriteLine("InShape(x, y) false");
                 return false;
             }
         }
@@ -146,20 +138,16 @@ namespace ColouredPetriNet.Gui.Core.GraphicsItems
                 if ((eq[0].InLineByY(x + w, y) > 0) || (eq[1].InLineByX(x, y) > 0)
                     || (eq[2].InLineByY(x, y + h) < 0) || (eq[3].InLineByX(x + w, y + h) < 0))
                 {
-                    System.Console.WriteLine("InShape(x, y, w, h) overlap=Partical; false");
                     return false;
                 }
                 else
                 {
-                    System.Console.WriteLine("InShape(x, y, w, h) overlap=Partical; true");
                     return true;
                 }
             }
             else
             {
-                bool res = InBorder(x, y);
-                System.Console.WriteLine("InShape(x, y, w, h) overlap=Full; {0}", res);
-                return res;
+                return InBorder(x, y);
             }
         }
 
