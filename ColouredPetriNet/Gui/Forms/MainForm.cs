@@ -29,6 +29,8 @@ namespace ColouredPetriNet.Gui.Forms
         {
             InitializeComponent();
             _itemMap = new Core.PetriNetGraphicsMap();
+            _itemMap.AddStateEvent += AddStateToTree;
+            _itemMap.AddTransitionEvent += AddTransitionToTree;
             _mousePressed = false;
             _itemSelected = false;
             _selectedState = null;
@@ -40,20 +42,6 @@ namespace ColouredPetriNet.Gui.Forms
             _newMarkerType = Core.ColouredMarkerType.RoundMarker;
             _currentFile = null;
             UpdateStatus(GetCurrentMapModeName());
-        }
-
-        public void ClearMarkers(int stateId)
-        {
-            ClearMarkersFromStateTree(stateId);
-            _itemMap.RemoveMarkers(stateId);
-            pbMap.Refresh();
-        }
-
-        public void RemoveMarker(int id, int stateId)
-        {
-            RemoveMarkerFromStateTree(id, stateId);
-            _itemMap.RemoveMarker(id, stateId);
-            pbMap.Refresh();
         }
 
         private void MainFormLoad(object sender, System.EventArgs e)
@@ -70,45 +58,16 @@ namespace ColouredPetriNet.Gui.Forms
         {
             //System.Console.WriteLine("ItemMapMouseClick");
             int id;
-            TreeNode treeNode;
             switch (_mapMode)
             {
                 case ItemMapMode.AddState:
                     id = _itemMap.AddState(e.X, e.Y, _newStateType);
-                    if (_newStateType == Core.ColouredStateType.RoundState)
-                    {
-                        treeNode = new TreeNode("State " + id.ToString(),
-                            (int)StateTreeImage.RoundState, (int)StateTreeImage.RoundState);
-                        treeNode.Tag = id;
-                        trvStates.Nodes.Add(treeNode);
-                    }
-                    else if (_newStateType == Core.ColouredStateType.ImageState)
-                    {
-                        treeNode = new TreeNode("State " + id.ToString(),
-                            (int)StateTreeImage.ImageState, (int)StateTreeImage.ImageState);
-                        treeNode.Tag = id;
-                        trvStates.Nodes.Add(treeNode);
-                    }
+                    AddStateToTree(id, _newStateType);
                     pbMap.Refresh();
                     break;
                 case ItemMapMode.AddTransition:
                     id = _itemMap.AddTransition(e.X, e.Y, _newTransitionType);
-                    if (_newTransitionType == Core.ColouredTransitionType.RectangleTransition)
-                    {
-                        treeNode = new TreeNode("Transition " + id.ToString(),
-                            (int)TransitionTreeImage.RectangleTransition,
-                            (int)TransitionTreeImage.RectangleTransition);
-                        treeNode.Tag = id;
-                        trvTransitions.Nodes.Add(treeNode);
-                    }
-                    else if (_newTransitionType == Core.ColouredTransitionType.RhombTransition)
-                    {
-                        treeNode = new TreeNode("Transition " + id.ToString(),
-                            (int)TransitionTreeImage.RhombTransition,
-                            (int)TransitionTreeImage.RhombTransition);
-                        treeNode.Tag = id;
-                        trvTransitions.Nodes.Add(treeNode);
-                    }
+                    AddTransitionToTree(id, _newTransitionType);
                     pbMap.Refresh();
                     break;
                 case ItemMapMode.AddMarker:
@@ -117,28 +76,7 @@ namespace ColouredPetriNet.Gui.Forms
                     {
                         var state = selectedStates[selectedStates.Count - 1];
                         id = _itemMap.AddMarker(state.State.Id, _newMarkerType);
-                        int stateIndex= FindStateIndexInTreeView(state.State.Id);
-                        if (_newMarkerType == Core.ColouredMarkerType.RoundMarker)
-                        {
-                            treeNode = new TreeNode("Marker " + id.ToString(),
-                                (int)StateTreeImage.RoundMarker, (int)StateTreeImage.RoundMarker);
-                            treeNode.Tag = id;
-                            trvStates.Nodes[stateIndex].Nodes.Add(treeNode);
-                        }
-                        else if (_newMarkerType == Core.ColouredMarkerType.RhombMarker)
-                        {
-                            treeNode = new TreeNode("Marker " + id.ToString(),
-                                (int)StateTreeImage.RhombMarker, (int)StateTreeImage.RhombMarker);
-                            treeNode.Tag = id;
-                            trvStates.Nodes[stateIndex].Nodes.Add(treeNode);
-                        }
-                        else if (_newMarkerType == Core.ColouredMarkerType.TriangleMarker)
-                        {
-                            treeNode = new TreeNode("Marker " + id.ToString(),
-                                (int)StateTreeImage.TriangleMarker, (int)StateTreeImage.TriangleMarker);
-                            treeNode.Tag = id;
-                            trvStates.Nodes[stateIndex].Nodes.Add(treeNode);
-                        }
+                        AddMarkerToTree(id, state.State.Id);
                     }
                     pbMap.Refresh();
                     break;
@@ -194,8 +132,7 @@ namespace ColouredPetriNet.Gui.Forms
                     var chosenStates2 = _itemMap.FindStates(e.X, e.Y);
                     if (chosenStates2.Count > 0)
                     {
-                        dlgRemoveMarker.SelectedState = chosenStates2[0];
-                        dlgRemoveMarker.ShowDialog();
+                        dlgRemoveMarker.ShowDialog(chosenStates2[0]);
                     }
                     break;
             }
@@ -587,7 +524,8 @@ namespace ColouredPetriNet.Gui.Forms
         {
             if (dlgOpenFile.ShowDialog() == DialogResult.OK)
             {
-                if(_itemMap.Deserialize(dlgOpenFile.FileName))
+                ClearMap();
+                if (_itemMap.Deserialize(dlgOpenFile.FileName))
                 {
                     _currentFile = dlgOpenFile.FileName;
                     pbMap.Refresh();
@@ -674,6 +612,23 @@ namespace ColouredPetriNet.Gui.Forms
         private void OpenAboutForm()
         {
             dlgAbout.ShowDialog();
+        }
+
+        private void ClearMarkers(int stateId)
+        {
+            ClearMarkersFromStateTree(stateId);
+            _itemMap.RemoveMarkers(stateId);
+            pbMap.Refresh();
+        }
+
+        private void RemoveMarkers(int stateId, List<int> markers)
+        {
+            for (int i = 0; i < markers.Count; ++i)
+            {
+                RemoveMarkerFromStateTree(markers[i], stateId);
+                _itemMap.RemoveMarker(markers[i], stateId);
+                pbMap.Refresh();
+            }
         }
 
         private void ClearMarkersFromStateTree(int stateId)
@@ -767,6 +722,135 @@ namespace ColouredPetriNet.Gui.Forms
                 default:
                     return _mapMode.ToString();
             }
+        }
+
+        private void AddStateToTree(int id, Core.ColouredStateType type)
+        {
+            TreeNode treeNode;
+            if (type == Core.ColouredStateType.RoundState)
+            {
+                treeNode = new TreeNode("State " + id.ToString(),
+                    (int)StateTreeImage.RoundState, (int)StateTreeImage.RoundState);
+                treeNode.Tag = id;
+                trvStates.Nodes.Add(treeNode);
+            }
+            else if (type == Core.ColouredStateType.ImageState)
+            {
+                treeNode = new TreeNode("State " + id.ToString(),
+                    (int)StateTreeImage.ImageState, (int)StateTreeImage.ImageState);
+                treeNode.Tag = id;
+                trvStates.Nodes.Add(treeNode);
+            }
+        }
+
+        private void AddTransitionToTree(int id, Core.ColouredTransitionType type)
+        {
+            TreeNode treeNode;
+            if (type == Core.ColouredTransitionType.RectangleTransition)
+            {
+                treeNode = new TreeNode("Transition " + id.ToString(),
+                    (int)TransitionTreeImage.RectangleTransition,
+                    (int)TransitionTreeImage.RectangleTransition);
+                treeNode.Tag = id;
+                trvTransitions.Nodes.Add(treeNode);
+            }
+            else if (type == Core.ColouredTransitionType.RhombTransition)
+            {
+                treeNode = new TreeNode("Transition " + id.ToString(),
+                    (int)TransitionTreeImage.RhombTransition,
+                    (int)TransitionTreeImage.RhombTransition);
+                treeNode.Tag = id;
+                trvTransitions.Nodes.Add(treeNode);
+            }
+        }
+
+        private void AddMarkerToTree(int id, int stateId)
+        {
+            TreeNode treeNode;
+            int stateIndex = FindStateIndexInTreeView(stateId);
+            if (_newMarkerType == Core.ColouredMarkerType.RoundMarker)
+            {
+                treeNode = new TreeNode("Marker " + id.ToString(),
+                    (int)StateTreeImage.RoundMarker, (int)StateTreeImage.RoundMarker);
+                treeNode.Tag = id;
+                trvStates.Nodes[stateIndex].Nodes.Add(treeNode);
+            }
+            else if (_newMarkerType == Core.ColouredMarkerType.RhombMarker)
+            {
+                treeNode = new TreeNode("Marker " + id.ToString(),
+                    (int)StateTreeImage.RhombMarker, (int)StateTreeImage.RhombMarker);
+                treeNode.Tag = id;
+                trvStates.Nodes[stateIndex].Nodes.Add(treeNode);
+            }
+            else if (_newMarkerType == Core.ColouredMarkerType.TriangleMarker)
+            {
+                treeNode = new TreeNode("Marker " + id.ToString(),
+                    (int)StateTreeImage.TriangleMarker, (int)StateTreeImage.TriangleMarker);
+                treeNode.Tag = id;
+                trvStates.Nodes[stateIndex].Nodes.Add(treeNode);
+            }
+        }
+
+        private void AddStateToTree(object sender, Core.Events.ExtendedStateEventArgs state)
+        {
+            TreeNode treeNode;
+            int typeId = state.TypeId - (int)Core.PetriNetGraphicsMap.ItemType.State;
+            switch (typeId)
+            {
+                case (int)Core.ColouredStateType.RoundState:
+                    AddStateToTree(state.Id, Core.ColouredStateType.RoundState);
+                    break;
+                case (int)Core.ColouredStateType.ImageState:
+                    AddStateToTree(state.Id, Core.ColouredStateType.ImageState);
+                    break;
+            }
+            int stateIndex = trvStates.Nodes.Count - 1;
+            for (int i = 0; i < state.Markers.Count; ++i)
+            {
+                typeId = state.Markers[i].Item2 - (int)Core.PetriNetGraphicsMap.ItemType.Marker;
+                if (typeId == (int)Core.ColouredMarkerType.RoundMarker)
+                {
+                    treeNode = new TreeNode("Marker " + state.Markers[i].Item1.ToString(),
+                        (int)StateTreeImage.RoundMarker, (int)StateTreeImage.RoundMarker);
+                    treeNode.Tag = state.Markers[i].Item1;
+                    trvStates.Nodes[stateIndex].Nodes.Add(treeNode);
+                }
+                else if (typeId == (int)Core.ColouredMarkerType.RhombMarker)
+                {
+                    treeNode = new TreeNode("Marker " + state.Markers[i].Item1.ToString(),
+                        (int)StateTreeImage.RhombMarker, (int)StateTreeImage.RhombMarker);
+                    treeNode.Tag = state.Markers[i].Item1;
+                    trvStates.Nodes[stateIndex].Nodes.Add(treeNode);
+                }
+                else if (typeId == (int)Core.ColouredMarkerType.TriangleMarker)
+                {
+                    treeNode = new TreeNode("Marker " + state.Markers[i].Item1.ToString(),
+                        (int)StateTreeImage.TriangleMarker, (int)StateTreeImage.TriangleMarker);
+                    treeNode.Tag = state.Markers[i].Item1;
+                    trvStates.Nodes[stateIndex].Nodes.Add(treeNode);
+                }
+            }
+        }
+
+        private void AddTransitionToTree(object sender, Core.Events.PetriNetNodeEventArgs transition)
+        {
+            int typeId = transition.TypeId - (int)Core.PetriNetGraphicsMap.ItemType.Transition;
+            switch (typeId)
+            {
+                case (int)Core.ColouredTransitionType.RectangleTransition:
+                    AddTransitionToTree(transition.Id, Core.ColouredTransitionType.RectangleTransition);
+                    break;
+                case (int)Core.ColouredTransitionType.RhombTransition:
+                    AddTransitionToTree(transition.Id, Core.ColouredTransitionType.RhombTransition);
+                    break;
+            }
+        }
+
+        private void ClearMap()
+        {
+            trvStates.Nodes.Clear();
+            trvTransitions.Nodes.Clear();
+            _itemMap.Clear();
         }
     }
 }

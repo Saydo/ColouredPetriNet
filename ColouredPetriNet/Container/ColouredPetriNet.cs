@@ -172,6 +172,52 @@ namespace ColouredPetriNet.Container
             return state.ContainsOutputLinkNode(transitionId);
         }
 
+        public void AddState<T>(int id, T state)
+        {
+            if (_idGenerator.GetCurrId() < id)
+            {
+                _idGenerator.Reset(id);
+            }
+            List<StateWrapper<T>> stateStorage = FindStateStorage<T>();
+            if (ReferenceEquals(null, stateStorage))
+            {
+                stateStorage = new List<StateWrapper<T>>();
+                _states.Add(stateStorage);
+            }
+            stateStorage.Add(new StateWrapper<T>(id, state));
+        }
+
+        public void AddTransition<T>(int id, T transition)
+        {
+            if (_idGenerator.GetCurrId() < id)
+            {
+                _idGenerator.Reset(id);
+            }
+            List<TransitionWrapper<T>> transitionStorage = FindTransitionStorage<T>();
+            if (ReferenceEquals(null, transitionStorage))
+            {
+                transitionStorage = new List<TransitionWrapper<T>>();
+                _transitions.Add(transitionStorage);
+            }
+            transitionStorage.Add(new TransitionWrapper<T>(id, transition));
+        }
+
+        public void AddMarker<T>(int id, int stateId, T marker)
+        {
+            if (_idGenerator.GetCurrId() < id)
+            {
+                _idGenerator.Reset(id);
+            }
+            List<MarkerWrapper<T>> markerStorage = FindMarkerStorage<T>();
+            if (ReferenceEquals(null, markerStorage))
+            {
+                markerStorage = new List<MarkerWrapper<T>>();
+                _markers.Add(markerStorage);
+            }
+            markerStorage.Add(new MarkerWrapper<T>(id, stateId, marker));
+            ConnectMarkerToState(id, stateId);
+        }
+
         public int AddState<T>(T state)
         {
             List<StateWrapper<T>> stateStorage = FindStateStorage<T>();

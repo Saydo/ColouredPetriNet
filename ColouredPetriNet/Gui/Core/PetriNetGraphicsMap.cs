@@ -10,6 +10,8 @@ namespace ColouredPetriNet.Gui.Core
     public class PetriNetGraphicsMap : IPetriNetGraphicsMap
     {
         public enum ItemType { Link, Marker = 100, Transition = 200, State = 300 };
+        public event System.EventHandler<Events.ExtendedStateEventArgs> AddStateEvent;
+        public event System.EventHandler<Events.PetriNetNodeEventArgs> AddTransitionEvent;
 
         private const int _linkZ = 1;
         private const int _stateZ = 2;
@@ -1769,6 +1771,7 @@ namespace ColouredPetriNet.Gui.Core
             Core.Serialize.StateXml stateXml;
             GraphicsStateWrapper state;
             GraphicsTransitionWrapper transition;
+            GraphicsItems.GraphicsItem item;
             GraphicsItems.LinkGraphicsItem.LinkDirection graphicsLinkDirection;
             LinkDirection wrapperLinkDirection;
             this.Clear();
@@ -1779,31 +1782,61 @@ namespace ColouredPetriNet.Gui.Core
                 for (int j = 0; j < stateXml.Markers.Count; ++j)
                 {
                     state.AddMarker(GetMarkerGraphicsItemFromXml(stateXml.Markers[j]));
+                    switch (stateXml.Markers[j].Type)
+                    {
+                        case "RoundMarker":
+                            _petriNet.AddMarker(stateXml.Markers[j].Id, stateXml.Id,
+                                new RoundMarker());
+                            break;
+                        case "RhombMarker":
+                            _petriNet.AddMarker(stateXml.Markers[j].Id, stateXml.Id,
+                                new RhombMarker());
+                            break;
+                        case "TriangleMarker":
+                            _petriNet.AddMarker(stateXml.Markers[j].Id, stateXml.Id,
+                                new TriangleMarker());
+                            break;
+                    }
+                }
+                switch (stateXml.Type)
+                {
+                    case "RoundState":
+                        _petriNet.AddState(stateXml.Id, new RoundState());
+                        break;
+                    case "ImageState":
+                        _petriNet.AddState(stateXml.Id, new ImageState());
+                        break;
                 }
                 _states.Add(state);
+                AddStateEvent(this, ConvertToStateEventArgs(state));
             }
             for (int i = 0; i < itemsXml.TransitionList.Count; ++i)
             {
-                _transitions.Add(new GraphicsTransitionWrapper(GetTransitionGraphicsItemFromXml(itemsXml.TransitionList[i])));
+                item = GetTransitionGraphicsItemFromXml(itemsXml.TransitionList[i]);
+                switch (item.TypeId)
+                {
+                    case (int)ItemType.Transition + (int)ColouredTransitionType.RectangleTransition:
+                        _petriNet.AddTransition(item.Id, new RectangleTransition());
+                        break;
+                    case (int)ItemType.Transition + (int)ColouredTransitionType.RhombTransition:
+                        _petriNet.AddTransition(item.Id, new RhombTransition());
+                        break;
+                }
+                _transitions.Add(new GraphicsTransitionWrapper(item));
+                AddTransitionEvent(this, new Events.PetriNetNodeEventArgs(item.Id, item.TypeId));
             }
             for (int i = 0; i < itemsXml.LinkList.Count; ++i)
             {
                 if (itemsXml.LinkList[i].Direction.Equals("FromState"))
                 {
-                    graphicsLinkDirection = GraphicsItems.LinkGraphicsItem.LinkDirection.FromP1toP2;
-                    wrapperLinkDirection = LinkDirection.FromStateToTransition;
+                    AddLink(itemsXml.LinkList[i].StateId, itemsXml.LinkList[i].TransitionId,
+                        LinkDirection.FromStateToTransition);
                 }
                 else
                 {
-                    graphicsLinkDirection = GraphicsItems.LinkGraphicsItem.LinkDirection.FromP2toP1;
-                    wrapperLinkDirection = LinkDirection.FromTransitionToState;
+                    AddLink(itemsXml.LinkList[i].StateId, itemsXml.LinkList[i].TransitionId,
+                        LinkDirection.FromTransitionToState);
                 }
-                state = FindStateById(itemsXml.LinkList[i].StateId);
-                transition = FindTransitionById(itemsXml.LinkList[i].TransitionId);
-                _links.Add(new GraphicsLinkWrapper(state, transition,
-                    new GraphicsItems.LinkGraphicsItem(itemsXml.LinkList[i].Id, (int)ItemType.Link,
-                    state.State.Center, transition.Transition.Center, graphicsLinkDirection),
-                    wrapperLinkDirection));
             }
         }
 
@@ -1969,6 +2002,21 @@ namespace ColouredPetriNet.Gui.Core
                     return "TriangleMarker";
             }
             return "";
+        }
+
+        private Events.ExtendedStateEventArgs ConvertToStateEventArgs(GraphicsStateWrapper state)
+        {
+            var stateEventArgs = new Events.ExtendedStateEventArgs(state.State.Id, state.State.TypeId);
+            int typeId;
+            for (int i = 0; i < state.Markers.Count; ++i)
+            {
+                typeId = state.Markers[i].Item1.TypeId;
+                for (int j = 0; j < state.Markers[i].Item2.Count; ++j)
+                {
+                    stateEventArgs.Markers.Add(new System.Tuple<int, int>(state.Markers[i].Item2[j], typeId));
+                }
+            }
+            return stateEventArgs;
         }
         #endregion
     }

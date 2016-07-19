@@ -139,6 +139,7 @@
     <Compile Include="Gui\Forms\MarkerInfoForm.Designer.cs">
       <DependentUpon>MarkerInfoForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Gui\Core\PetriNetEvent.cs" />
     <Compile Include="Gui\Forms\RectangleItemStyleForm.cs">
       <SubType>Form</SubType>
     </Compile>

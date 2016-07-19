@@ -65,7 +65,7 @@ namespace ColouredPetriNet.Gui.Forms
             dlgAbout = new AboutForm();
             dlgOpenFile = new OpenFileDialog();
             dlgSaveFile = new SaveFileDialog();
-            dlgRemoveMarker = new RemoveMarkerForm(this);
+            dlgRemoveMarker = new RemoveMarkerForm();
             pbMap = new PictureBox();
             stsStatus = new StatusStrip();
             lblStatusText = new ToolStripStatusLabel();
@@ -614,6 +614,11 @@ namespace ColouredPetriNet.Gui.Forms
             dlgSaveFile.Filter = "Coloured petri net files (*.cpn)|*.cpn|All files (*.*)|*.*";
             dlgSaveFile.FilterIndex = 1;
             dlgSaveFile.RestoreDirectory = true;
+            //
+            // dlgRemoveMarker (RemoveMarkerForm)
+            //
+            dlgRemoveMarker.ClearButtonClick += (obj, e) => ClearMarkers(e.Id);
+            dlgRemoveMarker.RemoveButtonClick += (obj, e) => RemoveMarkers(e.Id, e.Markers);
             //
             // MainForm
             //

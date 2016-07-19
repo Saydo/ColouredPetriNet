@@ -12,15 +12,15 @@ namespace ColouredPetriNet.Gui.Forms
 {
     public partial class RemoveMarkerForm : Form
     {
-        public MainForm MainForm;
-        public Core.GraphicsStateWrapper SelectedState;
+        public event EventHandler<Core.Events.PetriNetNodeEventArgs> ClearButtonClick;
+        public event EventHandler<Core.Events.StateEventArgs> RemoveButtonClick;
+
+        private Core.GraphicsStateWrapper _selectedState;
         private DataTable _markersTable;
 
-        public RemoveMarkerForm(MainForm mainForm)
+        public RemoveMarkerForm()
         {
             InitializeComponent();
-            MainForm = mainForm;
-            SelectedState = null;
             _markersTable = new DataTable();
             _markersTable.Columns.Add(new DataColumn("Id", typeof(int)));
             _markersTable.Columns.Add(new DataColumn("Form", typeof(Image)));
@@ -35,8 +35,9 @@ namespace ColouredPetriNet.Gui.Forms
             dgvMarkers.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
         }
 
-        new public void ShowDialog()
+        public void ShowDialog(Core.GraphicsStateWrapper selectedState)
         {
+            _selectedState = selectedState;
             UpdateMarkersTable();
             base.ShowDialog();
         }
@@ -69,17 +70,17 @@ namespace ColouredPetriNet.Gui.Forms
         {
             DataRow newRow;
             _markersTable.Clear();
-            if (!ReferenceEquals(SelectedState, null))
+            if (!ReferenceEquals(_selectedState, null))
             {
                 Image markerImage;
                 string markerType;
-                for (int i = 0; i < SelectedState.Markers.Count; ++i)
+                for (int i = 0; i < _selectedState.Markers.Count; ++i)
                 {
-                    GetMarkerType(SelectedState.Markers[i].Item1, out markerImage, out markerType);
-                    for (int j = 0; j < SelectedState.Markers[i].Item2.Count; ++j)
+                    GetMarkerType(_selectedState.Markers[i].Item1, out markerImage, out markerType);
+                    for (int j = 0; j < _selectedState.Markers[i].Item2.Count; ++j)
                     {
                         newRow = _markersTable.NewRow();
-                        newRow["Id"] = SelectedState.Markers[i].Item2[j];
+                        newRow["Id"] = _selectedState.Markers[i].Item2[j];
                         newRow["Form"] = markerImage;
                         newRow["Type"] = markerType;
                         _markersTable.Rows.Add(newRow);
@@ -91,7 +92,11 @@ namespace ColouredPetriNet.Gui.Forms
         private void ClearMarkers()
         {
             _markersTable.Clear();
-            MainForm.ClearMarkers(SelectedState.State.Id);
+            if (ClearButtonClick != null)
+            {
+                ClearButtonClick(this,
+                    new Core.Events.PetriNetNodeEventArgs(_selectedState.State.Id));
+            }
         }
 
         private void RemoveMarkerFromTable(int id)
@@ -101,7 +106,6 @@ namespace ColouredPetriNet.Gui.Forms
                 if (id == _markersTable.Rows[i].Field<int>(0))
                 {
                     _markersTable.Rows.RemoveAt(i);
-                    MainForm.RemoveMarker(id, SelectedState.State.Id);
                     return;
                 }
             }
@@ -109,9 +113,18 @@ namespace ColouredPetriNet.Gui.Forms
 
         private void RemoveMarkers()
         {
+            List<int> removedMarkers = new List<int>();
+            int id;
             for (int i = dgvMarkers.SelectedRows.Count - 1; i >= 0; --i)
             {
-                RemoveMarkerFromTable((int)dgvMarkers.SelectedRows[i].Cells[0].Value);
+                id = (int)dgvMarkers.SelectedRows[i].Cells[0].Value;
+                RemoveMarkerFromTable(id);
+                removedMarkers.Add(id);
+            }
+            if (RemoveButtonClick != null)
+            {
+                RemoveButtonClick(this,
+                    new Core.Events.StateEventArgs(_selectedState.State.Id, -1, removedMarkers));
             }
         }
     }
