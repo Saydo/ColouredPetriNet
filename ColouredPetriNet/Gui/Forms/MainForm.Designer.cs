@@ -58,7 +58,10 @@ namespace ColouredPetriNet.Gui.Forms
             tsbOneStepSimulation = new ToolStripButton();
             tsbRunSimulation = new ToolStripButton();
             tsbStopSimulation = new ToolStripButton();
-            dlgShowIteminfo = new ShowItemInfoForm();
+            dlgShowItemInfo = new ShowItemInfoForm();
+            dlgStateInfo = new StateInfoForm();
+            dlgTransitionInfo = new TransitionInfoForm();
+            dlgMarkerInfo = new MarkerInfoForm();
             dlgLinkStyle = new LinkStyleForm();
             dlgItemStyle = new ItemStyleForm();
             dlgBackground = new BackgroundForm();
@@ -294,21 +297,24 @@ namespace ColouredPetriNet.Gui.Forms
             mniShowStateInfo.Name = "mniShowStateInfo";
             mniShowStateInfo.Size = new Size(152, 22);
             mniShowStateInfo.Text = "About State";
-            mniShowStateInfo.Click += (obj, e) => OpenShowStateInfoForm();
+            mniShowStateInfo.Click += (obj, e) =>
+                dlgShowItemInfo.ShowDialog(Core.Events.ShowInfoEventArgs.ItemType.State);
             //
             // ShowTransitionInfo (ToolStripMenuItem)
             //
             mniShowTransitionInfo.Name = "mniShowTransitionInfo";
             mniShowTransitionInfo.Size = new Size(152, 22);
             mniShowTransitionInfo.Text = "About Transition";
-            mniShowTransitionInfo.Click += (obj, e) => OpenShowTransitionInfoForm();
+            mniShowTransitionInfo.Click += (obj, e) =>
+                dlgShowItemInfo.ShowDialog(Core.Events.ShowInfoEventArgs.ItemType.Transition);
             //
             // ShowMarkerInfo (ToolStripMenuItem)
             //
             mniShowMarkerInfo.Name = "mniShowMarkerInfo";
             mniShowMarkerInfo.Size = new Size(152, 22);
             mniShowMarkerInfo.Text = "About Marker";
-            mniShowMarkerInfo.Click += (obj, e) => OpenShowMarkerInfoForm();
+            mniShowMarkerInfo.Click += (obj, e) =>
+                dlgShowItemInfo.ShowDialog(Core.Events.ShowInfoEventArgs.ItemType.Marker);
             //
             // View (ToolStripMenuItem)
             //
@@ -620,6 +626,10 @@ namespace ColouredPetriNet.Gui.Forms
             dlgRemoveMarker.ClearButtonClick += (obj, e) => ClearMarkers(e.Id);
             dlgRemoveMarker.RemoveButtonClick += (obj, e) => RemoveMarkers(e.Id, e.Markers);
             //
+            // dlgShowIteminfo (ShowItemInfoForm)
+            //
+            dlgShowItemInfo.FindButtonClick += FindItemInfo;
+            //
             // MainForm
             //
             this.Name = "MainForm";
@@ -708,7 +718,10 @@ namespace ColouredPetriNet.Gui.Forms
         private TreeView trvTransitions;
         private Label lblStates;
         private Label lblTransitions;
-        private ShowItemInfoForm dlgShowIteminfo;
+        private ShowItemInfoForm dlgShowItemInfo;
+        private StateInfoForm dlgStateInfo;
+        private TransitionInfoForm dlgTransitionInfo;
+        private MarkerInfoForm dlgMarkerInfo;
         private LinkStyleForm dlgLinkStyle;
         private ItemStyleForm dlgItemStyle;
         private BackgroundForm dlgBackground;

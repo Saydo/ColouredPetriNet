@@ -569,21 +569,6 @@ namespace ColouredPetriNet.Gui.Forms
             }
         }
 
-        private void OpenShowStateInfoForm()
-        {
-            dlgShowIteminfo.ShowDialog();
-        }
-
-        private void OpenShowTransitionInfoForm()
-        {
-            dlgShowIteminfo.ShowDialog();
-        }
-
-        private void OpenShowMarkerInfoForm()
-        {
-            dlgShowIteminfo.ShowDialog();
-        }
-
         private void OpenLinkStyleForm()
         {
             dlgLinkStyle.ShowDialog();
@@ -851,6 +836,61 @@ namespace ColouredPetriNet.Gui.Forms
             trvStates.Nodes.Clear();
             trvTransitions.Nodes.Clear();
             _itemMap.Clear();
+        }
+
+        private void FindItemInfo(object sender, Core.Events.ShowInfoEventArgs e)
+        {
+            switch (e.Type)
+            {
+                case Core.Events.ShowInfoEventArgs.ItemType.State:
+                    ShowStateInfoForm(_itemMap.FindStateById(e.Id));
+                    break;
+                case Core.Events.ShowInfoEventArgs.ItemType.Transition:
+                    ShowTransitionInfoForm(_itemMap.FindTransitionById(e.Id));
+                    break;
+                case Core.Events.ShowInfoEventArgs.ItemType.Marker:
+                    ShowMarkerInfoForm(_itemMap.FindMarkerById(e.Id));
+                    break;
+            }
+        }
+
+        private void ShowStateInfoForm(Core.GraphicsStateWrapper state)
+        {
+            if (state == null)
+            {
+                MessageBox.Show("Error: State with this id not found!");
+            }
+            else
+            {
+                dlgShowItemInfo.Hide();
+                dlgStateInfo.ShowDialog();
+            }
+        }
+
+        private void ShowTransitionInfoForm(Core.GraphicsTransitionWrapper transition)
+        {
+            if (transition == null)
+            {
+                MessageBox.Show("Error: Transition with this id not found!");
+            }
+            else
+            {
+                dlgShowItemInfo.Hide();
+                dlgTransitionInfo.ShowDialog();
+            }
+        }
+
+        private void ShowMarkerInfoForm(Core.MarkerInfo marker)
+        {
+            if (marker.Id < 0)
+            {
+                MessageBox.Show("Error: Marker with this id not found!");
+            }
+            else
+            {
+                dlgShowItemInfo.Hide();
+                dlgMarkerInfo.ShowDialog(marker.Id, marker.StateId, _itemMap.GetMarkerTypeName(marker.Type));
+            }
         }
     }
 }

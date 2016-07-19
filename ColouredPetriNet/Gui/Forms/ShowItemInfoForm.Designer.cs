@@ -9,7 +9,8 @@ namespace ColouredPetriNet.Gui.Forms
             btnFind = new Button();
             btnCancel = new Button();
             lblId = new Label();
-            txtId = new TextBox();
+            numId = new NumericUpDown();
+
             this.SuspendLayout();
             // 
             // btnFind
@@ -20,6 +21,8 @@ namespace ColouredPetriNet.Gui.Forms
             btnFind.TabIndex = 0;
             btnFind.Text = "Find";
             btnFind.UseVisualStyleBackColor = true;
+            btnFind.Click += (obj, e) => FindButtonClick(this,
+                new Core.Events.ShowInfoEventArgs((int)numId.Value, _itemType));
             // 
             // btnCancel
             // 
@@ -29,6 +32,7 @@ namespace ColouredPetriNet.Gui.Forms
             btnCancel.TabIndex = 1;
             btnCancel.Text = "Cancel";
             btnCancel.UseVisualStyleBackColor = true;
+            btnCancel.Click += (obj, e) => this.Close();
             // 
             // lblId
             // 
@@ -39,12 +43,14 @@ namespace ColouredPetriNet.Gui.Forms
             lblId.TabIndex = 5;
             lblId.Text = "Id";
             // 
-            // txtId
+            // numId
             // 
-            txtId.Location = new System.Drawing.Point(34, 12);
-            txtId.Name = "txtId";
-            txtId.Size = new System.Drawing.Size(165, 20);
-            txtId.TabIndex = 4;
+            numId.Location = new System.Drawing.Point(34, 12);
+            numId.Name = "numId";
+            numId.Size = new System.Drawing.Size(165, 20);
+            numId.TabIndex = 4;
+            numId.Minimum = 0;
+            numId.Maximum = int.MaxValue;
             // 
             // ShowItemInfoForm
             //
@@ -56,7 +62,7 @@ namespace ColouredPetriNet.Gui.Forms
             this.AutoScaleMode = AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(208, 82);
             this.Controls.Add(lblId);
-            this.Controls.Add(txtId);
+            this.Controls.Add(numId);
             this.Controls.Add(btnCancel);
             this.Controls.Add(btnFind);
             this.Icon = Properties.Resources.AppIcon;
@@ -70,6 +76,6 @@ namespace ColouredPetriNet.Gui.Forms
         private Button btnFind;
         private Button btnCancel;
         private Label lblId;
-        private TextBox txtId;
+        private NumericUpDown numId;
     }
 }

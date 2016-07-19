@@ -6,19 +6,14 @@ namespace ColouredPetriNet.Gui.Forms
     {
         private void InitializeComponent()
         {
-            txtId = new TextBox();
             lblId = new Label();
             lblStateId = new Label();
+            lblType = new Label();
+            txtId = new TextBox();
             txtStateId = new TextBox();
+            txtType = new TextBox();
             btnOk = new Button();
             this.SuspendLayout();
-            // 
-            // txtId
-            // 
-            txtId.Location = new System.Drawing.Point(67, 12);
-            txtId.Name = "txtId";
-            txtId.Size = new System.Drawing.Size(142, 20);
-            txtId.TabIndex = 0;
             // 
             // lblId
             // 
@@ -28,6 +23,14 @@ namespace ColouredPetriNet.Gui.Forms
             lblId.Size = new System.Drawing.Size(16, 13);
             lblId.TabIndex = 1;
             lblId.Text = "Id";
+            // 
+            // txtId
+            // 
+            txtId.Location = new System.Drawing.Point(67, 12);
+            txtId.Name = "txtId";
+            txtId.Size = new System.Drawing.Size(142, 20);
+            txtId.TabIndex = 0;
+            txtId.ReadOnly = true;
             // 
             // lblStateId
             // 
@@ -44,16 +47,32 @@ namespace ColouredPetriNet.Gui.Forms
             txtStateId.Name = "txtStateId";
             txtStateId.Size = new System.Drawing.Size(142, 20);
             txtStateId.TabIndex = 2;
-            txtStateId.TextChanged += new System.EventHandler(textBox2_TextChanged);
+            txtStateId.ReadOnly = true;
+            // 
+            // lblType
+            // 
+            lblType.AutoSize = true;
+            lblType.Location = new System.Drawing.Point(17, 67);
+            lblType.Name = "lblType";
+            lblType.Size = new System.Drawing.Size(44, 13);
+            lblType.Text = "Type";
+            // 
+            // txtType
+            // 
+            txtType.Location = new System.Drawing.Point(67, 64);
+            txtType.Name = "txtType";
+            txtType.Size = new System.Drawing.Size(142, 20);
+            txtType.ReadOnly = true;
             // 
             // btnOk
             // 
-            btnOk.Location = new System.Drawing.Point(134, 77);
+            btnOk.Location = new System.Drawing.Point(134, 103);
             btnOk.Name = "btnOk";
             btnOk.Size = new System.Drawing.Size(75, 23);
             btnOk.TabIndex = 4;
             btnOk.Text = "Ok";
             btnOk.UseVisualStyleBackColor = true;
+            btnOk.Click += (obj, e) => this.Close();
             // 
             // MarkerInfoForm
             //
@@ -63,12 +82,14 @@ namespace ColouredPetriNet.Gui.Forms
             this.StartPosition = FormStartPosition.CenterScreen;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(221, 112);
+            this.ClientSize = new System.Drawing.Size(221, 138);
             this.Controls.Add(btnOk);
             this.Controls.Add(lblStateId);
             this.Controls.Add(txtStateId);
             this.Controls.Add(lblId);
             this.Controls.Add(txtId);
+            this.Controls.Add(lblType);
+            this.Controls.Add(txtType);
             this.Icon = Properties.Resources.AppIcon;
             this.Name = "MarkerInfoForm";
             this.Text = "Marker Info";
@@ -77,10 +98,12 @@ namespace ColouredPetriNet.Gui.Forms
 
         }
 
-        private TextBox txtId;
         private Label lblId;
         private Label lblStateId;
+        private Label lblType;
+        private TextBox txtId;
         private TextBox txtStateId;
+        private TextBox txtType;
         private Button btnOk;
     }
 }

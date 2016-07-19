@@ -83,6 +83,10 @@ namespace ColouredPetriNet.Gui.Core
         List<int> GetSelectedStates();
         List<int> GetSelectedTransitions();
         List<int> GetSelectedLinks();
+        GraphicsStateWrapper FindStateById(int id);
+        GraphicsTransitionWrapper FindTransitionById(int id);
+        GraphicsLinkWrapper FindLinkById(int id);
+        MarkerInfo FindMarkerById(int id);
         // Select
         void Select(int x, int y);
         void Select(int x, int y, int w, int h);

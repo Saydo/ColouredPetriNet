@@ -1571,8 +1571,7 @@ namespace ColouredPetriNet.Gui.Core
             _selectionArea.Draw(graphics);
         }
 
-        #region Helpful functions
-        private GraphicsStateWrapper FindStateById(int id)
+        public GraphicsStateWrapper FindStateById(int id)
         {
             for (int i = 0; i < _states.Count; ++i)
             {
@@ -1584,7 +1583,7 @@ namespace ColouredPetriNet.Gui.Core
             return null;
         }
 
-        private GraphicsTransitionWrapper FindTransitionById(int id)
+        public GraphicsTransitionWrapper FindTransitionById(int id)
         {
             for (int i = 0; i < _transitions.Count; ++i)
             {
@@ -1596,7 +1595,7 @@ namespace ColouredPetriNet.Gui.Core
             return null;
         }
 
-        private GraphicsLinkWrapper FindLinkById(int id)
+        public GraphicsLinkWrapper FindLinkById(int id)
         {
             for (int i = 0; i < _links.Count; ++i)
             {
@@ -1608,6 +1607,68 @@ namespace ColouredPetriNet.Gui.Core
             return null;
         }
 
+        public MarkerInfo FindMarkerById(int id)
+        {
+            List<int> listId;
+            for (int i = 0; i < _states.Count; ++i)
+            {
+                for (int j = 0; j < _states[i].Markers.Count; ++j)
+                {
+                    listId = _states[i].Markers[j].Item2;
+                    for (int k = 0; k < listId.Count; ++k)
+                    {
+                        if (listId[k] == id)
+                        {
+                            return new MarkerInfo(id, _states[i].State.Id, _states[i].Markers[j].Item1.TypeId);
+                        }
+                    }
+                }
+            }
+            return new MarkerInfo(-1, -1, -1);
+        }
+
+        public string GetStateTypeName(int typeId)
+        {
+            int stateType = typeId - (int)ItemType.State;
+            switch (stateType)
+            {
+                case (int)ColouredStateType.RoundState:
+                    return "RoundState";
+                case (int)ColouredStateType.ImageState:
+                    return "ImageState";
+            }
+            return "";
+        }
+
+        public string GetTransitionTypeName(int typeId)
+        {
+            int transitionType = typeId - (int)ItemType.Transition;
+            switch (transitionType)
+            {
+                case (int)ColouredTransitionType.RectangleTransition:
+                    return "RectangleTransition";
+                case (int)ColouredTransitionType.RhombTransition:
+                    return "RhombTransition";
+            }
+            return "";
+        }
+
+        public string GetMarkerTypeName(int typeId)
+        {
+            int markerType = typeId - (int)ItemType.Marker;
+            switch (markerType)
+            {
+                case (int)ColouredMarkerType.RoundMarker:
+                    return "RoundMarker";
+                case (int)ColouredMarkerType.RhombMarker:
+                    return "RhombMarker";
+                case (int)ColouredMarkerType.TriangleMarker:
+                    return "TriangleMarker";
+            }
+            return "";
+        }
+
+        #region Helpful functions
         private bool RemoveOutputLink(GraphicsStateWrapper state, int stateId, int transitionId)
         {
             GraphicsTransitionWrapper transition;
@@ -1961,47 +2022,6 @@ namespace ColouredPetriNet.Gui.Core
                     (_links[i].Direction == LinkDirection.FromStateToTransition ? "FromState" : "ToState")));
             }
             return itemsXml;
-        }
-
-        private string GetStateTypeName(int typeId)
-        {
-            int stateType = typeId - (int)ItemType.State;
-            switch (stateType)
-            {
-                case (int)ColouredStateType.RoundState:
-                    return "RoundState";
-                case (int)ColouredStateType.ImageState:
-                    return "ImageState";
-            }
-            return "";
-        }
-
-        private string GetTransitionTypeName(int typeId)
-        {
-            int transitionType = typeId - (int)ItemType.Transition;
-            switch (transitionType)
-            {
-                case (int)ColouredTransitionType.RectangleTransition:
-                    return "RectangleTransition";
-                case (int)ColouredTransitionType.RhombTransition:
-                    return "RhombTransition";
-            }
-            return "";
-        }
-
-        private string GetMarkerTypeName(int typeId)
-        {
-            int markerType = typeId - (int)ItemType.Marker;
-            switch (markerType)
-            {
-                case (int)ColouredMarkerType.RoundMarker:
-                    return "RoundMarker";
-                case (int)ColouredMarkerType.RhombMarker:
-                    return "RhombMarker";
-                case (int)ColouredMarkerType.TriangleMarker:
-                    return "TriangleMarker";
-            }
-            return "";
         }
 
         private Events.ExtendedStateEventArgs ConvertToStateEventArgs(GraphicsStateWrapper state)

@@ -93,6 +93,7 @@
     <Compile Include="Gui\Core\GraphicsItems\RoundGraphicsItem.cs" />
     <Compile Include="Gui\Core\GraphicsItems\TriangleGraphicsItem.cs" />
     <Compile Include="Gui\Core\LinearAlgebra\Algorithm.cs" />
+    <Compile Include="Gui\Core\MarkerInfo.cs" />
     <Compile Include="Gui\Core\Serialize\ColouredPetriNetXml.cs" />
     <Compile Include="Gui\Core\Serialize\PetriNetXmlSerializer.cs" />
     <Compile Include="Gui\Forms\AboutForm.cs">

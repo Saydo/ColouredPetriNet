@@ -17,9 +17,12 @@ namespace ColouredPetriNet.Gui.Forms
             InitializeComponent();
         }
 
-        private void textBox2_TextChanged(object sender, EventArgs e)
+        public void ShowDialog(int id, int stateId, string type)
         {
-
+            txtId.Text = id.ToString();
+            txtStateId.Text = stateId.ToString();
+            txtType.Text = type;
+            base.ShowDialog();
         }
     }
 }
