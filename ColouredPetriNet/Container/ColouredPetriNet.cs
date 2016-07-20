@@ -6,13 +6,15 @@ namespace ColouredPetriNet.Container
 {
     public class ColouredPetriNet : IColouredPetriNet
     {
-        protected ArrayList _states;
-        protected ArrayList _transitions;
-        protected ArrayList _markers;
-        protected IdGenerator _idGenerator;
-        protected List<PetriNetMoveRule> _moveRules;
-        protected List<PetriNetAccumulateRule> _prevAccumulateRules;
-        protected List<PetriNetAccumulateRule> _nextAccumulateRules;
+        private List<int> _types;
+        private ArrayList _states;
+        private ArrayList _transitions;
+        private ArrayList _markers;
+        private IdGenerator _idGenerator;
+        private IdGenerator _typeGenerator;
+        private List<PetriNetMoveRule> _moveRules;
+        private List<PetriNetAccumulateRule> _prevAccumulateRules;
+        private List<PetriNetAccumulateRule> _nextAccumulateRules;
 
         public ColouredPetriNet()
         {
@@ -20,8 +22,268 @@ namespace ColouredPetriNet.Container
             _states = new ArrayList();
             _transitions = new ArrayList();
             _idGenerator = new IdGenerator(-1);
+            _typeGenerator = new IdGenerator(-1);
         }
 
+        #region Add Functions
+        public bool AddType(int typeId)
+        {
+            if ((typeId < 0) || IsTypeRegistered(typeId))
+            {
+                return false;
+            }
+            if (_typeGenerator.CurrentId < typeId)
+            {
+                _typeGenerator.Reset(typeId);
+            }
+            _types.Add(typeId);
+            return true;
+        }
+
+        public int AddType()
+        {
+            _types.Add(_typeGenerator.Next());
+            return _typeGenerator.CurrentId;
+        }
+
+        public Tuple<int, int> AddState<T>(T state)
+        {
+            var stateStorage = FindStateStorage<T>();
+            if (ReferenceEquals(null, stateStorage))
+            {
+                stateStorage = new OneTypeItemList<StateWrapper<T>>(_typeGenerator.Next());
+                _states.Add(stateStorage);
+            }
+            stateStorage.Item2.Add(new StateWrapper<T>(_idGenerator.Next(), state));
+            return new Tuple<int, int>(_idGenerator.CurrentId, _typeGenerator.CurrentId);
+        }
+
+        public int AddState<T>(int type, T state)
+        {
+            if (_typeGenerator.CurrentId < type)
+            {
+                _idGenerator.Reset(type);
+            }
+            var storage = FindStateStorage(type);
+            if (ReferenceEquals(storage, null))
+            {
+                storage = new OneTypeItemList<StateWrapper<T>>(_typeGenerator.Next());
+                _states.Add(storage);
+            }
+            storage.Item2.Add(new StateWrapper<T>(_idGenerator.Next(), state));
+            return _idGenerator.CurrentId;
+        }
+
+        public int AddStateWithId<T>(int id, T state)
+        {
+            if (IsStateExist(id))
+            {
+                return -1;
+            }
+            if (_idGenerator.CurrentId < id)
+            {
+                _idGenerator.Reset(id);
+            }
+            var storage = FindStateStorage<T>();
+            if (ReferenceEquals(storage, null))
+            {
+                storage = new OneTypeItemList<StateWrapper<T>>(_typeGenerator.Next());
+                _states.Add(storage);
+            }
+            storage.Item2.Add(new StateWrapper<T>(id, state));
+            return _typeGenerator.CurrentId;
+        }
+
+        public bool AddStateWithId<T>(int id, int type, T state)
+        {
+            if (_idGenerator.CurrentId < id)
+            {
+                _idGenerator.Reset(id);
+            }
+            if (_typeGenerator.CurrentId < type)
+            {
+                _idGenerator.Reset(type);
+            }
+            var storage = FindStateStorage(type);
+            if (ReferenceEquals(storage, null))
+            {
+                storage = new OneTypeItemList<StateWrapper<T>>(_typeGenerator.Next());
+                _states.Add(storage);
+            }
+            storage.Item2.Add(new StateWrapper<T>(_idGenerator.Next(), state));
+            return _idGenerator.CurrentId;
+        }
+
+        public Tuple<int, int> AddTransition<T>(T transition);
+        public int AddTransition<T>(int type, T transition);
+        public int AddTransitionWithId<T>(int id, T transition);
+        public bool AddTransitionWithId<T>(int id, int type, T transition);
+        public Tuple<int, int> AddMarker<T>(int stateId, T marker);
+        public int AddMarker<T>(int type, int stateId, T marker);
+        public int AddMarkerWithId<T>(int id, int stateId, T marker);
+        public bool AddMarkerWithId<T>(int id, int type, int stateId, T marker);
+        public bool AddStateToTransitionLink(int stateId, int transitionId);
+        public bool AddStateToTransitionLink(int stateId, int stateType, int transitionId, int transitionType);
+        public bool AddTransitionToStateLink(int transitionId, int stateId);
+        public bool AddTransitionToStateLink(int transitionId, int transitionType, int stateId, int stateType);
+        public void AddMoveRule(int inputStateType, int outputStateType, int transitionType, int markerType,
+            int markerCount = 1);
+        public void AddPrevAccumulateRule(int stateType, List<Tuple<int, int>> markers);
+        public void AddPrevAccumulateRule(int stateType, int markerType, int markerCount = 1);
+        public void AddNextAccumulateRule(int stateType, List<Tuple<int, int>> markers);
+        void AddNextAccumulateRule(int stateType, int markerType, int markerCount = 1);
+        #endregion
+
+        #region Contains Functions
+        public bool IsTypeExist(int type)
+        {
+            for (int i = 0; i < _types.Count; ++i)
+            {
+                if (_types[i] == type)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public bool IsStateExist(int id)
+        {
+            IOneTypeItemList itemList;
+            IStateWrapper state;
+            for (int i = 0; i < _states.Count; ++i)
+            {
+                itemList = _states[i] as IOneTypeItemList;
+                for (int j = 0; j < itemList.Items.Count; ++j)
+                {
+                    state = itemList.Items[j] as IStateWrapper;
+                    if (state.Id == id)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        public bool IsTransitionExist(int id)
+        {
+            IOneTypeItemList itemList;
+            IColouredPetriNetNode transition;
+            for (int i = 0; i < _transitions.Count; ++i)
+            {
+                itemList = _transitions[i] as IOneTypeItemList;
+                for (int j = 0; j < itemList.Items.Count; ++j)
+                {
+                    transition = itemList.Items[j] as IColouredPetriNetNode;
+                    if (transition.Id == id)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        public bool IsMarkerExist(int id)
+        {
+            IOneTypeItemList itemList;
+            IMarkerWrapper marker;
+            for (int i = 0; i < _markers.Count; ++i)
+            {
+                itemList = _markers[i] as IOneTypeItemList;
+                for (int j = 0; j < itemList.Items.Count; ++j)
+                {
+                    marker = itemList.Items[j] as IMarkerWrapper;
+                    if (marker.Id == id)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        public bool ContainsStates(int type)
+        {
+            IOneTypeItemList itemList;
+            for (int i = 0; i < _states.Count; ++i)
+            {
+                itemList = _states[i] as IOneTypeItemList;
+                if (itemList.Type == type)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public bool ContainsTransitions(int type)
+        {
+            IOneTypeItemList itemList;
+            for (int i = 0; i < _transitions.Count; ++i)
+            {
+                itemList = _transitions[i] as IOneTypeItemList;
+                if (itemList.Type == type)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public bool ContainsMarkers(int type)
+        {
+            IOneTypeItemList itemList;
+            for (int i = 0; i < _markers.Count; ++i)
+            {
+                itemList = _markers[i] as IOneTypeItemList;
+                if (itemList.Type == type)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public bool IsLinkExist(int stateId, int transitionId);
+        public bool IsLinkExist(int stateId, int stateType, int transitionId, int transitionType);
+        public bool IsInputLinkExist(int stateId, int transitionId);
+        public bool IsInputLinkExist(int stateId, int stateType, int transitionId, int transitionType);
+        public bool IsOutputLinkExist(int stateId, int transitionId);
+        public bool IsOutputLinkExist(int stateId, int stateType, int transitionId, int transitionType);
+        #endregion
+
+        private IOneTypeItemList FindStateStorage(int type)
+        {
+            IOneTypeItemList storage;
+            for (int i = 0; i < _states.Count; ++i)
+            {
+                storage = _states[i] as IOneTypeItemList;
+                if (storage.Item1 == type)
+                {
+                    return storage;
+                }
+            }
+            return null;
+        }
+
+        private OneTypeItemList<StateWrapper<T>> FindStateStorage<T>()
+        {
+            OneTypeItemList<StateWrapper<T>> storage;
+            for (int i = 0; i < _states.Count; ++i)
+            {
+                storage = _states[i] as OneTypeItemList<StateWrapper<T>>;
+                if (!ReferenceEquals(null, storage))
+                {
+                    return storage;
+                }
+            }
+            return null;
+        }
+
+        //===========================================================================================
+        /*
         public bool IsStateExist(int id)
         {
             IStateWrapper state = GetStateInterface(id);
@@ -171,10 +433,26 @@ namespace ColouredPetriNet.Container
             }
             return state.ContainsOutputLinkNode(transitionId);
         }
-
+        */
         public void AddState<T>(int id, T state)
         {
-            if (_idGenerator.GetCurrId() < id)
+            if (_idGenerator.CurrentId < id)
+            {
+                _idGenerator.Reset(id);
+            }
+            var storage = FindStateStorage<T>();
+            if (ReferenceEquals(storage, null))
+            {
+                storage = new Tuple<int, List<StateWrapper<T>>>(_typeGenerator.Next(),
+                    new List<StateWrapper<T>>());
+                _states.Add(storage);
+            }
+            storage.Item2.Add(new StateWrapper<T>(id, state));
+        }
+
+        public void AddState<T>(int id, int type, T state)
+        {
+            if (_idGenerator.CurrentId < id)
             {
                 _idGenerator.Reset(id);
             }
@@ -391,7 +669,7 @@ namespace ColouredPetriNet.Container
             return true;
         }
 
-        public bool ConnectMarkerToState(int markerId, int stateId)
+        private bool ConnectMarkerToState(int markerId, int stateId)
         {
             IStateWrapper state = GetStateInterface(stateId);
             if (ReferenceEquals(null, state))
@@ -402,7 +680,7 @@ namespace ColouredPetriNet.Container
             return true;
         }
 
-        public bool ConnectMarkerToState<TState>(int markerId, int stateId)
+        private bool ConnectMarkerToState<TState>(int markerId, int stateId)
         {
             StateWrapper<TState> state = GetStateWrapperById<TState>(stateId);
             if (ReferenceEquals(null, state))
@@ -413,7 +691,7 @@ namespace ColouredPetriNet.Container
             return true;
         }
 
-        public bool DisconnectMarkerFromState(int markerId, int stateId)
+        private bool DisconnectMarkerFromState(int markerId, int stateId)
         {
             IStateWrapper state = GetStateInterface(stateId);
             if (ReferenceEquals(null, state))
@@ -424,7 +702,7 @@ namespace ColouredPetriNet.Container
             return true;
         }
 
-        public bool DisconnectMarkerFromState<TState>(int markerId, int stateId)
+        private bool DisconnectMarkerFromState<TState>(int markerId, int stateId)
         {
             StateWrapper<TState> state = GetStateWrapperById<TState>(stateId);
             if (ReferenceEquals(null, state))
@@ -1525,26 +1803,14 @@ namespace ColouredPetriNet.Container
             return null;
         }
 
-        protected List<StateWrapper<T>> FindStateStorage<T>()
-        {
-            List<StateWrapper<T>> storage;
-            for (int i = 0; i < _states.Count; ++i)
-            {
-                storage = _states[i] as List<StateWrapper<T>>;
-                if (!ReferenceEquals(null, storage))
-                {
-                    return storage;
-                }
-            }
-            return null;
-        }
+        
 
-        protected List<TransitionWrapper<T>> FindTransitionStorage<T>()
+        protected Tuple<int, List<TransitionWrapper<T>>> FindTransitionStorage<T>()
         {
-            List<TransitionWrapper<T>> storage;
+            Tuple<int, List<TransitionWrapper<T>>> storage;
             for (int i = 0; i < _transitions.Count; ++i)
             {
-                storage = _transitions[i] as List<TransitionWrapper<T>>;
+                storage = _transitions[i] as Tuple<int, List<TransitionWrapper<T>>>;
                 if (!ReferenceEquals(null, storage))
                 {
                     return storage;
@@ -1553,12 +1819,12 @@ namespace ColouredPetriNet.Container
             return null;
         }
 
-        protected List<MarkerWrapper<T>> FindMarkerStorage<T>()
+        protected Tuple<int, List<MarkerWrapper<T>>> FindMarkerStorage<T>()
         {
-            List<MarkerWrapper<T>> storage;
+            Tuple<int, List<MarkerWrapper<T>>> storage;
             for (int i = 0; i < _markers.Count; ++i)
             {
-                storage = _markers[i] as List<MarkerWrapper<T>>;
+                storage = _markers[i] as Tuple<int, List<MarkerWrapper<T>>>;
                 if (!ReferenceEquals(null, storage))
                 {
                     return storage;

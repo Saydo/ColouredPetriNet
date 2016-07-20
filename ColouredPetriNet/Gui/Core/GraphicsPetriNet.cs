@@ -7,7 +7,7 @@ using System.Xml.Serialization;
 
 namespace ColouredPetriNet.Gui.Core
 {
-    public class PetriNetGraphicsMap : IPetriNetGraphicsMap
+    public class GraphicsPetriNet : IGraphicsPetriNet
     {
         public event System.EventHandler<Events.ExtendedStateEventArgs> AddStateEvent;
         public event System.EventHandler<Events.PetriNetNodeEventArgs> AddTransitionEvent;
@@ -30,7 +30,7 @@ namespace ColouredPetriNet.Gui.Core
         public int TransitionCount { get { return _transitions.Count; } }
         public int StateCount { get { return _states.Count; } }
 
-        public PetriNetGraphicsMap()
+        public GraphicsPetriNet()
         {
             _links = new List<GraphicsLinkWrapper>();
             _states = new List<GraphicsStateWrapper>();

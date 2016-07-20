@@ -6,6 +6,7 @@ namespace ColouredPetriNet.Container
     public interface IColouredPetriNetNode
     {
         int Id { get; }
+        int Type { get; }
         List<int> InputLinkNodes { get; }
         List<int> OutputLinkNodes { get; }
         Type GetValueType();

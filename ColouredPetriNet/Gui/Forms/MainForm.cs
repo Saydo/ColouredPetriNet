@@ -13,7 +13,7 @@ namespace ColouredPetriNet.Gui.Forms
         private enum StateTreeImage { RoundState, ImageState, RoundMarker, RhombMarker, TriangleMarker };
         private enum TransitionTreeImage { RectangleTransition, RhombTransition };
 
-        private Core.PetriNetGraphicsMap _itemMap;
+        private Core.GraphicsPetriNet _itemMap;
         private bool _mousePressed;
         private bool _itemSelected;
         private Point _lastMousePosition;
@@ -28,7 +28,7 @@ namespace ColouredPetriNet.Gui.Forms
         public MainForm()
         {
             InitializeComponent();
-            _itemMap = new Core.PetriNetGraphicsMap();
+            _itemMap = new Core.GraphicsPetriNet();
             _itemMap.AddStateEvent += AddStateToTree;
             _itemMap.AddTransitionEvent += AddTransitionToTree;
             _mousePressed = false;

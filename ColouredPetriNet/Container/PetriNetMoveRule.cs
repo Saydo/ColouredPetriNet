@@ -6,27 +6,32 @@ namespace ColouredPetriNet.Container
     public delegate void MoveMarkersFunction(IStateWrapper state1, IStateWrapper state2,
         IColouredPetriNetNode transition, List<IMarkerWrapper> markers);
 
-    public class PetriNetMoveRule
+    public struct PetriNetMoveRule
     {
-        public Type InputState { get; set; }
-        public Type OutputState { get; set; }
-        public Type Transition { get; set; }
-        public Type Marker { get; set; }
-        public int Count { get; set; }
-        public MoveMarkersFunction MoveFunction { get; set; }
+        public int InputStateType;
+        public int OutputStateType;
+        public int TransitionType;
+        public int MarkerType;
+        public int MarkerCount;
+        public MoveMarkersFunction MoveFunction;
 
-        public PetriNetMoveRule(Type inputState, Type outputState, Type transition, Type marker, int count)
+        public PetriNetMoveRule(int inputStateType, int outputStateType, int transitionType,
+            int markerType, int markerCount, MoveMarkersFunction function = null)
         {
-            InputState = inputState;
-            OutputState = outputState;
-            Transition = transition;
-            Marker = marker;
+            InputStateType = inputStateType;
+            OutputStateType = outputStateType;
+            TransitionType = transitionType;
+            MarkerType = markerType;
+            MarkerCount = markerCount;
+            MoveFunction = function;
         }
 
-        public bool IsComply(Type inputState, Type outputState, Type transition, Type marker, int count)
+        public bool IsComply(int inputStateType, int outputStateType, int transitionType,
+            int markerType, int markerCount)
         {
-            return ((InputState == inputState) && (OutputState == outputState)
-                && (Transition == transition) && (Marker == marker) && (Count <= count));
+            return ((InputStateType == inputStateType) && (OutputStateType == outputStateType)
+                && (TransitionType == transitionType) && (MarkerType == markerType)
+                && (MarkerCount <= markerCount));
         }
     }
 }

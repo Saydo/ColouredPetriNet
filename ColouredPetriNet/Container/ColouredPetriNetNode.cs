@@ -9,6 +9,7 @@ namespace ColouredPetriNet.Container
         private List<int> _outputLinkNodes;
 
         public int Id { get; private set; }
+        public int Type { get; private set; }
         public T Value { get; private set; }
         public List<int> InputLinkNodes { get { return _inputLinkNodes; } }
         public List<int> OutputLinkNodes { get { return _outputLinkNodes; } }
@@ -16,13 +17,15 @@ namespace ColouredPetriNet.Container
         public ColouredPetriNetNode()
         {
             Id = -1;
+            Type = -1;
             _inputLinkNodes = new List<int>();
             _outputLinkNodes = new List<int>();
         }
 
-        public ColouredPetriNetNode(int id, T value)
+        public ColouredPetriNetNode(int id, int type, T value)
         {
             Id = id;
+            Type = type;
             Value = value;
             _inputLinkNodes = new List<int>();
             _outputLinkNodes = new List<int>();

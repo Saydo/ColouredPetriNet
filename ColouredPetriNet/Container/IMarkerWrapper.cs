@@ -5,6 +5,7 @@ namespace ColouredPetriNet.Container
     public interface IMarkerWrapper
     {
         int Id { get; }
+        int Type { get; }
         int StateId { get; set; }
         Type GetValueType();
     }

@@ -3,7 +3,7 @@ using System.Drawing;
 
 namespace ColouredPetriNet.Gui.Core
 {
-    public interface IPetriNetGraphicsMap
+    public interface IGraphicsPetriNet
     {
         // Properties
         int LinkCount { get; }

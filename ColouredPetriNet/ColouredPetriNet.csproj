@@ -67,17 +67,20 @@
     <Compile Include="Container\IColouredPetriNet.cs" />
     <Compile Include="Container\IColouredPetriNetNode.cs" />
     <Compile Include="Container\IStateWrapper.cs" />
+    <Compile Include="Container\MarkerStorage.cs" />
     <Compile Include="Container\MarkerWrapper.cs" />
     <Compile Include="Container\ColouredPetriNet.cs" />
+    <Compile Include="Container\OneTypeItemList.cs" />
     <Compile Include="Container\PetriNetAccumulateRule.cs" />
     <Compile Include="Container\PetriNetMoveRule.cs" />
     <Compile Include="Container\ColouredPetriNetNode.cs" />
+    <Compile Include="Container\StateStorage.cs" />
     <Compile Include="Container\StateWrapper.cs" />
     <Compile Include="Container\TransitionWrapper.cs" />
     <Compile Include="Gui\Core\ColouredPetriNetItemInfo.cs" />
     <Compile Include="Gui\Core\ColouredPetriNetTypes.cs" />
     <Compile Include="Gui\Core\ColouredPetriNetStyle.cs" />
-    <Compile Include="Gui\Core\IPetriNetGraphicsMap.cs" />
+    <Compile Include="Gui\Core\IGraphicsPetriNet.cs" />
     <Compile Include="Gui\Core\GraphicsLinkWrapper.cs" />
     <Compile Include="Gui\Core\GraphicsStateWrapper.cs" />
     <Compile Include="Gui\Core\GraphicsTransitionWrapper.cs" />
@@ -133,7 +136,7 @@
     <Compile Include="Gui\Forms\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Gui\Core\PetriNetGraphicsMap.cs" />
+    <Compile Include="Gui\Core\GraphicsPetriNet.cs" />
     <Compile Include="Gui\Core\SelectionArea.cs" />
     <Compile Include="Gui\Forms\MarkerInfoForm.cs">
       <SubType>Form</SubType>
@@ -159,6 +162,24 @@
     </Compile>
     <Compile Include="Gui\Forms\RoundItemStyleForm.Designer.cs">
       <DependentUpon>RoundItemStyleForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gui\Forms\RuleEditForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\Forms\RuleEditForm.Designer.cs">
+      <DependentUpon>RuleEditForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gui\Forms\RuleForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\Forms\RuleForm.Designer.cs">
+      <DependentUpon>RuleForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gui\Forms\RuleListForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\Forms\RuleListForm.Designer.cs">
+      <DependentUpon>RuleListForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Gui\Forms\ShowItemInfoForm.cs">
       <SubType>Form</SubType>
@@ -202,6 +223,15 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Gui\Forms\RuleEditForm.resx">
+      <DependentUpon>RuleEditForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\Forms\RuleForm.resx">
+      <DependentUpon>RuleForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\Forms\RuleListForm.resx">
+      <DependentUpon>RuleListForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

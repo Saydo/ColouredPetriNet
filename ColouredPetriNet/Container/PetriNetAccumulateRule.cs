@@ -5,21 +5,22 @@ namespace ColouredPetriNet.Container
 {
     public delegate void AccumulateMarkersFunction(IStateWrapper state, List<IMarkerWrapper> markers);
 
-    public class PetriNetAccumulateRule
+    public struct PetriNetAccumulateRule
     {
-        public Type State { get; set; }
-        public List<Tuple<Type, int>> Markers { get; set; }
-        public AccumulateMarkersFunction AccumulateFunction { get; set; }
+        public int StateType;
+        public List<Tuple<Type, int>> Markers;
+        public AccumulateMarkersFunction AccumulateFunction;
 
-        public PetriNetAccumulateRule(Type state, List<Tuple<Type, int>> markers)
+        public PetriNetAccumulateRule(int stateType, List<Tuple<Type, int>> markers, AccumulateMarkersFunction function = null)
         {
-            State = state;
+            StateType = stateType;
             Markers = markers;
+            AccumulateFunction = function;
         }
 
-        public bool IsComply(Type state, List<Tuple<Type, List<int>>> inputMarkers)
+        public bool IsComply(int stateType, List<Tuple<Type, List<int>>> inputMarkers)
         {
-            if (State != state)
+            if (StateType != stateType)
             {
                 return false;
             }
