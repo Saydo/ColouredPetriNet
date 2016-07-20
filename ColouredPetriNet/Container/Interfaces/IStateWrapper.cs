@@ -1,4 +1,4 @@
-﻿namespace ColouredPetriNet.Container
+﻿namespace ColouredPetriNet.Container.Interfaces
 {
     public interface IStateWrapper : IColouredPetriNetNode
     {

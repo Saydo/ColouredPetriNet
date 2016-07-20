@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace ColouredPetriNet.Container
+namespace ColouredPetriNet.Container.Interfaces
 {
     public interface IColouredPetriNetNode
     {
@@ -9,7 +8,7 @@ namespace ColouredPetriNet.Container
         int Type { get; }
         List<int> InputLinkNodes { get; }
         List<int> OutputLinkNodes { get; }
-        Type GetValueType();
+        System.Type GetValueType();
         bool ContainsInputLinkNodes();
         bool ContainsInputLinkNode(int id);
         bool ContainsOutputLinkNodes();

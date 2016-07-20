@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace ColouredPetriNet.Container
 {
-    public class ColouredPetriNet : IColouredPetriNet
+    public partial class ColouredPetriNet
     {
         private List<int> _types;
         private ArrayList _states;
@@ -24,6 +24,11 @@ namespace ColouredPetriNet.Container
             _idGenerator = new IdGenerator(-1);
             _typeGenerator = new IdGenerator(-1);
         }
+
+        public void Clear();
+        public int GetTypeId<T>();
+
+        private void RemoveItems(int type);
 
         #region Add Functions
         public bool AddType(int typeId)

@@ -1,13 +1,11 @@
-﻿using System;
-
-namespace ColouredPetriNet.Container
+﻿namespace ColouredPetriNet.Container.Interfaces
 {
     public interface IMarkerWrapper
     {
         int Id { get; }
         int Type { get; }
         int StateId { get; set; }
-        Type GetValueType();
+        System.Type GetValueType();
     }
 
     public interface IMarkerWrapper<T> : IMarkerWrapper

@@ -63,19 +63,31 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Container\IdGenerator.cs" />
-    <Compile Include="Container\IMarkerWrapper.cs" />
-    <Compile Include="Container\IColouredPetriNet.cs" />
-    <Compile Include="Container\IColouredPetriNetNode.cs" />
-    <Compile Include="Container\IStateWrapper.cs" />
-    <Compile Include="Container\MarkerStorage.cs" />
+    <Compile Include="Container\Interfaces\IAccumulateRuleStorage.cs" />
+    <Compile Include="Container\Interfaces\ILinkStorage.cs" />
+    <Compile Include="Container\Interfaces\IMarkerStorage.cs" />
+    <Compile Include="Container\Interfaces\IMarkerWrapper.cs" />
+    <Compile Include="Container\Interfaces\IColouredPetriNetNode.cs" />
+    <Compile Include="Container\Interfaces\IMoveRuleStorage.cs" />
+    <Compile Include="Container\Interfaces\IPetriNetItemStorage.cs" />
+    <Compile Include="Container\Interfaces\ITypeStorage.cs" />
+    <Compile Include="Container\Interfaces\IStateStorage.cs" />
+    <Compile Include="Container\Interfaces\IStateWrapper.cs" />
+    <Compile Include="Container\Interfaces\ITransitionStorage.cs" />
+    <Compile Include="Container\Storages\AccumulateRuleStorage.cs" />
+    <Compile Include="Container\Storages\LinkStorage.cs" />
+    <Compile Include="Container\Storages\MarkerStorage.cs" />
     <Compile Include="Container\MarkerWrapper.cs" />
     <Compile Include="Container\ColouredPetriNet.cs" />
     <Compile Include="Container\OneTypeItemList.cs" />
     <Compile Include="Container\PetriNetAccumulateRule.cs" />
     <Compile Include="Container\PetriNetMoveRule.cs" />
     <Compile Include="Container\ColouredPetriNetNode.cs" />
-    <Compile Include="Container\StateStorage.cs" />
+    <Compile Include="Container\Storages\MoveRuleStorage.cs" />
+    <Compile Include="Container\Storages\StateStorage.cs" />
     <Compile Include="Container\StateWrapper.cs" />
+    <Compile Include="Container\Storages\TransitionStorage.cs" />
+    <Compile Include="Container\Storages\TypeStorage.cs" />
     <Compile Include="Container\TransitionWrapper.cs" />
     <Compile Include="Gui\Core\ColouredPetriNetItemInfo.cs" />
     <Compile Include="Gui\Core\ColouredPetriNetTypes.cs" />
