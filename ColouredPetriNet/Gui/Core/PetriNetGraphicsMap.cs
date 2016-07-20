@@ -9,7 +9,6 @@ namespace ColouredPetriNet.Gui.Core
 {
     public class PetriNetGraphicsMap : IPetriNetGraphicsMap
     {
-        public enum ItemType { Link, Marker = 100, Transition = 200, State = 300 };
         public event System.EventHandler<Events.ExtendedStateEventArgs> AddStateEvent;
         public event System.EventHandler<Events.PetriNetNodeEventArgs> AddTransitionEvent;
 
@@ -76,7 +75,7 @@ namespace ColouredPetriNet.Gui.Core
                 case ColouredStateType.RoundState:
                     id = _petriNet.AddState<RoundState>(new RoundState());
                     var roundState = new GraphicsItems.RoundGraphicsItem(id,
-                        (int)ItemType.State + (int)ColouredStateType.RoundState,
+                        (int)ColouredPetriNetItemInfo.ItemType.State + (int)ColouredStateType.RoundState,
                         new Point(x, y), Style.RoundState.Radius, _stateZ);
                     roundState.SelectionPen = Style.SelectionPen;
                     roundState.BorderPen = Style.RoundState.BorderPen;
@@ -86,7 +85,7 @@ namespace ColouredPetriNet.Gui.Core
                 case ColouredStateType.ImageState:
                     id = _petriNet.AddState<ImageState>(new ImageState());
                     var imageState = new GraphicsItems.ImageGraphicsItem(id,
-                        (int)ItemType.State + (int)ColouredStateType.ImageState,
+                        (int)ColouredPetriNetItemInfo.ItemType.State + (int)ColouredStateType.ImageState,
                         Image.FromFile(Style.ImageState.ImageName),
                         new Point(x, y), Style.ImageState.Width, Style.ImageState.Height, _stateZ);
                     imageState.SelectionPen = Style.SelectionPen;
@@ -104,7 +103,7 @@ namespace ColouredPetriNet.Gui.Core
                 case ColouredTransitionType.RectangleTransition:
                     id = _petriNet.AddTransition<RectangleTransition>(new RectangleTransition());
                     var rectangleTransition = new GraphicsItems.RectangleGraphicsItem(id,
-                        (int)ItemType.Transition + (int)ColouredTransitionType.RectangleTransition,
+                        (int)ColouredPetriNetItemInfo.ItemType.Transition + (int)ColouredTransitionType.RectangleTransition,
                         new Point(x, y),
                         Style.RectangleTransition.Width, Style.RectangleTransition.Height, _stateZ);
                     rectangleTransition.SelectionPen = Style.SelectionPen;
@@ -115,7 +114,7 @@ namespace ColouredPetriNet.Gui.Core
                 case ColouredTransitionType.RhombTransition:
                     id = _petriNet.AddTransition<RhombTransition>(new RhombTransition());
                     var rhombTransition = new GraphicsItems.RhombGraphicsItem(id,
-                        (int)ItemType.Transition + (int)ColouredTransitionType.RhombTransition,
+                        (int)ColouredPetriNetItemInfo.ItemType.Transition + (int)ColouredTransitionType.RhombTransition,
                         new Point(x, y),
                         Style.RhombTransition.Width, Style.RhombTransition.Height, _stateZ);
                     rhombTransition.SelectionPen = Style.SelectionPen;
@@ -140,7 +139,7 @@ namespace ColouredPetriNet.Gui.Core
                 case ColouredMarkerType.RoundMarker:
                     id = _petriNet.AddMarker<RoundMarker>(stateId, new RoundMarker());
                     var roundMarker = new GraphicsItems.RoundGraphicsItem(id,
-                        (int)ItemType.Marker + (int)ColouredMarkerType.RoundMarker,
+                        (int)ColouredPetriNetItemInfo.ItemType.Marker + (int)ColouredMarkerType.RoundMarker,
                         new Point(0, 0),
                         Style.RoundMarker.Radius, _stateZ);
                     roundMarker.SelectionPen = Style.SelectionPen;
@@ -151,7 +150,7 @@ namespace ColouredPetriNet.Gui.Core
                 case ColouredMarkerType.RhombMarker:
                     id = _petriNet.AddMarker<RhombMarker>(stateId, new RhombMarker());
                     var rhombMarker = new GraphicsItems.RhombGraphicsItem(id,
-                        (int)ItemType.Marker + (int)ColouredMarkerType.RhombMarker,
+                        (int)ColouredPetriNetItemInfo.ItemType.Marker + (int)ColouredMarkerType.RhombMarker,
                         new Point(0, 0),
                         Style.RhombMarker.Width, Style.RhombMarker.Height, _stateZ);
                     rhombMarker.SelectionPen = Style.SelectionPen;
@@ -162,7 +161,7 @@ namespace ColouredPetriNet.Gui.Core
                 case ColouredMarkerType.TriangleMarker:
                     id = _petriNet.AddMarker<TriangleMarker>(stateId, new TriangleMarker());
                     var triangleMarker = new GraphicsItems.TriangleGraphicsItem(id,
-                        (int)ItemType.Marker + (int)ColouredMarkerType.TriangleMarker,
+                        (int)ColouredPetriNetItemInfo.ItemType.Marker + (int)ColouredMarkerType.TriangleMarker,
                         new Point(0, 0), Style.TriangleMarker.Side, _stateZ);
                     triangleMarker.SelectionPen = Style.SelectionPen;
                     triangleMarker.BorderPen = Style.TriangleMarker.BorderPen;
@@ -198,7 +197,7 @@ namespace ColouredPetriNet.Gui.Core
             }
             var link = new GraphicsLinkWrapper(state, transition,
                 new GraphicsItems.LinkGraphicsItem(_linkIdGenerator.GetNextId(),
-                (int)ItemType.Link, state.State.Center, transition.Transition.Center,
+                (int)ColouredPetriNetItemInfo.ItemType.Link, state.State.Center, transition.Transition.Center,
                 linkDirection, _stateZ), direction);
             _links.Add(link);
             if (direction == LinkDirection.FromStateToTransition)
@@ -317,7 +316,7 @@ namespace ColouredPetriNet.Gui.Core
 
         public void RemoveMarkers(ColouredMarkerType markerType)
         {
-            int typeId = (int)ItemType.Marker + (int)markerType;
+            int typeId = (int)ColouredPetriNetItemInfo.ItemType.Marker + (int)markerType;
             List<int> listId;
             for (int i = 0; i < _states.Count; ++i)
             {
@@ -339,7 +338,7 @@ namespace ColouredPetriNet.Gui.Core
 
         public void RemoveMarkers(int stateId, ColouredMarkerType markerType)
         {
-            int typeId = (int)ItemType.Marker + (int)markerType;
+            int typeId = (int)ColouredPetriNetItemInfo.ItemType.Marker + (int)markerType;
             List<int> listId;
             for (int i = 0; i < _states.Count; ++i)
             {
@@ -380,7 +379,7 @@ namespace ColouredPetriNet.Gui.Core
 
         public void RemoveStates(ColouredStateType stateType)
         {
-            int typeId = (int)ItemType.State + (int)stateType;
+            int typeId = (int)ColouredPetriNetItemInfo.ItemType.State + (int)stateType;
             for (int i = _states.Count - 1; i >= 0; --i)
             {
                 if (_states[i].State.TypeId == typeId)
@@ -409,7 +408,7 @@ namespace ColouredPetriNet.Gui.Core
 
         public void RemoveTransitions(ColouredStateType transitionType)
         {
-            int typeId = (int)ItemType.State + (int)transitionType;
+            int typeId = (int)ColouredPetriNetItemInfo.ItemType.State + (int)transitionType;
             for (int i = _transitions.Count - 1; i >= 0; --i)
             {
                 if (_transitions[i].Transition.TypeId == typeId)
@@ -510,7 +509,7 @@ namespace ColouredPetriNet.Gui.Core
 
         public bool Contains(ColouredMarkerType markerType)
         {
-            int typeId = (int)ItemType.Marker + (int)markerType;
+            int typeId = (int)ColouredPetriNetItemInfo.ItemType.Marker + (int)markerType;
             for (int i = 0; i < _states.Count; ++i)
             {
                 for (int j = 0; j < _states[i].Markers.Count; ++j)
@@ -527,7 +526,7 @@ namespace ColouredPetriNet.Gui.Core
 
         public bool Contains(ColouredStateType stateType)
         {
-            int type = (int)ItemType.State + (int)stateType;
+            int type = (int)ColouredPetriNetItemInfo.ItemType.State + (int)stateType;
             for (int i = 0; i < _states.Count; ++i)
             {
                 if (_states[i].State.TypeId == type)
@@ -540,7 +539,7 @@ namespace ColouredPetriNet.Gui.Core
 
         public bool Contains(ColouredTransitionType transitionType)
         {
-            int type = (int)ItemType.Transition + (int)transitionType;
+            int type = (int)ColouredPetriNetItemInfo.ItemType.Transition + (int)transitionType;
             for (int i = 0; i < _transitions.Count; ++i)
             {
                 if (_transitions[i].Transition.TypeId == type)
@@ -553,7 +552,7 @@ namespace ColouredPetriNet.Gui.Core
 
         public bool Contains(int id, ColouredMarkerType markerType)
         {
-            int typeId = (int)ItemType.Marker + (int)markerType;
+            int typeId = (int)ColouredPetriNetItemInfo.ItemType.Marker + (int)markerType;
             List<int> listId;
             for (int i = 0; i < _states.Count; ++i)
             {
@@ -578,7 +577,7 @@ namespace ColouredPetriNet.Gui.Core
 
         public bool Contains(int id, ColouredStateType stateType)
         {
-            int type = (int)ItemType.State + (int)stateType;
+            int type = (int)ColouredPetriNetItemInfo.ItemType.State + (int)stateType;
             for (int i = 0; i < _states.Count; ++i)
             {
                 if (_states[i].State.Id == id)
@@ -591,7 +590,7 @@ namespace ColouredPetriNet.Gui.Core
 
         public bool Contains(int id, ColouredTransitionType transitionType)
         {
-            int type = (int)ItemType.Transition + (int)transitionType;
+            int type = (int)ColouredPetriNetItemInfo.ItemType.Transition + (int)transitionType;
             for (int i = 0; i < _transitions.Count; ++i)
             {
                 if (_transitions[i].Transition.Id == id)
@@ -717,7 +716,7 @@ namespace ColouredPetriNet.Gui.Core
 
         public int GetMarkerCount(ColouredMarkerType markerType)
         {
-            int typeId = (int)ItemType.Marker + (int)markerType;
+            int typeId = (int)ColouredPetriNetItemInfo.ItemType.Marker + (int)markerType;
             int count = 0;
             for (int i = 0; i < _states.Count; ++i)
             {
@@ -735,7 +734,7 @@ namespace ColouredPetriNet.Gui.Core
 
         public int GetTransitionCount(ColouredTransitionType transitionType)
         {
-            int typeId = (int)ItemType.Transition + (int)transitionType;
+            int typeId = (int)ColouredPetriNetItemInfo.ItemType.Transition + (int)transitionType;
             int count = 0;
             for (int i = 0; i < _transitions.Count; ++i)
             {
@@ -749,7 +748,7 @@ namespace ColouredPetriNet.Gui.Core
 
         public int GetStateCount(ColouredStateType stateType)
         {
-            int typeId = (int)ItemType.State + (int)stateType;
+            int typeId = (int)ColouredPetriNetItemInfo.ItemType.State + (int)stateType;
             int count = 0;
             for (int i = 0; i < _states.Count; ++i)
             {
@@ -904,7 +903,7 @@ namespace ColouredPetriNet.Gui.Core
 
         public List<GraphicsStateWrapper> FindStates(int x, int y, ColouredStateType stateType)
         {
-            int typeId = (int)ItemType.State + (int)stateType;
+            int typeId = (int)ColouredPetriNetItemInfo.ItemType.State + (int)stateType;
             var foundStates = new List<GraphicsStateWrapper>();
             for (int i = 0; i < _states.Count; ++i)
             {
@@ -933,7 +932,7 @@ namespace ColouredPetriNet.Gui.Core
         public List<GraphicsStateWrapper> FindStates(int x, int y, int w, int h, ColouredStateType stateType,
             GraphicsItems.OverlapType overlap = GraphicsItems.OverlapType.Partial)
         {
-            int typeId = (int)ItemType.State + (int)stateType;
+            int typeId = (int)ColouredPetriNetItemInfo.ItemType.State + (int)stateType;
             var foundStates = new List<GraphicsStateWrapper>();
             for (int i = 0; i < _states.Count; ++i)
             {
@@ -961,7 +960,7 @@ namespace ColouredPetriNet.Gui.Core
 
         public List<GraphicsTransitionWrapper> FindTransitions(int x, int y, ColouredTransitionType transitionType)
         {
-            int typeId = (int)ItemType.Transition + (int)transitionType;
+            int typeId = (int)ColouredPetriNetItemInfo.ItemType.Transition + (int)transitionType;
             var foundTransitions = new List<GraphicsTransitionWrapper>();
             for (int i = 0; i < _transitions.Count; ++i)
             {
@@ -991,7 +990,7 @@ namespace ColouredPetriNet.Gui.Core
         public List<GraphicsTransitionWrapper> FindTransitions(int x, int y, int w, int h, ColouredTransitionType transitionType,
             GraphicsItems.OverlapType overlap = GraphicsItems.OverlapType.Partial)
         {
-            int typeId = (int)ItemType.Transition + (int)transitionType;
+            int typeId = (int)ColouredPetriNetItemInfo.ItemType.Transition + (int)transitionType;
             var foundTransitions = new List<GraphicsTransitionWrapper>();
             for (int i = 0; i < _transitions.Count; ++i)
             {
@@ -1170,7 +1169,7 @@ namespace ColouredPetriNet.Gui.Core
 
         public void SelectStates(ColouredStateType stateType)
         {
-            int typeId = (int)ItemType.State + (int)stateType;
+            int typeId = (int)ColouredPetriNetItemInfo.ItemType.State + (int)stateType;
             for (int i = 0; i < _states.Count; ++i)
             {
                 if ((_states[i].State.TypeId == typeId) && (!_states[i].State.IsSelected()))
@@ -1193,7 +1192,7 @@ namespace ColouredPetriNet.Gui.Core
 
         public void SelectTransitions(ColouredTransitionType transitionType)
         {
-            int typeId = (int)ItemType.Transition + (int)transitionType;
+            int typeId = (int)ColouredPetriNetItemInfo.ItemType.Transition + (int)transitionType;
             for (int i = 0; i < _transitions.Count; ++i)
             {
                 if ((_transitions[i].Transition.TypeId == typeId)
@@ -1353,7 +1352,7 @@ namespace ColouredPetriNet.Gui.Core
 
         public void DeselectStates(ColouredStateType stateType)
         {
-            int typeId = (int)ItemType.State + (int)stateType;
+            int typeId = (int)ColouredPetriNetItemInfo.ItemType.State + (int)stateType;
             for (int i = 0; i < _states.Count; ++i)
             {
                 if ((_states[i].State.TypeId == typeId) && _states[i].State.IsSelected())
@@ -1375,7 +1374,7 @@ namespace ColouredPetriNet.Gui.Core
 
         public void DeselectTransitions(ColouredTransitionType transitionType)
         {
-            int typeId = (int)ItemType.Transition + (int)transitionType;
+            int typeId = (int)ColouredPetriNetItemInfo.ItemType.Transition + (int)transitionType;
             for (int i = 0; i < _transitions.Count; ++i)
             {
                 if ((_transitions[i].Transition.TypeId == typeId) && _transitions[i].Transition.IsSelected())
@@ -1627,47 +1626,6 @@ namespace ColouredPetriNet.Gui.Core
             return new MarkerInfo(-1, -1, -1);
         }
 
-        public string GetStateTypeName(int typeId)
-        {
-            int stateType = typeId - (int)ItemType.State;
-            switch (stateType)
-            {
-                case (int)ColouredStateType.RoundState:
-                    return "RoundState";
-                case (int)ColouredStateType.ImageState:
-                    return "ImageState";
-            }
-            return "";
-        }
-
-        public string GetTransitionTypeName(int typeId)
-        {
-            int transitionType = typeId - (int)ItemType.Transition;
-            switch (transitionType)
-            {
-                case (int)ColouredTransitionType.RectangleTransition:
-                    return "RectangleTransition";
-                case (int)ColouredTransitionType.RhombTransition:
-                    return "RhombTransition";
-            }
-            return "";
-        }
-
-        public string GetMarkerTypeName(int typeId)
-        {
-            int markerType = typeId - (int)ItemType.Marker;
-            switch (markerType)
-            {
-                case (int)ColouredMarkerType.RoundMarker:
-                    return "RoundMarker";
-                case (int)ColouredMarkerType.RhombMarker:
-                    return "RhombMarker";
-                case (int)ColouredMarkerType.TriangleMarker:
-                    return "TriangleMarker";
-            }
-            return "";
-        }
-
         #region Helpful functions
         private bool RemoveOutputLink(GraphicsStateWrapper state, int stateId, int transitionId)
         {
@@ -1876,10 +1834,10 @@ namespace ColouredPetriNet.Gui.Core
                 item = GetTransitionGraphicsItemFromXml(itemsXml.TransitionList[i]);
                 switch (item.TypeId)
                 {
-                    case (int)ItemType.Transition + (int)ColouredTransitionType.RectangleTransition:
+                    case (int)ColouredPetriNetItemInfo.ItemType.Transition + (int)ColouredTransitionType.RectangleTransition:
                         _petriNet.AddTransition(item.Id, new RectangleTransition());
                         break;
-                    case (int)ItemType.Transition + (int)ColouredTransitionType.RhombTransition:
+                    case (int)ColouredPetriNetItemInfo.ItemType.Transition + (int)ColouredTransitionType.RhombTransition:
                         _petriNet.AddTransition(item.Id, new RhombTransition());
                         break;
                 }
@@ -1907,7 +1865,7 @@ namespace ColouredPetriNet.Gui.Core
             {
                 case "RoundState":
                     var roundState = new GraphicsItems.RoundGraphicsItem(stateXml.Id,
-                            (int)ItemType.State + (int)ColouredStateType.RoundState,
+                            (int)ColouredPetriNetItemInfo.ItemType.State + (int)ColouredStateType.RoundState,
                             new Point(stateXml.X, stateXml.Y), Style.RoundState.Radius, _stateZ);
                     roundState.SelectionPen = Style.SelectionPen;
                     roundState.BorderPen = Style.RoundState.BorderPen;
@@ -1915,7 +1873,7 @@ namespace ColouredPetriNet.Gui.Core
                     return roundState;
                 case "ImageState":
                     var imageState = new GraphicsItems.ImageGraphicsItem(stateXml.Id,
-                        (int)ItemType.State + (int)ColouredStateType.ImageState,
+                        (int)ColouredPetriNetItemInfo.ItemType.State + (int)ColouredStateType.ImageState,
                         Image.FromFile(Style.ImageState.ImageName),
                         new Point(stateXml.X, stateXml.Y), Style.ImageState.Width, Style.ImageState.Height, _stateZ);
                     imageState.SelectionPen = Style.SelectionPen;
@@ -1930,7 +1888,7 @@ namespace ColouredPetriNet.Gui.Core
             {
                 case "RectangleTransition":
                     var rectangleTransition = new GraphicsItems.RectangleGraphicsItem(transitionXml.Id,
-                            (int)ItemType.Transition + (int)ColouredTransitionType.RectangleTransition,
+                            (int)ColouredPetriNetItemInfo.ItemType.Transition + (int)ColouredTransitionType.RectangleTransition,
                             new Point(transitionXml.X, transitionXml.Y),
                             Style.RectangleTransition.Width, Style.RectangleTransition.Height, _stateZ);
                     rectangleTransition.SelectionPen = Style.SelectionPen;
@@ -1939,7 +1897,7 @@ namespace ColouredPetriNet.Gui.Core
                     return rectangleTransition;
                 case "RhombTransition":
                     var rhombTransition = new GraphicsItems.RhombGraphicsItem(transitionXml.Id,
-                        (int)ItemType.Transition + (int)ColouredTransitionType.RhombTransition,
+                        (int)ColouredPetriNetItemInfo.ItemType.Transition + (int)ColouredTransitionType.RhombTransition,
                         new Point(transitionXml.X, transitionXml.Y),
                         Style.RhombTransition.Width, Style.RhombTransition.Height, _stateZ);
                     rhombTransition.SelectionPen = Style.SelectionPen;
@@ -1956,7 +1914,7 @@ namespace ColouredPetriNet.Gui.Core
             {
                 case "RoundMarker":
                     var roundMarker = new GraphicsItems.RoundGraphicsItem(markerXml.Id,
-                        (int)ItemType.Marker + (int)ColouredMarkerType.RoundMarker,
+                        (int)ColouredPetriNetItemInfo.ItemType.Marker + (int)ColouredMarkerType.RoundMarker,
                         new Point(0, 0),
                         Style.RoundMarker.Radius, _stateZ);
                     roundMarker.SelectionPen = Style.SelectionPen;
@@ -1965,7 +1923,7 @@ namespace ColouredPetriNet.Gui.Core
                     return roundMarker;
                 case "RhombMarker":
                     var rhombMarker = new GraphicsItems.RhombGraphicsItem(markerXml.Id,
-                        (int)ItemType.Marker + (int)ColouredMarkerType.RhombMarker,
+                        (int)ColouredPetriNetItemInfo.ItemType.Marker + (int)ColouredMarkerType.RhombMarker,
                         new Point(0, 0),
                         Style.RhombMarker.Width, Style.RhombMarker.Height, _stateZ);
                     rhombMarker.SelectionPen = Style.SelectionPen;
@@ -1974,7 +1932,7 @@ namespace ColouredPetriNet.Gui.Core
                     return rhombMarker;
                 case "TriangleMarker":
                     var triangleMarker = new GraphicsItems.TriangleGraphicsItem(markerXml.Id,
-                        (int)ItemType.Marker + (int)ColouredMarkerType.TriangleMarker,
+                        (int)ColouredPetriNetItemInfo.ItemType.Marker + (int)ColouredMarkerType.TriangleMarker,
                         new Point(0, 0), Style.TriangleMarker.Side, _stateZ);
                     triangleMarker.SelectionPen = Style.SelectionPen;
                     triangleMarker.BorderPen = Style.TriangleMarker.BorderPen;
@@ -1994,11 +1952,11 @@ namespace ColouredPetriNet.Gui.Core
             for (int i = 0; i < _states.Count; ++i)
             {
                 stateXml = new Core.Serialize.StateXml(_states[i].State.Id, _states[i].State.Center.X,
-                    _states[i].State.Center.Y, GetStateTypeName(_states[i].State.TypeId));
+                    _states[i].State.Center.Y, ColouredPetriNetItemInfo.GetStateTypeName(_states[i].State.TypeId));
                 // Add Markers
                 for (int j = 0; j < _states[i].Markers.Count; ++j)
                 {
-                    markerType = GetMarkerTypeName(_states[i].Markers[j].Item1.TypeId);
+                    markerType = ColouredPetriNetItemInfo.GetMarkerTypeName(_states[i].Markers[j].Item1.TypeId);
                     listId = _states[i].Markers[j].Item2;
                     for (int k = 0; k < listId.Count; ++k)
                     {
@@ -2012,7 +1970,7 @@ namespace ColouredPetriNet.Gui.Core
             {
                 itemsXml.TransitionList.Add(new Core.Serialize.TransitionXml(_transitions[i].Transition.Id,
                     _transitions[i].Transition.Center.X, _transitions[i].Transition.Center.Y,
-                    GetTransitionTypeName(_transitions[i].Transition.TypeId)));
+                    ColouredPetriNetItemInfo.GetTransitionTypeName(_transitions[i].Transition.TypeId)));
             }
             // Add Links
             for (int i = 0; i < _links.Count; ++i)

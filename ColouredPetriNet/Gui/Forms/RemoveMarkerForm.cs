@@ -42,28 +42,10 @@ namespace ColouredPetriNet.Gui.Forms
             base.ShowDialog();
         }
 
-        private void GetMarkerType(Core.GraphicsItems.GraphicsItem item, out Image image, out string type)
+        new public void Hide()
         {
-            int typeId = item.TypeId - (int)Core.PetriNetGraphicsMap.ItemType.Marker;
-            switch (typeId)
-            {
-                case (int)Core.ColouredMarkerType.RoundMarker:
-                    image = new Bitmap(Properties.Resources.RoundMarkerIcon, 20, 20);
-                    type = "Round Marker";
-                    break;
-                case (int)Core.ColouredMarkerType.RhombMarker:
-                    image = new Bitmap(Properties.Resources.RhombMarkerIcon, 20, 20);
-                    type = "Rhomb Marker";
-                    break;
-                case (int)Core.ColouredMarkerType.TriangleMarker:
-                    image = new Bitmap(Properties.Resources.TriangleMarkerIcon, 20, 20);
-                    type = "Triangle Marker";
-                    break;
-                default:
-                    image = null;
-                    type = "";
-                    break;
-            }
+            _selectedState = null;
+            base.Hide();
         }
 
         private void UpdateMarkersTable()
@@ -76,7 +58,8 @@ namespace ColouredPetriNet.Gui.Forms
                 string markerType;
                 for (int i = 0; i < _selectedState.Markers.Count; ++i)
                 {
-                    GetMarkerType(_selectedState.Markers[i].Item1, out markerImage, out markerType);
+                    Core.ColouredPetriNetItemInfo.GetMarkerType(_selectedState.Markers[i].Item1,
+                        out markerImage, out markerType);
                     for (int j = 0; j < _selectedState.Markers[i].Item2.Count; ++j)
                     {
                         newRow = _markersTable.NewRow();

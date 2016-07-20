@@ -23,6 +23,7 @@ namespace ColouredPetriNet.Gui.Forms
 
         public void ShowDialog(Core.Events.ShowInfoEventArgs.ItemType itemType)
         {
+            numId.Value = 0;
             _itemType = itemType;
             base.ShowDialog();
         }

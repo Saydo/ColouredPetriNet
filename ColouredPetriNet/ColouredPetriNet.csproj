@@ -74,6 +74,7 @@
     <Compile Include="Container\ColouredPetriNetNode.cs" />
     <Compile Include="Container\StateWrapper.cs" />
     <Compile Include="Container\TransitionWrapper.cs" />
+    <Compile Include="Gui\Core\ColouredPetriNetItemInfo.cs" />
     <Compile Include="Gui\Core\ColouredPetriNetTypes.cs" />
     <Compile Include="Gui\Core\ColouredPetriNetStyle.cs" />
     <Compile Include="Gui\Core\IPetriNetGraphicsMap.cs" />
