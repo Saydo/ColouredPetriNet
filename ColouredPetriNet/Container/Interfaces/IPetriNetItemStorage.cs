@@ -11,7 +11,8 @@
         int GetTypeId<T>();
         bool Remove(int id);
         bool Remove(int id, int type);
-        void RemoveByType(int type);
+        bool RemoveByType(int type);
+        bool RemoveType(int type);
         void Clear();
     }
 }

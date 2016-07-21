@@ -11,11 +11,15 @@ namespace ColouredPetriNet.Gui.Core
         int StateCount { get; }
         void SetDefaultStyle();
         // Add
+        bool AddType(TypeInfo type);
+        bool AddType(string name, ItemKind kind, ItemForm form);
         int AddState(int x, int y, ColouredStateType stateType);
         int AddTransition(int x, int y, ColouredTransitionType transitionType);
         int AddMarker(int stateId, ColouredMarkerType markerType);
         void AddLink(int stateId, int transitionId, LinkDirection direction);
         // Remove
+        bool RemoveType(int id);
+        bool RemoveType(string name);
         bool RemoveLink(int id);
         bool RemoveLinks(int stateId, int transitionId);
         bool RemoveLinks(int stateId, int transitionId, LinkDirection direction);
@@ -34,6 +38,7 @@ namespace ColouredPetriNet.Gui.Core
         void RemoveSelectedItems();
         // Clear
         void Clear();
+        void ClearTypes();
         void ClearLinks();
         void ClearMarkers();
         void ClearStates();
@@ -62,6 +67,8 @@ namespace ColouredPetriNet.Gui.Core
         int GetSelectedTransitionsCount();
         int GetSelectedLinksCount();
         // Find
+        TypeInfo FindType(int id);
+        TypeInfo FindType(string name);
         List<GraphicsLinkWrapper> FindLinks(int x, int y);
         List<GraphicsLinkWrapper> FindLinks(int x, int y, LinkDirection direction);
         List<GraphicsLinkWrapper> FindLinks(int x, int y, int w, int h,

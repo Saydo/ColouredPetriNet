@@ -1,15 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
-namespace ColouredPetriNet.Container
+namespace ColouredPetriNet.Container.Interfaces
 {
     public interface IOneTypeItemList
     {
         int Type { get; }
         IList Items { get; }
     }
+}
 
-    public class OneTypeItemList<T> : IOneTypeItemList
+namespace ColouredPetriNet.Container
+{
+    public class OneTypeItemList<T> : Interfaces.IOneTypeItemList
     {
         public int Type { get; private set; }
         public IList Items { get; private set; }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ColouredPetriNet.Container
 {
-    public class ColouredPetriNetNode<T> : IColouredPetriNetNode<T>
+    public class ColouredPetriNetNode<T> : Interfaces.IColouredPetriNetNode<T>
     {
         private List<int> _inputLinkNodes;
         private List<int> _outputLinkNodes;

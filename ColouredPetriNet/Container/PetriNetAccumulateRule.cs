@@ -3,22 +3,23 @@ using System.Collections.Generic;
 
 namespace ColouredPetriNet.Container
 {
-    public delegate void AccumulateMarkersFunction(IStateWrapper state, List<IMarkerWrapper> markers);
+    public delegate void AccumulateMarkersFunction(Interfaces.IStateWrapper state,
+        List<Interfaces.IMarkerWrapper> markers);
 
     public struct PetriNetAccumulateRule
     {
         public int StateType;
-        public List<Tuple<Type, int>> Markers;
+        public List<Tuple<int, int>> Markers;
         public AccumulateMarkersFunction AccumulateFunction;
 
-        public PetriNetAccumulateRule(int stateType, List<Tuple<Type, int>> markers, AccumulateMarkersFunction function = null)
+        public PetriNetAccumulateRule(int stateType, List<Tuple<int, int>> markers, AccumulateMarkersFunction function = null)
         {
             StateType = stateType;
             Markers = markers;
             AccumulateFunction = function;
         }
 
-        public bool IsComply(int stateType, List<Tuple<Type, List<int>>> inputMarkers)
+        public bool IsComply(int stateType, List<Tuple<int, List<int>>> inputMarkers)
         {
             if (StateType != stateType)
             {

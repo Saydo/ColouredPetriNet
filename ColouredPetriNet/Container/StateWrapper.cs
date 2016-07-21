@@ -2,7 +2,7 @@
 
 namespace ColouredPetriNet.Container
 {
-    public class StateWrapper<T> : ColouredPetriNetNode<T>, IStateWrapper<T>
+    public class StateWrapper<T> : ColouredPetriNetNode<T>, Interfaces.IStateWrapper<T>
     {
         protected List<int> _markerList;
 
@@ -11,12 +11,17 @@ namespace ColouredPetriNet.Container
             _markerList = new List<int>();
         }
 
-        public StateWrapper(int id, T state) : base(id, state)
+        public StateWrapper(int id, int type, T state) : base(id, type, state)
         {
             _markerList = new List<int>();
         }
 
         public int GetMarker(int index)
+        {
+            return _markerList[index];
+        }
+
+        public int GetMarkerAt(int index)
         {
             if ((index < 0) || (index >= _markerList.Count))
             {
@@ -51,6 +56,11 @@ namespace ColouredPetriNet.Container
         public void RemoveMarker(int id)
         {
             _markerList.Remove(id);
+        }
+
+        public void RemoveAllMarkers()
+        {
+            _markerList.Clear();
         }
     }
 }

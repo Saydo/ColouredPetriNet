@@ -1,9 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
-
-using System.Text;
-using System.IO;
-using System.Xml.Serialization;
 
 namespace ColouredPetriNet.Gui.Core
 {
@@ -15,6 +12,7 @@ namespace ColouredPetriNet.Gui.Core
         private const int _linkZ = 1;
         private const int _stateZ = 2;
 
+        private TypeInfoList _types;
         private List<GraphicsLinkWrapper> _links;
         private List<GraphicsStateWrapper> _states;
         private List<GraphicsTransitionWrapper> _transitions;
@@ -69,11 +67,11 @@ namespace ColouredPetriNet.Gui.Core
         #region Add Functions
         public int AddState(int x, int y, ColouredStateType stateType)
         {
-            int id;
+            Tuple<int, int> itemInfo;
             switch (stateType)
             {
                 case ColouredStateType.RoundState:
-                    id = _petriNet.AddState<RoundState>(new RoundState());
+                    itemInfo = _petriNet.States.Create<RoundState>(new RoundState());
                     var roundState = new GraphicsItems.RoundGraphicsItem(id,
                         (int)ColouredPetriNetItemInfo.ItemType.State + (int)ColouredStateType.RoundState,
                         new Point(x, y), Style.RoundState.Radius, _stateZ);

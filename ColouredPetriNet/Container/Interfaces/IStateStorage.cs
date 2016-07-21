@@ -13,5 +13,6 @@ namespace ColouredPetriNet.Container.Interfaces
         int Create<T>(int type, T value);
         int Add<T>(int id, T value);
         bool Add<T>(int id, int type, T value);
+        void ForEachState(ColouredPetriNet.ForEachStateFunction function);
     }
 }

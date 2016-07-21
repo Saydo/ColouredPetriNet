@@ -2,7 +2,7 @@
 
 namespace ColouredPetriNet.Container
 {
-    public class MarkerWrapper<T> : IMarkerWrapper<T>
+    public class MarkerWrapper<T> : Interfaces.IMarkerWrapper<T>
     {
         public int Id { get; private set; }
         public int Type { get; private set; }

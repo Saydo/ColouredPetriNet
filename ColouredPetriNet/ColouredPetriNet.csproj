@@ -70,6 +70,7 @@
     <Compile Include="Container\Interfaces\IColouredPetriNetNode.cs" />
     <Compile Include="Container\Interfaces\IMoveRuleStorage.cs" />
     <Compile Include="Container\Interfaces\IPetriNetItemStorage.cs" />
+    <Compile Include="Container\Interfaces\ITransitionWrapper.cs" />
     <Compile Include="Container\Interfaces\ITypeStorage.cs" />
     <Compile Include="Container\Interfaces\IStateStorage.cs" />
     <Compile Include="Container\Interfaces\IStateWrapper.cs" />
@@ -112,6 +113,7 @@
     <Compile Include="Gui\Core\MarkerInfo.cs" />
     <Compile Include="Gui\Core\Serialize\ColouredPetriNetXml.cs" />
     <Compile Include="Gui\Core\Serialize\PetriNetXmlSerializer.cs" />
+    <Compile Include="Gui\Core\TypeInfoList.cs" />
     <Compile Include="Gui\Forms\AboutForm.cs">
       <SubType>Form</SubType>
     </Compile>

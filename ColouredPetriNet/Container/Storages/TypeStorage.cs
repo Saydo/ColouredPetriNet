@@ -1,20 +1,20 @@
 ﻿using System.Collections.Generic;
 
-namespace ColouredPetriNet.Container.Storages
+namespace ColouredPetriNet.Container
 {
     public partial class ColouredPetriNet
     {
         public Interfaces.ITypeStorage Types;
-        private IdGenerator _typeGenerator;
+        public delegate void ForEachTypeFunction(int type);
 
         private class TypeStorage : Interfaces.ITypeStorage
         {
             private List<int> _types;
-            private IdGenerator _typeGenerator;
+            private ColouredPetriNet _parent;
 
-            public TypeStorage(IdGenerator typeGenerator)
+            public TypeStorage(ColouredPetriNet parent)
             {
-                _typeGenerator = typeGenerator;
+                _parent = parent;
                 _types = new List<int>();
             }
 
@@ -41,9 +41,9 @@ namespace ColouredPetriNet.Container.Storages
                 {
                     return false;
                 }
-                if (_typeGenerator.CurrentId < type)
+                if (_parent._typeGenerator.CurrentId < type)
                 {
-                    _typeGenerator.Reset(type);
+                    _parent._typeGenerator.Reset(type);
                 }
                 _types.Add(type);
                 return true;
@@ -51,13 +51,25 @@ namespace ColouredPetriNet.Container.Storages
 
             public int Create()
             {
-                _types.Add(_typeGenerator.Next());
-                return _typeGenerator.CurrentId;
+                _types.Add(_parent._typeGenerator.Next());
+                return _parent._typeGenerator.CurrentId;
             }
 
             public bool Remove(int type)
             {
-                //
+                int index = GetIndex(type);
+                if (index < 0)
+                {
+                    return false;
+                }
+                else
+                {
+                    _parent.States.RemoveType(type);
+                    _parent.Markers.RemoveType(type);
+                    _parent.Transitions.RemoveType(type);
+                    _types.RemoveAt(index);
+                    return true;
+                }
             }
 
             public bool RemoveAt(int index)
@@ -66,6 +78,9 @@ namespace ColouredPetriNet.Container.Storages
                 {
                     return false;
                 }
+                _parent.States.RemoveType(_types[index]);
+                _parent.Markers.RemoveType(_types[index]);
+                _parent.Transitions.RemoveType(_types[index]);
                 _types.RemoveAt(index);
                 return true;
             }
@@ -73,7 +88,31 @@ namespace ColouredPetriNet.Container.Storages
             public void Clear()
             {
                 _types.Clear();
+                _parent.States.Clear();
+                _parent.Transitions.Clear();
             }
+
+            public void ForEachType(ForEachTypeFunction function)
+            {
+                for (int i = 0; i < _types.Count; ++i)
+                {
+                    function(_types[i]);
+                }
+            }
+
+            #region Helpful Functions
+            public int GetIndex(int type)
+            {
+                for (int i = 0; i < _types.Count; ++i)
+                {
+                    if (_types[i] == type)
+                    {
+                        return i;
+                    }
+                }
+                return -1;
+            }
+            #endregion
         }
     }
 }

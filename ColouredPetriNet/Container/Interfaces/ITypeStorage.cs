@@ -9,5 +9,6 @@
         bool Remove(int type);
         bool RemoveAt(int index);
         void Clear();
+        void ForEachType(ColouredPetriNet.ForEachTypeFunction function);
     }
 }

@@ -1,8 +1,9 @@
 ﻿namespace ColouredPetriNet.Container
 { 
-    public class TransitionWrapper<T> : ColouredPetriNetNode<T>
+    public class TransitionWrapper<T> : ColouredPetriNetNode<T>, Interfaces.ITransitionWrapper<T>
     {
-        public TransitionWrapper(int id, T transition) : base(id, transition)
+        public TransitionWrapper(int id, int type, T transition)
+            : base(id, type, transition)
         {
         }
     }

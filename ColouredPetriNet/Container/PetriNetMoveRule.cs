@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace ColouredPetriNet.Container
 {
-    public delegate void MoveMarkersFunction(IStateWrapper state1, IStateWrapper state2,
-        IColouredPetriNetNode transition, List<IMarkerWrapper> markers);
+    public delegate void MoveMarkersFunction(Interfaces.IStateWrapper state1,
+        Interfaces.IStateWrapper state2, Interfaces.ITransitionWrapper transition,
+        List<Interfaces.IMarkerWrapper> markers);
 
     public struct PetriNetMoveRule
     {
