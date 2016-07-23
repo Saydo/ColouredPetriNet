@@ -58,15 +58,31 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet
                 Rules.Clear();
             }
 
+            public void Move(StateWrapper outputState, StateWrapper inputState, TransitionWrapper transition)
+            {
+                PetriNetMoveRule rule;
+                int type, count;
+                for (int i = 0; i < outputState.Markers.Count; ++i)
+                {
+                    type = outputState.Markers[i].Item1.TypeId;
+                    count = outputState.Markers[i].Item2.Count;
+                    rule = GetSuitableRule(outputState.Type, inputState.Type, transition.Type, type, count);
+                    if (!ReferenceEquals(rule, null))
+                    {
+                        rule.MoveFunction(outputState, inputState, transition, type, count);
+                    }
+                }
+            }
+
             #region Helpful Functions
-            public List<int> GetIndexList(int inputStateType, int outputStateType,
+            public List<int> GetIndexList(int outputStateType, int inputStateType,
                 int transitionType, int markerType)
             {
                 var indexList = new List<int>();
                 for (int i = 0; i < Rules.Count; ++i)
                 {
-                    if ((Rules[i].InputStateType == inputStateType)
-                        && (Rules[i].OutputStateType == outputStateType)
+                    if ((Rules[i].OutputStateType == outputStateType)
+                        && (Rules[i].InputStateType == inputStateType)
                         && (Rules[i].TransitionType == transitionType)
                         && (Rules[i].MarkerType == markerType))
                     {
@@ -76,13 +92,13 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet
                 return indexList;
             }
 
-            public int GetIndex(int inputStateType, int outputStateType, int transitionType,
+            public int GetIndex(int outputStateType, int inputStateType, int transitionType,
                 int markerType, int markerCount)
             {
                 for (int i = 0; i < Rules.Count; ++i)
                 {
-                    if ((Rules[i].InputStateType == inputStateType)
-                        && (Rules[i].OutputStateType == outputStateType)
+                    if ((Rules[i].OutputStateType == outputStateType)
+                        && (Rules[i].InputStateType == inputStateType)
                         && (Rules[i].TransitionType == transitionType)
                         && (Rules[i].MarkerType == markerType)
                         && (Rules[i].MarkerCount == markerCount))
@@ -93,12 +109,12 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet
                 return -1;
             }
 
-            public PetriNetMoveRule GetSuitableRule(int inputStateType, int outputStateType,
+            public PetriNetMoveRule GetSuitableRule(int outputStateType, int inputStateType,
                 int transitionType, int markerType, int markerCount)
             {
                 for (int i = 0; i < Rules.Count; ++i)
                 {
-                    if (Rules[i].IsComply(inputStateType, outputStateType, transitionType,
+                    if (Rules[i].IsComply(outputStateType, inputStateType, transitionType,
                         markerType, markerCount))
                     {
                         return Rules[i];

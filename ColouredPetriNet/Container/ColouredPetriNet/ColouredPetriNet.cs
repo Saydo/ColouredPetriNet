@@ -23,23 +23,6 @@ namespace ColouredPetriNet.Container.ColouredPetriNet
             this.NextAccumulateRules = new AccumulateRuleStorage();
         }
 
-        protected ColouredPetriNet(TypeStorage types, StateStorage states,
-            TransitionStorage transitions, MarkerStorage markers, LinkStorage links,
-            MoveRuleStorage moveRules, AccumulateRuleStorage prevAccRules,
-            AccumulateRuleStorage nextAccRules)
-        {
-            _idGenerator = new IdGenerator(-1);
-            _typeGenerator = new IdGenerator(-1);
-            this.Types = types;
-            this.States = states;
-            this.Transitions = transitions;
-            this.Markers = markers;
-            this.Links = links;
-            this.MoveRules = moveRules;
-            this.PrevAccumulateRules = prevAccRules;
-            this.NextAccumulateRules = nextAccRules;
-        }
-
         public int GetTypeId<T>()
         {
             int type = States.GetTypeId<T>();

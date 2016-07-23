@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace ColouredPetriNet.Container.GraphicsPetriNet
 {
@@ -14,6 +15,7 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet
             private GraphicsPetriNet _parent;
 
             public int Count { get { return States.Count; } }
+            public int SelectedStateCount { get { return SelectedStates.Count; } }
 
             public StateStorage(GraphicsPetriNet parent)
             {
@@ -158,11 +160,92 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet
                 }
             }
 
+            public void RemoveSelectedStates()
+            {
+                for (int i = SelectedStates.Count - 1; i >= 0; --i)
+                {
+                    Remove(SelectedStates[i].Id);
+                }
+            }
+
             public void Clear()
             {
                 _parent.Links.Clear();
                 SelectedStates.Clear();
                 States.Clear();
+            }
+
+            public List<StateWrapper> Find(int x, int y)
+            {
+                var foundStates = new List<StateWrapper>();
+                for (int i = 0; i < States.Count; ++i)
+                {
+                    if (States[i].State.IsCollision(x, y))
+                    {
+                        foundStates.Add(States[i]);
+                    }
+                }
+                return foundStates;
+            }
+
+            public List<StateWrapper> Find(int x, int y, int type)
+            {
+                var foundStates = new List<StateWrapper>();
+                for (int i = 0; i < States.Count; ++i)
+                {
+                    if ((States[i].Type == type) &&
+                        States[i].State.IsCollision(x, y))
+                    {
+                        foundStates.Add(States[i]);
+                    }
+                }
+                return foundStates;
+            }
+
+            public List<StateWrapper> Find(int x, int y, int w, int h,
+                GraphicsItems.OverlapType overlap = GraphicsItems.OverlapType.Partial)
+            {
+                var foundStates = new List<StateWrapper>();
+                for (int i = 0; i < States.Count; ++i)
+                {
+                    if (States[i].State.IsCollision(x, y, w, h, overlap))
+                    {
+                        foundStates.Add(States[i]);
+                    }
+                }
+                return foundStates;
+            }
+
+            public List<StateWrapper> Find(int x, int y, int w, int h, int type,
+                GraphicsItems.OverlapType overlap = GraphicsItems.OverlapType.Partial)
+            {
+                var foundStates = new List<StateWrapper>();
+                for (int i = 0; i < States.Count; ++i)
+                {
+                    if ((States[i].Type == type) &&
+                        States[i].State.IsCollision(x, y, w, h, overlap))
+                    {
+                        foundStates.Add(States[i]);
+                    }
+                }
+                return foundStates;
+            }
+
+            public StateWrapper GetSelectedState(int index)
+            {
+                return SelectedStates[index];
+            }
+
+            public StateWrapper GetSelectedStateById(int id)
+            {
+                for (int i = 0; i < SelectedStates.Count; ++i)
+                {
+                    if (SelectedStates[i].Id == id)
+                    {
+                        return SelectedStates[i];
+                    }
+                }
+                return null;
             }
 
             public void ForEachState(ForEachStateFunction function)
@@ -172,6 +255,389 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet
                     function(States[i]);
                 }
             }
+
+            public void ForEachSelectedState(ForEachStateFunction function)
+            {
+                for (int i = 0; i < SelectedStates.Count; ++i)
+                {
+                    function(SelectedStates[i]);
+                }
+            }
+
+            public void Select()
+            {
+                SelectedStates.Clear();
+                for (int i = 0; i < States.Count; ++i)
+                {
+                    States[i].State.Select();
+                    SelectedStates.Add(States[i]);
+                }
+            }
+
+            public void Select(int type)
+            {
+                for (int i = 0; i < States.Count; ++i)
+                {
+                    if ((States[i].Type == type)
+                        && (!States[i].State.IsSelected()))
+                    {
+                        States[i].State.Select();
+                        SelectedStates.Add(States[i]);
+                    }
+                }
+            }
+
+            public void Deselect()
+            {
+                SelectedStates.Clear();
+                for (int i = 0; i < States.Count; ++i)
+                {
+                    States[i].State.Deselect();
+                }
+            }
+
+            public void Deselect(int type)
+            {
+                for (int i = SelectedStates.Count - 1; i >= 0; --i)
+                {
+                    if (SelectedStates[i].Type == type)
+                    {
+                        States[i].State.Deselect();
+                        SelectedStates.RemoveAt(i);
+                    }
+                }
+            }
+
+            #region Marker Storage Functions
+            public MarkerInfo GetMarker(int id)
+            {
+                List<int> markerList;
+                for (int i = 0; i < States.Count; ++i)
+                {
+                    for (int j = 0; j < States[i].Markers.Count; ++j)
+                    {
+                        markerList = States[i].Markers[j].Item2;
+                        for (int k = 0; k < markerList.Count; ++k)
+                        {
+                            if (markerList[k] == id)
+                            {
+                                return new MarkerInfo(id, States[i].Id, States[i].Markers[j].Item1.TypeId);
+                            }
+                        }
+                    }
+                }
+                return new MarkerInfo(-1, -1, -1);
+            }
+
+            public GraphicsItems.IGraphicsItem GetMarkerItem(int id)
+            {
+                List<int> markerList;
+                for (int i = 0; i < States.Count; ++i)
+                {
+                    for (int j = 0; j < States[i].Markers.Count; ++j)
+                    {
+                        markerList = States[i].Markers[j].Item2;
+                        for (int k = 0; k < markerList.Count; ++k)
+                        {
+                            if (markerList[k] == id)
+                            {
+                                return States[i].Markers[j].Item1;
+                            }
+                        }
+                    }
+                }
+                return null;
+            }
+
+            public bool IsMarkerExist(int id)
+            {
+                List<int> markerList;
+                for (int i = 0; i < States.Count; ++i)
+                {
+                    for (int j = 0; j < States[i].Markers.Count; ++j)
+                    {
+                        markerList = States[i].Markers[j].Item2;
+                        for (int k = 0; k < markerList.Count; ++k)
+                        {
+                            if (markerList[k] == id)
+                            {
+                                return true;
+                            }
+                        }
+                    }
+                }
+                return false;
+            }
+
+            public bool ContainsMarker(int type)
+            {
+                for (int i = 0; i < States.Count; ++i)
+                {
+                    for (int j = 0; j < States[i].Markers.Count; ++j)
+                    {
+                        if (States[i].Markers[j].Item1.TypeId == type)
+                        {
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            }
+
+            public int GetMarkerCount()
+            {
+                int counter = 0;
+                for (int i = 0; i < States.Count; ++i)
+                {
+                    for (int j = 0; j < States[i].Markers.Count; ++j)
+                    {
+                        counter += States[i].Markers[j].Item2.Count;
+                    }
+                }
+                return counter;
+            }
+
+            public int GetMarkerCount(int type)
+            {
+                for (int i = 0; i < States.Count; ++i)
+                {
+                    for (int j = 0; j < States[i].Markers.Count; ++j)
+                    {
+                        if (States[i].Markers[j].Item1.TypeId == type)
+                        {
+                            return States[i].Markers[j].Item2.Count;
+                        }
+                    }
+                }
+                return 0;
+            }
+
+            public bool AddMarker(int stateId, GraphicsItems.GraphicsItem item)
+            {
+                var state = this[stateId];
+                if (ReferenceEquals(state, null))
+                {
+                    return false;
+                }
+                state.AddMarker(item);
+                return true;
+            }
+
+            public bool RemoveMarker(int id)
+            {
+                List<int> markerList;
+                for (int i = 0; i < States.Count; ++i)
+                {
+                    for (int j = 0; j < States[i].Markers.Count; ++j)
+                    {
+                        markerList = States[i].Markers[j].Item2;
+                        for (int k = 0; k < markerList.Count; ++k)
+                        {
+                            if (markerList[k] == id)
+                            {
+                                if (markerList.Count == 1)
+                                {
+                                    States[i].RemoveMarkerType(j);
+                                }
+                                else
+                                {
+                                    States[i].RemoveMarkerAt(j, k);
+                                }
+                                return true;
+                            }
+                        }
+                    }
+                }
+                return false;
+            }
+
+            public void RemoveMarkerByType(int type)
+            {
+                for (int i = 0; i < States.Count; ++i)
+                {
+                    for (int j = 0; j < States[i].Markers.Count; ++j)
+                    {
+                        if (States[i].Markers[j].Item1.TypeId == type)
+                        {
+                            States[i].RemoveMarkerType(j);
+                            return;
+                        }
+                    }
+                }
+            }
+
+            public bool RemoveMarkersFromState(int stateId)
+            {
+                for (int i = 0; i < States.Count; ++i)
+                {
+                    if (States[i].Id == stateId)
+                    {
+                        States[i].ClearMarkers();
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            public bool RemoveMarkersFromState(int type, int stateId, int count = -1)
+            {
+                for (int i = 0; i < States.Count; ++i)
+                {
+                    if (States[i].Id == stateId)
+                    {
+                        if (count >= 0)
+                        {
+                            States[i].RemoveMarkers(type, count);
+                        }
+                        else
+                        {
+                            for (int j = 0; j < States[i].Markers.Count; ++j)
+                            {
+                                if (States[i].Markers[j].Item1.TypeId == type)
+                                {
+                                    States[i].RemoveMarkerType(j);
+                                }
+                            }
+                        }
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            public void ClearMarkers()
+            {
+                for (int i = 0; i < States.Count; ++i)
+                {
+                    States[i].ClearMarkers();
+                }
+            }
+
+            public bool MoveMarker(int markerId, int oldStateId, int newStateId)
+            {
+                var oldState = this[oldStateId];
+                if (ReferenceEquals(oldState, null))
+                {
+                    return false;
+                }
+                var newState = this[newStateId];
+                if (ReferenceEquals(newState, null))
+                {
+                    return false;
+                }
+                List<int> markerList;
+                for (int i = 0; i < oldState.Markers.Count; ++i)
+                {
+                    markerList = oldState.Markers[i].Item2;
+                    for (int j = 0; j < markerList.Count; ++j)
+                    {
+                        if (markerList[j] == markerId)
+                        {
+                            var markers = new List<int>();
+                            newState.AddMarker(markerId, oldState.Markers[i].Item1);
+                            oldState.RemoveMarkerAt(i, j);
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            }
+
+            public bool MoveAllMarkers(int oldStateId, int newStateId)
+            {
+                var oldState = this[oldStateId];
+                if (ReferenceEquals(oldState, null))
+                {
+                    return false;
+                }
+                var newState = this[newStateId];
+                if (ReferenceEquals(newState, null))
+                {
+                    return false;
+                }
+                List<int> markerList;
+                for (int i = 0; i < oldState.Markers.Count; ++i)
+                {
+                    markerList = oldState.Markers[i].Item2;
+                    for (int j = 0; j < markerList.Count; ++j)
+                    {
+                        newState.AddMarker(markerList[j], oldState.Markers[i].Item1);
+                        oldState.RemoveMarkerAt(i, j);
+                    }
+                }
+                return true;
+            }
+
+            public bool MoveAllMarkers(int type, int oldStateId, int newStateId)
+            {
+                var oldState = this[oldStateId];
+                if (ReferenceEquals(oldState, null))
+                {
+                    return false;
+                }
+                var newState = this[newStateId];
+                if (ReferenceEquals(newState, null))
+                {
+                    return false;
+                }
+                List<int> markerList;
+                for (int i = 0; i < oldState.Markers.Count; ++i)
+                {
+                    if (oldState.Markers[i].Item1.TypeId == type)
+                    {
+                        markerList = oldState.Markers[i].Item2;
+                        for (int j = 0; j < markerList.Count; ++j)
+                        {
+                            newState.AddMarker(markerList[j], oldState.Markers[i].Item1);
+                            oldState.RemoveMarkerAt(i, j);
+                        }
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            public void MoveMarkersByRules()
+            {
+                TransitionWrapper transition;
+                StateWrapper state;
+                var prevAccRules = (AccumulateRuleStorage)_parent.PrevAccumulateRules;
+                var nextAccRules = (AccumulateRuleStorage)_parent.NextAccumulateRules;
+                var moveRules = ((MoveRuleStorage)_parent.MoveRules);
+                // sequence: accumulate(prev) -> move -> accumulate(next)
+                for (int i = 0; i < States.Count; ++i)
+                {
+                    prevAccRules.Accumulate(States[i]);
+                    for (int j = 0; j < States[i].OutputLinks.Count; ++j)
+                    {
+                        transition = States[i].OutputLinks[j].Transition;
+                        for (int k = 0; k < transition.OutputLinks.Count; ++k)
+                        {
+                            state = transition.OutputLinks[k].State;
+                            moveRules.Move(States[i], state, transition);
+                            nextAccRules.Accumulate(state);
+                        }
+                    }
+                }
+            }
+
+            public void ForEachMarker(ForEachMarkerFunction function)
+            {
+                List<int> markerList;
+                for (int i = 0; i < States.Count; ++i)
+                {
+                    for (int j = 0; j < States[i].Markers.Count; ++j)
+                    {
+                        markerList = States[i].Markers[j].Item2;
+                        for (int k = 0; k < markerList.Count; ++k)
+                        {
+                            function(new MarkerInfo(markerList[k], States[i].Id,
+                                States[i].Markers[j].Item1.TypeId), States[i].Markers[j].Item1);
+                        }
+                    }
+                }
+            }
+            #endregion
 
             #region Helpful Functions
             public int GetSelectedStateIndex(StateWrapper state)
@@ -230,6 +696,26 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet
                         }
                     }
                 }
+            }
+
+            public List<MarkerInfo> GetMarkerInfoList(List<Tuple<GraphicsItems.GraphicsItem, List<int>>> markerList)
+            {
+                //
+            }
+
+            public List<Interfaces.IMarkerWrapper> GetMarkerWrapperList(List<Tuple<int, List<int>>> markerList)
+            {
+                var markerWrapperList = new List<Interfaces.IMarkerWrapper>();
+                Interfaces.IMarkerWrapper marker;
+                for (int i = 0; i < markerList.Count; ++i)
+                {
+                    for (int j = 0; j < markerList[i].Item2.Count; ++j)
+                    {
+                        marker = this[markerList[i].Item2[j]];
+                        markerWrapperList.Add(marker);
+                    }
+                }
+                return markerWrapperList;
             }
             #endregion
         }

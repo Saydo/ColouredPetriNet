@@ -38,12 +38,28 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet
             }
         }
 
+        public void AddMarker(int id, GraphicsItems.GraphicsItem marker)
+        {
+            List<int> newListId;
+            for (int i = 0; i < Markers.Count; ++i)
+            {
+                if (Markers[i].Item1.TypeId == marker.TypeId)
+                {
+                    newListId = Markers[i].Item2;
+                    newListId.Add(id);
+                    Markers[i] = new Tuple<GraphicsItems.GraphicsItem, List<int>>(Markers[i].Item1, newListId);
+                    return;
+                }
+            }
+            newListId = new List<int>();
+            newListId.Add(id);
+            Markers.Add(new Tuple<GraphicsItems.GraphicsItem, List<int>>(marker, newListId));
+            UpdateMarkerPosition();
+        }
+
         public void AddMarker(GraphicsItems.GraphicsItem marker)
         {
-            List<int> list = new List<int>();
-            list.Add(marker.Id);
-            AddMarker(marker, list);
-            UpdateMarkerPosition();
+            AddMarker(marker.Id, marker);
         }
 
         public void AddMarker(GraphicsItems.GraphicsItem marker, List<int> listId)
@@ -68,9 +84,15 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet
             UpdateMarkerPosition();
         }
 
-        public void RemoveMarkerAt(int index)
+        public void RemoveMarkerType(int index)
         {
             Markers.RemoveAt(index);
+            UpdateMarkerPosition();
+        }
+
+        public void RemoveMarkerAt(int index1, int index2)
+        {
+            Markers[index1].Item2.RemoveAt(index2);
             UpdateMarkerPosition();
         }
 

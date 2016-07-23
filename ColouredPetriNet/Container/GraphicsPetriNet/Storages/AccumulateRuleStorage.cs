@@ -63,6 +63,17 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet
                 Rules.Clear();
             }
 
+            public bool Accumulate(StateWrapper state)
+            {
+                var rule = GetSuitableRule(state.Type, state.Markers);
+                if ((!ReferenceEquals(null, rule)) && (!ReferenceEquals(null, rule.Accumulate)))
+                {
+                    rule.Accumulate(state);
+                    return true;
+                }
+                return false;
+            }
+
             #region Helpful functions
             public List<int> GetIndexList(int stateType, int markerType)
             {
@@ -90,6 +101,18 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet
                     }
                 }
                 return -1;
+            }
+
+            public PetriNetAccumulateRule GetSuitableRule(int stateType, List<Tuple<GraphicsItems.GraphicsItem, List<int>>> inputMarkers)
+            {
+                for (int i = 0; i < Rules.Count; ++i)
+                {
+                    if (Rules[i].IsComply(stateType, inputMarkers))
+                    {
+                        return Rules[i];
+                    }
+                }
+                return new PetriNetAccumulateRule(-1, null, null);
             }
 
             public PetriNetAccumulateRule GetSuitableRule(int stateType, List<Tuple<int, List<int>>> inputMarkers)

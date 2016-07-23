@@ -24,6 +24,7 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet
             }
 
             public int Count { get { return Links.Count; } }
+            public int SelectedLinkCount { get { return SelectedLinks.Count; } }
 
             public LinkWrapper this[int id]
             {
@@ -333,6 +334,14 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet
                 return false;
             }
 
+            public void RemoveSelectedLinks()
+            {
+                for (int i = SelectedLinks.Count - 1; i >= 0; --i)
+                {
+                    Remove(SelectedLinks[i].Id);
+                }
+            }
+
             public void Clear()
             {
                 ((StateStorage)_parent.States).RemoveAllLinks();
@@ -341,11 +350,199 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet
                 Links.Clear();
             }
 
+            public List<LinkWrapper> Find(int x, int y)
+            {
+                var foundLinks = new List<LinkWrapper>();
+                for (int i = 0; i < Links.Count; ++i)
+                {
+                    if (Links[i].Link.IsCollision(x, y))
+                    {
+                        foundLinks.Add(Links[i]);
+                    }
+                }
+                return foundLinks;
+            }
+
+            public List<LinkWrapper> Find(int x, int y, LinkDirection direction)
+            {
+                var foundLinks = new List<LinkWrapper>();
+                for (int i = 0; i < Links.Count; ++i)
+                {
+                    if ((Links[i].Direction == direction) && Links[i].Link.IsCollision(x, y))
+                    {
+                        foundLinks.Add(Links[i]);
+                    }
+                }
+                return foundLinks;
+            }
+
+            public List<LinkWrapper> Find(int x, int y, int w, int h,
+                GraphicsItems.OverlapType overlap = GraphicsItems.OverlapType.Partial)
+            {
+                var foundLinks = new List<LinkWrapper>();
+                for (int i = 0; i < Links.Count; ++i)
+                {
+                    if (Links[i].Link.IsCollision(x, y, w, h, overlap))
+                    {
+                        foundLinks.Add(Links[i]);
+                    }
+                }
+                return foundLinks;
+            }
+
+            public List<LinkWrapper> Find(int x, int y, int w, int h, LinkDirection direction,
+                GraphicsItems.OverlapType overlap = GraphicsItems.OverlapType.Partial)
+            {
+                var foundLinks = new List<LinkWrapper>();
+                for (int i = 0; i < Links.Count; ++i)
+                {
+                    if ((Links[i].Direction == direction) && Links[i].Link.IsCollision(x, y, w, h, overlap))
+                    {
+                        foundLinks.Add(Links[i]);
+                    }
+                }
+                return foundLinks;
+            }
+
+            public LinkWrapper GetSelectedLink(int index)
+            {
+                return SelectedLinks[index];
+            }
+
+            public LinkWrapper GetSelectedLinkById(int id)
+            {
+                for (int i = 0; i < SelectedLinks.Count; ++i)
+                {
+                    if (SelectedLinks[i].Id == id)
+                    {
+                        return SelectedLinks[i];
+                    }
+                }
+                return null;
+            }
+
             public void ForEachLink(ForEachLinkFunction function)
             {
                 for (int i = 0; i < Links.Count; ++i)
                 {
                     function(Links[i].State, Links[i].Transition, Links[i].Direction);
+                }
+            }
+
+            public void ForEachSelectedLink(ForEachLinkFunction function)
+            {
+                for (int i = 0; i < SelectedLinks.Count; ++i)
+                {
+                    function(SelectedLinks[i].State, SelectedLinks[i].Transition, SelectedLinks[i].Direction);
+                }
+            }
+
+            public void Select()
+            {
+                SelectedLinks.Clear();
+                for (int i = 0; i < Links.Count; ++i)
+                {
+                    Links[i].Link.Select();
+                    SelectedLinks.Add(Links[i]);
+                }
+            }
+
+            public void Select(int stateId, int transitionId)
+            {
+                var state = _parent.States[stateId];
+                if (ReferenceEquals(state, null))
+                {
+                    return;
+                }
+                for (int i = 0; i < state.InputLinks.Count; ++i)
+                {
+                    if (state.InputLinks[i].Transition.Transition.Id == transitionId)
+                    {
+                        state.InputLinks[i].Link.Select();
+                        SelectedLinks.Add(state.InputLinks[i]);
+                        break;
+                    }
+                }
+                for (int i = 0; i < state.OutputLinks.Count; ++i)
+                {
+                    if (state.OutputLinks[i].Transition.Transition.Id == transitionId)
+                    {
+                        state.OutputLinks[i].Link.Select();
+                        SelectedLinks.Add(state.OutputLinks[i]);
+                        break;
+                    }
+                }
+            }
+
+            public void Select(int stateId, int transitionId, LinkDirection direction)
+            {
+                var state = _parent.States[stateId];
+                if (ReferenceEquals(state, null))
+                {
+                    return;
+                }
+                if (direction == LinkDirection.FromStateToTransition)
+                {
+                    for (int i = 0; i < state.OutputLinks.Count; ++i)
+                    {
+                        if (state.OutputLinks[i].Transition.Transition.Id == transitionId)
+                        {
+                            state.OutputLinks[i].Link.Select();
+                            SelectedLinks.Add(state.OutputLinks[i]);
+                            return;
+                        }
+                    }
+                }
+                else
+                {
+                    for (int i = 0; i < state.InputLinks.Count; ++i)
+                    {
+                        if (state.InputLinks[i].Transition.Transition.Id == transitionId)
+                        {
+                            state.InputLinks[i].Link.Select();
+                            SelectedLinks.Add(state.InputLinks[i]);
+                            return;
+                        }
+                    }
+                }
+            }
+
+            public void Deselect()
+            {
+                SelectedLinks.Clear();
+                for (int i = 0; i < Links.Count; ++i)
+                {
+                    Links[i].Link.Deselect();
+                }
+            }
+
+            public void Deselect(int stateId, int transitionId)
+            {
+                int counter = 0;
+                for (int i = SelectedLinks.Count - 1; ((i >= 0) && (counter < 2)); --i)
+                {
+                    if ((SelectedLinks[i].State.Id == stateId)
+                        && (SelectedLinks[i].Transition.Id == transitionId))
+                    {
+                        SelectedLinks[i].Link.Deselect();
+                        SelectedLinks.RemoveAt(i);
+                        ++counter;
+                    }
+                }
+            }
+
+            public void Deselect(int stateId, int transitionId, LinkDirection direction)
+            {
+                for (int i = 0; i < SelectedLinks.Count; ++i)
+                {
+                    if ((SelectedLinks[i].State.Id == stateId)
+                        && (SelectedLinks[i].Transition.Id == transitionId)
+                        && (SelectedLinks[i].Direction == direction))
+                    {
+                        SelectedLinks[i].Link.Deselect();
+                        SelectedLinks.RemoveAt(i);
+                        return;
+                    }
                 }
             }
 

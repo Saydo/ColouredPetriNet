@@ -1,4 +1,4 @@
-﻿namespace ColouredPetriNet.Container.GraphicsPetriNet
+﻿namespace ColouredPetriNet.Container
 {
     public class IdGenerator
     {

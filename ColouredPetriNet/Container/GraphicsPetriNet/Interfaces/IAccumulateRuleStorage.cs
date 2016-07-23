@@ -11,5 +11,6 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet.Interfaces
         void Remove(int stateType, List<Tuple<int, int>> markers);
         void Remove(int stateType, int markerType, int markerCount = -1);
         void Clear();
+        bool Accumulate(StateWrapper state);
     }
 }

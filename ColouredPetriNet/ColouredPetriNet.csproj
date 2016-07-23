@@ -73,12 +73,11 @@
     <Compile Include="Container\GraphicsPetriNet\GraphicsItems\RhombGraphicsItem.cs" />
     <Compile Include="Container\GraphicsPetriNet\GraphicsItems\RoundGraphicsItem.cs" />
     <Compile Include="Container\GraphicsPetriNet\GraphicsItems\TriangleGraphicsItem.cs" />
-    <Compile Include="Container\GraphicsPetriNet\IGraphicsPetriNet.cs" />
     <Compile Include="Container\GraphicsPetriNet\LinkWrapper.cs" />
     <Compile Include="Container\GraphicsPetriNet\GraphicsPetriNet.cs" />
     <Compile Include="Container\GraphicsPetriNet\StateWrapper.cs" />
     <Compile Include="Container\GraphicsPetriNet\TransitionWrapper.cs" />
-    <Compile Include="Container\GraphicsPetriNet\IdGenerator.cs" />
+    <Compile Include="Container\IdGenerator.cs" />
     <Compile Include="Container\GraphicsPetriNet\Interfaces\IAccumulateRuleStorage.cs" />
     <Compile Include="Container\GraphicsPetriNet\Interfaces\ILinkStorage.cs" />
     <Compile Include="Container\GraphicsPetriNet\Interfaces\IMarkerStorage.cs" />
@@ -101,7 +100,6 @@
     <Compile Include="Container\GraphicsPetriNet\Storages\TransitionStorage.cs" />
     <Compile Include="Container\GraphicsPetriNet\Storages\TypeStorage.cs" />
     <Compile Include="Container\GraphicsPetriNet\TypeInfo.cs" />
-    <Compile Include="Container\ColouredPetriNet\IdGenerator.cs" />
     <Compile Include="Container\ColouredPetriNet\Interfaces\IAccumulateRuleStorage.cs" />
     <Compile Include="Container\ColouredPetriNet\Interfaces\ILinkStorage.cs" />
     <Compile Include="Container\ColouredPetriNet\Interfaces\IMarkerStorage.cs" />

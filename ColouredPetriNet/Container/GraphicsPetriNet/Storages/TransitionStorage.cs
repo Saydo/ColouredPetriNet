@@ -230,12 +230,12 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet
                 return foundTransitions;
             }
 
-            TransitionWrapper GetSelectedTransition(int index)
+            public TransitionWrapper GetSelectedTransition(int index)
             {
                 return SelectedTransitions[index];
             }
 
-            TransitionWrapper GetSelectedTransitionById(int id)
+            public TransitionWrapper GetSelectedTransitionById(int id)
             {
                 for (int i = 0; i < SelectedTransitions.Count; ++i)
                 {
@@ -255,11 +255,57 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet
                 }
             }
 
-            void ForEachSelectedTransition(GraphicsPetriNet.ForEachTransitionFunction function);
-            void Select();
-            void Select(int type);
-            void Deselect();
-            void Deselect(int type);
+            public void ForEachSelectedTransition(GraphicsPetriNet.ForEachTransitionFunction function)
+            {
+                for (int i = 0; i < SelectedTransitions.Count; ++i)
+                {
+                    function(SelectedTransitions[i]);
+                }
+            }
+
+            public void Select()
+            {
+                SelectedTransitions.Clear();
+                for (int i = 0; i < Transitions.Count; ++i)
+                {
+                    Transitions[i].Transition.Select();
+                    SelectedTransitions.Add(Transitions[i]);
+                }
+            }
+
+            public void Select(int type)
+            {
+                for (int i = 0; i < Transitions.Count; ++i)
+                {
+                    if ((Transitions[i].Type == type)
+                        && (!Transitions[i].Transition.IsSelected()))
+                    {
+                        Transitions[i].Transition.Select();
+                        SelectedTransitions.Add(Transitions[i]);
+                    }
+                }
+            }
+
+            public void Deselect()
+            {
+                SelectedTransitions.Clear();
+                for (int i = 0; i < Transitions.Count; ++i)
+                {
+                    Transitions[i].Transition.Deselect();
+                }
+            }
+
+            public void Deselect(int type)
+            {
+                for (int i = SelectedTransitions.Count - 1; i >= 0; --i)
+                {
+                    if (SelectedTransitions[i].Type == type)
+                    {
+                        Transitions[i].Transition.Deselect();
+                        SelectedTransitions.RemoveAt(i);
+                    }
+                }
+            }
 
             #region Helpful Functions
             public int GetSelectedTransitionIndex(TransitionWrapper transition)
