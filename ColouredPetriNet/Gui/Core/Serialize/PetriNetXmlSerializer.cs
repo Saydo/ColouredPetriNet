@@ -2,7 +2,7 @@
 using System.IO;
 using System.Xml.Serialization;
 
-namespace ColouredPetriNet.Gui.Core.Serialize
+namespace ColouredPetriNet.Gui.Core.Xml
 {
     public sealed class Utf8StringWriter : StringWriter
     {

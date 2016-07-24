@@ -5,6 +5,7 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet
     public partial class GraphicsPetriNet
     {
         public Interfaces.ITransitionStorage Transitions;
+        private TransitionStorage _transitions;
         public delegate void ForEachTransitionFunction(TransitionWrapper transition);
 
         private class TransitionStorage : Interfaces.ITransitionStorage
@@ -169,7 +170,7 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet
 
             public void Clear()
             {
-                _parent.Links.Clear();
+                _parent._links.Clear();
                 SelectedTransitions.Clear();
                 Transitions.Clear();
             }
@@ -273,6 +274,32 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet
                 }
             }
 
+            public void SelectArea(int x, int y)
+            {
+                for (int i = 0; i < Transitions.Count; ++i)
+                {
+                    if ((!Transitions[i].Transition.IsSelected())
+                        && Transitions[i].Transition.IsCollision(x, y))
+                    {
+                        Transitions[i].Transition.Select();
+                        SelectedTransitions.Add(Transitions[i]);
+                    }
+                }
+            }
+
+            public void SelectArea(int x, int y, int w, int h, GraphicsItems.OverlapType overlap)
+            {
+                for (int i = 0; i < Transitions.Count; ++i)
+                {
+                    if ((!Transitions[i].Transition.IsSelected())
+                        && Transitions[i].Transition.IsCollision(x, y, w, h, overlap))
+                    {
+                        Transitions[i].Transition.Select();
+                        SelectedTransitions.Add(Transitions[i]);
+                    }
+                }
+            }
+
             public void Select(int type)
             {
                 for (int i = 0; i < Transitions.Count; ++i)
@@ -295,6 +322,32 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet
                 }
             }
 
+            public void DeselectArea(int x, int y)
+            {
+                for (int i = 0; i < Transitions.Count; ++i)
+                {
+                    if (Transitions[i].Transition.IsSelected()
+                        && Transitions[i].Transition.IsCollision(x, y))
+                    {
+                        Transitions[i].Transition.Deselect();
+                        SelectedTransitions.Remove(Transitions[i]);
+                    }
+                }
+            }
+
+            public void DeselectArea(int x, int y, int w, int h, GraphicsItems.OverlapType overlap)
+            {
+                for (int i = 0; i < Transitions.Count; ++i)
+                {
+                    if (Transitions[i].Transition.IsSelected()
+                        && Transitions[i].Transition.IsCollision(x, y, w, h, overlap))
+                    {
+                        Transitions[i].Transition.Deselect();
+                        SelectedTransitions.Remove(Transitions[i]);
+                    }
+                }
+            }
+
             public void Deselect(int type)
             {
                 for (int i = SelectedTransitions.Count - 1; i >= 0; --i)
@@ -305,6 +358,27 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet
                         SelectedTransitions.RemoveAt(i);
                     }
                 }
+            }
+
+            public void Move(int dx, int dy)
+            {
+                for (int i = 0; i < Transitions.Count; ++i)
+                {
+                    Transitions[i].Transition.Move(dx, dy);
+                }
+            }
+
+            public bool Move(int dx, int dy, int id)
+            {
+                for (int i = 0; i < Transitions.Count; ++i)
+                {
+                    if (Transitions[i].Id == id)
+                    {
+                        Transitions[i].Transition.Move(dx, dy);
+                        return true;
+                    }
+                }
+                return false;
             }
 
             #region Helpful Functions
@@ -363,6 +437,14 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet
                             state.InputLinks.RemoveAt(j);
                         }
                     }
+                }
+            }
+
+            public void Draw(System.Drawing.Graphics graphics)
+            {
+                for (int i = 0; i < Transitions.Count; ++i)
+                {
+                    Transitions[i].Transition.Draw(graphics);
                 }
             }
             #endregion

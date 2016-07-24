@@ -5,6 +5,7 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet
     public partial class GraphicsPetriNet
     {
         public Interfaces.ILinkStorage Links;
+        private LinkStorage _links;
         public delegate void ForEachLinkFunction(StateWrapper state, TransitionWrapper transition,
             LinkDirection direction);
 
@@ -179,12 +180,12 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet
 
             public LinkWrapper Add(int stateId, int transitionId, LinkDirection direction)
             {
-                var state = _parent.States[stateId];
+                var state = _parent._states[stateId];
                 if (ReferenceEquals(state, null))
                 {
                     return null;
                 }
-                var transition = _parent.Transitions[transitionId];
+                var transition = _parent._transitions[transitionId];
                 if (ReferenceEquals(state, null))
                 {
                     return null;
@@ -344,8 +345,8 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet
 
             public void Clear()
             {
-                ((StateStorage)_parent.States).RemoveAllLinks();
-                ((TransitionStorage)_parent.Transitions).RemoveAllLinks();
+                _parent._states.RemoveAllLinks();
+                _parent._transitions.RemoveAllLinks();
                 SelectedLinks.Clear();
                 Links.Clear();
             }
@@ -447,9 +448,34 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet
                 }
             }
 
+            public void SelectArea(int x, int y)
+            {
+                for (int i = 0; i < Links.Count; ++i)
+                {
+                    if ((!Links[i].Link.IsSelected()) && Links[i].Link.IsCollision(x, y))
+                    {
+                        Links[i].Link.Select();
+                        SelectedLinks.Add(Links[i]);
+                    }
+                }
+            }
+
+            public void SelectArea(int x, int y, int w, int h, GraphicsItems.OverlapType overlap)
+            {
+                for (int i = 0; i < Links.Count; ++i)
+                {
+                    if ((!Links[i].Link.IsSelected())
+                        && Links[i].Link.IsCollision(x, y, w, h, overlap))
+                    {
+                        Links[i].Link.Select();
+                        SelectedLinks.Add(Links[i]);
+                    }
+                }
+            }
+
             public void Select(int stateId, int transitionId)
             {
-                var state = _parent.States[stateId];
+                var state = _parent._states[stateId];
                 if (ReferenceEquals(state, null))
                 {
                     return;
@@ -476,7 +502,7 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet
 
             public void Select(int stateId, int transitionId, LinkDirection direction)
             {
-                var state = _parent.States[stateId];
+                var state = _parent._states[stateId];
                 if (ReferenceEquals(state, null))
                 {
                     return;
@@ -516,6 +542,31 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet
                 }
             }
 
+            public void DeselectArea(int x, int y)
+            {
+                for (int i = 0; i < Links.Count; ++i)
+                {
+                    if (Links[i].Link.IsSelected() && Links[i].Link.IsCollision(x, y))
+                    {
+                        Links[i].Link.Deselect();
+                        SelectedLinks.Remove(Links[i]);
+                    }
+                }
+            }
+
+            public void DeselectArea(int x, int y, int w, int h, GraphicsItems.OverlapType overlap)
+            {
+                for (int i = 0; i < Links.Count; ++i)
+                {
+                    if (Links[i].Link.IsSelected()
+                        && Links[i].Link.IsCollision(x, y, w, h, overlap))
+                    {
+                        Links[i].Link.Deselect();
+                        SelectedLinks.Remove(Links[i]);
+                    }
+                }
+            }
+
             public void Deselect(int stateId, int transitionId)
             {
                 int counter = 0;
@@ -544,6 +595,27 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet
                         return;
                     }
                 }
+            }
+
+            public void Move(int dx, int dy)
+            {
+                for (int i = 0; i < Links.Count; ++i)
+                {
+                    MoveLink(dx, dy, Links[i]);
+                }
+            }
+
+            public bool Move(int dx, int dy, int id)
+            {
+                for (int i = 0; i < Links.Count; ++i)
+                {
+                    if (Links[i].Id == id)
+                    {
+                        MoveLink(dx, dy, Links[i]);
+                        return true;
+                    }
+                }
+                return false;
             }
 
             #region Helpful Functions
@@ -650,6 +722,29 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet
                 if (index >= 0)
                 {
                     SelectedLinks.RemoveAt(index);
+                }
+            }
+
+            public void Draw(System.Drawing.Graphics graphics)
+            {
+                for (int i = 0; i < Links.Count; ++i)
+                {
+                    Links[i].Link.Draw(graphics);
+                }
+            }
+
+            public void UpdateMovedItems(List<StateWrapper> movedStates, List<TransitionWrapper> movedTransitions)
+            {
+                for (int i = 0; i < SelectedLinks.Count; ++i)
+                {
+                    if (!movedStates.Contains(SelectedLinks[i].State))
+                    {
+                        movedStates.Add(SelectedLinks[i].State);
+                    }
+                    if (!movedTransitions.Contains(SelectedLinks[i].Transition))
+                    {
+                        movedTransitions.Add(SelectedLinks[i].Transition);
+                    }
                 }
             }
             #endregion

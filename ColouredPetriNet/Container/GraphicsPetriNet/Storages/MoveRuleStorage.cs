@@ -5,6 +5,7 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet
     public partial class GraphicsPetriNet
     {
         public Interfaces.IMoveRuleStorage MoveRules;
+        private MoveRuleStorage _moveRules;
 
         private class MoveRuleStorage : Interfaces.IMoveRuleStorage
         {

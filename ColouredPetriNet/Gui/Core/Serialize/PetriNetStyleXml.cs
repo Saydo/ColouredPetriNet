@@ -1,7 +1,7 @@
 ﻿using System.Xml.Serialization;
 using System.Collections.Generic;
 
-namespace ColouredPetriNet.Gui.Core.Serialize
+namespace ColouredPetriNet.Gui.Core.Xml
 {
     public enum PenListItem { SelectionPen, LinePen };
 
@@ -11,12 +11,12 @@ namespace ColouredPetriNet.Gui.Core.Serialize
         [XmlElement("Style")]
         public PetriNetStyleXml Style;
         [XmlElement("Items")]
-        public PetriNetItemsXml Items;
+        public Container.GraphicsPetriNet.Xml.GraphicsPetriNetXml Items;
 
         public ColouredPetriNetXml()
         {
             Style = new PetriNetStyleXml();
-            Items = new PetriNetItemsXml();
+            Items = new Container.GraphicsPetriNet.Xml.GraphicsPetriNetXml();
         }
     }
 
@@ -228,135 +228,6 @@ namespace ColouredPetriNet.Gui.Core.Serialize
         public ImageItemStyleXml(string name, string image, int w, int h) : base(name, w, h)
         {
             Image = image;
-        }
-    }
-
-    public class PetriNetItemsXml
-    {
-        [XmlArray("States")]
-        [XmlArrayItem("State")]
-        public List<StateXml> StateList;
-        [XmlArray("Transitions")]
-        [XmlArrayItem("Transition")]
-        public List<TransitionXml> TransitionList;
-        [XmlArray("Links")]
-        [XmlArrayItem("Link")]
-        public List<LinkXml> LinkList;
-
-        public PetriNetItemsXml()
-        {
-            StateList = new List<StateXml>();
-            TransitionList = new List<TransitionXml>();
-            LinkList = new List<LinkXml>();
-        }
-    }
-
-    public class StateXml
-    {
-        [XmlAttribute("id")]
-        public int Id { get; set; }
-        [XmlAttribute("x")]
-        public int X { get; set; }
-        [XmlAttribute("y")]
-        public int Y { get; set; }
-        [XmlAttribute("type")]
-        public string Type { get; set; }
-        [XmlElement("Marker")]
-        public List<MarkerXml> Markers;
-
-        public StateXml()
-        {
-            Id = -1;
-            X = Y = 0;
-            Type = "RoundState";
-            Markers = new List<MarkerXml>();
-        }
-
-        public StateXml(int id, int x, int y, string type)
-        {
-            this.Id = id;
-            this.X = x;
-            this.Y = y;
-            this.Type = type;
-            this.Markers = new List<MarkerXml>();
-        }
-    }
-
-    public class TransitionXml
-    {
-        [XmlAttribute("id")]
-        public int Id { get; set; }
-        [XmlAttribute("x")]
-        public int X { get; set; }
-        [XmlAttribute("y")]
-        public int Y { get; set; }
-        [XmlAttribute("type")]
-        public string Type { get; set; }
-
-        public TransitionXml()
-        {
-            Id = -1;
-            X = Y = 0;
-            Type = "RectangleTransition";
-        }
-
-        public TransitionXml(int id, int x, int y, string type)
-        {
-            this.Id = id;
-            this.X = x;
-            this.Y = y;
-            this.Type = type;
-        }
-    }
-
-    public class LinkXml
-    {
-        private string _direction;
-        [XmlAttribute("id")]
-        public int Id { get; set; }
-        [XmlAttribute("state")]
-        public int StateId { get; set; }
-        [XmlAttribute("transition")]
-        public int TransitionId { get; set; }
-        [XmlAttribute("direction")]
-        public string Direction
-        {
-            get { return _direction; }
-            set { _direction = (value.Equals("FromState") ? value : "ToState"); }
-        }
-
-        public LinkXml()
-        {
-            this.Id = this.StateId = this.TransitionId = -1;
-            this.Direction = "FromState";
-        }
-
-        public LinkXml(int id, int state, int transition, string direction)
-        {
-            this.Id = id;
-            this.StateId = state;
-            this.TransitionId = transition;
-            this.Direction = direction;
-        }
-    }
-
-    public class MarkerXml
-    {
-        [XmlAttribute("id")]
-        public int Id { get; set; }
-        [XmlAttribute("type")]
-        public string Type { get; set; }
-
-        public MarkerXml()
-        {
-            Id = -1;
-            Type = "RoundMarker";
-        }
-
-        public MarkerXml(int id, string type)
-        {
-            this.Id = id;
-            this.Type = type;
         }
     }
 }

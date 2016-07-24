@@ -7,6 +7,7 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet
     public partial class GraphicsPetriNet
     {
         public Interfaces.IMarkerStorage Markers;
+        private MarkerStorage _markers;
         public delegate void ForEachMarkerFunction(MarkerInfo info, GraphicsItems.GraphicsItem item);
 
         private class MarkerStorage : Interfaces.IMarkerStorage
@@ -17,7 +18,7 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet
             public MarkerStorage(GraphicsPetriNet parent)
             {
                 _parent = parent;
-                _states = (StateStorage)_parent.States;
+                _states = _parent._states;
             }
 
             public int Count

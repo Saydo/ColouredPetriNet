@@ -22,8 +22,14 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet.Interfaces
         void ForEachState(GraphicsPetriNet.ForEachStateFunction function);
         void ForEachSelectedState(GraphicsPetriNet.ForEachStateFunction function);
         void Select();
+        void SelectArea(int x, int y);
+        void SelectArea(int x, int y, int w, int h, GraphicsItems.OverlapType overlap);
         void Select(int type);
         void Deselect();
+        void DeselectArea(int x, int y);
+        void DeselectArea(int x, int y, int w, int h, GraphicsItems.OverlapType overlap);
         void Deselect(int type);
+        void Move(int dx, int dy);
+        bool Move(int dx, int dy, int id);
     }
 }

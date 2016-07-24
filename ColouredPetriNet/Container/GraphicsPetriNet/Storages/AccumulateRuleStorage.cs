@@ -7,6 +7,8 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet
     {
         public Interfaces.IAccumulateRuleStorage PrevAccumulateRules;
         public Interfaces.IAccumulateRuleStorage NextAccumulateRules;
+        private AccumulateRuleStorage _prevAccumulateRules;
+        private AccumulateRuleStorage _nextAccumulateRules;
 
         private class AccumulateRuleStorage : Interfaces.IAccumulateRuleStorage
         {

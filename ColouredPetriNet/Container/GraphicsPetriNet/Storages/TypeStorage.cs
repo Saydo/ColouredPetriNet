@@ -5,6 +5,7 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet
     public partial class GraphicsPetriNet
     {
         public Interfaces.ITypeStorage Types;
+        private TypeStorage _types;
         public delegate void ForEachTypeFunction(TypeInfo type);
 
         private class TypeStorage : Interfaces.ITypeStorage

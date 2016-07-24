@@ -6,6 +6,7 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet
     public partial class GraphicsPetriNet
     {
         public Interfaces.IStateStorage States;
+        private StateStorage _states;
         public delegate void ForEachStateFunction(StateWrapper state);
 
         private class StateStorage : Interfaces.IStateStorage
@@ -170,7 +171,7 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet
 
             public void Clear()
             {
-                _parent.Links.Clear();
+                _parent._links.Clear();
                 SelectedStates.Clear();
                 States.Clear();
             }
@@ -274,6 +275,31 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet
                 }
             }
 
+            public void SelectArea(int x, int y)
+            {
+                for (int i = 0; i < States.Count; ++i)
+                {
+                    if ((!States[i].State.IsSelected()) && States[i].State.IsCollision(x, y))
+                    {
+                        States[i].State.Select();
+                        SelectedStates.Add(States[i]);
+                    }
+                }
+            }
+
+            public void SelectArea(int x, int y, int w, int h, GraphicsItems.OverlapType overlap)
+            {
+                for (int i = 0; i < States.Count; ++i)
+                {
+                    if ((!States[i].State.IsSelected()) &&
+                        States[i].State.IsCollision(x, y, w, h, overlap))
+                    {
+                        States[i].State.Select();
+                        SelectedStates.Add(States[i]);
+                    }
+                }
+            }
+
             public void Select(int type)
             {
                 for (int i = 0; i < States.Count; ++i)
@@ -296,6 +322,31 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet
                 }
             }
 
+            public void DeselectArea(int x, int y)
+            {
+                for (int i = 0; i < States.Count; ++i)
+                {
+                    if (States[i].State.IsSelected() && States[i].State.IsCollision(x, y))
+                    {
+                        States[i].State.Deselect();
+                        SelectedStates.Remove(States[i]);
+                    }
+                }
+            }
+
+            public void DeselectArea(int x, int y, int w, int h, GraphicsItems.OverlapType overlap)
+            {
+                for (int i = 0; i < States.Count; ++i)
+                {
+                    if (States[i].State.IsSelected()
+                        && States[i].State.IsCollision(x, y, w, h, overlap))
+                    {
+                        States[i].State.Deselect();
+                        SelectedStates.Remove(States[i]);
+                    }
+                }
+            }
+
             public void Deselect(int type)
             {
                 for (int i = SelectedStates.Count - 1; i >= 0; --i)
@@ -306,6 +357,27 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet
                         SelectedStates.RemoveAt(i);
                     }
                 }
+            }
+
+            public void Move(int dx, int dy)
+            {
+                for (int i = 0; i < States.Count; ++i)
+                {
+                    MoveState(dx, dy, States[i]);
+                }
+            }
+
+            public bool Move(int dx, int dy, int id)
+            {
+                for (int i = 0; i < States.Count; ++i)
+                {
+                    if (States[i].Id == id)
+                    {
+                        MoveState(dx, dy, States[i]);
+                        return true;
+                    }
+                }
+                return false;
             }
 
             #region Marker Storage Functions
@@ -601,9 +673,9 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet
             {
                 TransitionWrapper transition;
                 StateWrapper state;
-                var prevAccRules = (AccumulateRuleStorage)_parent.PrevAccumulateRules;
-                var nextAccRules = (AccumulateRuleStorage)_parent.NextAccumulateRules;
-                var moveRules = ((MoveRuleStorage)_parent.MoveRules);
+                var prevAccRules = _parent._prevAccumulateRules;
+                var nextAccRules = _parent._nextAccumulateRules;
+                var moveRules = _parent._moveRules;
                 // sequence: accumulate(prev) -> move -> accumulate(next)
                 for (int i = 0; i < States.Count; ++i)
                 {
@@ -698,24 +770,12 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet
                 }
             }
 
-            public List<MarkerInfo> GetMarkerInfoList(List<Tuple<GraphicsItems.GraphicsItem, List<int>>> markerList)
+            public void Draw(System.Drawing.Graphics graphics)
             {
-                //
-            }
-
-            public List<Interfaces.IMarkerWrapper> GetMarkerWrapperList(List<Tuple<int, List<int>>> markerList)
-            {
-                var markerWrapperList = new List<Interfaces.IMarkerWrapper>();
-                Interfaces.IMarkerWrapper marker;
-                for (int i = 0; i < markerList.Count; ++i)
+                for (int i = 0; i < States.Count; ++i)
                 {
-                    for (int j = 0; j < markerList[i].Item2.Count; ++j)
-                    {
-                        marker = this[markerList[i].Item2[j]];
-                        markerWrapperList.Add(marker);
-                    }
+                    States[i].Draw(graphics);
                 }
-                return markerWrapperList;
             }
             #endregion
         }

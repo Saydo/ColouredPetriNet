@@ -73,6 +73,7 @@
     <Compile Include="Container\GraphicsPetriNet\GraphicsItems\RhombGraphicsItem.cs" />
     <Compile Include="Container\GraphicsPetriNet\GraphicsItems\RoundGraphicsItem.cs" />
     <Compile Include="Container\GraphicsPetriNet\GraphicsItems\TriangleGraphicsItem.cs" />
+    <Compile Include="Container\GraphicsPetriNet\GraphicsPetriNetXmlTypes.cs" />
     <Compile Include="Container\GraphicsPetriNet\LinkWrapper.cs" />
     <Compile Include="Container\GraphicsPetriNet\GraphicsPetriNet.cs" />
     <Compile Include="Container\GraphicsPetriNet\StateWrapper.cs" />
@@ -128,30 +129,10 @@
     <Compile Include="Container\ColouredPetriNet\Storages\TypeStorage.cs" />
     <Compile Include="Container\ColouredPetriNet\TransitionWrapper.cs" />
     <Compile Include="Gui\Core\ColouredPetriNetItemInfo.cs" />
-    <Compile Include="Gui\Core\ColouredPetriNetTypes.cs" />
-    <Compile Include="Gui\Core\ColouredPetriNetStyle.cs" />
-    <Compile Include="Gui\Core\GraphicsColouredPetriNet.cs" />
-    <Compile Include="Gui\Core\IGraphicsPetriNet.cs" />
-    <Compile Include="Gui\Core\GraphicsLinkWrapper.cs" />
-    <Compile Include="Gui\Core\GraphicsStateWrapper.cs" />
-    <Compile Include="Gui\Core\GraphicsTransitionWrapper.cs" />
-    <Compile Include="Gui\Core\LinearAlgebra\Equation.cs" />
-    <Compile Include="Gui\Core\GraphicsItems\ColourGraphicsItem.cs" />
-    <Compile Include="Gui\Core\GraphicsItems\GraphicsItem.cs" />
-    <Compile Include="Gui\Core\GraphicsItems\IGraphicsItem.cs" />
-    <Compile Include="Gui\Core\GraphicsItems\ImageGraphicsItem.cs" />
-    <Compile Include="Gui\Core\GraphicsItems\LineGraphicsItem.cs" />
-    <Compile Include="Gui\Core\GraphicsItems\LinkGraphicsItem.cs" />
-    <Compile Include="Gui\Core\GraphicsItems\PolygonGraphicsItem.cs" />
-    <Compile Include="Gui\Core\GraphicsItems\RectangleGraphicsItem.cs" />
-    <Compile Include="Gui\Core\GraphicsItems\RhombGraphicsItem.cs" />
-    <Compile Include="Gui\Core\GraphicsItems\RoundGraphicsItem.cs" />
-    <Compile Include="Gui\Core\GraphicsItems\TriangleGraphicsItem.cs" />
-    <Compile Include="Gui\Core\LinearAlgebra\Algorithm.cs" />
-    <Compile Include="Gui\Core\MarkerInfo.cs" />
-    <Compile Include="Gui\Core\Serialize\ColouredPetriNetXml.cs" />
+    <Compile Include="Gui\Core\PetriNetTypes.cs" />
+    <Compile Include="Gui\Core\PetriNetStyle.cs" />
+    <Compile Include="Gui\Core\Serialize\PetriNetStyleXml.cs" />
     <Compile Include="Gui\Core\Serialize\PetriNetXmlSerializer.cs" />
-    <Compile Include="Gui\Core\TypeInfoList.cs" />
     <Compile Include="Gui\Forms\AboutForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -188,7 +169,6 @@
     <Compile Include="Gui\Forms\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Gui\Core\GraphicsPetriNet.cs" />
     <Compile Include="Gui\Core\SelectionArea.cs" />
     <Compile Include="Gui\Forms\MarkerInfoForm.cs">
       <SubType>Form</SubType>
