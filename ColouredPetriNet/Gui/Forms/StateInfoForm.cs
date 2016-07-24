@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ColouredPetriNet.Container.GraphicsPetriNet;
 
 namespace ColouredPetriNet.Gui.Forms
 {
@@ -60,7 +61,7 @@ namespace ColouredPetriNet.Gui.Forms
             dgvOutputLinks.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
         }
 
-        public void ShowDialog(Core.GraphicsStateWrapper state)
+        public void ShowDialog(StateWrapper state)
         {
             txtId.Text = state.State.Id.ToString();
             txtType.Text = Core.ColouredPetriNetItemInfo.GetStateTypeName(state.State.TypeId);
@@ -70,7 +71,7 @@ namespace ColouredPetriNet.Gui.Forms
             base.ShowDialog();
         }
 
-        private void UpdateMarkersTable(Core.GraphicsStateWrapper state)
+        private void UpdateMarkersTable(StateWrapper state)
         {
             DataRow newRow;
             _markersTable.Clear();
@@ -94,7 +95,7 @@ namespace ColouredPetriNet.Gui.Forms
             }
         }
 
-        private void UpdateInputLinksTable(Core.GraphicsStateWrapper state)
+        private void UpdateInputLinksTable(StateWrapper state)
         {
             DataRow newRow;
             _inputLinksTable.Clear();
@@ -115,7 +116,7 @@ namespace ColouredPetriNet.Gui.Forms
             }
         }
 
-        private void UpdateOutputLinksTable(Core.GraphicsStateWrapper state)
+        private void UpdateOutputLinksTable(StateWrapper state)
         {
             DataRow newRow;
             _outputLinksTable.Clear();

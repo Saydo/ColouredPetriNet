@@ -1,5 +1,6 @@
 ﻿using System.Windows.Forms;
 using System.Drawing;
+using ColouredPetriNet.Container.GraphicsPetriNet.GraphicsItems;
 
 namespace ColouredPetriNet.Gui.Forms
 {
@@ -342,14 +343,14 @@ namespace ColouredPetriNet.Gui.Forms
             mniSelectionModeFull.Name = "mniSelectionModeFull";
             mniSelectionModeFull.Size = new Size(152, 22);
             mniSelectionModeFull.Text = "Full";
-            mniSelectionModeFull.Click += (obj, e) => SetSelectionMode(Core.GraphicsItems.OverlapType.Full);
+            mniSelectionModeFull.Click += (obj, e) => SetSelectionMode(OverlapType.Full);
             //
             // SelectionModePartial (ToolStripMenuItem)
             //
             mniSelectionModePartial.Name = "mniSelectionModePartial";
             mniSelectionModePartial.Size = new Size(152, 22);
             mniSelectionModePartial.Text = "Partial";
-            mniSelectionModePartial.Click += (obj, e) => SetSelectionMode(Core.GraphicsItems.OverlapType.Partial);
+            mniSelectionModePartial.Click += (obj, e) => SetSelectionMode(OverlapType.Partial);
             //
             // ItemStyle (ToolStripMenuItem)
             //

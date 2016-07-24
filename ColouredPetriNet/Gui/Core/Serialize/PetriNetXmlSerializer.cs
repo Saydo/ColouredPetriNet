@@ -11,6 +11,7 @@ namespace ColouredPetriNet.Gui.Core.Xml
 
     static class PetriNetXmlSerializer
     {
+        /*
         public static PetriNetStyleXml ToXml(Style.ColouredPetriNetStyle style)
         {
             var styleXml = new PetriNetStyleXml();
@@ -158,5 +159,6 @@ namespace ColouredPetriNet.Gui.Core.Xml
             }
             return true;
         }
+        */
     }
 }

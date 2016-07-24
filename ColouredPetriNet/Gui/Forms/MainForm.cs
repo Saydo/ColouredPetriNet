@@ -1,6 +1,8 @@
 ﻿using System.Windows.Forms;
 using System.Drawing;
 using System.Collections.Generic;
+using ColouredPetriNet.Container.GraphicsPetriNet;
+using ColouredPetriNet.Container.GraphicsPetriNet.GraphicsItems;
 
 namespace ColouredPetriNet.Gui.Forms
 {
@@ -13,7 +15,8 @@ namespace ColouredPetriNet.Gui.Forms
         private enum StateTreeImage { RoundState, ImageState, RoundMarker, RhombMarker, TriangleMarker };
         private enum TransitionTreeImage { RectangleTransition, RhombTransition };
 
-        private Container.GraphicsPetriNet.GraphicsPetriNet _petriNet;
+        private GraphicsPetriNet _petriNet;
+        private OverlapType _overlap;
         private Core.SelectionArea _selectionArea;
         private Core.Style.ColouredPetriNetStyle Style;
         private bool _mousePressed;
@@ -23,16 +26,16 @@ namespace ColouredPetriNet.Gui.Forms
         private Core.ColouredStateType _newStateType;
         private Core.ColouredTransitionType _newTransitionType;
         private Core.ColouredMarkerType _newMarkerType;
-        private Core.GraphicsStateWrapper _selectedState;
-        private Core.GraphicsTransitionWrapper _selectedTransition;
+        private StateWrapper _selectedState;
+        private TransitionWrapper _selectedTransition;
         private string _currentFile;
 
         public MainForm()
         {
             InitializeComponent();
-            _petriNet = new Core.GraphicsPetriNet();
-            _petriNet.AddStateEvent += AddStateToTree;
-            _petriNet.AddTransitionEvent += AddTransitionToTree;
+            _petriNet = new GraphicsPetriNet();
+            _selectionArea = new Core.SelectionArea();
+            _overlap = OverlapType.Partial;
             _mousePressed = false;
             _itemSelected = false;
             _selectedState = null;
@@ -44,6 +47,62 @@ namespace ColouredPetriNet.Gui.Forms
             _newMarkerType = Core.ColouredMarkerType.RoundMarker;
             _currentFile = null;
             UpdateStatus(GetCurrentMapModeName());
+        }
+
+        private void SetSelectionArea(int x, int y, int w, int h)
+        {
+            _selectionArea.X = x;
+            _selectionArea.Y = y;
+            _selectionArea.Width = w;
+            _selectionArea.Height = h;
+            _selectionArea.Visible = true;
+            _selectionArea.HorizontalDirection = Core.HorizontalDirection.Right;
+            _selectionArea.VerticalDirection = Core.VerticalDirection.Top;
+            _petriNet.Select(x, y, w, h, _overlap);
+        }
+
+        private void UpdateSelectionAreaByPos(int x, int y)
+        {
+            int dx = x - _selectionArea.X;
+            int dy = y - _selectionArea.Y;
+            _selectionArea.Width = System.Math.Abs(dx);
+            _selectionArea.Height = System.Math.Abs(dy);
+            if (dx < 0)
+            {
+                _selectionArea.HorizontalDirection = Core.HorizontalDirection.Left;
+                if (dy < 0)
+                {
+                    _selectionArea.VerticalDirection = Core.VerticalDirection.Bottom;
+                    _petriNet.Select(x, y, _selectionArea.Width, _selectionArea.Height, _overlap);
+                }
+                else
+                {
+                    _selectionArea.VerticalDirection = Core.VerticalDirection.Top;
+                    _petriNet.Select(x, _selectionArea.Y, _selectionArea.Width, _selectionArea.Height, _overlap);
+                }
+            }
+            else
+            {
+                _selectionArea.HorizontalDirection = Core.HorizontalDirection.Right;
+                if (dy < 0)
+                {
+                    _selectionArea.VerticalDirection = Core.VerticalDirection.Bottom;
+                    _petriNet.Select(_selectionArea.X, y, _selectionArea.Width, _selectionArea.Height, _overlap);
+                }
+                else
+                {
+                    _selectionArea.VerticalDirection = Core.VerticalDirection.Top;
+                    _petriNet.Select(_selectionArea.X, _selectionArea.Y, _selectionArea.Width,
+                        _selectionArea.Height, _overlap);
+                }
+            }
+        }
+
+        private void UpdateSelectionArea(int w, int h)
+        {
+            _selectionArea.Width = w;
+            _selectionArea.Height = h;
+            _petriNet.Select(_selectionArea.X, _selectionArea.Y, w, h, _overlap);
         }
 
         /*
@@ -69,65 +128,7 @@ namespace ColouredPetriNet.Gui.Forms
             Style.SelectionPen = new Pen(Color.FromArgb(0, 0, 0), 1.0F);
         }
 
-        private void SetSelectionArea(int x, int y, int w, int h)
-        {
-            _selectionArea.X = x;
-            _selectionArea.Y = y;
-            _selectionArea.Width = w;
-            _selectionArea.Height = h;
-            _selectionArea.Visible = true;
-            _selectionArea.HorizontalDirection = HorizontalDirection.Right;
-            _selectionArea.VerticalDirection = VerticalDirection.Top;
-            Select(x, y, w, h);
-        }
-
-        private void UpdateSelectionAreaByPos(int x, int y)
-        {
-            int dx = x - _selectionArea.X;
-            int dy = y - _selectionArea.Y;
-            _selectionArea.Width = System.Math.Abs(dx);
-            _selectionArea.Height = System.Math.Abs(dy);
-            if (dx < 0)
-            {
-                _selectionArea.HorizontalDirection = HorizontalDirection.Left;
-                if (dy < 0)
-                {
-                    _selectionArea.VerticalDirection = VerticalDirection.Bottom;
-                    Select(x, y, _selectionArea.Width, _selectionArea.Height);
-                }
-                else
-                {
-                    _selectionArea.VerticalDirection = VerticalDirection.Top;
-                    Select(x, _selectionArea.Y, _selectionArea.Width, _selectionArea.Height);
-                }
-            }
-            else
-            {
-                _selectionArea.HorizontalDirection = HorizontalDirection.Right;
-                if (dy < 0)
-                {
-                    _selectionArea.VerticalDirection = VerticalDirection.Bottom;
-                    Select(_selectionArea.X, y, _selectionArea.Width, _selectionArea.Height);
-                }
-                else
-                {
-                    _selectionArea.VerticalDirection = VerticalDirection.Top;
-                    Select(_selectionArea.X, _selectionArea.Y, _selectionArea.Width, _selectionArea.Height);
-                }
-            }
-        }
-
-        private void UpdateSelectionArea(int w, int h)
-        {
-            _selectionArea.Width = w;
-            _selectionArea.Height = h;
-            Select(_selectionArea.X, _selectionArea.Y, w, h);
-        }
-
-        peivate void HideSelectionArea()
-        {
-            _selectionArea.Visible = false;
-        }
+        
 
         private bool Serialize(string filePath)
         {
@@ -158,13 +159,14 @@ namespace ColouredPetriNet.Gui.Forms
         private void ItemMapPaint(object sender, PaintEventArgs e)
         {
             _petriNet.Draw(e.Graphics);
-            //_selectionArea.Draw(e.Graphics);
+            _selectionArea.Draw(e.Graphics);
         }
 
         private void ItemMapMouseClick(object sender, MouseEventArgs e)
         {
             //System.Console.WriteLine("ItemMapMouseClick");
             int id;
+            /*
             switch (_mapMode)
             {
                 case ItemMapMode.AddState:
@@ -243,10 +245,12 @@ namespace ColouredPetriNet.Gui.Forms
                     }
                     break;
             }
+            */
         }
 
         private void ItemMapMouseDown(object sender, MouseEventArgs e)
         {
+            /*
             if ((_mapMode == ItemMapMode.AddState) || (_mapMode == ItemMapMode.AddTransition)
                 || (_mapMode == ItemMapMode.AddMarker) || (_mapMode == ItemMapMode.AddLink)
                 || (_mapMode == ItemMapMode.RemoveMarker))
@@ -313,10 +317,12 @@ namespace ColouredPetriNet.Gui.Forms
                 _petriNet.SetSelectionArea(e.X, e.Y, 1, 1);
             }
             this.pbMap.Refresh();
+            */
         }
 
         private void ItemMapMouseMove(object sender, MouseEventArgs e)
         {
+            /*
             if (_mousePressed)
             {
                 System.Console.WriteLine("ItemMapMouseMove");
@@ -331,10 +337,12 @@ namespace ColouredPetriNet.Gui.Forms
                 }
                 this.pbMap.Refresh();
             }
+            */
         }
 
         private void ItemMapMouseUp(object sender, MouseEventArgs e)
         {
+            /*
             if (!_mousePressed)
             {
                 return;
@@ -347,10 +355,12 @@ namespace ColouredPetriNet.Gui.Forms
             }
             _petriNet.HideSelectionArea();
             this.pbMap.Refresh();
+            */
         }
 
         private void MainFormKeyDown(object sender, KeyEventArgs e)
         {
+            /*
             if ((_mapMode == ItemMapMode.Remove) && (e.KeyCode == Keys.Delete))
             {
                 var setecledStates = _petriNet.GetSelectedStates();
@@ -380,12 +390,13 @@ namespace ColouredPetriNet.Gui.Forms
                 _petriNet.RemoveSelectedItems();
                 pbMap.Refresh();
             }
+            */
         }
 
         private void SetItemMapMode(ItemMapMode mode)
         {
             _petriNet.DeselectItems();
-            _petriNet.HideSelectionArea();
+            _selectionArea.Visible = false;
             _mousePressed = false;
             _itemSelected = false;
             _selectedState = null;
@@ -450,9 +461,10 @@ namespace ColouredPetriNet.Gui.Forms
             UpdateStatus(GetCurrentMapModeName());
         }
 
-        private void SetSelectionMode(Core.GraphicsItems.OverlapType overlap)
+        private void SetSelectionMode(OverlapType overlap)
         {
-            _petriNet.Style.SelectionMode = overlap;
+            //_petriNet.Style.SelectionMode = overlap;
+            _overlap = overlap;
         }
 
         private void SetNewStateType(Core.ColouredStateType type)
@@ -567,7 +579,7 @@ namespace ColouredPetriNet.Gui.Forms
             SetNewMarkerType(type);
         }
 
-        private Core.GraphicsStateWrapper GetSelectedState(List<Core.GraphicsStateWrapper> stateList)
+        private StateWrapper GetSelectedState(List<StateWrapper> stateList)
         {
             for (int i = 0; i < stateList.Count; ++i)
             {
@@ -579,7 +591,7 @@ namespace ColouredPetriNet.Gui.Forms
             return null;
         }
 
-        private Core.GraphicsTransitionWrapper GetSelectedTransition(List<Core.GraphicsTransitionWrapper> transitionList)
+        private TransitionWrapper GetSelectedTransition(List<TransitionWrapper> transitionList)
         {
             for (int i = 0; i < transitionList.Count; ++i)
             {
@@ -591,7 +603,7 @@ namespace ColouredPetriNet.Gui.Forms
             return null;
         }
 
-        private Core.GraphicsLinkWrapper GetSelectedLink(List<Core.GraphicsLinkWrapper> linkList)
+        private LinkWrapper GetSelectedLink(List<LinkWrapper> linkList)
         {
             for (int i = 0; i < linkList.Count; ++i)
             {
@@ -605,7 +617,7 @@ namespace ColouredPetriNet.Gui.Forms
 
         private void UpdateSelectionModeGui()
         {
-            if (_petriNet.Style.SelectionMode == Core.GraphicsItems.OverlapType.Full)
+            if (_overlap == OverlapType.Full)
             {
                 this.mniSelectionModeFull.Checked = true;
             }
@@ -629,6 +641,7 @@ namespace ColouredPetriNet.Gui.Forms
 
         private void LoadFromFile()
         {
+            /*
             if (dlgOpenFile.ShowDialog() == DialogResult.OK)
             {
                 ClearMap();
@@ -643,10 +656,12 @@ namespace ColouredPetriNet.Gui.Forms
                     MessageBox.Show("Error: Could not load file!");
                 }
             }
+            */
         }
 
         private void SaveToFile()
         {
+            /*
             if (_currentFile == null)
             {
                 SaveFileAs();
@@ -658,10 +673,12 @@ namespace ColouredPetriNet.Gui.Forms
                     MessageBox.Show("Error: Could not save file!");
                 }
             }
+            */
         }
 
         private void SaveFileAs()
         {
+            /*
             if (dlgSaveFile.ShowDialog() == DialogResult.OK)
             {
                 System.Console.WriteLine("File:{0}", dlgSaveFile.FileName);
@@ -674,6 +691,7 @@ namespace ColouredPetriNet.Gui.Forms
                     MessageBox.Show("Error: Could not save file!");
                 }
             }
+            */
         }
 
         private void OpenLinkStyleForm()
@@ -709,7 +727,7 @@ namespace ColouredPetriNet.Gui.Forms
         private void ClearMarkers(int stateId)
         {
             ClearMarkersFromStateTree(stateId);
-            _petriNet.RemoveMarkers(stateId);
+            _petriNet.Markers.RemoveFromState(stateId);
             pbMap.Refresh();
         }
 
@@ -718,7 +736,7 @@ namespace ColouredPetriNet.Gui.Forms
             for (int i = 0; i < markers.Count; ++i)
             {
                 RemoveMarkerFromStateTree(markers[i], stateId);
-                _petriNet.RemoveMarker(markers[i], stateId);
+                _petriNet.Markers.Remove(markers[i]);
                 pbMap.Refresh();
             }
         }
@@ -950,18 +968,18 @@ namespace ColouredPetriNet.Gui.Forms
             switch (e.Type)
             {
                 case Core.Events.ShowInfoEventArgs.ItemType.State:
-                    ShowStateInfoForm(_petriNet.FindStateById(e.Id));
+                    ShowStateInfoForm(_petriNet.States[e.Id]);
                     break;
                 case Core.Events.ShowInfoEventArgs.ItemType.Transition:
-                    ShowTransitionInfoForm(_petriNet.FindTransitionById(e.Id));
+                    ShowTransitionInfoForm(_petriNet.Transitions[e.Id]);
                     break;
                 case Core.Events.ShowInfoEventArgs.ItemType.Marker:
-                    ShowMarkerInfoForm(_petriNet.FindMarkerById(e.Id));
+                    ShowMarkerInfoForm(_petriNet.Markers[e.Id]);
                     break;
             }
         }
 
-        private void ShowStateInfoForm(Core.GraphicsStateWrapper state)
+        private void ShowStateInfoForm(StateWrapper state)
         {
             if (state == null)
             {
@@ -974,7 +992,7 @@ namespace ColouredPetriNet.Gui.Forms
             }
         }
 
-        private void ShowTransitionInfoForm(Core.GraphicsTransitionWrapper transition)
+        private void ShowTransitionInfoForm(TransitionWrapper transition)
         {
             if (transition == null)
             {
@@ -987,7 +1005,7 @@ namespace ColouredPetriNet.Gui.Forms
             }
         }
 
-        private void ShowMarkerInfoForm(Core.MarkerInfo marker)
+        private void ShowMarkerInfoForm(MarkerInfo marker)
         {
             if (marker.Id < 0)
             {

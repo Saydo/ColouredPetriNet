@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using ColouredPetriNet.Container.GraphicsPetriNet;
 
 namespace ColouredPetriNet.Gui.Forms
 {
@@ -15,7 +12,7 @@ namespace ColouredPetriNet.Gui.Forms
         public event EventHandler<Core.Events.PetriNetNodeEventArgs> ClearButtonClick;
         public event EventHandler<Core.Events.StateEventArgs> RemoveButtonClick;
 
-        private Core.GraphicsStateWrapper _selectedState;
+        private StateWrapper _selectedState;
         private DataTable _markersTable;
 
         public RemoveMarkerForm()
@@ -35,7 +32,7 @@ namespace ColouredPetriNet.Gui.Forms
             dgvMarkers.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
         }
 
-        public void ShowDialog(Core.GraphicsStateWrapper selectedState)
+        public void ShowDialog(StateWrapper selectedState)
         {
             _selectedState = selectedState;
             UpdateMarkersTable();

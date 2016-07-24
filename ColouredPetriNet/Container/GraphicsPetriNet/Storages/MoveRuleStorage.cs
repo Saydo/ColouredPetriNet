@@ -17,20 +17,19 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet
                 Rules = new List<PetriNetMoveRule>();
             }
 
-            public void Add(int inputStateType, int outputStateType, int transitionType,
-                int markerType, int markerCount = 1)
+            public void Add(PetriNetMoveRule rule)
             {
-                Rules.Add(new PetriNetMoveRule(inputStateType, outputStateType, transitionType,
-                    markerType, markerCount));
+                Rules.Add(rule);
             }
 
             public void Remove(int inputStateType, int outputStateType, int transitionType,
-                int markerType, int markerCount = -1)
+                OneTypeMarkers outputMarkers)
             {
-                if (markerCount < 0)
+                /*
+                if (outputMarkers.Count < 0)
                 {
                     var indexList = GetIndexList(inputStateType, outputStateType, transitionType,
-                        markerType);
+                        outputMarkers.Type);
                     for (int i = indexList.Count - 1; i >= 0; --i)
                     {
                         Rules.RemoveAt(indexList[i]);
@@ -52,6 +51,7 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet
                         Rules.RemoveAt(index);
                     }
                 }
+                */
             }
 
             public void Clear()
@@ -61,6 +61,7 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet
 
             public void Move(StateWrapper outputState, StateWrapper inputState, TransitionWrapper transition)
             {
+                /*
                 PetriNetMoveRule rule;
                 int type, count;
                 for (int i = 0; i < outputState.Markers.Count; ++i)
@@ -73,8 +74,10 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet
                         rule.MoveFunction(outputState, inputState, transition, type, count);
                     }
                 }
+                */
             }
 
+            /*
             #region Helpful Functions
             public List<int> GetIndexList(int outputStateType, int inputStateType,
                 int transitionType, int markerType)
@@ -94,14 +97,14 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet
             }
 
             public int GetIndex(int outputStateType, int inputStateType, int transitionType,
-                int markerType, int markerCount)
+                OneTypeMarkers outputMarkers)
             {
                 for (int i = 0; i < Rules.Count; ++i)
                 {
                     if ((Rules[i].OutputStateType == outputStateType)
                         && (Rules[i].InputStateType == inputStateType)
                         && (Rules[i].TransitionType == transitionType)
-                        && (Rules[i].MarkerType == markerType)
+                        && (Rules[i].OutputMarker == markerType)
                         && (Rules[i].MarkerCount == markerCount))
                     {
                         return i;
@@ -124,6 +127,7 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet
                 return new PetriNetMoveRule(-1, -1, -1, -1, -1);
             }
             #endregion
+            */
         }
     }
 }

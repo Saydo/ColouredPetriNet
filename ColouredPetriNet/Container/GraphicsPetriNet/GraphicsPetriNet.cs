@@ -131,6 +131,7 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet
             _states.Draw(graphics);
         }
 
+        /*
         public Xml.GraphicsPetriNetXml ToXml()
         {
             var itemsXml = new Core.Serialize.PetriNetItemsXml();
@@ -170,8 +171,8 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet
             }
             return itemsXml;
         }
+        */
         //public bool FromXml(string filePath);
-
         #region Helpful Functions
         private static void MoveState(int dx, int dy, StateWrapper state)
         {
@@ -376,8 +377,8 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet
                     return triangleMarker;
             }
             return null;
-            */
         }
+        */
         #endregion
     }
 }

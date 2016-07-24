@@ -5,22 +5,133 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet.Xml
 {
     public class GraphicsPetriNetXml
     {
-        // TODO: Types
+        [XmlArray("Types")]
+        [XmlArrayItem("Type")]
+        public List<TypeXml> Types;
+        [XmlArray("PrevAccumulateRules")]
+        [XmlArrayItem("AccumulateRule")]
+        public List<AccumulateRuleXml> PrevAccumulateRules;
+        [XmlArray("NextAccumulateRules")]
+        [XmlArrayItem("AccumulateRule")]
+        public List<AccumulateRuleXml> NextAccumulateRules;
+        [XmlArray("MoveRules")]
+        [XmlArrayItem("MoveRule")]
+        public List<MoveRuleXml> MoveRules;
         [XmlArray("States")]
         [XmlArrayItem("State")]
-        public List<StateXml> StateList;
+        public List<StateXml> States;
         [XmlArray("Transitions")]
         [XmlArrayItem("Transition")]
-        public List<TransitionXml> TransitionList;
+        public List<TransitionXml> Transitions;
         [XmlArray("Links")]
         [XmlArrayItem("Link")]
-        public List<LinkXml> LinkList;
+        public List<LinkXml> Links;
 
         public GraphicsPetriNetXml()
         {
-            StateList = new List<StateXml>();
-            TransitionList = new List<TransitionXml>();
-            LinkList = new List<LinkXml>();
+            Types = new List<TypeXml>();
+            PrevAccumulateRules = new List<AccumulateRuleXml>();
+            NextAccumulateRules = new List<AccumulateRuleXml>();
+            MoveRules = new List<MoveRuleXml>();
+            States = new List<StateXml>();
+            Transitions = new List<TransitionXml>();
+            Links = new List<LinkXml>();
+        }
+    }
+
+    public class TypeXml
+    {
+        [XmlAttribute("id")]
+        public int Id { get; set; }
+        [XmlAttribute("name")]
+        public string Name { get; set; }
+        [XmlAttribute("kind")]
+        public string Kind { get; set; }
+        [XmlAttribute("form")]
+        public string Form { get; set; }
+
+        public TypeXml()
+        {
+            Id = -1;
+            Name = "";
+            Kind = "";
+            Form = "";
+        }
+
+        public TypeXml(int id, string name, string kind, string form)
+        {
+            Id = id;
+            Name = name;
+            Kind = kind;
+            Form = form;
+        }
+    }
+
+    public class AccumulateRuleXml
+    {
+        [XmlAttribute("stateType")]
+        public int StateType { get; set; }
+        [XmlArray("InputMarkers")]
+        [XmlArrayItem("OneTypeMarkers")]
+        public List<OneTypeMarkersXml> InputMarkers;
+        [XmlArray("OutputMarkers")]
+        [XmlArrayItem("OneTypeMarkers")]
+        public List<OneTypeMarkersXml> OutputMarkers;
+
+        public AccumulateRuleXml(int stateType = -1)
+        {
+            StateType = stateType;
+            InputMarkers = new List<OneTypeMarkersXml>();
+            OutputMarkers = new List<OneTypeMarkersXml>();
+        }
+    }
+
+    public class OneTypeMarkersXml
+    {
+        [XmlAttribute("type")]
+        public int Type { get; set; }
+        [XmlAttribute("count")]
+        public int Count { get; set; }
+
+        public OneTypeMarkersXml()
+        {
+            Type = -1;
+            Count = -1;
+        }
+
+        public OneTypeMarkersXml(int type, int count)
+        {
+            Type = type;
+            Count = count;
+        }
+    }
+
+    public class MoveRuleXml
+    {
+        [XmlAttribute("outputStateType")]
+        public int OutputStateType { get; set; }
+        [XmlAttribute("inputStateType")]
+        public int InputStateType { get; set; }
+        [XmlAttribute("transitionType")]
+        public int TransitionType { get; set; }
+        [XmlElement("Marker")]
+        public OneTypeMarkersXml Marker;
+
+        public MoveRuleXml()
+        {
+            OutputStateType = -1;
+            InputStateType = -1;
+            TransitionType = -1;
+            Marker = new OneTypeMarkersXml();
+        }
+
+        public MoveRuleXml(int outputStateType, int inputStateType, int transitionType, int markerType,
+            int markerCount)
+        {
+            OutputStateType = outputStateType;
+            InputStateType = inputStateType;
+            TransitionType = transitionType;
+            Marker = new OneTypeMarkersXml(markerType, markerCount);
         }
     }
 
@@ -33,7 +144,7 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet.Xml
         [XmlAttribute("y")]
         public int Y { get; set; }
         [XmlAttribute("type")]
-        public string Type { get; set; }
+        public int Type { get; set; }
         [XmlElement("Marker")]
         public List<MarkerXml> Markers;
 
@@ -41,11 +152,11 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet.Xml
         {
             Id = -1;
             X = Y = 0;
-            Type = "";
+            Type = -1;
             Markers = new List<MarkerXml>();
         }
 
-        public StateXml(int id, int x, int y, string type)
+        public StateXml(int id, int x, int y, int type)
         {
             this.Id = id;
             this.X = x;
@@ -64,16 +175,16 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet.Xml
         [XmlAttribute("y")]
         public int Y { get; set; }
         [XmlAttribute("type")]
-        public string Type { get; set; }
+        public int Type { get; set; }
 
         public TransitionXml()
         {
             Id = -1;
             X = Y = 0;
-            Type = "";
+            Type = -1;
         }
 
-        public TransitionXml(int id, int x, int y, string type)
+        public TransitionXml(int id, int x, int y, int type)
         {
             this.Id = id;
             this.X = x;
@@ -118,15 +229,15 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet.Xml
         [XmlAttribute("id")]
         public int Id { get; set; }
         [XmlAttribute("type")]
-        public string Type { get; set; }
+        public int Type { get; set; }
 
         public MarkerXml()
         {
             Id = -1;
-            Type = "";
+            Type = -1;
         }
 
-        public MarkerXml(int id, string type)
+        public MarkerXml(int id, int type)
         {
             this.Id = id;
             this.Type = type;

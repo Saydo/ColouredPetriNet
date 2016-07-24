@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using ColouredPetriNet.Container.GraphicsPetriNet.GraphicsItems;
 
 namespace ColouredPetriNet.Gui.Core.Style
 {
@@ -126,7 +127,7 @@ namespace ColouredPetriNet.Gui.Core.Style
 
     public struct ColouredPetriNetStyle
     {
-        public GraphicsItems.OverlapType SelectionMode;
+        public OverlapType SelectionMode;
         public Pen SelectionPen;
         public Pen LinePen;
         public RoundShapeStyle RoundState;
@@ -139,7 +140,7 @@ namespace ColouredPetriNet.Gui.Core.Style
 
         public void Initialize()
         {
-            SelectionMode = GraphicsItems.OverlapType.Partial;
+            SelectionMode = OverlapType.Partial;
             SelectionPen = new Pen(Color.FromArgb(0, 0, 0));
             LinePen = new Pen(Color.FromArgb(0, 0, 0));
             RoundState = new RoundShapeStyle();

@@ -13,4 +13,16 @@
             Type = type;
         }
     }
+
+    public struct OneTypeMarkers
+    {
+        public int Type;
+        public int Count;
+
+        public OneTypeMarkers(int type, int count)
+        {
+            Type = type;
+            Count = count;
+        }
+    }
 }

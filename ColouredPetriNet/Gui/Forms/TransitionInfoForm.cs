@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
+﻿using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using ColouredPetriNet.Container.GraphicsPetriNet;
 
 namespace ColouredPetriNet.Gui.Forms
 {
@@ -46,7 +42,7 @@ namespace ColouredPetriNet.Gui.Forms
             dgvOutputLinks.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
         }
 
-        public void ShowDialog(Core.GraphicsTransitionWrapper transition)
+        public void ShowDialog(TransitionWrapper transition)
         {
             txtId.Text = transition.Transition.Id.ToString();
             txtType.Text = Core.ColouredPetriNetItemInfo.GetTransitionTypeName(transition.Transition.TypeId);
@@ -55,7 +51,7 @@ namespace ColouredPetriNet.Gui.Forms
             base.ShowDialog();
         }
 
-        private void UpdateInputLinksTable(Core.GraphicsTransitionWrapper transition)
+        private void UpdateInputLinksTable(TransitionWrapper transition)
         {
             DataRow newRow;
             _inputLinksTable.Clear();
@@ -76,7 +72,7 @@ namespace ColouredPetriNet.Gui.Forms
             }
         }
 
-        private void UpdateOutputLinksTable(Core.GraphicsTransitionWrapper transition)
+        private void UpdateOutputLinksTable(TransitionWrapper transition)
         {
             DataRow newRow;
             _outputLinksTable.Clear();

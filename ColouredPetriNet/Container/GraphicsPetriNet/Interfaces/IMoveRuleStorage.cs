@@ -3,10 +3,9 @@
     public interface IMoveRuleStorage
     {
         int Count { get; }
-        void Add(int inputStateType, int outputStateType, int transitionType, int markerType,
-            int markerCount = 1);
+        void Add(PetriNetMoveRule rule);
         void Remove(int inputStateType, int outputStateType, int transitionType,
-            int markerType, int markerCount = -1);
+            OneTypeMarkers outputMarkers);
         void Clear();
         void Move(StateWrapper outputState, StateWrapper inputState, TransitionWrapper transition);
     }

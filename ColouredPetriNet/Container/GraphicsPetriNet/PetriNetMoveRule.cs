@@ -2,41 +2,44 @@
 
 namespace ColouredPetriNet.Container.GraphicsPetriNet
 {
-    public delegate void MoveMarkersFunction(StateWrapper outputState, StateWrapper inputState,
-        TransitionWrapper transition, int markerType, int markerCount);
+    public delegate void MoveFunction(StateWrapper outputState, StateWrapper inputState,
+        TransitionWrapper transition, OneTypeMarkers outputMarker, List<OneTypeMarkers> inputMarkers);
 
-    public struct PetriNetMoveRule
+    public class PetriNetMoveRule
     {
         public const int Any = -1;
 
         public int OutputStateType;
         public int InputStateType;
         public int TransitionType;
-        public int MarkerType;
-        public int MarkerCount;
-        public MoveMarkersFunction MoveFunction;
+        public OneTypeMarkers OutputMarker;
+        public List<OneTypeMarkers> InputMarkers;
+        public MoveFunction PrevMoveFunction;
+        public MoveFunction NextMoveFunction;
 
-        public PetriNetMoveRule(MoveMarkersFunction function)
+        public PetriNetMoveRule()
         {
             OutputStateType = Any;
             InputStateType = Any;
             TransitionType = Any;
-            MarkerType = Any;
-            MarkerCount = Any;
-            MoveFunction = function;
+            OutputMarker = new OneTypeMarkers();
+            InputMarkers = new List<OneTypeMarkers>();
         }
 
         public PetriNetMoveRule(int inputStateType, int outputStateType, int transitionType,
-            int markerType, int markerCount = Any, MoveMarkersFunction function = null)
+            OneTypeMarkers outputMarker, List<OneTypeMarkers> inputMarkers,
+            MoveFunction prevMoveFunction = null, MoveFunction nextMoveFunction = null)
         {
             OutputStateType = outputStateType;
             InputStateType = inputStateType;
             TransitionType = transitionType;
-            MarkerType = markerType;
-            MarkerCount = markerCount;
-            MoveFunction = function;
+            OutputMarker = outputMarker;
+            InputMarkers = inputMarkers;
+            PrevMoveFunction = prevMoveFunction;
+            NextMoveFunction = nextMoveFunction;
         }
 
+        /*
         public bool IsComply(int outputStateType, int inputStateType, int transitionType,
             int markerType, int markerCount)
         {
@@ -46,5 +49,6 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet
                 && ((MarkerType == Any) || (MarkerType == markerType))
                 && ((MarkerCount == Any) || (MarkerCount <= markerCount)));
         }
+        */
     }
 }

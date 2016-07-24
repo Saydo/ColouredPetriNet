@@ -20,6 +20,7 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet
                 Rules = new List<PetriNetAccumulateRule>();
             }
 
+            /*
             public void Add(int stateType, List<Tuple<int, int>> markers)
             {
                 Rules.Add(new PetriNetAccumulateRule(stateType, markers));
@@ -46,7 +47,7 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet
                 if (markerCount < 0)
                 {
                     var indexList = GetIndexList(stateType, markerType);
-                    GraphicsPetriNet.RemoveFromList(Rules, indexList);
+                    RemoveFromList(Rules, indexList);
                 }
                 else
                 {
@@ -155,6 +156,7 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet
                 return true;
             }
             #endregion
+            */
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using ColouredPetriNet.Container.GraphicsPetriNet.GraphicsItems;
 
 namespace ColouredPetriNet.Gui.Core
 {
@@ -47,7 +48,7 @@ namespace ColouredPetriNet.Gui.Core
             return "";
         }
 
-        public static void GetStateType(Core.GraphicsItems.GraphicsItem item, out Image image, out string type)
+        public static void GetStateType(GraphicsItem item, out Image image, out string type)
         {
             int typeId = item.TypeId - (int)ItemType.State;
             switch (typeId)
@@ -67,7 +68,7 @@ namespace ColouredPetriNet.Gui.Core
             }
         }
 
-        public static void GetTransitionType(Core.GraphicsItems.GraphicsItem item, out Image image, out string type)
+        public static void GetTransitionType(GraphicsItem item, out Image image, out string type)
         {
             int typeId = item.TypeId - (int)ItemType.Transition;
             switch (typeId)
@@ -87,7 +88,7 @@ namespace ColouredPetriNet.Gui.Core
             }
         }
 
-        public static void GetMarkerType(Core.GraphicsItems.GraphicsItem item, out Image image, out string type)
+        public static void GetMarkerType(GraphicsItem item, out Image image, out string type)
         {
             int typeId = item.TypeId - (int)ItemType.Marker;
             switch (typeId)
