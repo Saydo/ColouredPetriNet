@@ -297,24 +297,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\AddRectangleTransition32x32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\AddRhombMarker32x32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\AddRhombTransition32x32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\AddRoundMarker32x32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\AddRoundState32x32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\AddTriangleMarker32x32.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\Move32x32.png" />
   </ItemGroup>
   <ItemGroup>
@@ -331,9 +313,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\View32x32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\AddImageState32x32.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AddLink32x32.png" />
@@ -388,6 +367,51 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\ImageMarker32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AddRhombTransition32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AddRoundMarker32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AddRoundState32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AddRoundTransition32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AddTriangleMarker32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AddTriangleState32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AddTriangleTransition32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AddImageMarker32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AddImageState32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AddImageTransition32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AddRectangleMarker32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AddRectangleState32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AddRectangleTransition32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AddRhombMarker32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AddRhombState32x32.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -7,13 +7,12 @@ namespace ColouredPetriNet.Gui.Forms
     {
         public StripImageList(string toolTipText = "") : base()
         {
-            ((ToolStripDropDownMenu)DropDown).ShowImageMargin = false;
             ((ToolStripDropDownMenu)DropDown).ShowCheckMargin = false;
             this.ToolTipText = toolTipText;
             this.DropDownItemClicked += ChangeImage;
         }
 
-        public void AddItem(Image image, string toolTipText = "")
+        public void AddItem(Image image, string text, string toolTipText = "")
         {
             if (ReferenceEquals(image, null))
             {
@@ -24,10 +23,9 @@ namespace ColouredPetriNet.Gui.Forms
                 this.Image = image;
                 this.ToolTipText = toolTipText;
             }
-            ToolStripMenuItem item = new ToolStripMenuItem("");
+            ToolStripMenuItem item = new ToolStripMenuItem(text);
             item.Image = image;
             item.ToolTipText = toolTipText;
-            item.Paint += ToolStripMenuItemPaint;
             this.DropDown.Items.Add(item);
         }
 
@@ -39,13 +37,6 @@ namespace ColouredPetriNet.Gui.Forms
                 button.Image = e.ClickedItem.Image;
                 button.ToolTipText = e.ClickedItem.ToolTipText;
             }
-        }
-
-        private void ToolStripMenuItemPaint(object sender, PaintEventArgs e)
-        {
-            ToolStripMenuItem menuItem = sender as ToolStripMenuItem;
-            e.Graphics.DrawImage(menuItem.Image, e.ClipRectangle.Width / 2 - 8,
-                e.ClipRectangle.Height / 2 - 8, 16, 16);
         }
     }
 }

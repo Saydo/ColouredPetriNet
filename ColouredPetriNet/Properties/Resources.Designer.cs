@@ -63,6 +63,16 @@ namespace ColouredPetriNet.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap AddImageMarkerIcon {
+            get {
+                object obj = ResourceManager.GetObject("AddImageMarkerIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap AddImageStateIcon {
             get {
                 object obj = ResourceManager.GetObject("AddImageStateIcon", resourceCulture);
@@ -73,9 +83,39 @@ namespace ColouredPetriNet.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap AddImageTransitionIcon {
+            get {
+                object obj = ResourceManager.GetObject("AddImageTransitionIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap AddLinkIcon {
             get {
                 object obj = ResourceManager.GetObject("AddLinkIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap AddRectangleMarkerIcon {
+            get {
+                object obj = ResourceManager.GetObject("AddRectangleMarkerIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap AddRectangleStateIcon {
+            get {
+                object obj = ResourceManager.GetObject("AddRectangleStateIcon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -96,6 +136,16 @@ namespace ColouredPetriNet.Properties {
         internal static System.Drawing.Bitmap AddRhombMarkerIcon {
             get {
                 object obj = ResourceManager.GetObject("AddRhombMarkerIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap AddRhombStateIcon {
+            get {
+                object obj = ResourceManager.GetObject("AddRhombStateIcon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -133,9 +183,39 @@ namespace ColouredPetriNet.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap AddRoundTransitionIcon {
+            get {
+                object obj = ResourceManager.GetObject("AddRoundTransitionIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap AddTriangleMarkerIcon {
             get {
                 object obj = ResourceManager.GetObject("AddTriangleMarkerIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap AddTriangleStateIcon {
+            get {
+                object obj = ResourceManager.GetObject("AddTriangleStateIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap AddTriangleTransitionIcon {
+            get {
+                object obj = ResourceManager.GetObject("AddTriangleTransitionIcon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

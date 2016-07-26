@@ -547,11 +547,12 @@ namespace ColouredPetriNet.Gui.Forms
             // pbMap (PictureBox)
             //
             pbMap.Name = "pbMap";
-            pbMap.Size = new Size(200, 200);
+            pbMap.Size = new Size(340, 250);
             pbMap.Location = new Point(13, 53);
             pbMap.TabIndex = 2;
             pbMap.TabStop = false;
             pbMap.BorderStyle = BorderStyle.FixedSingle;
+            pbMap.Anchor = AnchorStyles.Bottom | AnchorStyles.Top | AnchorStyles.Right | AnchorStyles.Left;
             pbMap.Paint += new PaintEventHandler(ItemMapPaint);
             pbMap.MouseClick += new MouseEventHandler(ItemMapMouseClick);
             pbMap.MouseDown += new MouseEventHandler(ItemMapMouseDown);
@@ -581,6 +582,7 @@ namespace ColouredPetriNet.Gui.Forms
             trvStates.Size = new Size(121, 105);
             trvStates.Location = new Point(360, 71);
             trvStates.TabIndex = 4;
+            trvStates.Anchor = AnchorStyles.Right | AnchorStyles.Top;
             ImageList stateImageList = new ImageList();
             stateImageList.Images.Add(Properties.Resources.RoundStateIcon);
             stateImageList.Images.Add(Properties.Resources.ImageStateIcon);
@@ -593,8 +595,9 @@ namespace ColouredPetriNet.Gui.Forms
             //
             trvTransitions.Name = "trvTransitions";
             trvTransitions.Size = new Size(121, 101);
-            trvTransitions.Location = new Point(360, 195);
+            trvTransitions.Location = new Point(360, 200);
             trvTransitions.TabIndex = 5;
+            trvTransitions.Anchor = AnchorStyles.Right | AnchorStyles.Bottom | AnchorStyles.Top;
             ImageList transitionImageList = new ImageList();
             transitionImageList.Images.Add(Properties.Resources.RectangleTransitionIcon);
             transitionImageList.Images.Add(Properties.Resources.RhombTransitionIcon);
@@ -608,6 +611,7 @@ namespace ColouredPetriNet.Gui.Forms
             lblStates.AutoSize = true;
             lblStates.TabIndex = 6;
             lblStates.Text = "States";
+            lblStates.Anchor = AnchorStyles.Right | AnchorStyles.Top;
             //
             // lblTransitions (Label)
             //
@@ -617,6 +621,7 @@ namespace ColouredPetriNet.Gui.Forms
             lblTransitions.AutoSize = true;
             lblTransitions.TabIndex = 7;
             lblTransitions.Text = "Transitions";
+            lblTransitions.Anchor = AnchorStyles.Right | AnchorStyles.Top;
             //
             // dlgOpenFile (OpenFileDialog)
             //
@@ -647,7 +652,8 @@ namespace ColouredPetriNet.Gui.Forms
             this.StartPosition = FormStartPosition.CenterScreen;
             this.AutoScaleDimensions = new SizeF(6F, 13F);
             this.AutoScaleMode = AutoScaleMode.Font;
-            this.ClientSize = new Size(489, 331);
+            this.ClientSize = new Size(489, 330);
+            this.MinimumSize = new Size(350, 370);
             this.Controls.Add(lblTransitions);
             this.Controls.Add(lblStates);
             this.Controls.Add(trvTransitions);
