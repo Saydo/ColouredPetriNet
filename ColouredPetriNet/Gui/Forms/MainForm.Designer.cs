@@ -15,6 +15,7 @@ namespace ColouredPetriNet.Gui.Forms
             mniSaveAs = new ToolStripMenuItem();
             mniExit = new ToolStripMenuItem();
             mniMap = new ToolStripMenuItem();
+            mniTypes = new ToolStripMenuItem();
             mniSetMode = new ToolStripMenuItem();
             mniSetModeView = new ToolStripRadioButtonMenuItem();
             mniSetModeMove = new ToolStripRadioButtonMenuItem();
@@ -59,6 +60,7 @@ namespace ColouredPetriNet.Gui.Forms
             tsbOneStepSimulation = new ToolStripButton();
             tsbRunSimulation = new ToolStripButton();
             tsbStopSimulation = new ToolStripButton();
+            dlgTypes = new TypeListForm();
             dlgShowItemInfo = new ShowItemInfoForm();
             dlgStateInfo = new StateInfoForm();
             dlgTransitionInfo = new TransitionInfoForm();
@@ -143,9 +145,17 @@ namespace ColouredPetriNet.Gui.Forms
             mniMap.Size = new Size(43, 20);
             mniMap.Text = "Map";
             mniMap.DropDownItems.AddRange(new ToolStripItem[] {
+                mniTypes,
                 mniSetMode,
                 mniShowInfo
             });
+            //
+            // Types (ToolStripMenuItem)
+            //
+            mniTypes.Name = "mniTypes";
+            mniTypes.Size = new Size(152, 22);
+            mniTypes.Text = "Types";
+            mniTypes.Click += (obj, e) => dlgTypes.ShowDialog(_petriNet);
             //
             // SetMode (ToolStripMenuItem)
             //
@@ -668,6 +678,7 @@ namespace ColouredPetriNet.Gui.Forms
         private ToolStripMenuItem mniSaveAs;
         private ToolStripMenuItem mniExit;
         private ToolStripMenuItem mniMap;
+        private ToolStripMenuItem mniTypes;
         private ToolStripMenuItem mniSetMode;
         private ToolStripRadioButtonMenuItem mniSetModeView;
         private ToolStripRadioButtonMenuItem mniSetModeMove;
@@ -719,6 +730,7 @@ namespace ColouredPetriNet.Gui.Forms
         private TreeView trvTransitions;
         private Label lblStates;
         private Label lblTransitions;
+        private TypeListForm dlgTypes;
         private ShowItemInfoForm dlgShowItemInfo;
         private StateInfoForm dlgStateInfo;
         private TransitionInfoForm dlgTransitionInfo;

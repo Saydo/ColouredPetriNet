@@ -24,6 +24,11 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet
                 get { return Types.Count; }
             }
 
+            public TypeInfo this[int index]
+            {
+                get { return Types[index]; }
+            }
+
             public bool Add(string name, GraphicsPetriNet.ItemType kind, ItemForm form)
             {
                 if (Contains(name))
@@ -92,11 +97,6 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet
             public void Clear()
             {
                 Types.Clear();
-            }
-
-            public TypeInfo GetType(int index)
-            {
-                return Types[index];
             }
 
             public bool Contains(int id)

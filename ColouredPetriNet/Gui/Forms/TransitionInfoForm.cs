@@ -1,6 +1,5 @@
 ﻿using System.Data;
 using System.Drawing;
-using System.Linq;
 using System.Windows.Forms;
 using ColouredPetriNet.Container.GraphicsPetriNet;
 
@@ -45,7 +44,7 @@ namespace ColouredPetriNet.Gui.Forms
         public void ShowDialog(TransitionWrapper transition)
         {
             txtId.Text = transition.Transition.Id.ToString();
-            txtType.Text = Core.ColouredPetriNetItemInfo.GetTransitionTypeName(transition.Transition.TypeId);
+            txtType.Text = Core.PetriNetItemInfo.GetTransitionTypeName(transition.Transition.TypeId);
             UpdateInputLinksTable(transition);
             UpdateOutputLinksTable(transition);
             base.ShowDialog();
@@ -61,7 +60,7 @@ namespace ColouredPetriNet.Gui.Forms
                 string stateType;
                 for (int i = 0; i < transition.InputLinks.Count; ++i)
                 {
-                    Core.ColouredPetriNetItemInfo.GetStateType(transition.InputLinks[i].State.State,
+                    Core.PetriNetItemInfo.GetStateType(transition.InputLinks[i].State.State,
                         out stateImage, out stateType);
                     newRow = _inputLinksTable.NewRow();
                     newRow["Id"] = transition.InputLinks[i].State.State.Id;
@@ -82,7 +81,7 @@ namespace ColouredPetriNet.Gui.Forms
                 string stateType;
                 for (int i = 0; i < transition.OutputLinks.Count; ++i)
                 {
-                    Core.ColouredPetriNetItemInfo.GetStateType(transition.OutputLinks[i].State.State,
+                    Core.PetriNetItemInfo.GetStateType(transition.OutputLinks[i].State.State,
                         out stateImage, out stateType);
                     newRow = _outputLinksTable.NewRow();
                     newRow["Id"] = transition.OutputLinks[i].State.State.Id;

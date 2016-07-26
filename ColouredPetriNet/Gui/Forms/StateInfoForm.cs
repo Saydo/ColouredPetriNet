@@ -64,7 +64,7 @@ namespace ColouredPetriNet.Gui.Forms
         public void ShowDialog(StateWrapper state)
         {
             txtId.Text = state.State.Id.ToString();
-            txtType.Text = Core.ColouredPetriNetItemInfo.GetStateTypeName(state.State.TypeId);
+            txtType.Text = Core.PetriNetItemInfo.GetStateTypeName(state.State.TypeId);
             UpdateMarkersTable(state);
             UpdateInputLinksTable(state);
             UpdateOutputLinksTable(state);
@@ -81,7 +81,7 @@ namespace ColouredPetriNet.Gui.Forms
                 string markerType;
                 for (int i = 0; i < state.Markers.Count; ++i)
                 {
-                    Core.ColouredPetriNetItemInfo.GetMarkerType(state.Markers[i].Item1,
+                    Core.PetriNetItemInfo.GetMarkerType(state.Markers[i].Item1,
                         out markerImage, out markerType);
                     for (int j = 0; j < state.Markers[i].Item2.Count; ++j)
                     {
@@ -105,7 +105,7 @@ namespace ColouredPetriNet.Gui.Forms
                 string transitionType;
                 for (int i = 0; i < state.InputLinks.Count; ++i)
                 {
-                    Core.ColouredPetriNetItemInfo.GetTransitionType(state.InputLinks[i].Transition.Transition,
+                    Core.PetriNetItemInfo.GetTransitionType(state.InputLinks[i].Transition.Transition,
                         out transitionImage, out transitionType);
                     newRow = _inputLinksTable.NewRow();
                     newRow["Id"] = state.InputLinks[i].Transition.Transition.Id;
@@ -126,7 +126,7 @@ namespace ColouredPetriNet.Gui.Forms
                 string transitionType;
                 for (int i = 0; i < state.OutputLinks.Count; ++i)
                 {
-                    Core.ColouredPetriNetItemInfo.GetTransitionType(state.OutputLinks[i].Transition.Transition,
+                    Core.PetriNetItemInfo.GetTransitionType(state.OutputLinks[i].Transition.Transition,
                         out transitionImage, out transitionType);
                     newRow = _outputLinksTable.NewRow();
                     newRow["Id"] = state.OutputLinks[i].Transition.Transition.Id;

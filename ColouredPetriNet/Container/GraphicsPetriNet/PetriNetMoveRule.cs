@@ -12,7 +12,7 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet
         public int OutputStateType;
         public int InputStateType;
         public int TransitionType;
-        public OneTypeMarkers OutputMarker;
+        public OneTypeMarkers OutputMarkers;
         public List<OneTypeMarkers> InputMarkers;
         public MoveFunction PrevMoveFunction;
         public MoveFunction NextMoveFunction;
@@ -22,7 +22,7 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet
             OutputStateType = Any;
             InputStateType = Any;
             TransitionType = Any;
-            OutputMarker = new OneTypeMarkers();
+            OutputMarkers = new OneTypeMarkers();
             InputMarkers = new List<OneTypeMarkers>();
         }
 
@@ -33,10 +33,36 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet
             OutputStateType = outputStateType;
             InputStateType = inputStateType;
             TransitionType = transitionType;
-            OutputMarker = outputMarker;
+            OutputMarkers = outputMarker;
             InputMarkers = inputMarkers;
             PrevMoveFunction = prevMoveFunction;
             NextMoveFunction = nextMoveFunction;
+        }
+
+        public Xml.MoveRuleXml ToXml()
+        {
+            var inputMarkersXml = new List<Xml.OneTypeMarkersXml>();
+            for (int i = 0; i < InputMarkers.Count; ++i)
+            {
+                inputMarkersXml.Add(InputMarkers[i].ToXml());
+            }
+            return new Xml.MoveRuleXml(OutputStateType, InputStateType, TransitionType,
+                OutputMarkers.ToXml(), inputMarkersXml);
+        }
+
+        public static PetriNetMoveRule FromXml(Xml.MoveRuleXml ruleXml)
+        {
+            PetriNetMoveRule rule = new PetriNetMoveRule();
+            /*
+            var inputMarkersXml = new List<Xml.OneTypeMarkersXml>();
+            for (int i = 0; i < ruleXml; ++i)
+            {
+                inputMarkersXml.Add(InputMarkers[i].ToXml());
+            }
+            return new Xml.MoveRuleXml(OutputStateType, InputStateType, TransitionType,
+                OutputMarkers.ToXml(), inputMarkersXml);
+            */
+            return rule;
         }
 
         /*

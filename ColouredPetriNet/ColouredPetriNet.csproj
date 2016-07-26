@@ -128,7 +128,7 @@
     <Compile Include="Container\ColouredPetriNet\Storages\TransitionStorage.cs" />
     <Compile Include="Container\ColouredPetriNet\Storages\TypeStorage.cs" />
     <Compile Include="Container\ColouredPetriNet\TransitionWrapper.cs" />
-    <Compile Include="Gui\Core\ColouredPetriNetItemInfo.cs" />
+    <Compile Include="Gui\Core\PetriNetItemInfo.cs" />
     <Compile Include="Gui\Core\PetriNetTypes.cs" />
     <Compile Include="Gui\Core\PetriNetStyle.cs" />
     <Compile Include="Gui\Core\Serialize\PetriNetStyleXml.cs" />
@@ -243,6 +243,18 @@
     <Compile Include="Gui\Forms\TriangleItemStyleForm.Designer.cs">
       <DependentUpon>TriangleItemStyleForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Gui\Forms\TypeEditForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\Forms\TypeEditForm.Designer.cs">
+      <DependentUpon>TypeEditForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gui\Forms\TypeListForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\Forms\TypeListForm.Designer.cs">
+      <DependentUpon>TypeListForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -336,10 +348,22 @@
     <None Include="Resources\ImageState32x32.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\ImageTransition32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RectangleMarker32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RectangleState32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
     <None Include="Resources\RectangleTransition32x32.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\RhombMarker32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RhombState32x32.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\RhombTransition32x32.png" />
@@ -351,9 +375,20 @@
     <None Include="Resources\RoundState32x32.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\RoundTransition32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
     <None Include="Resources\TriangleMarker32x32.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\TriangleState32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TriangleTransition32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ImageMarker32x32.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

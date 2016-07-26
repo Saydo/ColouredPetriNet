@@ -3,7 +3,7 @@ using ColouredPetriNet.Container.GraphicsPetriNet.GraphicsItems;
 
 namespace ColouredPetriNet.Gui.Core
 {
-    public static class ColouredPetriNetItemInfo
+    public static class PetriNetItemInfo
     {
         public enum ItemType { Link, Marker = 100, Transition = 200, State = 300 };
 

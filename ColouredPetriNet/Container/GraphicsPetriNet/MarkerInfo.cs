@@ -24,5 +24,16 @@
             Type = type;
             Count = count;
         }
+
+        public Xml.OneTypeMarkersXml ToXml()
+        {
+            return new Xml.OneTypeMarkersXml(Type, Count);
+        }
+
+        public void FromXml(Xml.OneTypeMarkersXml markersXml)
+        {
+            Type = markersXml.Type;
+            Count = markersXml.Count;
+        }
     }
 }

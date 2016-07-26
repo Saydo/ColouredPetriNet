@@ -33,7 +33,7 @@ namespace ColouredPetriNet.Gui.Forms
         public MainForm()
         {
             InitializeComponent();
-            _petriNet = new GraphicsPetriNet();
+            InitPetriNet();
             _selectionArea = new Core.SelectionArea();
             _overlap = OverlapType.Partial;
             _mousePressed = false;
@@ -47,6 +47,18 @@ namespace ColouredPetriNet.Gui.Forms
             _newMarkerType = Core.ColouredMarkerType.RoundMarker;
             _currentFile = null;
             UpdateStatus(GetCurrentMapModeName());
+        }
+
+        private void InitPetriNet()
+        {
+            _petriNet = new GraphicsPetriNet();
+            _petriNet.Types.Add("RoundState", GraphicsPetriNet.ItemType.State, ItemForm.Round);
+            _petriNet.Types.Add("ImageState", GraphicsPetriNet.ItemType.State, ItemForm.Image);
+            _petriNet.Types.Add("RectangleTransition", GraphicsPetriNet.ItemType.Transition, ItemForm.Rectangle);
+            _petriNet.Types.Add("RhombTransition", GraphicsPetriNet.ItemType.Transition, ItemForm.Rhomb);
+            _petriNet.Types.Add("RoundMarker", GraphicsPetriNet.ItemType.Marker, ItemForm.Round);
+            _petriNet.Types.Add("RhombMarker", GraphicsPetriNet.ItemType.Marker, ItemForm.Rhomb);
+            _petriNet.Types.Add("TriangleMarker", GraphicsPetriNet.ItemType.Marker, ItemForm.Triangle);
         }
 
         private void SetSelectionArea(int x, int y, int w, int h)
@@ -904,7 +916,7 @@ namespace ColouredPetriNet.Gui.Forms
         private void AddStateToTree(object sender, Core.Events.ExtendedStateEventArgs state)
         {
             TreeNode treeNode;
-            int typeId = state.TypeId - (int)Core.ColouredPetriNetItemInfo.ItemType.State;
+            int typeId = state.TypeId - (int)Core.PetriNetItemInfo.ItemType.State;
             switch (typeId)
             {
                 case (int)Core.ColouredStateType.RoundState:
@@ -917,7 +929,7 @@ namespace ColouredPetriNet.Gui.Forms
             int stateIndex = trvStates.Nodes.Count - 1;
             for (int i = 0; i < state.Markers.Count; ++i)
             {
-                typeId = state.Markers[i].Item2 - (int)Core.ColouredPetriNetItemInfo.ItemType.Marker;
+                typeId = state.Markers[i].Item2 - (int)Core.PetriNetItemInfo.ItemType.Marker;
                 if (typeId == (int)Core.ColouredMarkerType.RoundMarker)
                 {
                     treeNode = new TreeNode("Marker " + state.Markers[i].Item1.ToString(),
@@ -944,7 +956,7 @@ namespace ColouredPetriNet.Gui.Forms
 
         private void AddTransitionToTree(object sender, Core.Events.PetriNetNodeEventArgs transition)
         {
-            int typeId = transition.TypeId - (int)Core.ColouredPetriNetItemInfo.ItemType.Transition;
+            int typeId = transition.TypeId - (int)Core.PetriNetItemInfo.ItemType.Transition;
             switch (typeId)
             {
                 case (int)Core.ColouredTransitionType.RectangleTransition:
@@ -1015,7 +1027,7 @@ namespace ColouredPetriNet.Gui.Forms
             {
                 dlgShowItemInfo.Hide();
                 dlgMarkerInfo.ShowDialog(marker.Id, marker.StateId,
-                    Core.ColouredPetriNetItemInfo.GetMarkerTypeName(marker.Type));
+                    Core.PetriNetItemInfo.GetMarkerTypeName(marker.Type));
             }
         }
     }

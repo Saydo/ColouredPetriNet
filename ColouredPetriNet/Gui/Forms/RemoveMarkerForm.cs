@@ -55,7 +55,7 @@ namespace ColouredPetriNet.Gui.Forms
                 string markerType;
                 for (int i = 0; i < _selectedState.Markers.Count; ++i)
                 {
-                    Core.ColouredPetriNetItemInfo.GetMarkerType(_selectedState.Markers[i].Item1,
+                    Core.PetriNetItemInfo.GetMarkerType(_selectedState.Markers[i].Item1,
                         out markerImage, out markerType);
                     for (int j = 0; j < _selectedState.Markers[i].Item2.Count; ++j)
                     {

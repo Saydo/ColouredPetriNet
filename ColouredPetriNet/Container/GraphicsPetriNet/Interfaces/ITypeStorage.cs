@@ -4,6 +4,7 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet.Interfaces
 {
     public interface ITypeStorage
     {
+        TypeInfo this[int index] { get; }
         int Count { get; }
         bool Add(string name, GraphicsPetriNet.ItemType kind, ItemForm form);
         bool Add(TypeInfo type);
@@ -12,7 +13,6 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet.Interfaces
         bool RemoveById(int id);
         bool RemoveByName(string name);
         void Clear();
-        TypeInfo GetType(int index);
         bool Contains(int id);
         bool Contains(string typeName);
         bool Contains(GraphicsPetriNet.ItemType typeKind);

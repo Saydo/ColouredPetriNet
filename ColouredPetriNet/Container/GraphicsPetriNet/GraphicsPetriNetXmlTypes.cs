@@ -71,18 +71,18 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet.Xml
     {
         [XmlAttribute("stateType")]
         public int StateType { get; set; }
-        [XmlArray("InputMarkers")]
-        [XmlArrayItem("OneTypeMarkers")]
-        public List<OneTypeMarkersXml> InputMarkers;
         [XmlArray("OutputMarkers")]
         [XmlArrayItem("OneTypeMarkers")]
         public List<OneTypeMarkersXml> OutputMarkers;
+        [XmlArray("InputMarkers")]
+        [XmlArrayItem("OneTypeMarkers")]
+        public List<OneTypeMarkersXml> InputMarkers;
 
         public AccumulateRuleXml(int stateType = -1)
         {
             StateType = stateType;
-            InputMarkers = new List<OneTypeMarkersXml>();
             OutputMarkers = new List<OneTypeMarkersXml>();
+            InputMarkers = new List<OneTypeMarkersXml>();
         }
     }
 
@@ -114,24 +114,29 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet.Xml
         public int InputStateType { get; set; }
         [XmlAttribute("transitionType")]
         public int TransitionType { get; set; }
-        [XmlElement("Marker")]
-        public OneTypeMarkersXml Marker;
+        [XmlElement("OutputMarkers")]
+        public OneTypeMarkersXml OutputMarkers;
+        [XmlArray("InputMarkers")]
+        [XmlArrayItem("OneTypeMarkers")]
+        public List<OneTypeMarkersXml> InputMarkers;
 
         public MoveRuleXml()
         {
             OutputStateType = -1;
             InputStateType = -1;
             TransitionType = -1;
-            Marker = new OneTypeMarkersXml();
+            OutputMarkers = new OneTypeMarkersXml();
+            InputMarkers = new List<OneTypeMarkersXml>();
         }
 
-        public MoveRuleXml(int outputStateType, int inputStateType, int transitionType, int markerType,
-            int markerCount)
+        public MoveRuleXml(int outputStateType, int inputStateType, int transitionType,
+            OneTypeMarkersXml outputMarkers, List<OneTypeMarkersXml> inputMarkers)
         {
             OutputStateType = outputStateType;
             InputStateType = inputStateType;
             TransitionType = transitionType;
-            Marker = new OneTypeMarkersXml(markerType, markerCount);
+            OutputMarkers = new OneTypeMarkersXml();
+            InputMarkers = new List<OneTypeMarkersXml>();
         }
     }
 

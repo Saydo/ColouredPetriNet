@@ -145,8 +145,14 @@
   <data name="AppIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\AppIcon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="ImageMarkerIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ImageMarker32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="ImageStateIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ImageState32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ImageTransitionIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ImageTransition32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="MoveIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Move32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -160,6 +166,12 @@
   <data name="PlayIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Play32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="RectangleMarkerIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\RectangleMarker32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="RectangleStateIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\RectangleState32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="RectangleTransitionIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\RectangleTransition32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -172,6 +184,9 @@
   <data name="RhombMarkerIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\RhombMarker32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="RhombStateIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\RhombState32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="RhombTransitionIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\RhombTransition32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -181,11 +196,20 @@
   <data name="RoundStateIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\RoundState32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="RoundTransitionIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\RoundTransition32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="StopIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Stop32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="TriangleMarkerIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\TriangleMarker32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="TriangleStateIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\TriangleState32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="TriangleTransitionIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\TriangleTransition32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ViewIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\View32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
