@@ -129,6 +129,7 @@
     <Compile Include="Container\ColouredPetriNet\Storages\TypeStorage.cs" />
     <Compile Include="Container\ColouredPetriNet\TransitionWrapper.cs" />
     <Compile Include="Gui\Core\PetriNetItemInfo.cs" />
+    <Compile Include="Gui\Core\PetriNetTypeConverter.cs" />
     <Compile Include="Gui\Core\PetriNetTypes.cs" />
     <Compile Include="Gui\Core\PetriNetStyle.cs" />
     <Compile Include="Gui\Core\Serialize\PetriNetStyleXml.cs" />

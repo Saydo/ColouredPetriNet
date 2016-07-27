@@ -35,7 +35,7 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet
                 {
                     return false;
                 }
-                Types.Add(new TypeInfo(_parent._idGenerator.Next(), name, kind, form));
+                Types.Add(new TypeInfo(_parent._typeGenerator.Next(), name, kind, form));
                 return true;
             }
 
@@ -45,9 +45,9 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet
                 {
                     return false;
                 }
-                if (_parent._idGenerator.CurrentId < type.Id)
+                if (_parent._typeGenerator.CurrentId < type.Id)
                 {
-                    _parent._idGenerator.Reset(type.Id);
+                    _parent._typeGenerator.Reset(type.Id);
                 }
                 Types.Add(type);
                 return true;
@@ -203,6 +203,24 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet
                 {
                     function(Types[i]);
                 }
+            }
+
+            public bool ChangeType(int id, string name, GraphicsPetriNet.ItemType kind, ItemForm form)
+            {
+                TypeInfo type = FindType(id);
+                if ((type.Name != name) && this.Contains(name))
+                {
+                    return false;
+                }
+                for (int i = 0; i < Types.Count; ++i)
+                {
+                    if (Types[i].Id == id)
+                    {
+                        Types[i] = new TypeInfo(id, name, kind, form);
+                        return true;
+                    }
+                }
+                return false;
             }
         }
     }

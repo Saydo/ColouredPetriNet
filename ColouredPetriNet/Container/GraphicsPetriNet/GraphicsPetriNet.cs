@@ -31,6 +31,21 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet
             return _idGenerator.Next();
         }
 
+        public int GenerateTypeId()
+        {
+            return _typeGenerator.Next();
+        }
+
+        public int GetLastItemId()
+        {
+            return _idGenerator.CurrentId;
+        }
+
+        public int GetLastTypeId()
+        {
+            return _typeGenerator.CurrentId;
+        }
+
         public void Clear()
         {
             _types.Clear();

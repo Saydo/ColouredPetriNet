@@ -53,7 +53,7 @@ namespace ColouredPetriNet.Gui.Forms
             // 
             txtId.Location = new System.Drawing.Point(52, 15);
             txtId.Name = "txtId";
-            txtId.Size = new System.Drawing.Size(128, 20);
+            txtId.Size = new System.Drawing.Size(158, 20);
             txtId.TabIndex = 3;
             txtId.ReadOnly = true;
             // 
@@ -62,12 +62,13 @@ namespace ColouredPetriNet.Gui.Forms
             cmbKind.FormattingEnabled = true;
             cmbKind.Location = new System.Drawing.Point(53, 67);
             cmbKind.Name = "cmbKind";
-            cmbKind.Size = new System.Drawing.Size(83, 21);
+            cmbKind.Size = new System.Drawing.Size(110, 21);
             cmbKind.TabIndex = 4;
             cmbKind.Items.Add("State");
             cmbKind.Items.Add("Transition");
             cmbKind.Items.Add("Marker");
             cmbKind.SelectedIndex = 0;
+            cmbKind.SelectedIndexChanged += (obj, e) => UpdateImage();
             // 
             // lblKind
             // 
@@ -92,7 +93,7 @@ namespace ColouredPetriNet.Gui.Forms
             cmbForm.FormattingEnabled = true;
             cmbForm.Location = new System.Drawing.Point(53, 94);
             cmbForm.Name = "cmbForm";
-            cmbForm.Size = new System.Drawing.Size(83, 21);
+            cmbForm.Size = new System.Drawing.Size(110, 21);
             cmbForm.TabIndex = 6;
             cmbForm.Items.Add("Round");
             cmbForm.Items.Add("Rectangle");
@@ -100,12 +101,13 @@ namespace ColouredPetriNet.Gui.Forms
             cmbForm.Items.Add("Triangle");
             cmbForm.Items.Add("Image");
             cmbForm.SelectedIndex = 0;
+            cmbForm.SelectedIndexChanged += (obj, e) => UpdateImage();
             // 
             // txtName
             // 
-            txtName.Location = new System.Drawing.Point(53, 41);
+            txtName.Location = new System.Drawing.Point(52, 41);
             txtName.Name = "txtName";
-            txtName.Size = new System.Drawing.Size(127, 20);
+            txtName.Size = new System.Drawing.Size(158, 20);
             txtName.TabIndex = 9;
             // 
             // lblName
@@ -119,17 +121,20 @@ namespace ColouredPetriNet.Gui.Forms
             // 
             // pbForm
             // 
-            pbForm.Location = new System.Drawing.Point(141, 70);
+            pbForm.Location = new System.Drawing.Point(170, 70);
             pbForm.Name = "pbForm";
-            pbForm.Size = new System.Drawing.Size(38, 40);
+            pbForm.Size = new System.Drawing.Size(40, 40);
             pbForm.TabIndex = 10;
             pbForm.TabStop = false;
             // 
             // TypeEditForm
-            // 
+            //
+            this.FormBorderStyle = FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(195, 173);
+            this.ClientSize = new System.Drawing.Size(225, 173);
             this.Controls.Add(pbForm);
             this.Controls.Add(txtName);
             this.Controls.Add(lblName);

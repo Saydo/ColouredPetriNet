@@ -22,5 +22,6 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet.Interfaces
         List<TypeInfo> FindTypes(ItemForm form);
         List<TypeInfo> FindTypes(GraphicsPetriNet.ItemType kind);
         void ForEachType(GraphicsPetriNet.ForEachTypeFunction function);
+        bool ChangeType(int id, string name, GraphicsPetriNet.ItemType kind, ItemForm form);
     }
 }

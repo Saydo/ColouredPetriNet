@@ -9,10 +9,13 @@ namespace ColouredPetriNet.Gui.Forms
     {
         private DataTable _typesTable;
         private GraphicsPetriNet _petriNet;
+        private MainForm _parent;
 
-        public TypeListForm()
+        public TypeListForm(MainForm parent, GraphicsPetriNet petriNet)
         {
             InitializeComponent();
+            _petriNet = petriNet;
+            _parent = parent;
             _typesTable = new DataTable();
             _typesTable.Columns.Add(new DataColumn("Image", typeof(Image)));
             _typesTable.Columns.Add(new DataColumn("Id", typeof(int)));
@@ -33,11 +36,52 @@ namespace ColouredPetriNet.Gui.Forms
             var dgvColumnHeaderStyle = new DataGridViewCellStyle();
             dgvColumnHeaderStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgvTypes.ColumnHeadersDefaultCellStyle = dgvColumnHeaderStyle;
+            dgvTypes.RowPrePaint += TypesRowPrePaint;
         }
 
-        public void ShowDialog(GraphicsPetriNet petriNet)
+        public int GetNextTypeId()
         {
-            _petriNet = petriNet;
+            return _petriNet.GetLastTypeId() + 1;
+        }
+
+        public int GenerateNextTypeId()
+        {
+            return _petriNet.GenerateTypeId();
+        }
+
+        public bool Contains(string typeName)
+        {
+            return _petriNet.Types.Contains(typeName);
+        }
+
+        public void AddType(TypeInfo type)
+        {
+            DataRow newRow;
+            newRow = _typesTable.NewRow();
+            newRow["Image"] = new Bitmap(Core.PetriNetTypeConverter.GetTypeFormImage(type.Kind, type.Form), 20, 20);
+            newRow["Id"] = type.Id;
+            newRow["Name"] = type.Name;
+            newRow["Kind"] = type.Kind.ToString();
+            newRow["Form"] = type.Form.ToString();
+            _typesTable.Rows.Add(newRow);
+            _parent.AddType(type);
+        }
+
+        public void EditType(int id, string name, string kindName, string formName)
+        {
+            var row = FindRow(id);
+            if (row == null) return;
+            var kind = TypeInfo.GetTypeKindFromString(kindName);
+            var form = TypeInfo.GetTypeFormFromString(formName);
+            row.Cells[0].Value = new Bitmap(Core.PetriNetTypeConverter.GetTypeFormImage(kind, form), 20, 20);
+            row.Cells[2].Value = name;
+            row.Cells[3].Value = kindName;
+            row.Cells[4].Value = formName;
+            _parent.ChangeType(id, name, kind, form);
+        }
+
+        new public void ShowDialog()
+        {
             UpdateTypesTable();
             base.ShowDialog();
         }
@@ -49,6 +93,11 @@ namespace ColouredPetriNet.Gui.Forms
                 MessageBox.Show("Select one type!");
                 return;
             }
+            if ((int)dgvTypes.SelectedRows[0].Cells[1].Value < 8)
+            {
+                MessageBox.Show("You can't edit reserved types!");
+                return;
+            }
             dlgEditType.ShowDialog(GetTypeInfo(dgvTypes.SelectedRows[0]));
         }
 
@@ -57,6 +106,18 @@ namespace ColouredPetriNet.Gui.Forms
             return new TypeInfo((int)row.Cells[1].Value, (string)row.Cells[2].Value,
                 TypeInfo.GetTypeKindFromString((string)row.Cells[3].Value),
                 TypeInfo.GetTypeFormFromString((string)row.Cells[4].Value));
+        }
+
+        private DataGridViewRow FindRow(int id)
+        {
+            for (int i = 0; i < dgvTypes.Rows.Count; ++i)
+            {
+                if (id == (int)dgvTypes.Rows[i].Cells[1].Value)
+                {
+                    return dgvTypes.Rows[i];
+                }
+            }
+            return null;
         }
 
         private void UpdateTypesTable()
@@ -81,12 +142,22 @@ namespace ColouredPetriNet.Gui.Forms
             }
         }
 
+        private void TypesRowPrePaint(object sender, DataGridViewRowPrePaintEventArgs e)
+        {
+            if ((int)dgvTypes.Rows[e.RowIndex].Cells[1].Value < 8)
+            {
+                dgvTypes.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.Silver;
+            }
+        }
+
         private void RemoveType()
         {
             int typeId;
-            for (int i = 0; i < dgvTypes.SelectedRows.Count; ++i)
+            for (int i = dgvTypes.SelectedRows.Count - 1; i >= 0; --i)
             {
                 typeId = (int)dgvTypes.SelectedRows[i].Cells[1].Value;
+                if (typeId < 8)
+                    continue;
                 for (int j = 0; j < _typesTable.Rows.Count; ++j)
                 {
                     if (typeId == (int)_typesTable.Rows[j].ItemArray[1])
@@ -95,14 +166,22 @@ namespace ColouredPetriNet.Gui.Forms
                         break;
                     }
                 }
-                _petriNet.Types.RemoveById(typeId);
+                _parent.RemoveType(typeId);
             }
         }
 
         private void ClearTypes()
         {
-            _typesTable.Clear();
-            _petriNet.Types.Clear();
+            int typeId;
+            for (int i = _typesTable.Rows.Count - 1; i >= 0; --i)
+            {
+                typeId = (int)_typesTable.Rows[i].ItemArray[1];
+                if (typeId >= 8)
+                {
+                    _typesTable.Rows.RemoveAt(i);
+                    _parent.RemoveType(typeId);
+                }
+            }
         }
     }
 }

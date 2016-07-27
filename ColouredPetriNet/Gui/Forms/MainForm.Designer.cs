@@ -60,7 +60,7 @@ namespace ColouredPetriNet.Gui.Forms
             tsbOneStepSimulation = new ToolStripButton();
             tsbRunSimulation = new ToolStripButton();
             tsbStopSimulation = new ToolStripButton();
-            dlgTypes = new TypeListForm();
+            dlgTypes = new TypeListForm(this, _petriNet);
             dlgShowItemInfo = new ShowItemInfoForm();
             dlgStateInfo = new StateInfoForm();
             dlgTransitionInfo = new TransitionInfoForm();
@@ -155,7 +155,7 @@ namespace ColouredPetriNet.Gui.Forms
             mniTypes.Name = "mniTypes";
             mniTypes.Size = new Size(152, 22);
             mniTypes.Text = "Types";
-            mniTypes.Click += (obj, e) => dlgTypes.ShowDialog(_petriNet);
+            mniTypes.Click += (obj, e) => dlgTypes.ShowDialog();
             //
             // SetMode (ToolStripMenuItem)
             //
@@ -204,14 +204,14 @@ namespace ColouredPetriNet.Gui.Forms
             mniSetModeAddRoundState.Name = "mniSetModeAddRoundState";
             mniSetModeAddRoundState.Size = new Size(152, 22);
             mniSetModeAddRoundState.Text = "Round State";
-            mniSetModeAddRoundState.Click += (obj, e) => SetNewStateType(Core.ColouredStateType.RoundState);
+            //mniSetModeAddRoundState.Click += (obj, e) => SetNewStateType(Core.ColouredStateType.RoundState);
             //
             // SetModeAddImageState (ToolStripMenuItem)
             //
             mniSetModeAddImageState.Name = "mniSetModeAddImageState";
             mniSetModeAddImageState.Size = new Size(152, 22);
             mniSetModeAddImageState.Text = "Image State";
-            mniSetModeAddImageState.Click += (obj, e) => SetNewStateType(Core.ColouredStateType.ImageState);
+            //mniSetModeAddImageState.Click += (obj, e) => SetNewStateType(Core.ColouredStateType.ImageState);
             //
             // SetModeAddTransition (ToolStripMenuItem)
             //
@@ -229,14 +229,14 @@ namespace ColouredPetriNet.Gui.Forms
             mniSetModeAddRectangleTransition.Name = "mniSetModeAddRectangleTransition";
             mniSetModeAddRectangleTransition.Size = new Size(152, 22);
             mniSetModeAddRectangleTransition.Text = "Rectangle Transition";
-            mniSetModeAddRectangleTransition.Click += (obj, e) => SetNewTransitionType(Core.ColouredTransitionType.RectangleTransition);
+            //mniSetModeAddRectangleTransition.Click += (obj, e) => SetNewTransitionType(Core.ColouredTransitionType.RectangleTransition);
             //
             // SetModeAddRhombTransition (ToolStripMenuItem)
             //
             mniSetModeAddRhombTransition.Name = "mniSetModeAddRhombTransition";
             mniSetModeAddRhombTransition.Size = new Size(152, 22);
             mniSetModeAddRhombTransition.Text = "Rhomb Transition";
-            mniSetModeAddRhombTransition.Click += (obj, e) => SetNewTransitionType(Core.ColouredTransitionType.RhombTransition);
+            //mniSetModeAddRhombTransition.Click += (obj, e) => SetNewTransitionType(Core.ColouredTransitionType.RhombTransition);
             //
             // SetModeAddMarker (ToolStripMenuItem)
             //
@@ -255,21 +255,21 @@ namespace ColouredPetriNet.Gui.Forms
             mniSetModeAddRoundMarker.Name = "mniSetModeAddRoundMarker";
             mniSetModeAddRoundMarker.Size = new Size(152, 22);
             mniSetModeAddRoundMarker.Text = "Round Marker";
-            mniSetModeAddRoundMarker.Click += (obj, e) => SetNewMarkerType(Core.ColouredMarkerType.RoundMarker);
+            //mniSetModeAddRoundMarker.Click += (obj, e) => SetNewMarkerType(Core.ColouredMarkerType.RoundMarker);
             //
             // SetModeAddRhombMarker (ToolStripMenuItem)
             //
             mniSetModeAddRhombMarker.Name = "mniSetModeAddRhombMarker";
             mniSetModeAddRhombMarker.Size = new Size(152, 22);
             mniSetModeAddRhombMarker.Text = "Rhomb Marker";
-            mniSetModeAddRhombMarker.Click += (obj, e) => SetNewMarkerType(Core.ColouredMarkerType.RhombMarker);
+            //mniSetModeAddRhombMarker.Click += (obj, e) => SetNewMarkerType(Core.ColouredMarkerType.RhombMarker);
             //
             // SetModeAddTriangleMarker (ToolStripMenuItem)
             //
             mniSetModeAddTriangleMarker.Name = "mniSetModeAddTriangleMarker";
             mniSetModeAddTriangleMarker.Size = new Size(152, 22);
             mniSetModeAddTriangleMarker.Text = "Triangle Marker";
-            mniSetModeAddTriangleMarker.Click += (obj, e) => SetNewMarkerType(Core.ColouredMarkerType.TriangleMarker);
+            //mniSetModeAddTriangleMarker.Click += (obj, e) => SetNewMarkerType(Core.ColouredMarkerType.TriangleMarker);
             //
             // SetModeAddLink (ToolStripMenuItem)
             //
@@ -460,33 +460,19 @@ namespace ColouredPetriNet.Gui.Forms
             //
             imageListAddState.Name = "imageListAddState";
             imageListAddState.Size = new Size(33, 22);
-            imageListAddState.AddItem(Properties.Resources.AddRoundStateIcon, "Add Round State");
-            imageListAddState.AddItem(Properties.Resources.AddImageStateIcon, "Add Image State");
             imageListAddState.Click += (obj, e) => SetItemMapModeInToolbar(ItemMapMode.AddState);
-            imageListAddState.DropDown.Items[0].Click += (obj, e) => SetNewStateTypeInToolbar(Core.ColouredStateType.RoundState);
-            imageListAddState.DropDown.Items[1].Click += (obj, e) => SetNewStateTypeInToolbar(Core.ColouredStateType.ImageState);
             //
             // imageListAddTransition (StripImageList)
             //
             imageListAddTransition.Name = "imageListAddTransition";
             imageListAddTransition.Size = new Size(33, 22);
-            imageListAddTransition.AddItem(Properties.Resources.AddRectangleTransitionIcon, "Add Rectangle Transition");
-            imageListAddTransition.AddItem(Properties.Resources.AddRhombTransitionIcon, "Add Rhomb Transition");
             imageListAddTransition.Click += (obj, e) => SetItemMapModeInToolbar(ItemMapMode.AddTransition);
-            imageListAddTransition.DropDown.Items[0].Click += (obj, e) => SetNewTransitionTypeInToolbar(Core.ColouredTransitionType.RectangleTransition);
-            imageListAddTransition.DropDown.Items[1].Click += (obj, e) => SetNewTransitionTypeInToolbar(Core.ColouredTransitionType.RhombTransition);
             //
             // imageListAddMarker (StripImageList)
             //
             imageListAddMarker.Name = "imageListAddMarker";
             imageListAddMarker.Size = new Size(33, 22);
-            imageListAddMarker.AddItem(Properties.Resources.AddRoundMarkerIcon, "Add Round Marker");
-            imageListAddMarker.AddItem(Properties.Resources.AddRhombMarkerIcon, "Add Rhomb Marker");
-            imageListAddMarker.AddItem(Properties.Resources.AddTriangleMarkerIcon, "Add Triangle Marker");
             imageListAddMarker.Click += (obj, e) => SetItemMapModeInToolbar(ItemMapMode.AddMarker);
-            imageListAddMarker.DropDown.Items[0].Click += (obj, e) => SetNewMarkerTypeInToolbar(Core.ColouredMarkerType.RoundMarker);
-            imageListAddMarker.DropDown.Items[1].Click += (obj, e) => SetNewMarkerTypeInToolbar(Core.ColouredMarkerType.RhombMarker);
-            imageListAddMarker.DropDown.Items[2].Click += (obj, e) => SetNewMarkerTypeInToolbar(Core.ColouredMarkerType.TriangleMarker);
             //
             // AddLink (ToolStripButton)
             //

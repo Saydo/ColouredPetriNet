@@ -12,7 +12,7 @@ namespace ColouredPetriNet.Gui.Forms
             dgvTypes = new DataGridView();
             btnEdit = new Button();
             btnBack = new Button();
-            dlgEditType = new TypeEditForm();
+            dlgEditType = new TypeEditForm(this);
             ((System.ComponentModel.ISupportInitialize)(dgvTypes)).BeginInit();
             this.SuspendLayout();
             // 
@@ -75,7 +75,10 @@ namespace ColouredPetriNet.Gui.Forms
             btnBack.Click += (obj, e) => this.Close();
             // 
             // TypeListForm
-            // 
+            //
+            this.FormBorderStyle = FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(298, 261);
