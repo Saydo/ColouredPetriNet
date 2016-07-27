@@ -7,73 +7,52 @@ namespace ColouredPetriNet.Gui.Forms
         private void InitializeComponent()
         {
             dgvItems = new DataGridView();
-            btnClear = new Button();
-            btnRemove = new Button();
-            btnAdd = new Button();
-            btnBack = new Button();
+            btnCancel = new Button();
+            btnEdit = new Button();
             ((System.ComponentModel.ISupportInitialize)(dgvItems)).BeginInit();
             this.SuspendLayout();
             // 
-            // dataGridView1
+            // dgvItems
             // 
             dgvItems.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvItems.Location = new System.Drawing.Point(13, 12);
-            dgvItems.Name = "dataGridView1";
+            dgvItems.Name = "dgvItems";
             dgvItems.Size = new System.Drawing.Size(259, 163);
             dgvItems.TabIndex = 0;
             // 
-            // btnClear
+            // btnCancel
             // 
-            btnClear.Location = new System.Drawing.Point(206, 181);
-            btnClear.Name = "btnClear";
-            btnClear.Size = new System.Drawing.Size(66, 23);
-            btnClear.TabIndex = 1;
-            btnClear.Text = "Clear";
-            btnClear.UseVisualStyleBackColor = true;
+            btnCancel.Location = new System.Drawing.Point(206, 181);
+            btnCancel.Name = "btnCancel";
+            btnCancel.Size = new System.Drawing.Size(66, 23);
+            btnCancel.TabIndex = 1;
+            btnCancel.Text = "Cancel";
+            btnCancel.UseVisualStyleBackColor = true;
+            btnCancel.Click += (obj, e) => this.Close();
             // 
-            // btnRemove
+            // btnEdit
             // 
-            btnRemove.Location = new System.Drawing.Point(125, 181);
-            btnRemove.Name = "btnRemove";
-            btnRemove.Size = new System.Drawing.Size(75, 23);
-            btnRemove.TabIndex = 2;
-            btnRemove.Text = "Remove";
-            btnRemove.UseVisualStyleBackColor = true;
-            // 
-            // btnAdd
-            // 
-            btnAdd.Location = new System.Drawing.Point(72, 181);
-            btnAdd.Name = "btnAdd";
-            btnAdd.Size = new System.Drawing.Size(47, 23);
-            btnAdd.TabIndex = 3;
-            btnAdd.Text = "Add";
-            btnAdd.UseVisualStyleBackColor = true;
-            // 
-            // btnBack
-            // 
-            btnBack.Location = new System.Drawing.Point(13, 181);
-            btnBack.Name = "btnBack";
-            btnBack.Size = new System.Drawing.Size(53, 23);
-            btnBack.TabIndex = 4;
-            btnBack.Text = "Back";
-            btnBack.UseVisualStyleBackColor = true;
+            btnEdit.Location = new System.Drawing.Point(155, 181);
+            btnEdit.Name = "btnEdit";
+            btnEdit.Size = new System.Drawing.Size(47, 23);
+            btnEdit.TabIndex = 3;
+            btnEdit.Text = "Edit";
+            btnEdit.UseVisualStyleBackColor = true;
             // 
             // ItemStyleForm
-            //
-            this.FormBorderStyle = FormBorderStyle.FixedDialog;
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.StartPosition = FormStartPosition.CenterScreen;
+            // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 217);
-            this.Controls.Add(btnBack);
-            this.Controls.Add(btnAdd);
-            this.Controls.Add(btnRemove);
-            this.Controls.Add(btnClear);
+            this.Controls.Add(btnEdit);
+            this.Controls.Add(btnCancel);
             this.Controls.Add(dgvItems);
+            this.FormBorderStyle = FormBorderStyle.FixedDialog;
             this.Icon = Properties.Resources.AppIcon;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "ItemStyleForm";
+            this.StartPosition = FormStartPosition.CenterScreen;
             this.Text = "Item Style";
             ((System.ComponentModel.ISupportInitialize)(dgvItems)).EndInit();
             this.ResumeLayout(false);
@@ -81,9 +60,7 @@ namespace ColouredPetriNet.Gui.Forms
         }
 
         private DataGridView dgvItems;
-        private Button btnClear;
-        private Button btnRemove;
-        private Button btnAdd;
-        private Button btnBack;
+        private Button btnCancel;
+        private Button btnEdit;
     }
 }

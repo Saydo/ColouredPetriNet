@@ -18,7 +18,7 @@ namespace ColouredPetriNet.Gui.Forms
         private GraphicsPetriNet _petriNet;
         private OverlapType _overlap;
         private Core.SelectionArea _selectionArea;
-        private Core.Style.ColouredPetriNetStyle Style;
+        private Core.Style.ColouredPetriNetStyle _style;
         private bool _mousePressed;
         private bool _itemSelected;
         private Point _lastMousePosition;
@@ -31,6 +31,7 @@ namespace ColouredPetriNet.Gui.Forms
         public MainForm()
         {
             _petriNet = new GraphicsPetriNet();
+            _style = new Core.Style.ColouredPetriNetStyle();
             InitializeComponent();
             InitPetriNet();
             _newItemType = _petriNet.Types[0];
@@ -48,8 +49,9 @@ namespace ColouredPetriNet.Gui.Forms
 
         public void AddType(TypeInfo type)
         {
-            AddTypeToToolbar(type);
             _petriNet.Types.Add(type);
+            AddTypeToToolbar(type);
+            AddTypeStyle(type);
         }
 
         public void ChangeType(int id, string name, GraphicsPetriNet.ItemType kind, ItemForm form)
@@ -205,26 +207,53 @@ namespace ColouredPetriNet.Gui.Forms
         {
             //System.Console.WriteLine("ItemMapMouseClick");
             int id;
-            /*
+
+            GraphicsItem graphicsItem = null;
+            if (_mapMode == ItemMapMode.AddState || _mapMode == ItemMapMode.AddTransition
+                || _mapMode == ItemMapMode.AddMarker)
+            {
+                id = _petriNet.GetLastItemId() + 1;
+                switch (_newItemType.Form)
+                {
+                    case ItemForm.Round:
+                        graphicsItem = new RoundGraphicsItem(id, _newItemType.Id, e.Location, 10);
+                        break;
+                    case ItemForm.Rectangle:
+                        graphicsItem = new RectangleGraphicsItem(id, _newItemType.Id, e.Location,
+                            20, 20);
+                        break;
+                    case ItemForm.Rhomb:
+                        graphicsItem = new RhombGraphicsItem(id, _newItemType.Id, e.Location,
+                            20, 20);
+                        break;
+                    case ItemForm.Triangle:
+                        graphicsItem = new TriangleGraphicsItem(id, _newItemType.Id, e.Location, 15);
+                        break;
+                    case ItemForm.Image:
+                        graphicsItem = new ImageGraphicsItem(id, _newItemType.Id,
+                            Properties.Resources.ImageStateIcon, e.Location, 20, 20);
+                        break;
+                }
+            }
             switch (_mapMode)
             {
                 case ItemMapMode.AddState:
-                    id = _petriNet.AddState(e.X, e.Y, _newStateType);
-                    AddStateToTree(id, _newStateType);
+                    _petriNet.States.Add(graphicsItem);
+                    //AddStateToTree(id, _newStateType);
                     pbMap.Refresh();
                     break;
                 case ItemMapMode.AddTransition:
-                    id = _petriNet.AddTransition(e.X, e.Y, _newTransitionType);
-                    AddTransitionToTree(id, _newTransitionType);
+                    _petriNet.Transitions.Add(graphicsItem);
+                    //AddTransitionToTree(id, _newTransitionType);
                     pbMap.Refresh();
                     break;
                 case ItemMapMode.AddMarker:
-                    var selectedStates = _petriNet.FindStates(e.X, e.Y);
+                    var selectedStates = _petriNet.States.Find(e.X, e.Y);
                     if (selectedStates.Count > 0)
                     {
                         var state = selectedStates[selectedStates.Count - 1];
-                        id = _petriNet.AddMarker(state.State.Id, _newMarkerType);
-                        AddMarkerToTree(id, state.State.Id);
+                        _petriNet.Markers.Add(state.State.Id, graphicsItem);
+                        //AddMarkerToTree(id, state.State.Id);
                     }
                     pbMap.Refresh();
                     break;
@@ -233,20 +262,20 @@ namespace ColouredPetriNet.Gui.Forms
                     {
                         if (!ReferenceEquals(_selectedState, null))
                         {
-                            var chosenTransitions = _petriNet.FindTransitions(e.X, e.Y);
+                            var chosenTransitions = _petriNet.Transitions.Find(e.X, e.Y);
                             if (chosenTransitions.Count > 0)
                             {
-                                _petriNet.AddLink(_selectedState.State.Id, chosenTransitions[0].Transition.Id,
-                                    Core.LinkDirection.FromStateToTransition);
+                                _petriNet.Links.Add(_selectedState.State.Id, chosenTransitions[0].Transition.Id,
+                                    LinkDirection.FromStateToTransition);
                             }
                         }
                         else
                         {
-                            var chosenStates = _petriNet.FindStates(e.X, e.Y);
+                            var chosenStates = _petriNet.States.Find(e.X, e.Y);
                             if (chosenStates.Count > 0)
                             {
-                                _petriNet.AddLink(chosenStates[0].State.Id, _selectedTransition.Transition.Id,
-                                    Core.LinkDirection.FromTransitionToState);
+                                _petriNet.Links.Add(chosenStates[0].State.Id, _selectedTransition.Transition.Id,
+                                    LinkDirection.FromTransitionToState);
                             }
                         }
                         _petriNet.DeselectItems();
@@ -256,7 +285,7 @@ namespace ColouredPetriNet.Gui.Forms
                     }
                     else
                     {
-                        var chosenStates = _petriNet.FindStates(e.X, e.Y);
+                        var chosenStates = _petriNet.States.Find(e.X, e.Y);
                         if (chosenStates.Count > 0)
                         {
                             _selectedState = chosenStates[0];
@@ -265,7 +294,7 @@ namespace ColouredPetriNet.Gui.Forms
                         }
                         else
                         {
-                            var chosenTransitions = _petriNet.FindTransitions(e.X, e.Y);
+                            var chosenTransitions = _petriNet.Transitions.Find(e.X, e.Y);
                             if (chosenTransitions.Count > 0)
                             {
                                 _selectedTransition = chosenTransitions[0];
@@ -277,14 +306,13 @@ namespace ColouredPetriNet.Gui.Forms
                     pbMap.Refresh();
                     break;
                 case ItemMapMode.RemoveMarker:
-                    var chosenStates2 = _petriNet.FindStates(e.X, e.Y);
+                    var chosenStates2 = _petriNet.States.Find(e.X, e.Y);
                     if (chosenStates2.Count > 0)
                     {
                         dlgRemoveMarker.ShowDialog(chosenStates2[0]);
                     }
                     break;
             }
-            */
         }
 
         private void ItemMapMouseDown(object sender, MouseEventArgs e)
@@ -430,6 +458,33 @@ namespace ColouredPetriNet.Gui.Forms
                 pbMap.Refresh();
             }
             */
+        }
+
+        private void AddTypeStyle(TypeInfo type)
+        {
+            switch (type.Form)
+            {
+                case ItemForm.Round:
+                    _style.Items.Add(new Core.Style.PetriNetItemTypeStyle(type.Id,
+                        new Core.Style.RoundShapeStyle(20)));
+                    break;
+                case ItemForm.Rectangle:
+                    _style.Items.Add(new Core.Style.PetriNetItemTypeStyle(type.Id,
+                        new Core.Style.RectangleShapeStyle(20, 20)));
+                    break;
+                case ItemForm.Rhomb:
+                    _style.Items.Add(new Core.Style.PetriNetItemTypeStyle(type.Id,
+                        new Core.Style.RectangleShapeStyle(20, 20)));
+                    break;
+                case ItemForm.Triangle:
+                    _style.Items.Add(new Core.Style.PetriNetItemTypeStyle(type.Id,
+                        new Core.Style.TriangleShapeStyle(10)));
+                    break;
+                case ItemForm.Image:
+                    _style.Items.Add(new Core.Style.PetriNetItemTypeStyle(type.Id,
+                        new Core.Style.ImageShapeStyle("", 20, 20)));
+                    break;
+            }
         }
 
         private void AddTypeToToolbar(TypeInfo type)
@@ -707,36 +762,6 @@ namespace ColouredPetriNet.Gui.Forms
                 }
             }
             */
-        }
-
-        private void OpenLinkStyleForm()
-        {
-            dlgLinkStyle.ShowDialog();
-        }
-
-        private void OpenStateStyleForm()
-        {
-            dlgItemStyle.ShowDialog();
-        }
-
-        private void OpenTransitionStyleForm()
-        {
-            dlgItemStyle.ShowDialog();
-        }
-
-        private void OpenMarkerStyleForm()
-        {
-            dlgItemStyle.ShowDialog();
-        }
-
-        private void OpenBackgroundForm()
-        {
-            dlgBackground.ShowDialog();
-        }
-
-        private void OpenAboutForm()
-        {
-            dlgAbout.ShowDialog();
         }
 
         private void ClearMarkers(int stateId)

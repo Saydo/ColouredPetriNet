@@ -1,5 +1,6 @@
 ﻿using System.Windows.Forms;
 using System.Drawing;
+using ColouredPetriNet.Container.GraphicsPetriNet;
 using ColouredPetriNet.Container.GraphicsPetriNet.GraphicsItems;
 
 namespace ColouredPetriNet.Gui.Forms
@@ -50,7 +51,7 @@ namespace ColouredPetriNet.Gui.Forms
             dlgTransitionInfo = new TransitionInfoForm();
             dlgMarkerInfo = new MarkerInfoForm();
             dlgLinkStyle = new LinkStyleForm();
-            dlgItemStyle = new ItemStyleForm();
+            dlgItemStyle = new ItemStyleForm(_style, _petriNet, this);
             dlgBackground = new BackgroundForm();
             dlgAbout = new AboutForm();
             dlgOpenFile = new OpenFileDialog();
@@ -227,42 +228,42 @@ namespace ColouredPetriNet.Gui.Forms
             mniStateStyle.Name = "mniStateStyle";
             mniStateStyle.Size = new Size(152, 22);
             mniStateStyle.Text = "States";
-            mniStateStyle.Click += (obj, e) => OpenStateStyleForm();
+            mniStateStyle.Click += (obj, e) => dlgItemStyle.ShowDialog(GraphicsPetriNet.ItemType.State);
             //
             // TransitionStyle (ToolStripMenuItem)
             //
             mniTransitionStyle.Name = "mniTransitionStyle";
             mniTransitionStyle.Size = new Size(152, 22);
             mniTransitionStyle.Text = "Transitions";
-            mniTransitionStyle.Click += (obj, e) => OpenTransitionStyleForm();
+            mniTransitionStyle.Click += (obj, e) => dlgItemStyle.ShowDialog(GraphicsPetriNet.ItemType.Transition);
             //
             // MarkerStyle (ToolStripMenuItem)
             //
             mniMarkerStyle.Name = "mniMarkerStyle";
             mniMarkerStyle.Size = new Size(152, 22);
             mniMarkerStyle.Text = "Markers";
-            mniMarkerStyle.Click += (obj, e) => OpenMarkerStyleForm();
+            mniMarkerStyle.Click += (obj, e) => dlgItemStyle.ShowDialog(GraphicsPetriNet.ItemType.Marker);
             //
             // mniLinkStyle (ToolStripMenuItem)
             //
             mniLinkStyle.Name = "mniLinkStyle";
             mniLinkStyle.Size = new Size(152, 22);
             mniLinkStyle.Text = "Links";
-            mniLinkStyle.Click += (obj, e) => OpenLinkStyleForm();
+            mniLinkStyle.Click += (obj, e) => dlgLinkStyle.ShowDialog();
             //
             // Background (ToolStripMenuItem)
             //
             mniBackground.Name = "mniBackground";
             mniBackground.Size = new Size(152, 22);
             mniBackground.Text = "Background";
-            mniBackground.Click += (obj, e) => OpenBackgroundForm();
+            mniBackground.Click += (obj, e) => dlgBackground.ShowDialog();
             //
             // About (ToolStripMenuItem)
             //
             mniAbout.Name = "mniAbout";
             mniAbout.Size = new Size(52, 20);
             mniAbout.Text = "About";
-            mniAbout.Click += (obj, e) => OpenAboutForm();
+            mniAbout.Click += (obj, e) => dlgAbout.ShowDialog();
             //
             // Main (ToolStrip)
             //

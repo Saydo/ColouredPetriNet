@@ -1,4 +1,6 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
+using System.Collections.Generic;
 using ColouredPetriNet.Container.GraphicsPetriNet.GraphicsItems;
 
 namespace ColouredPetriNet.Gui.Core.Style
@@ -125,31 +127,31 @@ namespace ColouredPetriNet.Gui.Core.Style
         RoundMarker, RhombMarker, TriangleMarker
     };
 
-    public struct ColouredPetriNetStyle
+    public struct PetriNetItemTypeStyle
+    {
+        public int Type;
+        public ShapeStyle Style;
+
+        public PetriNetItemTypeStyle(int type, ShapeStyle style)
+        {
+            Type = type;
+            Style = style;
+        }
+    }
+
+    public class ColouredPetriNetStyle
     {
         public OverlapType SelectionMode;
         public Pen SelectionPen;
         public Pen LinePen;
-        public RoundShapeStyle RoundState;
-        public ImageShapeStyle ImageState;
-        public RectangleShapeStyle RectangleTransition;
-        public RectangleShapeStyle RhombTransition;
-        public RoundShapeStyle RoundMarker;
-        public RectangleShapeStyle RhombMarker;
-        public TriangleShapeStyle TriangleMarker;
+        public List<PetriNetItemTypeStyle> Items;
 
-        public void Initialize()
+        public ColouredPetriNetStyle()
         {
             SelectionMode = OverlapType.Partial;
             SelectionPen = new Pen(Color.FromArgb(0, 0, 0));
             LinePen = new Pen(Color.FromArgb(0, 0, 0));
-            RoundState = new RoundShapeStyle();
-            ImageState = new ImageShapeStyle("");
-            RectangleTransition = new RectangleShapeStyle();
-            RhombTransition = new RectangleShapeStyle();
-            RoundMarker = new RoundShapeStyle();
-            RhombMarker = new RectangleShapeStyle();
-            TriangleMarker = new TriangleShapeStyle();
+            Items = new List<PetriNetItemTypeStyle>();
         }
     }
 }

@@ -16,7 +16,7 @@ namespace ColouredPetriNet.Gui.Forms
             ((System.ComponentModel.ISupportInitialize)(dgvTypes)).BeginInit();
             this.SuspendLayout();
             // 
-            // btnAdd
+            // btnEdit
             // 
             btnAdd.Location = new System.Drawing.Point(66, 226);
             btnAdd.Name = "btnAdd";
