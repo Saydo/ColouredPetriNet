@@ -59,7 +59,8 @@ namespace ColouredPetriNet.Gui.Forms
                 if (type.Kind == itemType)
                 {
                     newRow = _itemsTable.NewRow();
-                    newRow["Image"] = new Bitmap(Core.PetriNetTypeConverter.GetTypeFormImage(type.Kind, type.Form), 20, 20);
+                    //newRow["Image"] = new Bitmap(Core.PetriNetTypeConverter.GetTypeFormImage(type.Kind, type.Form), 20, 20);
+                    newRow["Image"] = new Bitmap(Core.PetriNetTypeConverter.GetItemImage(type.Form, _style.FindItemStyle(type.Id)), 20, 20);
                     newRow["Id"] = type.Id;
                     newRow["Name"] = type.Name;
                     newRow["Form"] = type.Form.ToString();

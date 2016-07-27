@@ -131,5 +131,76 @@ namespace ColouredPetriNet.Gui.Core
             }
             return null;
         }
+
+        public static Image GetItemImage(ItemForm form, Style.ShapeStyle style)
+        {
+            Image image = null;
+            Graphics graphics;
+            int width, height;
+            Point[] points;
+            switch (form)
+            {
+                case ItemForm.Round:
+                    var roundShape = (Style.RoundShapeStyle)style;
+                    width = (roundShape.Radius + (int)roundShape.BorderPen.Width + 2)*2;
+                    image = new Bitmap(width, width);
+                    graphics = Graphics.FromImage(image);
+                    graphics.FillEllipse(style.FillBrush, (int)roundShape.BorderPen.Width + 2,
+                        (int)roundShape.BorderPen.Width + 2, roundShape.Radius * 2, roundShape.Radius * 2);
+                    graphics.DrawEllipse(style.BorderPen, (int)roundShape.BorderPen.Width + 2,
+                        (int)roundShape.BorderPen.Width + 2, roundShape.Radius*2, roundShape.Radius * 2);
+                    break;
+                case ItemForm.Rectangle:
+                    var rectangleShape = (Style.RectangleShapeStyle)style;
+                    width = rectangleShape.Width + (int)rectangleShape.BorderPen.Width * 2 + 4;
+                    height = rectangleShape.Height + (int)rectangleShape.BorderPen.Width * 2 + 4;
+                    image = new Bitmap(width, height);
+                    graphics = Graphics.FromImage(image);
+                    graphics.FillRectangle(style.FillBrush, (int)rectangleShape.BorderPen.Width + 2,
+                        (int)rectangleShape.BorderPen.Width + 2, rectangleShape.Width, rectangleShape.Height);
+                    graphics.DrawRectangle(style.BorderPen, (int)rectangleShape.BorderPen.Width + 2,
+                        (int)rectangleShape.BorderPen.Width + 2, rectangleShape.Width, rectangleShape.Height);
+                    break;
+                case ItemForm.Rhomb:
+                    var rhombShape = (Style.RectangleShapeStyle)style;
+                    width = rhombShape.Width + (int)rhombShape.BorderPen.Width * 2 + 4;
+                    height = rhombShape.Height + (int)rhombShape.BorderPen.Width * 2 + 4;
+                    points = new Point[4] {
+                        new Point((int)rhombShape.BorderPen.Width + 2, height/2),
+                        new Point(width/2, (int)rhombShape.BorderPen.Width + 2),
+                        new Point(width - (int)rhombShape.BorderPen.Width - 2, height/2),
+                        new Point(width/2, height - (int)rhombShape.BorderPen.Width - 2)
+                    };
+                    image = new Bitmap(width, height);
+                    graphics = Graphics.FromImage(image);
+                    graphics.FillPolygon(style.FillBrush, points);
+                    graphics.DrawPolygon(style.BorderPen, points);
+                    break;
+                case ItemForm.Triangle:
+                    var triangleShape = (Style.TriangleShapeStyle)style;
+                    width = (triangleShape.Side + (int)triangleShape.BorderPen.Width + 2) * 2;
+                    points = new Point[3] {
+                        new Point(width/2, (int)triangleShape.BorderPen.Width + 2),
+                        new Point(width - (int)triangleShape.BorderPen.Width - 2, width - (int)triangleShape.BorderPen.Width - 2),
+                        new Point((int)triangleShape.BorderPen.Width + 2, width - (int)triangleShape.BorderPen.Width - 2)
+                    };
+                    image = new Bitmap(width, width);
+                    graphics = Graphics.FromImage(image);
+                    graphics.FillPolygon(style.FillBrush, points);
+                    graphics.DrawPolygon(style.BorderPen, points);
+                    break;
+                case ItemForm.Image:
+                    var imageShape = (Style.ImageShapeStyle)style;
+                    width = imageShape.Width + (int)imageShape.BorderPen.Width * 2 + 4;
+                    height = imageShape.Height + (int)imageShape.BorderPen.Width * 2 + 4;
+                    image = new Bitmap(width, height);
+                    graphics = Graphics.FromImage(image);
+                    graphics.DrawImage(Image.FromFile(imageShape.ImageName),
+                        (int)imageShape.BorderPen.Width + 2, (int)imageShape.BorderPen.Width + 2,
+                        imageShape.Width, imageShape.Height);
+                    break;
+            }
+            return image;
+        }
     }
 }

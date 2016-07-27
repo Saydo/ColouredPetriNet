@@ -34,6 +34,7 @@ namespace ColouredPetriNet.Gui.Forms
             _style = new Core.Style.ColouredPetriNetStyle();
             InitializeComponent();
             InitPetriNet();
+            SetDefaultStyle();
             _newItemType = _petriNet.Types[0];
             _selectionArea = new Core.SelectionArea();
             _overlap = OverlapType.Partial;
@@ -146,31 +147,28 @@ namespace ColouredPetriNet.Gui.Forms
             _petriNet.Select(_selectionArea.X, _selectionArea.Y, w, h, _overlap);
         }
 
-        /*
         private void SetDefaultStyle()
         {
             string appDir = System.AppDomain.CurrentDomain.BaseDirectory;
             string projectDir = appDir.Substring(0, appDir.Length - "/bin/Debug".Length);
-            Style.RoundMarker = new Style.RoundShapeStyle(4, new SolidBrush(Color.FromArgb(150, 0, 220)),
-                new Pen(Color.FromArgb(0, 0, 0), 1.0F));
-            Style.RhombMarker = new Style.RectangleShapeStyle(8, 8,
-                new SolidBrush(Color.FromArgb(150, 0, 220)), new Pen(Color.FromArgb(0, 0, 0), 1.0F));
-            Style.TriangleMarker = new Style.TriangleShapeStyle(8,
-                new SolidBrush(Color.FromArgb(150, 0, 220)), new Pen(Color.FromArgb(0, 0, 0), 1.0F));
-            Style.RectangleTransition = new Style.RectangleShapeStyle(20, 20,
-                new SolidBrush(Color.FromArgb(220, 220, 0)), new Pen(Color.FromArgb(0, 0, 0), 1.0F));
-            Style.RhombTransition = new Style.RectangleShapeStyle(20, 20,
-                new SolidBrush(Color.FromArgb(220, 220, 0)), new Pen(Color.FromArgb(0, 0, 0), 1.0F));
-            Style.RoundState = new Style.RoundShapeStyle(10, new SolidBrush(Color.FromArgb(0, 240, 0)),
-                new Pen(Color.FromArgb(0, 0, 0), 1.0F));
-            Style.ImageState = new Style.ImageShapeStyle(projectDir + "Resources/ImageState32x32.png", 22, 22);
-            Style.LinePen = new Pen(Color.FromArgb(0, 0, 0), 1.0F);
-            Style.SelectionMode = GraphicsItems.OverlapType.Partial;
-            Style.SelectionPen = new Pen(Color.FromArgb(0, 0, 0), 1.0F);
+            _style.Items.Add(new Core.Style.PetriNetItemTypeStyle(1, new Core.Style.RoundShapeStyle(10,
+                new SolidBrush(Color.FromArgb(0, 240, 0)),
+                new Pen(Color.FromArgb(0, 0, 0), 1.0F))));
+            _style.Items.Add(new Core.Style.PetriNetItemTypeStyle(2, new Core.Style.ImageShapeStyle(projectDir + "Resources/ImageState32x32.png",
+                22, 22)));
+            _style.Items.Add(new Core.Style.PetriNetItemTypeStyle(3, new Core.Style.RectangleShapeStyle(20, 20,
+                new SolidBrush(Color.FromArgb(220, 220, 0)), new Pen(Color.FromArgb(0, 0, 0), 1.0F))));
+            _style.Items.Add(new Core.Style.PetriNetItemTypeStyle(4, new Core.Style.RectangleShapeStyle(20, 20,
+                new SolidBrush(Color.FromArgb(220, 220, 0)), new Pen(Color.FromArgb(0, 0, 0), 1.0F))));
+            _style.Items.Add(new Core.Style.PetriNetItemTypeStyle(5, new Core.Style.RoundShapeStyle(4, new SolidBrush(Color.FromArgb(150, 0, 220)),
+                new Pen(Color.FromArgb(0, 0, 0), 1.0F))));
+            _style.Items.Add(new Core.Style.PetriNetItemTypeStyle(6, new Core.Style.RectangleShapeStyle(8, 8,
+                new SolidBrush(Color.FromArgb(150, 0, 220)), new Pen(Color.FromArgb(0, 0, 0), 1.0F))));
+            _style.Items.Add(new Core.Style.PetriNetItemTypeStyle(7, new Core.Style.TriangleShapeStyle(8,
+                new SolidBrush(Color.FromArgb(150, 0, 220)), new Pen(Color.FromArgb(0, 0, 0), 1.0F))));
         }
-
         
-
+        /*
         private bool Serialize(string filePath)
         {
             var petriNetXml = new Core.Serialize.ColouredPetriNetXml();

@@ -153,5 +153,17 @@ namespace ColouredPetriNet.Gui.Core.Style
             LinePen = new Pen(Color.FromArgb(0, 0, 0));
             Items = new List<PetriNetItemTypeStyle>();
         }
+
+        public ShapeStyle FindItemStyle(int id)
+        {
+            for (int i = 0; i < Items.Count; ++i)
+            {
+                if (Items[i].Type == id)
+                {
+                    return Items[i].Style;
+                }
+            }
+            return null;
+        }
     }
 }
