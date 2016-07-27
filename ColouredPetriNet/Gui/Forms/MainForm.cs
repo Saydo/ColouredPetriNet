@@ -459,7 +459,7 @@ namespace ColouredPetriNet.Gui.Forms
                     imageListAddState.AddItem(type.Id, image, type.Name,
                         string.Format("Add \"{0}\" item", type.Name));
                     imageListAddState.DropDown.Items[imageListAddState.DropDown.Items.Count - 1].Click += (obj, e) =>
-                        SetNewItemTypeInToolbar(type);
+                        SetNewItemType(type);
                     break;
                 case GraphicsPetriNet.ItemType.Transition:
                     switch (type.Form)
@@ -483,7 +483,7 @@ namespace ColouredPetriNet.Gui.Forms
                     imageListAddTransition.AddItem(type.Id, image, type.Name,
                         string.Format("Add \"{0}\" item", type.Name));
                     imageListAddTransition.DropDown.Items[imageListAddTransition.DropDown.Items.Count - 1].Click += (obj, e) =>
-                        SetNewItemTypeInToolbar(type);
+                        SetNewItemType(type);
                     break;
                 case GraphicsPetriNet.ItemType.Marker:
                     switch (type.Form)
@@ -507,7 +507,7 @@ namespace ColouredPetriNet.Gui.Forms
                     imageListAddMarker.AddItem(type.Id, image, type.Name,
                         string.Format("Add \"{0}\" item", type.Name));
                     imageListAddMarker.DropDown.Items[imageListAddMarker.DropDown.Items.Count - 1].Click += (obj, e) =>
-                        SetNewItemTypeInToolbar(type);
+                        SetNewItemType(type);
                     break;
             }
         }
@@ -592,92 +592,6 @@ namespace ColouredPetriNet.Gui.Forms
         {
             _newItemType = type;
             UpdateStatus(GetCurrentMapModeName());
-        }
-
-        private void SetItemMapModeInToolbar(ItemMapMode mode)
-        {
-            if (_mapMode != mode)
-            {
-                switch (mode)
-                {
-                    case ItemMapMode.View:
-                        mniSetModeView.Checked = true;
-                        break;
-                    case ItemMapMode.Move:
-                        mniSetModeMove.Checked = true;
-                        break;
-                    case ItemMapMode.AddState:
-                        mniSetModeAddState.Checked = true;
-                        break;
-                    case ItemMapMode.AddTransition:
-                        mniSetModeAddTransition.Checked = true;
-                        break;
-                    case ItemMapMode.AddMarker:
-                        mniSetModeAddMarker.Checked = true;
-                        break;
-                    case ItemMapMode.AddLink:
-                        mniSetModeAddLink.Checked = true;
-                        break;
-                    case ItemMapMode.Remove:
-                        mniSetModeRemove.Checked = true;
-                        break;
-                    case ItemMapMode.RemoveMarker:
-                        mniSetModeRemoveMarker.Checked = true;
-                        break;
-                }
-            }
-            SetItemMapMode(mode);
-        }
-
-        private void SetNewItemTypeInToolbar(TypeInfo type)
-        {
-            /*
-            if (type != _newStateType)
-            {
-                mniSetModeAddRoundState.Checked = false;
-                mniSetModeAddImageState.Checked = false;
-                if (type == Core.ColouredStateType.RoundState)
-                {
-                    mniSetModeAddRoundState.Checked = true;
-                }
-                else
-                {
-                    mniSetModeAddImageState.Checked = true;
-                }
-            }
-            if (type != _newTransitionType)
-            {
-                mniSetModeAddRectangleTransition.Checked = false;
-                mniSetModeAddRhombTransition.Checked = false;
-                if (type == Core.ColouredTransitionType.RectangleTransition)
-                {
-                    mniSetModeAddRectangleTransition.Checked = true;
-                }
-                else
-                {
-                    mniSetModeAddRhombTransition.Checked = true;
-                }
-            }
-            if (type != _newMarkerType)
-            {
-                mniSetModeAddRoundMarker.Checked = false;
-                mniSetModeAddRhombMarker.Checked = false;
-                mniSetModeAddTriangleMarker.Checked = false;
-                if (type == Core.ColouredMarkerType.RoundMarker)
-                {
-                    mniSetModeAddRoundMarker.Checked = true;
-                }
-                else if (type == Core.ColouredMarkerType.RhombMarker)
-                {
-                    mniSetModeAddRhombMarker.Checked = true;
-                }
-                else
-                {
-                    mniSetModeAddTriangleMarker.Checked = true;
-                }
-            }
-            */
-            SetNewItemType(type);
         }
 
         private StateWrapper GetSelectedState(List<StateWrapper> stateList)

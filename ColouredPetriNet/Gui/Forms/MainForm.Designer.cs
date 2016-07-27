@@ -16,22 +16,6 @@ namespace ColouredPetriNet.Gui.Forms
             mniExit = new ToolStripMenuItem();
             mniMap = new ToolStripMenuItem();
             mniTypes = new ToolStripMenuItem();
-            mniSetMode = new ToolStripMenuItem();
-            mniSetModeView = new ToolStripRadioButtonMenuItem();
-            mniSetModeMove = new ToolStripRadioButtonMenuItem();
-            mniSetModeAddState = new ToolStripRadioButtonMenuItem();
-            mniSetModeAddRoundState = new ToolStripRadioButtonMenuItem();
-            mniSetModeAddImageState = new ToolStripRadioButtonMenuItem();
-            mniSetModeAddTransition = new ToolStripRadioButtonMenuItem();
-            mniSetModeAddRectangleTransition = new ToolStripRadioButtonMenuItem();
-            mniSetModeAddRhombTransition = new ToolStripRadioButtonMenuItem();
-            mniSetModeAddMarker = new ToolStripRadioButtonMenuItem();
-            mniSetModeAddRoundMarker = new ToolStripRadioButtonMenuItem();
-            mniSetModeAddRhombMarker = new ToolStripRadioButtonMenuItem();
-            mniSetModeAddTriangleMarker = new ToolStripRadioButtonMenuItem();
-            mniSetModeAddLink = new ToolStripRadioButtonMenuItem();
-            mniSetModeRemove = new ToolStripRadioButtonMenuItem();
-            mniSetModeRemoveMarker = new ToolStripRadioButtonMenuItem();
             mniShowInfo = new ToolStripMenuItem();
             mniShowStateInfo = new ToolStripMenuItem();
             mniShowTransitionInfo = new ToolStripMenuItem();
@@ -146,7 +130,6 @@ namespace ColouredPetriNet.Gui.Forms
             mniMap.Text = "Map";
             mniMap.DropDownItems.AddRange(new ToolStripItem[] {
                 mniTypes,
-                mniSetMode,
                 mniShowInfo
             });
             //
@@ -156,141 +139,6 @@ namespace ColouredPetriNet.Gui.Forms
             mniTypes.Size = new Size(152, 22);
             mniTypes.Text = "Types";
             mniTypes.Click += (obj, e) => dlgTypes.ShowDialog();
-            //
-            // SetMode (ToolStripMenuItem)
-            //
-            mniSetMode.Name = "mniSetMode";
-            mniSetMode.Size = new Size(152, 22);
-            mniSetMode.Text = "Set Mode";
-            mniSetMode.DropDownItems.AddRange(new ToolStripItem[] {
-                mniSetModeView,
-                mniSetModeMove,
-                mniSetModeAddState,
-                mniSetModeAddTransition,
-                mniSetModeAddMarker,
-                mniSetModeAddLink,
-                mniSetModeRemove,
-                mniSetModeRemoveMarker
-            });
-            //
-            // SetModeView (ToolStripMenuItem)
-            //
-            mniSetModeView.Name = "mniSetModeView";
-            mniSetModeView.Size = new Size(152, 22);
-            mniSetModeView.Text = "View";
-            mniSetModeView.Checked = true;
-            mniSetModeView.Click += (obj, e) => SetItemMapMode(ItemMapMode.View);
-            //
-            // SetModeMove (ToolStripMenuItem)
-            //
-            mniSetModeMove.Name = "mniSetModeMove";
-            mniSetModeMove.Size = new Size(152, 22);
-            mniSetModeMove.Text = "Move";
-            mniSetModeMove.Click += (obj, e) => SetItemMapMode(ItemMapMode.Move);
-            //
-            // SetModeAddState (ToolStripMenuItem)
-            //
-            mniSetModeAddState.Name = "mniSetModeAddState";
-            mniSetModeAddState.Size = new Size(152, 22);
-            mniSetModeAddState.Text = "Add State";
-            mniSetModeAddState.Click += (obj, e) => SetItemMapMode(ItemMapMode.AddState);
-            mniSetModeAddState.DropDownItems.AddRange(new ToolStripItem[] {
-                mniSetModeAddRoundState,
-                mniSetModeAddImageState
-            });
-            //
-            // SetModeAddRoundState (ToolStripMenuItem)
-            //
-            mniSetModeAddRoundState.Name = "mniSetModeAddRoundState";
-            mniSetModeAddRoundState.Size = new Size(152, 22);
-            mniSetModeAddRoundState.Text = "Round State";
-            //mniSetModeAddRoundState.Click += (obj, e) => SetNewStateType(Core.ColouredStateType.RoundState);
-            //
-            // SetModeAddImageState (ToolStripMenuItem)
-            //
-            mniSetModeAddImageState.Name = "mniSetModeAddImageState";
-            mniSetModeAddImageState.Size = new Size(152, 22);
-            mniSetModeAddImageState.Text = "Image State";
-            //mniSetModeAddImageState.Click += (obj, e) => SetNewStateType(Core.ColouredStateType.ImageState);
-            //
-            // SetModeAddTransition (ToolStripMenuItem)
-            //
-            mniSetModeAddTransition.Name = "mniSetModeAddTransition";
-            mniSetModeAddTransition.Size = new Size(152, 22);
-            mniSetModeAddTransition.Text = "Add Transition";
-            mniSetModeAddTransition.Click += (obj, e) => SetItemMapMode(ItemMapMode.AddTransition);
-            mniSetModeAddTransition.DropDownItems.AddRange(new ToolStripItem[] {
-                mniSetModeAddRectangleTransition,
-                mniSetModeAddRhombTransition
-            });
-            //
-            // SetModeAddRectangleTransition (ToolStripMenuItem)
-            //
-            mniSetModeAddRectangleTransition.Name = "mniSetModeAddRectangleTransition";
-            mniSetModeAddRectangleTransition.Size = new Size(152, 22);
-            mniSetModeAddRectangleTransition.Text = "Rectangle Transition";
-            //mniSetModeAddRectangleTransition.Click += (obj, e) => SetNewTransitionType(Core.ColouredTransitionType.RectangleTransition);
-            //
-            // SetModeAddRhombTransition (ToolStripMenuItem)
-            //
-            mniSetModeAddRhombTransition.Name = "mniSetModeAddRhombTransition";
-            mniSetModeAddRhombTransition.Size = new Size(152, 22);
-            mniSetModeAddRhombTransition.Text = "Rhomb Transition";
-            //mniSetModeAddRhombTransition.Click += (obj, e) => SetNewTransitionType(Core.ColouredTransitionType.RhombTransition);
-            //
-            // SetModeAddMarker (ToolStripMenuItem)
-            //
-            mniSetModeAddMarker.Name = "mniSetModeAddMarker";
-            mniSetModeAddMarker.Size = new Size(152, 22);
-            mniSetModeAddMarker.Text = "Add Marker";
-            mniSetModeAddMarker.Click += (obj, e) => SetItemMapMode(ItemMapMode.AddMarker);
-            mniSetModeAddMarker.DropDownItems.AddRange(new ToolStripItem[] {
-                mniSetModeAddRoundMarker,
-                mniSetModeAddRhombMarker,
-                mniSetModeAddTriangleMarker
-            });
-            //
-            // SetModeAddRoundMarker (ToolStripMenuItem)
-            //
-            mniSetModeAddRoundMarker.Name = "mniSetModeAddRoundMarker";
-            mniSetModeAddRoundMarker.Size = new Size(152, 22);
-            mniSetModeAddRoundMarker.Text = "Round Marker";
-            //mniSetModeAddRoundMarker.Click += (obj, e) => SetNewMarkerType(Core.ColouredMarkerType.RoundMarker);
-            //
-            // SetModeAddRhombMarker (ToolStripMenuItem)
-            //
-            mniSetModeAddRhombMarker.Name = "mniSetModeAddRhombMarker";
-            mniSetModeAddRhombMarker.Size = new Size(152, 22);
-            mniSetModeAddRhombMarker.Text = "Rhomb Marker";
-            //mniSetModeAddRhombMarker.Click += (obj, e) => SetNewMarkerType(Core.ColouredMarkerType.RhombMarker);
-            //
-            // SetModeAddTriangleMarker (ToolStripMenuItem)
-            //
-            mniSetModeAddTriangleMarker.Name = "mniSetModeAddTriangleMarker";
-            mniSetModeAddTriangleMarker.Size = new Size(152, 22);
-            mniSetModeAddTriangleMarker.Text = "Triangle Marker";
-            //mniSetModeAddTriangleMarker.Click += (obj, e) => SetNewMarkerType(Core.ColouredMarkerType.TriangleMarker);
-            //
-            // SetModeAddLink (ToolStripMenuItem)
-            //
-            mniSetModeAddLink.Name = "mniSetModeAddLink";
-            mniSetModeAddLink.Size = new Size(152, 22);
-            mniSetModeAddLink.Text = "Add Link";
-            mniSetModeAddLink.Click += (obj, e) => SetItemMapMode(ItemMapMode.AddLink);
-            //
-            // SetModeRemove (ToolStripMenuItem)
-            //
-            mniSetModeRemove.Name = "mniSetModeRemove";
-            mniSetModeRemove.Size = new Size(152, 22);
-            mniSetModeRemove.Text = "Remove";
-            mniSetModeRemove.Click += (obj, e) => SetItemMapMode(ItemMapMode.Remove);
-            //
-            // SetModeRemoveMarker (ToolStripMenuItem)
-            //
-            mniSetModeRemoveMarker.Name = "mniSetModeRemoveMarker";
-            mniSetModeRemoveMarker.Size = new Size(152, 22);
-            mniSetModeRemoveMarker.Text = "Remove Marker";
-            mniSetModeRemoveMarker.Click += (obj, e) => SetItemMapMode(ItemMapMode.RemoveMarker);
             //
             // ShowInfo (ToolStripMenuItem)
             //
@@ -445,7 +293,7 @@ namespace ColouredPetriNet.Gui.Forms
             tsbView.DisplayStyle = ToolStripItemDisplayStyle.Image;
             tsbView.Image = Properties.Resources.ViewIcon;
             tsbView.Text = "View";
-            tsbView.Click += (obj, e) => SetItemMapModeInToolbar(ItemMapMode.View);
+            tsbView.Click += (obj, e) => SetItemMapMode(ItemMapMode.View);
             //
             // Move (ToolStripButton)
             //
@@ -454,25 +302,25 @@ namespace ColouredPetriNet.Gui.Forms
             tsbMove.DisplayStyle = ToolStripItemDisplayStyle.Image;
             tsbMove.Image = Properties.Resources.MoveIcon;
             tsbMove.Text = "Move";
-            tsbMove.Click += (obj, e) => SetItemMapModeInToolbar(ItemMapMode.Move);
+            tsbMove.Click += (obj, e) => SetItemMapMode(ItemMapMode.Move);
             //
             // imageListAddState (StripImageList)
             //
             imageListAddState.Name = "imageListAddState";
             imageListAddState.Size = new Size(33, 22);
-            imageListAddState.Click += (obj, e) => SetItemMapModeInToolbar(ItemMapMode.AddState);
+            imageListAddState.Click += (obj, e) => SetItemMapMode(ItemMapMode.AddState);
             //
             // imageListAddTransition (StripImageList)
             //
             imageListAddTransition.Name = "imageListAddTransition";
             imageListAddTransition.Size = new Size(33, 22);
-            imageListAddTransition.Click += (obj, e) => SetItemMapModeInToolbar(ItemMapMode.AddTransition);
+            imageListAddTransition.Click += (obj, e) => SetItemMapMode(ItemMapMode.AddTransition);
             //
             // imageListAddMarker (StripImageList)
             //
             imageListAddMarker.Name = "imageListAddMarker";
             imageListAddMarker.Size = new Size(33, 22);
-            imageListAddMarker.Click += (obj, e) => SetItemMapModeInToolbar(ItemMapMode.AddMarker);
+            imageListAddMarker.Click += (obj, e) => SetItemMapMode(ItemMapMode.AddMarker);
             //
             // AddLink (ToolStripButton)
             //
@@ -481,7 +329,7 @@ namespace ColouredPetriNet.Gui.Forms
             tsbAddLink.DisplayStyle = ToolStripItemDisplayStyle.Image;
             tsbAddLink.Image = Properties.Resources.AddLinkIcon;
             tsbAddLink.Text = "Add Link";
-            tsbAddLink.Click += (obj, e) => SetItemMapModeInToolbar(ItemMapMode.AddLink);
+            tsbAddLink.Click += (obj, e) => SetItemMapMode(ItemMapMode.AddLink);
             //
             // Remove (ToolStripButton)
             //
@@ -490,7 +338,7 @@ namespace ColouredPetriNet.Gui.Forms
             tsbRemove.DisplayStyle = ToolStripItemDisplayStyle.Image;
             tsbRemove.Image = Properties.Resources.RemoveIcon;
             tsbRemove.Text = "Remove";
-            tsbRemove.Click += (obj, e) => SetItemMapModeInToolbar(ItemMapMode.Remove);
+            tsbRemove.Click += (obj, e) => SetItemMapMode(ItemMapMode.Remove);
             //
             // RemoveMarker (ToolStripButton)
             //
@@ -499,7 +347,7 @@ namespace ColouredPetriNet.Gui.Forms
             tsbRemoveMarker.DisplayStyle = ToolStripItemDisplayStyle.Image;
             tsbRemoveMarker.Image = Properties.Resources.RemoveMarkerIcon;
             tsbRemoveMarker.Text = "Remove Marker";
-            tsbRemoveMarker.Click += (obj, e) => SetItemMapModeInToolbar(ItemMapMode.RemoveMarker);
+            tsbRemoveMarker.Click += (obj, e) => SetItemMapMode(ItemMapMode.RemoveMarker);
             //
             // tsSeparator1 (ToolStripSeparator)
             //
@@ -671,22 +519,6 @@ namespace ColouredPetriNet.Gui.Forms
         private ToolStripMenuItem mniExit;
         private ToolStripMenuItem mniMap;
         private ToolStripMenuItem mniTypes;
-        private ToolStripMenuItem mniSetMode;
-        private ToolStripRadioButtonMenuItem mniSetModeView;
-        private ToolStripRadioButtonMenuItem mniSetModeMove;
-        private ToolStripRadioButtonMenuItem mniSetModeAddState;
-        private ToolStripRadioButtonMenuItem mniSetModeAddRoundState;
-        private ToolStripRadioButtonMenuItem mniSetModeAddImageState;
-        private ToolStripRadioButtonMenuItem mniSetModeAddTransition;
-        private ToolStripRadioButtonMenuItem mniSetModeAddRectangleTransition;
-        private ToolStripRadioButtonMenuItem mniSetModeAddRhombTransition;
-        private ToolStripRadioButtonMenuItem mniSetModeAddMarker;
-        private ToolStripRadioButtonMenuItem mniSetModeAddRoundMarker;
-        private ToolStripRadioButtonMenuItem mniSetModeAddRhombMarker;
-        private ToolStripRadioButtonMenuItem mniSetModeAddTriangleMarker;
-        private ToolStripRadioButtonMenuItem mniSetModeAddLink;
-        private ToolStripRadioButtonMenuItem mniSetModeRemove;
-        private ToolStripRadioButtonMenuItem mniSetModeRemoveMarker;
         private ToolStripMenuItem mniShowInfo;
         private ToolStripMenuItem mniShowStateInfo;
         private ToolStripMenuItem mniShowTransitionInfo;
