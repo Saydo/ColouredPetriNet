@@ -9,6 +9,10 @@ namespace ColouredPetriNet.Gui.Forms
             dgvItems = new DataGridView();
             btnCancel = new Button();
             btnEdit = new Button();
+            dlgRoundItemStyle = new RoundItemStyleForm(this);
+            dlgRectangleItemStyle = new RectangleItemStyleForm(this);
+            dlgTriangleItemStyle = new TriangleItemStyleForm(this);
+            dlgImageItemStyle = new ImageItemStyleForm(this);
             ((System.ComponentModel.ISupportInitialize)(dgvItems)).BeginInit();
             this.SuspendLayout();
             // 
@@ -38,6 +42,7 @@ namespace ColouredPetriNet.Gui.Forms
             btnEdit.TabIndex = 3;
             btnEdit.Text = "Edit";
             btnEdit.UseVisualStyleBackColor = true;
+            btnEdit.Click += (obj, e) => OpenEditDialog();
             // 
             // ItemStyleForm
             // 
@@ -62,5 +67,9 @@ namespace ColouredPetriNet.Gui.Forms
         private DataGridView dgvItems;
         private Button btnCancel;
         private Button btnEdit;
+        private RoundItemStyleForm dlgRoundItemStyle;
+        private RectangleItemStyleForm dlgRectangleItemStyle;
+        private TriangleItemStyleForm dlgTriangleItemStyle;
+        private ImageItemStyleForm dlgImageItemStyle;
     }
 }

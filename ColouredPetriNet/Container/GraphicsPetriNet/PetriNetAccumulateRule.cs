@@ -37,7 +37,6 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet
             PrevAccumulateFunction = prevAccumulateFunction;
             NextAccumulateFunction = nextAccumulateFunction;
         }
-
         /*
         public bool Accumulate(StateWrapper state)
         {
@@ -58,7 +57,8 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet
             }
             return false;
         }
-
+        */
+        /*
         public bool IsComply(int stateType, List<Tuple<GraphicsItems.GraphicsItem, List<int>>> outputMarkers)
         {
             if (StateType != stateType)

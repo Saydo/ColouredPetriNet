@@ -14,10 +14,12 @@ namespace ColouredPetriNet.Gui.Forms
 
         private StateWrapper _selectedState;
         private DataTable _markersTable;
+        private GraphicsPetriNet _petriNet;
 
-        public RemoveMarkerForm()
+        public RemoveMarkerForm(GraphicsPetriNet petriNet)
         {
             InitializeComponent();
+            _petriNet = petriNet;
             _markersTable = new DataTable();
             _markersTable.Columns.Add(new DataColumn("Id", typeof(int)));
             _markersTable.Columns.Add(new DataColumn("Form", typeof(Image)));
@@ -51,18 +53,18 @@ namespace ColouredPetriNet.Gui.Forms
             _markersTable.Clear();
             if (!ReferenceEquals(_selectedState, null))
             {
-                Image markerImage;
-                string markerType;
+                Image image;
+                TypeInfo type;
                 for (int i = 0; i < _selectedState.Markers.Count; ++i)
                 {
-                    Core.PetriNetItemInfo.GetMarkerType(_selectedState.Markers[i].Item1,
-                        out markerImage, out markerType);
+                    type = _petriNet.Types.FindType(_selectedState.Markers[i].Item1.TypeId);
+                    image = Core.PetriNetTypeConverter.GetTypeFormImage(type.Kind, type.Form);
                     for (int j = 0; j < _selectedState.Markers[i].Item2.Count; ++j)
                     {
                         newRow = _markersTable.NewRow();
                         newRow["Id"] = _selectedState.Markers[i].Item2[j];
-                        newRow["Form"] = markerImage;
-                        newRow["Type"] = markerType;
+                        newRow["Form"] = new Bitmap(image, 20, 20);
+                        newRow["Type"] = type.Name;
                         _markersTable.Rows.Add(newRow);
                     }
                 }

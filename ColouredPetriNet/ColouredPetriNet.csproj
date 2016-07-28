@@ -76,6 +76,7 @@
     <Compile Include="Container\GraphicsPetriNet\GraphicsPetriNetXmlTypes.cs" />
     <Compile Include="Container\GraphicsPetriNet\LinkWrapper.cs" />
     <Compile Include="Container\GraphicsPetriNet\GraphicsPetriNet.cs" />
+    <Compile Include="Container\GraphicsPetriNet\PetriNetIdConvertationRule.cs" />
     <Compile Include="Container\GraphicsPetriNet\StateWrapper.cs" />
     <Compile Include="Container\GraphicsPetriNet\TransitionWrapper.cs" />
     <Compile Include="Container\IdGenerator.cs" />
@@ -128,7 +129,6 @@
     <Compile Include="Container\ColouredPetriNet\Storages\TransitionStorage.cs" />
     <Compile Include="Container\ColouredPetriNet\Storages\TypeStorage.cs" />
     <Compile Include="Container\ColouredPetriNet\TransitionWrapper.cs" />
-    <Compile Include="Gui\Core\PetriNetItemInfo.cs" />
     <Compile Include="Gui\Core\PetriNetTypeConverter.cs" />
     <Compile Include="Gui\Core\PetriNetTypes.cs" />
     <Compile Include="Gui\Core\PetriNetStyle.cs" />

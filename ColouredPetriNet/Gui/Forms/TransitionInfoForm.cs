@@ -44,7 +44,7 @@ namespace ColouredPetriNet.Gui.Forms
         public void ShowDialog(TransitionWrapper transition)
         {
             txtId.Text = transition.Transition.Id.ToString();
-            txtType.Text = Core.PetriNetItemInfo.GetTransitionTypeName(transition.Transition.TypeId);
+            txtType.Text = "";
             UpdateInputLinksTable(transition);
             UpdateOutputLinksTable(transition);
             base.ShowDialog();
@@ -52,6 +52,7 @@ namespace ColouredPetriNet.Gui.Forms
 
         private void UpdateInputLinksTable(TransitionWrapper transition)
         {
+            /*
             DataRow newRow;
             _inputLinksTable.Clear();
             if (!ReferenceEquals(transition, null))
@@ -69,10 +70,12 @@ namespace ColouredPetriNet.Gui.Forms
                     _inputLinksTable.Rows.Add(newRow);
                 }
             }
+            */
         }
 
         private void UpdateOutputLinksTable(TransitionWrapper transition)
         {
+            /*
             DataRow newRow;
             _outputLinksTable.Clear();
             if (!ReferenceEquals(transition, null))
@@ -90,6 +93,7 @@ namespace ColouredPetriNet.Gui.Forms
                     _outputLinksTable.Rows.Add(newRow);
                 }
             }
+            */
         }
     }
 }

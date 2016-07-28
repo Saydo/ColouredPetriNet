@@ -21,7 +21,7 @@ namespace ColouredPetriNet.Gui.Forms
             pnlBorderColor = new Panel();
             lblBorderWidth = new Label();
             numBorderWidth = new NumericUpDown();
-            cdlgColor = new ColorDialog();
+            dlgColor = new ColorDialog();
             ((System.ComponentModel.ISupportInitialize)(numWidth)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(numHeight)).BeginInit();
             grbBorder.SuspendLayout();
@@ -36,6 +36,7 @@ namespace ColouredPetriNet.Gui.Forms
             btnOk.TabIndex = 13;
             btnOk.Text = "Ok";
             btnOk.UseVisualStyleBackColor = true;
+            btnOk.Click += (obj, e) => AcceptChanges();
             // 
             // btnCancel
             // 
@@ -45,6 +46,7 @@ namespace ColouredPetriNet.Gui.Forms
             btnCancel.TabIndex = 12;
             btnCancel.Text = "Cancel";
             btnCancel.UseVisualStyleBackColor = true;
+            btnCancel.Click += (obj, e) => this.Close();
             // 
             // btnChooseFillColor
             // 
@@ -54,6 +56,7 @@ namespace ColouredPetriNet.Gui.Forms
             btnChooseFillColor.TabIndex = 11;
             btnChooseFillColor.Text = "Choose";
             btnChooseFillColor.UseVisualStyleBackColor = true;
+            btnChooseFillColor.Click += (obj, e) => ChooseFillColor();
             // 
             // lblFillColor
             // 
@@ -71,6 +74,7 @@ namespace ColouredPetriNet.Gui.Forms
             pnlFillColor.Name = "pnlFillColor";
             pnlFillColor.Size = new System.Drawing.Size(32, 32);
             pnlFillColor.TabIndex = 9;
+            pnlFillColor.Click += (obj, e) => ChooseFillColor();
             // 
             // lblWidth
             // 
@@ -87,6 +91,8 @@ namespace ColouredPetriNet.Gui.Forms
             numWidth.Name = "numWidth";
             numWidth.Size = new System.Drawing.Size(135, 20);
             numWidth.TabIndex = 7;
+            numWidth.Minimum = 0;
+            numWidth.Maximum = 200;
             // 
             // lblHeight
             // 
@@ -103,6 +109,8 @@ namespace ColouredPetriNet.Gui.Forms
             numHeight.Name = "numHeight";
             numHeight.Size = new System.Drawing.Size(135, 20);
             numHeight.TabIndex = 14;
+            numHeight.Minimum = 0;
+            numHeight.Maximum = 200;
             // 
             // grbBorder
             // 
@@ -126,6 +134,7 @@ namespace ColouredPetriNet.Gui.Forms
             btnChooseBorderColor.TabIndex = 14;
             btnChooseBorderColor.Text = "Choose";
             btnChooseBorderColor.UseVisualStyleBackColor = true;
+            btnChooseBorderColor.Click += (obj, e) => ChooseBorderColor();
             // 
             // lblBorderColor
             // 
@@ -143,6 +152,7 @@ namespace ColouredPetriNet.Gui.Forms
             pnlBorderColor.Name = "pnlBorderColor";
             pnlBorderColor.Size = new System.Drawing.Size(29, 28);
             pnlBorderColor.TabIndex = 12;
+            pnlBorderColor.Click += (obj, e) => ChooseBorderColor();
             // 
             // lblBorderWidth
             // 
@@ -159,6 +169,8 @@ namespace ColouredPetriNet.Gui.Forms
             numBorderWidth.Name = "numBorderWidth";
             numBorderWidth.Size = new System.Drawing.Size(135, 20);
             numBorderWidth.TabIndex = 15;
+            numBorderWidth.Minimum = 0;
+            numBorderWidth.Maximum = 30;
             // 
             // RectangleItemStyleForm
             //
@@ -207,6 +219,6 @@ namespace ColouredPetriNet.Gui.Forms
         private Button btnChooseBorderColor;
         private Label lblBorderColor;
         private Panel pnlBorderColor;
-        private ColorDialog cdlgColor;
+        private ColorDialog dlgColor;
     }
 }

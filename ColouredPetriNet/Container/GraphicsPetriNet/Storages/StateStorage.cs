@@ -491,6 +491,10 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet
                 {
                     return false;
                 }
+                if (_parent._idGenerator.CurrentId < item.Id)
+                {
+                    _parent._idGenerator.Reset(item.Id);
+                }
                 state.AddMarker(item);
                 return true;
             }
@@ -747,28 +751,13 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet
 
             public void RemoveLinks(StateWrapper state)
             {
-                TransitionWrapper transition;
-                for (int i = 0; i < state.InputLinks.Count; ++i)
+                for (int i = state.InputLinks.Count - 1; i >= 0; --i)
                 {
-                    transition = state.InputLinks[i].Transition;
-                    for (int j = 0; j < transition.OutputLinks.Count; ++j)
-                    {
-                        if (transition.OutputLinks[j].State.Id == state.Id)
-                        {
-                            transition.OutputLinks.RemoveAt(j);
-                        }
-                    }
+                    _parent._links.Remove(state.InputLinks[i].Id);
                 }
-                for (int i = 0; i < state.OutputLinks.Count; ++i)
+                for (int i = state.OutputLinks.Count - 1; i >= 0; --i)
                 {
-                    transition = state.OutputLinks[i].Transition;
-                    for (int j = 0; j < transition.InputLinks.Count; ++j)
-                    {
-                        if (transition.InputLinks[j].State.Id == state.Id)
-                        {
-                            transition.InputLinks.RemoveAt(j);
-                        }
-                    }
+                    _parent._links.Remove(state.OutputLinks[i].Id);
                 }
             }
 

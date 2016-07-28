@@ -56,7 +56,7 @@ namespace ColouredPetriNet.Gui.Forms
             dlgAbout = new AboutForm();
             dlgOpenFile = new OpenFileDialog();
             dlgSaveFile = new SaveFileDialog();
-            dlgRemoveMarker = new RemoveMarkerForm();
+            dlgRemoveMarker = new RemoveMarkerForm(_petriNet);
             pbMap = new PictureBox();
             stsStatus = new StatusStrip();
             lblStatusText = new ToolStripStatusLabel();
@@ -419,11 +419,16 @@ namespace ColouredPetriNet.Gui.Forms
             trvStates.TabIndex = 4;
             trvStates.Anchor = AnchorStyles.Right | AnchorStyles.Top;
             ImageList stateImageList = new ImageList();
-            stateImageList.Images.Add(Properties.Resources.RoundStateIcon);
-            stateImageList.Images.Add(Properties.Resources.ImageStateIcon);
-            stateImageList.Images.Add(Properties.Resources.RoundMarkerIcon);
-            stateImageList.Images.Add(Properties.Resources.RhombMarkerIcon);
-            stateImageList.Images.Add(Properties.Resources.TriangleMarkerIcon);
+            stateImageList.Images.Add(ItemForm.Round.ToString() + GraphicsPetriNet.ItemType.State.ToString(), Properties.Resources.RoundStateIcon);
+            stateImageList.Images.Add(ItemForm.Rectangle.ToString() + GraphicsPetriNet.ItemType.State.ToString(), Properties.Resources.RectangleStateIcon);
+            stateImageList.Images.Add(ItemForm.Rhomb.ToString() + GraphicsPetriNet.ItemType.State.ToString(), Properties.Resources.RhombStateIcon);
+            stateImageList.Images.Add(ItemForm.Triangle.ToString() + GraphicsPetriNet.ItemType.State.ToString(), Properties.Resources.TriangleStateIcon);
+            stateImageList.Images.Add(ItemForm.Image.ToString() + GraphicsPetriNet.ItemType.State.ToString(), Properties.Resources.ImageStateIcon);
+            stateImageList.Images.Add(ItemForm.Round.ToString() + GraphicsPetriNet.ItemType.Marker.ToString(), Properties.Resources.RoundMarkerIcon);
+            stateImageList.Images.Add(ItemForm.Rectangle.ToString() + GraphicsPetriNet.ItemType.Marker.ToString(), Properties.Resources.RectangleMarkerIcon);
+            stateImageList.Images.Add(ItemForm.Rhomb.ToString() + GraphicsPetriNet.ItemType.Marker.ToString(), Properties.Resources.RhombMarkerIcon);
+            stateImageList.Images.Add(ItemForm.Triangle.ToString() + GraphicsPetriNet.ItemType.Marker.ToString(), Properties.Resources.TriangleMarkerIcon);
+            stateImageList.Images.Add(ItemForm.Image.ToString() + GraphicsPetriNet.ItemType.Marker.ToString(), Properties.Resources.ImageMarkerIcon);
             trvStates.ImageList = stateImageList;
             //
             // trvTransitions (TreeView)
@@ -434,8 +439,11 @@ namespace ColouredPetriNet.Gui.Forms
             trvTransitions.TabIndex = 5;
             trvTransitions.Anchor = AnchorStyles.Right | AnchorStyles.Bottom | AnchorStyles.Top;
             ImageList transitionImageList = new ImageList();
-            transitionImageList.Images.Add(Properties.Resources.RectangleTransitionIcon);
-            transitionImageList.Images.Add(Properties.Resources.RhombTransitionIcon);
+            transitionImageList.Images.Add(ItemForm.Round.ToString(), Properties.Resources.RoundTransitionIcon);
+            transitionImageList.Images.Add(ItemForm.Rectangle.ToString(), Properties.Resources.RectangleTransitionIcon);
+            transitionImageList.Images.Add(ItemForm.Rhomb.ToString(), Properties.Resources.RhombTransitionIcon);
+            transitionImageList.Images.Add(ItemForm.Triangle.ToString(), Properties.Resources.TriangleTransitionIcon);
+            transitionImageList.Images.Add(ItemForm.Image.ToString(), Properties.Resources.ImageTransitionIcon);
             trvTransitions.ImageList = transitionImageList;
             //
             // lblStates (Label)

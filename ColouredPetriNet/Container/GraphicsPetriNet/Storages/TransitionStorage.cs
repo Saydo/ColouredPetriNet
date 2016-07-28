@@ -164,7 +164,7 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet
             {
                 for (int i = SelectedTransitions.Count - 1; i >= 0; --i)
                 {
-                    Remove(SelectedTransitions[i].Id);
+                    this.Remove(SelectedTransitions[i].Id);
                 }
             }
 
@@ -405,7 +405,7 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet
 
             public void PrepareTransitionToRemove(TransitionWrapper transition)
             {
-                RemoveLinks(transition);
+                this.RemoveLinks(transition);
                 int index = GetSelectedTransitionIndex(transition);
                 if (index >= 0)
                 {
@@ -415,28 +415,13 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet
 
             public void RemoveLinks(TransitionWrapper transition)
             {
-                StateWrapper state;
-                for (int i = 0; i < transition.InputLinks.Count; ++i)
+                for (int i = transition.InputLinks.Count - 1; i >= 0; --i)
                 {
-                    state = transition.InputLinks[i].State;
-                    for (int j = 0; j < state.OutputLinks.Count; ++j)
-                    {
-                        if (state.OutputLinks[j].Transition.Id == transition.Id)
-                        {
-                            state.OutputLinks.RemoveAt(j);
-                        }
-                    }
+                    _parent._links.Remove(transition.InputLinks[i].Id);
                 }
-                for (int i = 0; i < transition.OutputLinks.Count; ++i)
+                for (int i = transition.OutputLinks.Count - 1; i >= 0; --i)
                 {
-                    state = transition.OutputLinks[i].State;
-                    for (int j = 0; j < state.InputLinks.Count; ++j)
-                    {
-                        if (state.InputLinks[j].Transition.Id == transition.Id)
-                        {
-                            state.InputLinks.RemoveAt(j);
-                        }
-                    }
+                    _parent._links.Remove(transition.OutputLinks[i].Id);
                 }
             }
 

@@ -64,7 +64,7 @@ namespace ColouredPetriNet.Gui.Forms
         public void ShowDialog(StateWrapper state)
         {
             txtId.Text = state.State.Id.ToString();
-            txtType.Text = Core.PetriNetItemInfo.GetStateTypeName(state.State.TypeId);
+            txtType.Text = "";
             UpdateMarkersTable(state);
             UpdateInputLinksTable(state);
             UpdateOutputLinksTable(state);
@@ -73,14 +73,16 @@ namespace ColouredPetriNet.Gui.Forms
 
         private void UpdateMarkersTable(StateWrapper state)
         {
+            /*
             DataRow newRow;
             _markersTable.Clear();
             if (!ReferenceEquals(state, null))
             {
-                Image markerImage;
-                string markerType;
+                Image image;
+                TypeInfo type;
                 for (int i = 0; i < state.Markers.Count; ++i)
                 {
+                    //
                     Core.PetriNetItemInfo.GetMarkerType(state.Markers[i].Item1,
                         out markerImage, out markerType);
                     for (int j = 0; j < state.Markers[i].Item2.Count; ++j)
@@ -93,10 +95,12 @@ namespace ColouredPetriNet.Gui.Forms
                     }
                 }
             }
+            */
         }
 
         private void UpdateInputLinksTable(StateWrapper state)
         {
+            /*
             DataRow newRow;
             _inputLinksTable.Clear();
             if (!ReferenceEquals(state, null))
@@ -114,10 +118,12 @@ namespace ColouredPetriNet.Gui.Forms
                     _inputLinksTable.Rows.Add(newRow);
                 }
             }
+            */
         }
 
         private void UpdateOutputLinksTable(StateWrapper state)
         {
+            /*
             DataRow newRow;
             _outputLinksTable.Clear();
             if (!ReferenceEquals(state, null))
@@ -135,6 +141,7 @@ namespace ColouredPetriNet.Gui.Forms
                     _outputLinksTable.Rows.Add(newRow);
                 }
             }
+            */
         }
     }
 }

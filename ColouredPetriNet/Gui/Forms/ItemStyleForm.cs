@@ -44,6 +44,57 @@ namespace ColouredPetriNet.Gui.Forms
             base.ShowDialog();
         }
 
+        public void UpdateItem(int typeId, ItemForm form)
+        {
+            for (int i = 0; i < _itemsTable.Rows.Count; ++i)
+            {
+                if (typeId == (int)_itemsTable.Rows[i].ItemArray[1])
+                {
+                    var newRow = _itemsTable.NewRow();
+                    newRow["Image"] = new Bitmap(Core.PetriNetTypeConverter.GetItemImage(form, _style.FindItemStyle(typeId)), 20, 20);
+                    newRow["Id"] = (int)_itemsTable.Rows[i].ItemArray[1];
+                    newRow["Name"] = (string)_itemsTable.Rows[i].ItemArray[2];
+                    newRow["Form"] = (string)_itemsTable.Rows[i].ItemArray[3];
+                    _itemsTable.Rows.RemoveAt(i);
+                    _itemsTable.Rows.InsertAt(newRow, i);
+                    return;
+                }
+            }
+        }
+
+        private void OpenEditDialog()
+        {
+            if (dgvItems.SelectedRows.Count != 1)
+            {
+                MessageBox.Show("Select one item!");
+                return;
+            }
+            var type = _petriNet.Types.FindType((int)dgvItems.SelectedRows[0].Cells[1].Value);
+            switch (type.Form)
+            {
+                case ItemForm.Round:
+                    dlgRoundItemStyle.Text = string.Format("\"{0}\" Style", type.Name);
+                    dlgRoundItemStyle.ShowDialog(type.Id, (Core.Style.RoundShapeStyle)_style.FindItemStyle(type.Id));
+                    break;
+                case ItemForm.Rectangle:
+                    dlgRectangleItemStyle.Text = string.Format("\"{0}\" Style", type.Name);
+                    dlgRectangleItemStyle.ShowDialog(type.Id, (Core.Style.RectangleShapeStyle)_style.FindItemStyle(type.Id), ItemForm.Rectangle);
+                    break;
+                case ItemForm.Rhomb:
+                    dlgRectangleItemStyle.Text = string.Format("\"{0}\" Style", type.Name);
+                    dlgRectangleItemStyle.ShowDialog(type.Id, (Core.Style.RectangleShapeStyle)_style.FindItemStyle(type.Id), ItemForm.Rhomb);
+                    break;
+                case ItemForm.Triangle:
+                    dlgTriangleItemStyle.Text = string.Format("\"{0}\" Style", type.Name);
+                    dlgTriangleItemStyle.ShowDialog(type.Id, (Core.Style.TriangleShapeStyle)_style.FindItemStyle(type.Id));
+                    break;
+                case ItemForm.Image:
+                    dlgImageItemStyle.Text = string.Format("\"{0}\" Style", type.Name);
+                    dlgImageItemStyle.ShowDialog(type.Id, (Core.Style.ImageShapeStyle)_style.FindItemStyle(type.Id));
+                    break;
+            }
+        }
+
         private void UpdateItemTable(GraphicsPetriNet.ItemType itemType)
         {
             _itemsTable.Clear();
