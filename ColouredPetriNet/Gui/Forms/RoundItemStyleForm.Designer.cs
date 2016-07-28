@@ -168,7 +168,7 @@ namespace ColouredPetriNet.Gui.Forms
             this.Controls.Add(pnlFillColor);
             this.Controls.Add(lblRadius);
             this.Controls.Add(numRadius);
-            this.Icon = Properties.Resources.AppIcon;
+            this.Icon = Core.PetriNetResources.Storage.GetIcon("AppIcon");
             this.Name = "RoundItemStyleForm";
             this.Text = "Item Style";
             this.grbBorder.ResumeLayout(false);

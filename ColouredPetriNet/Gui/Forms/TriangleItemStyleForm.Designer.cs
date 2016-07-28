@@ -164,7 +164,7 @@ namespace ColouredPetriNet.Gui.Forms
             this.Controls.Add(pnlFillColor);
             this.Controls.Add(lblSide);
             this.Controls.Add(numSide);
-            this.Icon = Properties.Resources.AppIcon;
+            this.Icon = Core.PetriNetResources.Storage.GetIcon("AppIcon");
             this.Name = "TriangleItemStyleForm";
             this.Text = "Item Style";
             this.grbBorder.ResumeLayout(false);

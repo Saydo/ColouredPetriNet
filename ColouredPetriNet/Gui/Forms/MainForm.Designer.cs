@@ -292,7 +292,7 @@ namespace ColouredPetriNet.Gui.Forms
             tsbView.Name = "tsbView";
             tsbView.Size = new Size(23, 22);
             tsbView.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            tsbView.Image = Properties.Resources.ViewIcon;
+            tsbView.Image = Core.PetriNetResources.Storage.GetImage("ViewIcon");
             tsbView.Text = "View";
             tsbView.Click += (obj, e) => SetItemMapMode(ItemMapMode.View);
             //
@@ -301,7 +301,7 @@ namespace ColouredPetriNet.Gui.Forms
             tsbMove.Name = "tsbMove";
             tsbMove.Size = new Size(23, 22);
             tsbMove.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            tsbMove.Image = Properties.Resources.MoveIcon;
+            tsbMove.Image = Core.PetriNetResources.Storage.GetImage("MoveIcon");
             tsbMove.Text = "Move";
             tsbMove.Click += (obj, e) => SetItemMapMode(ItemMapMode.Move);
             //
@@ -328,7 +328,7 @@ namespace ColouredPetriNet.Gui.Forms
             tsbAddLink.Name = "tsbAddLink";
             tsbAddLink.Size = new Size(23, 22);
             tsbAddLink.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            tsbAddLink.Image = Properties.Resources.AddLinkIcon;
+            tsbAddLink.Image = Core.PetriNetResources.Storage.GetImage("AddLinkIcon");
             tsbAddLink.Text = "Add Link";
             tsbAddLink.Click += (obj, e) => SetItemMapMode(ItemMapMode.AddLink);
             //
@@ -337,7 +337,7 @@ namespace ColouredPetriNet.Gui.Forms
             tsbRemove.Name = "tsbRemove";
             tsbRemove.Size = new Size(23, 22);
             tsbRemove.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            tsbRemove.Image = Properties.Resources.RemoveIcon;
+            tsbRemove.Image = Core.PetriNetResources.Storage.GetImage("RemoveIcon");
             tsbRemove.Text = "Remove";
             tsbRemove.Click += (obj, e) => SetItemMapMode(ItemMapMode.Remove);
             //
@@ -346,7 +346,7 @@ namespace ColouredPetriNet.Gui.Forms
             tsbRemoveMarker.Name = "tsbRemoveMarker";
             tsbRemoveMarker.Size = new Size(23, 22);
             tsbRemoveMarker.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            tsbRemoveMarker.Image = Properties.Resources.RemoveMarkerIcon;
+            tsbRemoveMarker.Image = Core.PetriNetResources.Storage.GetImage("RemoveMarkerIcon");
             tsbRemoveMarker.Text = "Remove Marker";
             tsbRemoveMarker.Click += (obj, e) => SetItemMapMode(ItemMapMode.RemoveMarker);
             //
@@ -360,7 +360,7 @@ namespace ColouredPetriNet.Gui.Forms
             tsbOneStepSimulation.Name = "tsbOneStepSimulation";
             tsbOneStepSimulation.Size = new Size(23, 22);
             tsbOneStepSimulation.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            tsbOneStepSimulation.Image = Properties.Resources.OneStepIcon;
+            tsbOneStepSimulation.Image = Core.PetriNetResources.Storage.GetImage("OneStepIcon");
             tsbOneStepSimulation.Text = "One Step Simulation";
             //
             // tsbRunSimulation (ToolStripButton)
@@ -368,7 +368,7 @@ namespace ColouredPetriNet.Gui.Forms
             tsbRunSimulation.Name = "tsbRunSimulation";
             tsbRunSimulation.Size = new Size(23, 22);
             tsbRunSimulation.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            tsbRunSimulation.Image = Properties.Resources.PlayIcon;
+            tsbRunSimulation.Image = Core.PetriNetResources.Storage.GetImage("PlayIcon");
             tsbRunSimulation.Text = "Run Simulation";
             //
             // tsbStopSimulation (ToolStripButton)
@@ -376,7 +376,7 @@ namespace ColouredPetriNet.Gui.Forms
             tsbStopSimulation.Name = "tsbStopSimulation";
             tsbStopSimulation.Size = new Size(23, 22);
             tsbStopSimulation.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            tsbStopSimulation.Image = Properties.Resources.StopIcon;
+            tsbStopSimulation.Image = Core.PetriNetResources.Storage.GetImage("StopIcon");
             tsbStopSimulation.Text = "Stop Simulation";
             //
             // pbMap (PictureBox)
@@ -419,16 +419,16 @@ namespace ColouredPetriNet.Gui.Forms
             trvStates.TabIndex = 4;
             trvStates.Anchor = AnchorStyles.Right | AnchorStyles.Top;
             ImageList stateImageList = new ImageList();
-            stateImageList.Images.Add(ItemForm.Round.ToString() + GraphicsPetriNet.ItemType.State.ToString(), Properties.Resources.RoundStateIcon);
-            stateImageList.Images.Add(ItemForm.Rectangle.ToString() + GraphicsPetriNet.ItemType.State.ToString(), Properties.Resources.RectangleStateIcon);
-            stateImageList.Images.Add(ItemForm.Rhomb.ToString() + GraphicsPetriNet.ItemType.State.ToString(), Properties.Resources.RhombStateIcon);
-            stateImageList.Images.Add(ItemForm.Triangle.ToString() + GraphicsPetriNet.ItemType.State.ToString(), Properties.Resources.TriangleStateIcon);
-            stateImageList.Images.Add(ItemForm.Image.ToString() + GraphicsPetriNet.ItemType.State.ToString(), Properties.Resources.ImageStateIcon);
-            stateImageList.Images.Add(ItemForm.Round.ToString() + GraphicsPetriNet.ItemType.Marker.ToString(), Properties.Resources.RoundMarkerIcon);
-            stateImageList.Images.Add(ItemForm.Rectangle.ToString() + GraphicsPetriNet.ItemType.Marker.ToString(), Properties.Resources.RectangleMarkerIcon);
-            stateImageList.Images.Add(ItemForm.Rhomb.ToString() + GraphicsPetriNet.ItemType.Marker.ToString(), Properties.Resources.RhombMarkerIcon);
-            stateImageList.Images.Add(ItemForm.Triangle.ToString() + GraphicsPetriNet.ItemType.Marker.ToString(), Properties.Resources.TriangleMarkerIcon);
-            stateImageList.Images.Add(ItemForm.Image.ToString() + GraphicsPetriNet.ItemType.Marker.ToString(), Properties.Resources.ImageMarkerIcon);
+            stateImageList.Images.Add(ItemForm.Round.ToString() + GraphicsPetriNet.ItemType.State.ToString(), Core.PetriNetResources.Storage.GetImage("RoundStateIcon"));
+            stateImageList.Images.Add(ItemForm.Rectangle.ToString() + GraphicsPetriNet.ItemType.State.ToString(), Core.PetriNetResources.Storage.GetImage("RectangleStateIcon"));
+            stateImageList.Images.Add(ItemForm.Rhomb.ToString() + GraphicsPetriNet.ItemType.State.ToString(), Core.PetriNetResources.Storage.GetImage("RhombStateIcon"));
+            stateImageList.Images.Add(ItemForm.Triangle.ToString() + GraphicsPetriNet.ItemType.State.ToString(), Core.PetriNetResources.Storage.GetImage("TriangleStateIcon"));
+            stateImageList.Images.Add(ItemForm.Image.ToString() + GraphicsPetriNet.ItemType.State.ToString(), Core.PetriNetResources.Storage.GetImage("ImageStateIcon"));
+            stateImageList.Images.Add(ItemForm.Round.ToString() + GraphicsPetriNet.ItemType.Marker.ToString(), Core.PetriNetResources.Storage.GetImage("RoundMarkerIcon"));
+            stateImageList.Images.Add(ItemForm.Rectangle.ToString() + GraphicsPetriNet.ItemType.Marker.ToString(), Core.PetriNetResources.Storage.GetImage("RectangleMarkerIcon"));
+            stateImageList.Images.Add(ItemForm.Rhomb.ToString() + GraphicsPetriNet.ItemType.Marker.ToString(), Core.PetriNetResources.Storage.GetImage("RhombMarkerIcon"));
+            stateImageList.Images.Add(ItemForm.Triangle.ToString() + GraphicsPetriNet.ItemType.Marker.ToString(), Core.PetriNetResources.Storage.GetImage("TriangleMarkerIcon"));
+            stateImageList.Images.Add(ItemForm.Image.ToString() + GraphicsPetriNet.ItemType.Marker.ToString(), Core.PetriNetResources.Storage.GetImage("ImageMarkerIcon"));
             trvStates.ImageList = stateImageList;
             //
             // trvTransitions (TreeView)
@@ -439,11 +439,11 @@ namespace ColouredPetriNet.Gui.Forms
             trvTransitions.TabIndex = 5;
             trvTransitions.Anchor = AnchorStyles.Right | AnchorStyles.Bottom | AnchorStyles.Top;
             ImageList transitionImageList = new ImageList();
-            transitionImageList.Images.Add(ItemForm.Round.ToString(), Properties.Resources.RoundTransitionIcon);
-            transitionImageList.Images.Add(ItemForm.Rectangle.ToString(), Properties.Resources.RectangleTransitionIcon);
-            transitionImageList.Images.Add(ItemForm.Rhomb.ToString(), Properties.Resources.RhombTransitionIcon);
-            transitionImageList.Images.Add(ItemForm.Triangle.ToString(), Properties.Resources.TriangleTransitionIcon);
-            transitionImageList.Images.Add(ItemForm.Image.ToString(), Properties.Resources.ImageTransitionIcon);
+            transitionImageList.Images.Add(ItemForm.Round.ToString(), Core.PetriNetResources.Storage.GetImage("RoundTransitionIcon"));
+            transitionImageList.Images.Add(ItemForm.Rectangle.ToString(), Core.PetriNetResources.Storage.GetImage("RectangleTransitionIcon"));
+            transitionImageList.Images.Add(ItemForm.Rhomb.ToString(), Core.PetriNetResources.Storage.GetImage("RhombTransitionIcon"));
+            transitionImageList.Images.Add(ItemForm.Triangle.ToString(), Core.PetriNetResources.Storage.GetImage("TriangleTransitionIcon"));
+            transitionImageList.Images.Add(ItemForm.Image.ToString(), Core.PetriNetResources.Storage.GetImage("ImageTransitionIcon"));
             trvTransitions.ImageList = transitionImageList;
             //
             // lblStates (Label)
@@ -505,7 +505,7 @@ namespace ColouredPetriNet.Gui.Forms
             this.Controls.Add(pbMap);
             this.Controls.Add(tlsMain);
             this.Controls.Add(mnsMain);
-            this.Icon = Properties.Resources.AppIcon;
+            this.Icon = Core.PetriNetResources.Storage.GetIcon("AppIcon");
             this.MainMenuStrip = mnsMain;
             this.Text = "Coloured Petri Net";
             mnsMain.ResumeLayout(false);

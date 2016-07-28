@@ -27,6 +27,7 @@ namespace ColouredPetriNet.Gui.Forms
         private StateWrapper _selectedState;
         private TransitionWrapper _selectedTransition;
         private string _currentFile;
+        private Core.ResourceStorage _resourceStorage;
 
         public MainForm()
         {
@@ -465,7 +466,7 @@ namespace ColouredPetriNet.Gui.Forms
                 case ItemForm.Image:
                     var imageShapeStyle = (Core.Style.ImageShapeStyle)_style.FindItemStyle(_newItemType.Id);
                     graphicsItem = new ImageGraphicsItem(id, _newItemType.Id,
-                        Properties.Resources.ImageStateIcon, location, imageShapeStyle.Width, imageShapeStyle.Height);
+                        Core.PetriNetResources.Storage.GetImage("ImageStateIcon"), location, imageShapeStyle.Width, imageShapeStyle.Height);
                     graphicsItem.SelectionPen = _style.SelectionPen;
                     break;
             }
@@ -508,19 +509,19 @@ namespace ColouredPetriNet.Gui.Forms
                     switch (type.Form)
                     {
                         case ItemForm.Round:
-                            image = Properties.Resources.AddRoundStateIcon;
+                            image = Core.PetriNetResources.Storage.GetImage("AddRoundStateIcon");
                             break;
                         case ItemForm.Rectangle:
-                            image = Properties.Resources.AddRectangleStateIcon;
+                            image = Core.PetriNetResources.Storage.GetImage("AddRectangleStateIcon");
                             break;
                         case ItemForm.Rhomb:
-                            image = Properties.Resources.AddRhombStateIcon;
+                            image = Core.PetriNetResources.Storage.GetImage("AddRhombStateIcon");
                             break;
                         case ItemForm.Triangle:
-                            image = Properties.Resources.AddTriangleStateIcon;
+                            image = Core.PetriNetResources.Storage.GetImage("AddTriangleStateIcon");
                             break;
                         case ItemForm.Image:
-                            image = Properties.Resources.AddImageStateIcon;
+                            image = Core.PetriNetResources.Storage.GetImage("AddImageStateIcon");
                             break;
                     }
                     imageListAddState.AddItem(type.Id, image, type.Name,
@@ -532,19 +533,19 @@ namespace ColouredPetriNet.Gui.Forms
                     switch (type.Form)
                     {
                         case ItemForm.Round:
-                            image = Properties.Resources.AddRoundTransitionIcon;
+                            image = Core.PetriNetResources.Storage.GetImage("AddRoundTransitionIcon");
                             break;
                         case ItemForm.Rectangle:
-                            image = Properties.Resources.AddRectangleTransitionIcon;
+                            image = Core.PetriNetResources.Storage.GetImage("AddRectangleTransitionIcon");
                             break;
                         case ItemForm.Rhomb:
-                            image = Properties.Resources.AddRhombTransitionIcon;
+                            image = Core.PetriNetResources.Storage.GetImage("AddRhombTransitionIcon");
                             break;
                         case ItemForm.Triangle:
-                            image = Properties.Resources.AddTriangleTransitionIcon;
+                            image = Core.PetriNetResources.Storage.GetImage("AddTriangleTransitionIcon");
                             break;
                         case ItemForm.Image:
-                            image = Properties.Resources.AddImageTransitionIcon;
+                            image = Core.PetriNetResources.Storage.GetImage("AddImageTransitionIcon");
                             break;
                     }
                     imageListAddTransition.AddItem(type.Id, image, type.Name,
@@ -556,19 +557,19 @@ namespace ColouredPetriNet.Gui.Forms
                     switch (type.Form)
                     {
                         case ItemForm.Round:
-                            image = Properties.Resources.AddRoundMarkerIcon;
+                            image = Core.PetriNetResources.Storage.GetImage("AddRoundMarkerIcon");
                             break;
                         case ItemForm.Rectangle:
-                            image = Properties.Resources.AddRectangleMarkerIcon;
+                            image = Core.PetriNetResources.Storage.GetImage("AddRectangleMarkerIcon");
                             break;
                         case ItemForm.Rhomb:
-                            image = Properties.Resources.AddRhombMarkerIcon;
+                            image = Core.PetriNetResources.Storage.GetImage("AddRhombMarkerIcon");
                             break;
                         case ItemForm.Triangle:
-                            image = Properties.Resources.AddTriangleMarkerIcon;
+                            image = Core.PetriNetResources.Storage.GetImage("AddTriangleMarkerIcon");
                             break;
                         case ItemForm.Image:
-                            image = Properties.Resources.AddImageMarkerIcon;
+                            image = Core.PetriNetResources.Storage.GetImage("AddImageMarkerIcon");
                             break;
                     }
                     imageListAddMarker.AddItem(type.Id, image, type.Name,

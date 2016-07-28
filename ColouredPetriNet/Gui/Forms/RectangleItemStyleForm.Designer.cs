@@ -191,7 +191,7 @@ namespace ColouredPetriNet.Gui.Forms
             this.Controls.Add(pnlFillColor);
             this.Controls.Add(lblWidth);
             this.Controls.Add(numWidth);
-            this.Icon = Properties.Resources.AppIcon;
+            this.Icon = Core.PetriNetResources.Storage.GetIcon("AppIcon");
             this.Name = "RectangleItemStyleForm";
             this.Text = "Item Style";
             ((System.ComponentModel.ISupportInitialize)(numWidth)).EndInit();

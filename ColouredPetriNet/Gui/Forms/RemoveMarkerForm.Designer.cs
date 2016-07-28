@@ -64,7 +64,7 @@ namespace ColouredPetriNet.Gui.Forms
             this.Controls.Add(btnRemove);
             this.Controls.Add(btnClear);
             this.Controls.Add(dgvMarkers);
-            this.Icon = Properties.Resources.AppIcon;
+            this.Icon = Core.PetriNetResources.Storage.GetIcon("AppIcon");
             this.Name = "RemoveMarkerForm";
             this.Text = "RemoveMarkerForm";
             ((System.ComponentModel.ISupportInitialize)(dgvMarkers)).EndInit();

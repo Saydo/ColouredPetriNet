@@ -90,7 +90,7 @@ namespace ColouredPetriNet.Gui.Forms
             this.Controls.Add(dgvTypes);
             this.Name = "TypeListForm";
             this.Text = "Types";
-            this.Icon = Properties.Resources.AppIcon;
+            this.Icon = Core.PetriNetResources.Storage.GetIcon("AppIcon");
             ((System.ComponentModel.ISupportInitialize)(dgvTypes)).EndInit();
             this.ResumeLayout(false);
 

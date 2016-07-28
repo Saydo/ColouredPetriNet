@@ -65,7 +65,7 @@ namespace ColouredPetriNet.Gui.Forms
             this.Controls.Add(numId);
             this.Controls.Add(btnCancel);
             this.Controls.Add(btnFind);
-            this.Icon = Properties.Resources.AppIcon;
+            this.Icon = Core.PetriNetResources.Storage.GetIcon("AppIcon");
             this.Name = "ShowItemInfoForm";
             this.Text = "Item Info";
             this.ResumeLayout(false);

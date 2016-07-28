@@ -112,7 +112,7 @@ namespace ColouredPetriNet.Gui.Forms
             this.Controls.Add(lblId);
             this.Controls.Add(txtId);
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
-            this.Icon = Properties.Resources.AppIcon;
+            this.Icon = Core.PetriNetResources.Storage.GetIcon("AppIcon");
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "TransitionInfoForm";

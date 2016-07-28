@@ -92,7 +92,7 @@ namespace ColouredPetriNet.Gui.Forms
             this.Controls.Add(pnlColor);
             this.Controls.Add(lblWidth);
             this.Controls.Add(numWidth);
-            this.Icon = Properties.Resources.AppIcon;
+            this.Icon = Core.PetriNetResources.Storage.GetIcon("AppIcon");
             this.Name = "LinkStyleForm";
             this.Text = "Link Style";
             ((System.ComponentModel.ISupportInitialize)(numWidth)).EndInit();

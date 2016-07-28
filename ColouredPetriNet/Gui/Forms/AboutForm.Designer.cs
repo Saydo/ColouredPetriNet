@@ -51,7 +51,7 @@ namespace ColouredPetriNet.Gui.Forms
             this.Controls.Add(btnOk);
             this.Controls.Add(lblName);
             this.Controls.Add(lblDescription);
-            this.Icon = Properties.Resources.AppIcon;
+            this.Icon = Core.PetriNetResources.Storage.GetIcon("AppIcon");
             this.Name = "AboutForm";
             this.Text = "About";
             this.ResumeLayout(false);

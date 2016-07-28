@@ -90,7 +90,7 @@ namespace ColouredPetriNet.Gui.Forms
             this.Controls.Add(txtId);
             this.Controls.Add(lblType);
             this.Controls.Add(txtType);
-            this.Icon = Properties.Resources.AppIcon;
+            this.Icon = Core.PetriNetResources.Storage.GetIcon("AppIcon");
             this.Name = "MarkerInfoForm";
             this.Text = "Marker Info";
             this.ResumeLayout(false);

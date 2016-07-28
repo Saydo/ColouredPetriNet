@@ -148,7 +148,7 @@ namespace ColouredPetriNet.Gui.Forms
             this.Controls.Add(btnCancel);
             this.Name = "TypeEditForm";
             this.Text = "Edit Type";
-            this.Icon = Properties.Resources.AppIcon;
+            this.Icon = Core.PetriNetResources.Storage.GetIcon("AppIcon");
             ((System.ComponentModel.ISupportInitialize)(pbForm)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

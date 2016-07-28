@@ -90,7 +90,7 @@ namespace ColouredPetriNet.Gui.Forms
             this.Controls.Add(pbImage);
             this.Controls.Add(btnChoose);
             this.Controls.Add(optionPanel);
-            this.Icon = Properties.Resources.AppIcon;
+            this.Icon = Core.PetriNetResources.Storage.GetIcon("AppIcon");
             this.Name = "BackgroundForm";
             this.Text = "Background";
             this.optionPanel.ResumeLayout(false);

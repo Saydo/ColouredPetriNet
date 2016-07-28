@@ -14,55 +14,55 @@ namespace ColouredPetriNet.Gui.Core
                     switch (kind)
                     {
                         case GraphicsPetriNet.ItemType.State:
-                            return Properties.Resources.RoundStateIcon;
+                            return PetriNetResources.Storage.GetImage("RoundStateIcon");
                         case GraphicsPetriNet.ItemType.Transition:
-                            return Properties.Resources.RoundTransitionIcon;
+                            return PetriNetResources.Storage.GetImage("RoundTransitionIcon");
                         case GraphicsPetriNet.ItemType.Marker:
-                            return Properties.Resources.RoundMarkerIcon;
+                            return PetriNetResources.Storage.GetImage("RoundMarkerIcon");
                     }
                     break;
                 case ItemForm.Rectangle:
                     switch (kind)
                     {
                         case GraphicsPetriNet.ItemType.State:
-                            return Properties.Resources.RectangleStateIcon;
+                            return PetriNetResources.Storage.GetImage("RectangleStateIcon");
                         case GraphicsPetriNet.ItemType.Transition:
-                            return Properties.Resources.RectangleTransitionIcon;
+                            return PetriNetResources.Storage.GetImage("RectangleTransitionIcon");
                         case GraphicsPetriNet.ItemType.Marker:
-                            return Properties.Resources.RectangleMarkerIcon;
+                            return PetriNetResources.Storage.GetImage("RectangleMarkerIcon");
                     }
                     break;
                 case ItemForm.Rhomb:
                     switch (kind)
                     {
                         case GraphicsPetriNet.ItemType.State:
-                            return Properties.Resources.RhombStateIcon;
+                            return PetriNetResources.Storage.GetImage("RhombStateIcon");
                         case GraphicsPetriNet.ItemType.Transition:
-                            return Properties.Resources.RhombTransitionIcon;
+                            return PetriNetResources.Storage.GetImage("RhombTransitionIcon");
                         case GraphicsPetriNet.ItemType.Marker:
-                            return Properties.Resources.RhombMarkerIcon;
+                            return PetriNetResources.Storage.GetImage("RhombMarkerIcon");
                     }
                     break;
                 case ItemForm.Triangle:
                     switch (kind)
                     {
                         case GraphicsPetriNet.ItemType.State:
-                            return Properties.Resources.TriangleStateIcon;
+                            return PetriNetResources.Storage.GetImage("TriangleStateIcon");
                         case GraphicsPetriNet.ItemType.Transition:
-                            return Properties.Resources.TriangleTransitionIcon;
+                            return PetriNetResources.Storage.GetImage("TriangleTransitionIcon");
                         case GraphicsPetriNet.ItemType.Marker:
-                            return Properties.Resources.TriangleMarkerIcon;
+                            return PetriNetResources.Storage.GetImage("TriangleMarkerIcon");
                     }
                     break;
                 case ItemForm.Image:
                     switch (kind)
                     {
                         case GraphicsPetriNet.ItemType.State:
-                            return Properties.Resources.ImageStateIcon;
+                            return PetriNetResources.Storage.GetImage("ImageStateIcon");
                         case GraphicsPetriNet.ItemType.Transition:
-                            return Properties.Resources.ImageTransitionIcon;
+                            return PetriNetResources.Storage.GetImage("ImageTransitionIcon");
                         case GraphicsPetriNet.ItemType.Marker:
-                            return Properties.Resources.ImageMarkerIcon;
+                            return PetriNetResources.Storage.GetImage("ImageMarkerIcon");
                     }
                     break;
             }
@@ -77,55 +77,55 @@ namespace ColouredPetriNet.Gui.Core
                     switch (kind)
                     {
                         case GraphicsPetriNet.ItemType.State:
-                            return Properties.Resources.AddRoundStateIcon;
+                            return PetriNetResources.Storage.GetImage("AddRoundStateIcon");
                         case GraphicsPetriNet.ItemType.Transition:
-                            return Properties.Resources.AddRoundTransitionIcon;
+                            return PetriNetResources.Storage.GetImage("AddRoundTransitionIcon");
                         case GraphicsPetriNet.ItemType.Marker:
-                            return Properties.Resources.AddRoundMarkerIcon;
+                            return PetriNetResources.Storage.GetImage("AddRoundMarkerIcon");
                     }
                     break;
                 case ItemForm.Rectangle:
                     switch (kind)
                     {
                         case GraphicsPetriNet.ItemType.State:
-                            return Properties.Resources.AddRectangleStateIcon;
+                            return PetriNetResources.Storage.GetImage("AddRectangleStateIcon");
                         case GraphicsPetriNet.ItemType.Transition:
-                            return Properties.Resources.AddRectangleTransitionIcon;
+                            return PetriNetResources.Storage.GetImage("AddRectangleTransitionIcon");
                         case GraphicsPetriNet.ItemType.Marker:
-                            return Properties.Resources.AddRectangleMarkerIcon;
+                            return PetriNetResources.Storage.GetImage("AddRectangleMarkerIcon");
                     }
                     break;
                 case ItemForm.Rhomb:
                     switch (kind)
                     {
                         case GraphicsPetriNet.ItemType.State:
-                            return Properties.Resources.AddRhombStateIcon;
+                            return PetriNetResources.Storage.GetImage("AddRhombStateIcon");
                         case GraphicsPetriNet.ItemType.Transition:
-                            return Properties.Resources.AddRhombTransitionIcon;
+                            return PetriNetResources.Storage.GetImage("AddRhombTransitionIcon");
                         case GraphicsPetriNet.ItemType.Marker:
-                            return Properties.Resources.AddRhombMarkerIcon;
+                            return PetriNetResources.Storage.GetImage("AddRhombMarkerIcon");
                     }
                     break;
                 case ItemForm.Triangle:
                     switch (kind)
                     {
                         case GraphicsPetriNet.ItemType.State:
-                            return Properties.Resources.AddTriangleStateIcon;
+                            return PetriNetResources.Storage.GetImage("AddTriangleStateIcon");
                         case GraphicsPetriNet.ItemType.Transition:
-                            return Properties.Resources.AddTriangleTransitionIcon;
+                            return PetriNetResources.Storage.GetImage("AddTriangleTransitionIcon");
                         case GraphicsPetriNet.ItemType.Marker:
-                            return Properties.Resources.AddTriangleMarkerIcon;
+                            return PetriNetResources.Storage.GetImage("AddTriangleMarkerIcon");
                     }
                     break;
                 case ItemForm.Image:
                     switch (kind)
                     {
                         case GraphicsPetriNet.ItemType.State:
-                            return Properties.Resources.AddImageStateIcon;
+                            return PetriNetResources.Storage.GetImage("AddImageStateIcon");
                         case GraphicsPetriNet.ItemType.Transition:
-                            return Properties.Resources.AddImageTransitionIcon;
+                            return PetriNetResources.Storage.GetImage("AddImageTransitionIcon");
                         case GraphicsPetriNet.ItemType.Marker:
-                            return Properties.Resources.AddImageMarkerIcon;
+                            return PetriNetResources.Storage.GetImage("AddImageMarkerIcon");
                     }
                     break;
             }
