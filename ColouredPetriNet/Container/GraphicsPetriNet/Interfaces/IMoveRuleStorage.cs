@@ -1,12 +1,17 @@
-﻿namespace ColouredPetriNet.Container.GraphicsPetriNet.Interfaces
+﻿using System.Collections.Generic;
+
+namespace ColouredPetriNet.Container.GraphicsPetriNet.Interfaces
 {
     public interface IMoveRuleStorage
     {
+        MoveRule this[int index] { get; }
         int Count { get; }
-        void Add(PetriNetMoveRule rule);
-        void Remove(int inputStateType, int outputStateType, int transitionType,
-            OneTypeMarkers outputMarkers);
+        bool Add(MoveRule rule);
+        bool Remove(int outputStateType, int inputStateType, int transitionType,
+            List<OneTypeMarkers> outputMarkers);
         void Clear();
+        MoveRule Find(int outputStateType, int inputStateType, int transitionType,
+            List<OneTypeMarkers> outputMarkers);
         void Move(StateWrapper outputState, StateWrapper inputState, TransitionWrapper transition);
     }
 }

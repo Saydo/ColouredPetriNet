@@ -43,7 +43,7 @@ namespace ColouredPetriNet.Gui.Forms
             tsbRemoveMarker = new ToolStripButton();
             tsSeparator1 = new ToolStripSeparator();
             tsbOneStepSimulation = new ToolStripButton();
-            tsbRunSimulation = new ToolStripButton();
+            tsbStartSimulation = new ToolStripButton();
             tsbStopSimulation = new ToolStripButton();
             dlgTypes = new TypeListForm(this, _petriNet);
             dlgShowItemInfo = new ShowItemInfoForm();
@@ -281,7 +281,7 @@ namespace ColouredPetriNet.Gui.Forms
                 tsbRemoveMarker,
                 tsSeparator1,
                 tsbOneStepSimulation,
-                tsbRunSimulation,
+                tsbStartSimulation,
                 tsbStopSimulation
             });
             tlsMain.TabIndex = 1;
@@ -362,14 +362,16 @@ namespace ColouredPetriNet.Gui.Forms
             tsbOneStepSimulation.DisplayStyle = ToolStripItemDisplayStyle.Image;
             tsbOneStepSimulation.Image = Core.PetriNetResources.Storage.GetImage("OneStepIcon");
             tsbOneStepSimulation.Text = "One Step Simulation";
+            tsbOneStepSimulation.Click += (obj, e) => MoveMarkers();
             //
-            // tsbRunSimulation (ToolStripButton)
+            // tsbStartSimulation (ToolStripButton)
             //
-            tsbRunSimulation.Name = "tsbRunSimulation";
-            tsbRunSimulation.Size = new Size(23, 22);
-            tsbRunSimulation.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            tsbRunSimulation.Image = Core.PetriNetResources.Storage.GetImage("PlayIcon");
-            tsbRunSimulation.Text = "Run Simulation";
+            tsbStartSimulation.Name = "tsbStartSimulation";
+            tsbStartSimulation.Size = new Size(23, 22);
+            tsbStartSimulation.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            tsbStartSimulation.Image = Core.PetriNetResources.Storage.GetImage("PlayIcon");
+            tsbStartSimulation.Text = "Start Simulation";
+            tsbStartSimulation.Click += (obj, e) => StartMoveMarkerLoop();
             //
             // tsbStopSimulation (ToolStripButton)
             //
@@ -378,6 +380,7 @@ namespace ColouredPetriNet.Gui.Forms
             tsbStopSimulation.DisplayStyle = ToolStripItemDisplayStyle.Image;
             tsbStopSimulation.Image = Core.PetriNetResources.Storage.GetImage("StopIcon");
             tsbStopSimulation.Text = "Stop Simulation";
+            tsbStopSimulation.Click += (obj, e) => StopMoveMarkerLoop();
             //
             // pbMap (PictureBox)
             //
@@ -551,7 +554,7 @@ namespace ColouredPetriNet.Gui.Forms
         private ToolStripButton tsbRemoveMarker;
         private ToolStripSeparator tsSeparator1;
         private ToolStripButton tsbOneStepSimulation;
-        private ToolStripButton tsbRunSimulation;
+        private ToolStripButton tsbStartSimulation;
         private ToolStripButton tsbStopSimulation;
         private StripImageList imageListAddState;
         private StripImageList imageListAddTransition;

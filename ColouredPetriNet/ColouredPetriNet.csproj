@@ -76,7 +76,7 @@
     <Compile Include="Container\GraphicsPetriNet\GraphicsPetriNetXmlTypes.cs" />
     <Compile Include="Container\GraphicsPetriNet\LinkWrapper.cs" />
     <Compile Include="Container\GraphicsPetriNet\GraphicsPetriNet.cs" />
-    <Compile Include="Container\GraphicsPetriNet\PetriNetIdConvertationRule.cs" />
+    <Compile Include="Container\GraphicsPetriNet\IdConvertationRule.cs" />
     <Compile Include="Container\GraphicsPetriNet\StateWrapper.cs" />
     <Compile Include="Container\GraphicsPetriNet\TransitionWrapper.cs" />
     <Compile Include="Container\IdGenerator.cs" />
@@ -91,8 +91,8 @@
     <Compile Include="Container\GraphicsPetriNet\LinearAlgebra\Algorithm.cs" />
     <Compile Include="Container\GraphicsPetriNet\LinearAlgebra\Equation.cs" />
     <Compile Include="Container\GraphicsPetriNet\MarkerInfo.cs" />
-    <Compile Include="Container\GraphicsPetriNet\PetriNetAccumulateRule.cs" />
-    <Compile Include="Container\GraphicsPetriNet\PetriNetMoveRule.cs" />
+    <Compile Include="Container\GraphicsPetriNet\AccumulateRule.cs" />
+    <Compile Include="Container\GraphicsPetriNet\MoveRule.cs" />
     <Compile Include="Container\GraphicsPetriNet\SelectionArea.cs" />
     <Compile Include="Container\GraphicsPetriNet\Storages\AccumulateRuleStorage.cs" />
     <Compile Include="Container\GraphicsPetriNet\Storages\LinkStorage.cs" />
@@ -129,6 +129,7 @@
     <Compile Include="Container\ColouredPetriNet\Storages\TransitionStorage.cs" />
     <Compile Include="Container\ColouredPetriNet\Storages\TypeStorage.cs" />
     <Compile Include="Container\ColouredPetriNet\TransitionWrapper.cs" />
+    <Compile Include="Container\GraphicsPetriNet\PetriNetRule.cs" />
     <Compile Include="Gui\Core\PetriNetResourceStorage.cs" />
     <Compile Include="Gui\Core\ResourceStorage.cs" />
     <Compile Include="Gui\Core\PetriNetTypeConverter.cs" />
@@ -260,11 +261,6 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

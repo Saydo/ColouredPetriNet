@@ -1,4 +1,6 @@
-﻿namespace ColouredPetriNet.Container.GraphicsPetriNet
+﻿using System.Collections.Generic;
+
+namespace ColouredPetriNet.Container.GraphicsPetriNet
 {
     public struct MarkerInfo
     {

@@ -675,7 +675,6 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet
 
             public void MoveMarkersByRules()
             {
-                /*
                 TransitionWrapper transition;
                 StateWrapper state;
                 var prevAccRules = _parent._prevAccumulateRules;
@@ -696,7 +695,6 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet
                         }
                     }
                 }
-                */
             }
 
             public void ForEachMarker(ForEachMarkerFunction function)

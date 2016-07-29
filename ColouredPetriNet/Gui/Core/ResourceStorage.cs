@@ -9,7 +9,6 @@ namespace ColouredPetriNet.Gui.Core
     internal class ResourceStorage
     {
         private ResourceManager _resourceManeger;
-        private IResourceWriter _resourceWriter;
         private string _resourceFile;
 
         public string ResourceFile { get { return _resourceFile; } }
@@ -18,7 +17,6 @@ namespace ColouredPetriNet.Gui.Core
         {
             _resourceFile = resourceFile;
             _resourceManeger = new ResourceManager("ColouredPetriNet.Properties.Resources", typeof(ResourceStorage).Assembly);
-            //_resourceWriter = new ResourceWriter(resourceFile);
         }
 
         public bool AddIcon(string name, string path)

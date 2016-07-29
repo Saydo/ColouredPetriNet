@@ -48,6 +48,7 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet
                     newListId = Markers[i].Item2;
                     newListId.Add(id);
                     Markers[i] = new Tuple<GraphicsItems.GraphicsItem, List<int>>(Markers[i].Item1, newListId);
+                    UpdateMarkerPosition();
                     return;
                 }
             }
@@ -71,6 +72,7 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet
                     List<int> newListId = Markers[i].Item2;
                     newListId.AddRange(listId);
                     Markers[i] = new Tuple<GraphicsItems.GraphicsItem, List<int>>(Markers[i].Item1, newListId);
+                    UpdateMarkerPosition();
                     return;
                 }
             }

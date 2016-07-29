@@ -90,6 +90,35 @@ namespace ColouredPetriNet.Gui.Forms
             {
                 AddTypeToToolbar(_petriNet.Types[i]);
             }
+            //------------
+            int stateType = _petriNet.Types.FindType("RoundState").Id;
+            int transitionType = _petriNet.Types.FindType("RectangleTransition").Id;
+            int markerType = _petriNet.Types.FindType("RoundMarker").Id;
+            MoveRule rule = new MoveRule(stateType, stateType, transitionType);
+            var conversationRule = new OneTypeItemIdConvertationRule(markerType);
+            conversationRule.ConvertationRules.Add(new System.Tuple<int, IdConvertationRule>(markerType,
+                new IdConvertationRule(IdConvertationRule.ConvertationMode.Same)));
+            rule.ConversationRules.Add(conversationRule);
+            rule.MoveFunction += MoveMarkers;
+            _petriNet.MoveRules.Add(rule);
+            //------------
+        }
+
+        private void MoveMarkers(int oldId, int newId, int type, StateWrapper outputState,
+            StateWrapper inputState, TransitionWrapper transition)
+        {
+            System.Console.WriteLine("[MoveMarkersFunction] oldId = {0}, newId = {1}", oldId, newId);
+            _petriNet.Markers.Move(oldId, outputState.Id, inputState.Id);
+            for (int i = 0; i < outputState.Markers.Count; ++i)
+            {
+                System.Console.WriteLine("OutputState.Markers[{0}].Count = {1}",
+                    i, outputState.Markers[i].Item2.Count);
+            }
+            for (int i = 0; i < inputState.Markers.Count; ++i)
+            {
+                System.Console.WriteLine("InputState.Markers[{0}].Count = {1}",
+                    i, inputState.Markers[i].Item2.Count);
+            }
         }
 
         private void SetSelectionArea(int x, int y, int w, int h)
@@ -168,7 +197,7 @@ namespace ColouredPetriNet.Gui.Forms
             _style.Items.Add(new Core.Style.PetriNetItemTypeStyle(7, new Core.Style.TriangleShapeStyle(8,
                 new SolidBrush(Color.FromArgb(150, 0, 220)), new Pen(Color.FromArgb(0, 0, 0), 1.0F))));
         }
-        
+
         /*
         private bool Serialize(string filePath)
         {
@@ -190,6 +219,24 @@ namespace ColouredPetriNet.Gui.Forms
             return true;
         }
         */
+
+        private void MoveMarkers()
+        {
+            System.Console.WriteLine("[MoveMarker]");
+            _petriNet.Markers.MoveByRules();
+            UpdateMarkersOnTree();
+            pbMap.Refresh();
+        }
+
+        private void StartMoveMarkerLoop()
+        {
+            System.Console.WriteLine("[StartMoveMarkerLoop]");
+        }
+
+        private void StopMoveMarkerLoop()
+        {
+            System.Console.WriteLine("[StopMoveMarkerLoop]");
+        }
 
         private void MainFormLoad(object sender, System.EventArgs e)
         {
@@ -589,65 +636,11 @@ namespace ColouredPetriNet.Gui.Forms
             _selectedState = null;
             _selectedTransition = null;
             pbMap.Refresh();
-            if (_mapMode == mode)
-                return;
-            /*
-            switch (_mapMode)
+            if (_mapMode != mode)
             {
-                case ItemMapMode.AddState:
-                    mniSetModeAddRoundState.Checked = false;
-                    mniSetModeAddImageState.Checked = false;
-                    break;
-                case ItemMapMode.AddTransition:
-                    mniSetModeAddRectangleTransition.Checked = false;
-                    mniSetModeAddRhombTransition.Checked = false;
-                    break;
-                case ItemMapMode.AddMarker:
-                    mniSetModeAddRoundMarker.Checked = false;
-                    mniSetModeAddRhombMarker.Checked = false;
-                    mniSetModeAddTriangleMarker.Checked = false;
-                    break;
+                _mapMode = mode;
+                UpdateStatus(GetCurrentMapModeName());
             }
-            switch (mode)
-            {
-                case ItemMapMode.AddState:
-                    if (_newStateType == Core.ColouredStateType.RoundState)
-                    {
-                        mniSetModeAddRoundState.Checked = true;
-                    }
-                    else
-                    {
-                        mniSetModeAddImageState.Checked = true;
-                    }
-                    break;
-                case ItemMapMode.AddTransition:
-                    if (_newTransitionType == Core.ColouredTransitionType.RectangleTransition)
-                    {
-                        mniSetModeAddRectangleTransition.Checked = true;
-                    }
-                    else
-                    {
-                        mniSetModeAddRhombTransition.Checked = true;
-                    }
-                    break;
-                case ItemMapMode.AddMarker:
-                    if (_newMarkerType == Core.ColouredMarkerType.RoundMarker)
-                    {
-                        mniSetModeAddRoundMarker.Checked = true;
-                    }
-                    else if (_newMarkerType == Core.ColouredMarkerType.RhombMarker)
-                    {
-                        mniSetModeAddRhombMarker.Checked = true;
-                    }
-                    else
-                    {
-                        mniSetModeAddTriangleMarker.Checked = true;
-                    }
-                    break;
-            }
-            */
-            _mapMode = mode;
-            UpdateStatus(GetCurrentMapModeName());
         }
 
         private void SetSelectionMode(OverlapType overlap)
@@ -821,6 +814,32 @@ namespace ColouredPetriNet.Gui.Forms
                         }
                     }
                     return;
+                }
+            }
+        }
+
+        private void UpdateMarkersOnTree()
+        {
+            int imageIndex;
+            StateWrapper state;
+            List<int> idList;
+            TypeInfo type;
+            TreeNode treeNode;
+            for (int i = 0; i < trvStates.Nodes.Count; ++i)
+            {
+                trvStates.Nodes[i].Nodes.Clear();
+                state = _petriNet.States[(int)trvStates.Nodes[i].Tag];
+                for (int j = 0; j < state.Markers.Count; ++j)
+                {
+                    idList = state.Markers[j].Item2;
+                    type = _petriNet.Types.FindType(state.Markers[j].Item1.TypeId);
+                    imageIndex = GetImageIndexInStateTree(type.Form, type.Kind);
+                    for (int k = 0; k < idList.Count; ++k)
+                    {
+                        treeNode = new TreeNode("Marker " + idList[k].ToString(), imageIndex, imageIndex);
+                        treeNode.Tag = idList[k];
+                        trvStates.Nodes[i].Nodes.Add(treeNode);
+                    }
                 }
             }
         }
