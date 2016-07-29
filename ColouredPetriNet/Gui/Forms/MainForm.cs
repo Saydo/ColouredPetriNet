@@ -104,6 +104,11 @@ namespace ColouredPetriNet.Gui.Forms
             //------------
         }
 
+        public void UpdateMap()
+        {
+            pbMap.Refresh();
+        }
+
         private void MoveMarkers(int oldId, int newId, int type, StateWrapper outputState,
             StateWrapper inputState, TransitionWrapper transition)
         {
@@ -286,8 +291,10 @@ namespace ColouredPetriNet.Gui.Forms
                             var chosenTransitions = _petriNet.Transitions.Find(e.X, e.Y);
                             if (chosenTransitions.Count > 0)
                             {
-                                _petriNet.Links.Add(_selectedState.State.Id, chosenTransitions[0].Transition.Id,
+                                var link = _petriNet.Links.Add(_selectedState.State.Id, chosenTransitions[0].Transition.Id,
                                     LinkDirection.FromStateToTransition);
+                                link.Link.Pen = _style.LinePen;
+                                link.Link.SelectionPen = _style.SelectionPen;
                             }
                         }
                         else

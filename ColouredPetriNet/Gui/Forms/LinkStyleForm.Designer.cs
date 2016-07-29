@@ -13,6 +13,7 @@ namespace ColouredPetriNet.Gui.Forms
             btnChoose = new Button();
             btnCancel = new Button();
             btnOk = new Button();
+            dlgColor = new ColorDialog();
             ((System.ComponentModel.ISupportInitialize)(numWidth)).BeginInit();
             this.SuspendLayout();
             // 
@@ -39,6 +40,7 @@ namespace ColouredPetriNet.Gui.Forms
             pnlColor.Name = "pnlColor";
             pnlColor.Size = new System.Drawing.Size(32, 29);
             pnlColor.TabIndex = 2;
+            pnlColor.Click += (obj, e) => ChooseColor();
             // 
             // lblColor
             // 
@@ -57,6 +59,7 @@ namespace ColouredPetriNet.Gui.Forms
             btnChoose.TabIndex = 4;
             btnChoose.Text = "Choose";
             btnChoose.UseVisualStyleBackColor = true;
+            btnChoose.Click += (obj, e) => ChooseColor();
             // 
             // btnCancel
             // 
@@ -66,6 +69,7 @@ namespace ColouredPetriNet.Gui.Forms
             btnCancel.TabIndex = 5;
             btnCancel.Text = "Cancel";
             btnCancel.UseVisualStyleBackColor = true;
+            btnCancel.Click += (obj, e) => this.Close();
             // 
             // btnOk
             // 
@@ -75,6 +79,7 @@ namespace ColouredPetriNet.Gui.Forms
             btnOk.TabIndex = 6;
             btnOk.Text = "Ok";
             btnOk.UseVisualStyleBackColor = true;
+            btnOk.Click += (obj, e) => AcceptChanges();
             // 
             // LinkStyleForm
             //
@@ -108,5 +113,6 @@ namespace ColouredPetriNet.Gui.Forms
         private Button btnChoose;
         private Button btnCancel;
         private Button btnOk;
+        private ColorDialog dlgColor;
     }
 }

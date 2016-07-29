@@ -50,7 +50,7 @@ namespace ColouredPetriNet.Gui.Forms
             dlgStateInfo = new StateInfoForm();
             dlgTransitionInfo = new TransitionInfoForm();
             dlgMarkerInfo = new MarkerInfoForm();
-            dlgLinkStyle = new LinkStyleForm();
+            dlgLinkStyle = new LinkStyleForm(this);
             dlgItemStyle = new ItemStyleForm(_style, _petriNet, this);
             dlgBackground = new BackgroundForm();
             dlgAbout = new AboutForm();
@@ -249,7 +249,7 @@ namespace ColouredPetriNet.Gui.Forms
             mniLinkStyle.Name = "mniLinkStyle";
             mniLinkStyle.Size = new Size(152, 22);
             mniLinkStyle.Text = "Links";
-            mniLinkStyle.Click += (obj, e) => dlgLinkStyle.ShowDialog();
+            mniLinkStyle.Click += (obj, e) => dlgLinkStyle.ShowDialog(_style.LinePen);
             //
             // Background (ToolStripMenuItem)
             //

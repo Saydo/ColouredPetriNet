@@ -197,10 +197,10 @@ namespace ColouredPetriNet.Container.GraphicsPetriNet
                 var linkDirection = (direction == LinkDirection.FromStateToTransition ?
                     GraphicsItems.LinkGraphicsItem.LinkDirection.FromP1toP2
                     : GraphicsItems.LinkGraphicsItem.LinkDirection.FromP2toP1);
-                var link = new LinkWrapper(state, transition,
-                    new GraphicsItems.LinkGraphicsItem(IdGenerator.Next(),
+                var linkGraphics = new GraphicsItems.LinkGraphicsItem(IdGenerator.Next(),
                     (int)GraphicsPetriNet.ItemType.Link, state.State.Center,
-                    transition.Transition.Center, linkDirection, _stateZ), direction);
+                    transition.Transition.Center, linkDirection, _stateZ);
+                var link = new LinkWrapper(state, transition, linkGraphics, direction);
                 Links.Add(link);
                 if (direction == LinkDirection.FromStateToTransition)
                 {
