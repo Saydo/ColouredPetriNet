@@ -1,132 +1,121 @@
-﻿namespace ColouredPetriNet.Gui.Forms
+﻿using System.Windows.Forms;
+
+namespace ColouredPetriNet.Gui.Forms
 {
     partial class RuleEditForm
     {
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
-        private System.ComponentModel.IContainer components = null;
-
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && (components != null))
-            {
-                components.Dispose();
-            }
-            base.Dispose(disposing);
-        }
-
-        #region Windows Form Designer generated code
-
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
-            this.label1 = new System.Windows.Forms.Label();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
-            this.label2 = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
+            lblType = new Label();
+            pbType = new PictureBox();
+            cmbType = new ComboBox();
+            btnCancel = new Button();
+            btnOk = new Button();
+            dgvIdConvertation = new DataGridView();
+            lblCount = new Label();
+            numCount = new NumericUpDown();
+            ((System.ComponentModel.ISupportInitialize)(pbType)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(dgvIdConvertation)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(numCount)).BeginInit();
             this.SuspendLayout();
             // 
-            // label1
+            // lblType
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(86, 17);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(31, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Type";
+            lblType.AutoSize = true;
+            lblType.Location = new System.Drawing.Point(86, 17);
+            lblType.Name = "lblType";
+            lblType.Size = new System.Drawing.Size(31, 13);
+            lblType.TabIndex = 0;
+            lblType.Text = "Type";
             // 
-            // pictureBox1
+            // pbType
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(13, 13);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(60, 55);
-            this.pictureBox1.TabIndex = 1;
-            this.pictureBox1.TabStop = false;
+            pbType.Location = new System.Drawing.Point(13, 13);
+            pbType.Name = "pbType";
+            pbType.Size = new System.Drawing.Size(60, 55);
+            pbType.TabIndex = 1;
+            pbType.TabStop = false;
             // 
-            // comboBox1
+            // cmbType
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(125, 13);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(137, 21);
-            this.comboBox1.TabIndex = 2;
+            cmbType.FormattingEnabled = true;
+            cmbType.Location = new System.Drawing.Point(125, 13);
+            cmbType.Name = "cmbType";
+            cmbType.Size = new System.Drawing.Size(137, 21);
+            cmbType.TabIndex = 2;
             // 
-            // button1
+            // btnCancel
             // 
-            this.button1.Location = new System.Drawing.Point(187, 75);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 3;
-            this.button1.Text = "Cancel";
-            this.button1.UseVisualStyleBackColor = true;
+            btnCancel.Location = new System.Drawing.Point(187, 268);
+            btnCancel.Name = "btnCancel";
+            btnCancel.Size = new System.Drawing.Size(75, 23);
+            btnCancel.TabIndex = 3;
+            btnCancel.Text = "Cancel";
+            btnCancel.UseVisualStyleBackColor = true;
             // 
-            // button2
+            // btnOk
             // 
-            this.button2.Location = new System.Drawing.Point(125, 75);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(56, 23);
-            this.button2.TabIndex = 4;
-            this.button2.Text = "Ok";
-            this.button2.UseVisualStyleBackColor = true;
+            btnOk.Location = new System.Drawing.Point(125, 268);
+            btnOk.Name = "btnOk";
+            btnOk.Size = new System.Drawing.Size(56, 23);
+            btnOk.TabIndex = 4;
+            btnOk.Text = "Ok";
+            btnOk.UseVisualStyleBackColor = true;
             // 
-            // numericUpDown1
+            // dgvIdConvertation
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(125, 40);
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(137, 20);
-            this.numericUpDown1.TabIndex = 5;
+            dgvIdConvertation.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvIdConvertation.Location = new System.Drawing.Point(12, 86);
+            dgvIdConvertation.Name = "dgvIdConvertation";
+            dgvIdConvertation.Size = new System.Drawing.Size(250, 167);
+            dgvIdConvertation.TabIndex = 7;
             // 
-            // label2
+            // lblCount
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(86, 44);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(35, 13);
-            this.label2.TabIndex = 6;
-            this.label2.Text = "Count";
+            lblCount.AutoSize = true;
+            lblCount.Location = new System.Drawing.Point(86, 44);
+            lblCount.Name = "lblCount";
+            lblCount.Size = new System.Drawing.Size(35, 13);
+            lblCount.TabIndex = 6;
+            lblCount.Text = "Count";
+            // 
+            // numCount
+            // 
+            numCount.Location = new System.Drawing.Point(125, 40);
+            numCount.Name = "numCount";
+            numCount.Size = new System.Drawing.Size(137, 20);
+            numCount.TabIndex = 5;
             // 
             // RuleEditForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(274, 111);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.numericUpDown1);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.comboBox1);
-            this.Controls.Add(this.pictureBox1);
-            this.Controls.Add(this.label1);
+            this.AutoScaleMode = AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(274, 303);
+            this.Controls.Add(dgvIdConvertation);
+            this.Controls.Add(lblCount);
+            this.Controls.Add(numCount);
+            this.Controls.Add(btnOk);
+            this.Controls.Add(btnCancel);
+            this.Controls.Add(cmbType);
+            this.Controls.Add(pbType);
+            this.Controls.Add(lblType);
             this.Name = "RuleEditForm";
             this.Text = "Edit Rule";
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
+            this.Icon = Core.PetriNetResources.Storage.GetIcon("AppIcon");
+            ((System.ComponentModel.ISupportInitialize)(pbType)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(dgvIdConvertation)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(numCount)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
 
-        #endregion
-
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.NumericUpDown numericUpDown1;
-        private System.Windows.Forms.Label label2;
+        private Label lblType;
+        private PictureBox pbType;
+        private ComboBox cmbType;
+        private Button btnCancel;
+        private Button btnOk;
+        private DataGridView dgvIdConvertation;
+        private Label lblCount;
+        private NumericUpDown numCount;
     }
 }

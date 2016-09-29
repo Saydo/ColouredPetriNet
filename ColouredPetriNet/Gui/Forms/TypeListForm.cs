@@ -1,17 +1,17 @@
 ﻿using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
-using ColouredPetriNet.Container.GraphicsPetriNet;
+using PetriNet = ColouredPetriNet.GraphicsPetriNet;
 
 namespace ColouredPetriNet.Gui.Forms
 {
     public partial class TypeListForm : Form
     {
         private DataTable _typesTable;
-        private GraphicsPetriNet _petriNet;
+        private PetriNet.GraphicsPetriNet _petriNet;
         private MainForm _parent;
 
-        public TypeListForm(MainForm parent, GraphicsPetriNet petriNet)
+        public TypeListForm(MainForm parent, PetriNet.GraphicsPetriNet petriNet)
         {
             InitializeComponent();
             _petriNet = petriNet;
@@ -54,7 +54,7 @@ namespace ColouredPetriNet.Gui.Forms
             return _petriNet.Types.Contains(typeName);
         }
 
-        public void AddType(TypeInfo type)
+        public void AddType(PetriNet.TypeInfo type)
         {
             DataRow newRow;
             newRow = _typesTable.NewRow();
@@ -71,8 +71,8 @@ namespace ColouredPetriNet.Gui.Forms
         {
             var row = FindRow(id);
             if (row == null) return;
-            var kind = TypeInfo.GetTypeKindFromString(kindName);
-            var form = TypeInfo.GetTypeFormFromString(formName);
+            var kind = PetriNet.TypeInfo.GetTypeKindFromString(kindName);
+            var form = PetriNet.TypeInfo.GetTypeFormFromString(formName);
             row.Cells[0].Value = new Bitmap(Core.PetriNetTypeConverter.GetTypeFormImage(kind, form), 20, 20);
             row.Cells[2].Value = name;
             row.Cells[3].Value = kindName;
@@ -101,11 +101,11 @@ namespace ColouredPetriNet.Gui.Forms
             dlgEditType.ShowDialog(GetTypeInfo(dgvTypes.SelectedRows[0]));
         }
 
-        private TypeInfo GetTypeInfo(DataGridViewRow row)
+        private PetriNet.TypeInfo GetTypeInfo(DataGridViewRow row)
         {
-            return new TypeInfo((int)row.Cells[1].Value, (string)row.Cells[2].Value,
-                TypeInfo.GetTypeKindFromString((string)row.Cells[3].Value),
-                TypeInfo.GetTypeFormFromString((string)row.Cells[4].Value));
+            return new PetriNet.TypeInfo((int)row.Cells[1].Value, (string)row.Cells[2].Value,
+                PetriNet.TypeInfo.GetTypeKindFromString((string)row.Cells[3].Value),
+                PetriNet.TypeInfo.GetTypeFormFromString((string)row.Cells[4].Value));
         }
 
         private DataGridViewRow FindRow(int id)
@@ -128,7 +128,7 @@ namespace ColouredPetriNet.Gui.Forms
                 return;
             }
             DataRow newRow;
-            TypeInfo type;
+            PetriNet.TypeInfo type;
             for (int i = 0; i < _petriNet.Types.Count; ++i)
             {
                 type = _petriNet.Types[i];

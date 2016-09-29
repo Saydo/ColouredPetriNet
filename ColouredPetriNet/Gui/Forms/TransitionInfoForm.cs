@@ -1,7 +1,7 @@
 ﻿using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
-using ColouredPetriNet.Container.GraphicsPetriNet;
+using PetriNet = ColouredPetriNet.GraphicsPetriNet;
 
 namespace ColouredPetriNet.Gui.Forms
 {
@@ -41,7 +41,7 @@ namespace ColouredPetriNet.Gui.Forms
             dgvOutputLinks.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
         }
 
-        public void ShowDialog(TransitionWrapper transition)
+        public void ShowDialog(PetriNet.TransitionWrapper transition)
         {
             txtId.Text = transition.Transition.Id.ToString();
             txtType.Text = "";
@@ -50,7 +50,7 @@ namespace ColouredPetriNet.Gui.Forms
             base.ShowDialog();
         }
 
-        private void UpdateInputLinksTable(TransitionWrapper transition)
+        private void UpdateInputLinksTable(PetriNet.TransitionWrapper transition)
         {
             /*
             DataRow newRow;
@@ -73,7 +73,7 @@ namespace ColouredPetriNet.Gui.Forms
             */
         }
 
-        private void UpdateOutputLinksTable(TransitionWrapper transition)
+        private void UpdateOutputLinksTable(PetriNet.TransitionWrapper transition)
         {
             /*
             DataRow newRow;

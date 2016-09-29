@@ -1,7 +1,7 @@
 ﻿using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
-using ColouredPetriNet.Container.GraphicsPetriNet;
+using PetriNet = ColouredPetriNet.GraphicsPetriNet;
 
 namespace ColouredPetriNet.Gui.Forms
 {
@@ -9,10 +9,10 @@ namespace ColouredPetriNet.Gui.Forms
     {
         private DataTable _itemsTable;
         private Core.Style.ColouredPetriNetStyle _style;
-        private GraphicsPetriNet _petriNet;
+        private PetriNet.GraphicsPetriNet _petriNet;
         private MainForm _parent;
 
-        public ItemStyleForm(Core.Style.ColouredPetriNetStyle style, GraphicsPetriNet petriNet, MainForm parent)
+        public ItemStyleForm(Core.Style.ColouredPetriNetStyle style, PetriNet.GraphicsPetriNet petriNet, MainForm parent)
         {
             InitializeComponent();
             _style = style;
@@ -38,13 +38,13 @@ namespace ColouredPetriNet.Gui.Forms
             dgvItems.ColumnHeadersDefaultCellStyle = dgvColumnHeaderStyle;
         }
 
-        public void ShowDialog(GraphicsPetriNet.ItemType itemType)
+        public void ShowDialog(PetriNet.GraphicsPetriNet.ItemType itemType)
         {
             UpdateItemTable(itemType);
             base.ShowDialog();
         }
 
-        public void UpdateItem(int typeId, ItemForm form)
+        public void UpdateItem(int typeId, PetriNet.ItemForm form)
         {
             for (int i = 0; i < _itemsTable.Rows.Count; ++i)
             {
@@ -72,30 +72,30 @@ namespace ColouredPetriNet.Gui.Forms
             var type = _petriNet.Types.FindType((int)dgvItems.SelectedRows[0].Cells[1].Value);
             switch (type.Form)
             {
-                case ItemForm.Round:
+                case PetriNet.ItemForm.Round:
                     dlgRoundItemStyle.Text = string.Format("\"{0}\" Style", type.Name);
                     dlgRoundItemStyle.ShowDialog(type.Id, (Core.Style.RoundShapeStyle)_style.FindItemStyle(type.Id));
                     break;
-                case ItemForm.Rectangle:
+                case PetriNet.ItemForm.Rectangle:
                     dlgRectangleItemStyle.Text = string.Format("\"{0}\" Style", type.Name);
-                    dlgRectangleItemStyle.ShowDialog(type.Id, (Core.Style.RectangleShapeStyle)_style.FindItemStyle(type.Id), ItemForm.Rectangle);
+                    dlgRectangleItemStyle.ShowDialog(type.Id, (Core.Style.RectangleShapeStyle)_style.FindItemStyle(type.Id), PetriNet.ItemForm.Rectangle);
                     break;
-                case ItemForm.Rhomb:
+                case PetriNet.ItemForm.Rhomb:
                     dlgRectangleItemStyle.Text = string.Format("\"{0}\" Style", type.Name);
-                    dlgRectangleItemStyle.ShowDialog(type.Id, (Core.Style.RectangleShapeStyle)_style.FindItemStyle(type.Id), ItemForm.Rhomb);
+                    dlgRectangleItemStyle.ShowDialog(type.Id, (Core.Style.RectangleShapeStyle)_style.FindItemStyle(type.Id), PetriNet.ItemForm.Rhomb);
                     break;
-                case ItemForm.Triangle:
+                case PetriNet.ItemForm.Triangle:
                     dlgTriangleItemStyle.Text = string.Format("\"{0}\" Style", type.Name);
                     dlgTriangleItemStyle.ShowDialog(type.Id, (Core.Style.TriangleShapeStyle)_style.FindItemStyle(type.Id));
                     break;
-                case ItemForm.Image:
+                case PetriNet.ItemForm.Image:
                     dlgImageItemStyle.Text = string.Format("\"{0}\" Style", type.Name);
                     dlgImageItemStyle.ShowDialog(type.Id, (Core.Style.ImageShapeStyle)_style.FindItemStyle(type.Id));
                     break;
             }
         }
 
-        private void UpdateItemTable(GraphicsPetriNet.ItemType itemType)
+        private void UpdateItemTable(PetriNet.GraphicsPetriNet.ItemType itemType)
         {
             _itemsTable.Clear();
             if (ReferenceEquals(_petriNet, null))
@@ -103,7 +103,7 @@ namespace ColouredPetriNet.Gui.Forms
                 return;
             }
             DataRow newRow;
-            TypeInfo type;
+            PetriNet.TypeInfo type;
             for (int i = 0; i < _petriNet.Types.Count; ++i)
             {
                 type = _petriNet.Types[i];

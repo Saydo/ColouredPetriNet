@@ -1,182 +1,158 @@
-﻿namespace ColouredPetriNet.Gui.Forms
+﻿using System.Windows.Forms;
+
+namespace ColouredPetriNet.Gui.Forms
 {
     partial class RuleForm
     {
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
-        private System.ComponentModel.IContainer components = null;
-
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && (components != null))
-            {
-                components.Dispose();
-            }
-            base.Dispose(disposing);
-        }
-
-        #region Windows Form Designer generated code
-
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
-            this.button6 = new System.Windows.Forms.Button();
-            this.button7 = new System.Windows.Forms.Button();
-            this.dataGridView2 = new System.Windows.Forms.DataGridView();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
+            dgvInputMarkers = new DataGridView();
+            btnEdit = new Button();
+            btnBack = new Button();
+            btnAdd = new Button();
+            btnRemove = new Button();
+            btnRemove2 = new Button();
+            btnAdd2 = new Button();
+            btnEdit2 = new Button();
+            dgvOutputMarkers = new DataGridView();
+            lblInputMarkers = new Label();
+            lblOutputMarkers = new Label();
+            ((System.ComponentModel.ISupportInitialize)(dgvInputMarkers)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(dgvOutputMarkers)).BeginInit();
             this.SuspendLayout();
             // 
-            // dataGridView1
+            // dgvInputMarkers
             // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(14, 31);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(189, 172);
-            this.dataGridView1.TabIndex = 0;
+            dgvInputMarkers.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvInputMarkers.Location = new System.Drawing.Point(14, 31);
+            dgvInputMarkers.Name = "dgvInputMarkers";
+            dgvInputMarkers.Size = new System.Drawing.Size(189, 172);
+            dgvInputMarkers.TabIndex = 0;
             // 
-            // button1
+            // btnEdit
             // 
-            this.button1.Location = new System.Drawing.Point(144, 209);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(59, 23);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "Edit";
-            this.button1.UseVisualStyleBackColor = true;
+            btnEdit.Location = new System.Drawing.Point(144, 209);
+            btnEdit.Name = "btnEdit";
+            btnEdit.Size = new System.Drawing.Size(59, 23);
+            btnEdit.TabIndex = 1;
+            btnEdit.Text = "Edit";
+            btnEdit.UseVisualStyleBackColor = true;
             // 
-            // button2
+            // btnBack
             // 
-            this.button2.Location = new System.Drawing.Point(323, 238);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 3;
-            this.button2.Text = "Back";
-            this.button2.UseVisualStyleBackColor = true;
+            btnBack.Location = new System.Drawing.Point(323, 238);
+            btnBack.Name = "btnBack";
+            btnBack.Size = new System.Drawing.Size(75, 23);
+            btnBack.TabIndex = 3;
+            btnBack.Text = "Back";
+            btnBack.UseVisualStyleBackColor = true;
             // 
-            // button3
+            // btnAdd
             // 
-            this.button3.Location = new System.Drawing.Point(14, 209);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(59, 23);
-            this.button3.TabIndex = 4;
-            this.button3.Text = "Add";
-            this.button3.UseVisualStyleBackColor = true;
+            btnAdd.Location = new System.Drawing.Point(14, 209);
+            btnAdd.Name = "btnAdd";
+            btnAdd.Size = new System.Drawing.Size(59, 23);
+            btnAdd.TabIndex = 4;
+            btnAdd.Text = "Add";
+            btnAdd.UseVisualStyleBackColor = true;
             // 
-            // button4
+            // btnRemove
             // 
-            this.button4.Location = new System.Drawing.Point(79, 209);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(59, 23);
-            this.button4.TabIndex = 5;
-            this.button4.Text = "Remove";
-            this.button4.UseVisualStyleBackColor = true;
+            btnRemove.Location = new System.Drawing.Point(79, 209);
+            btnRemove.Name = "btnRemove";
+            btnRemove.Size = new System.Drawing.Size(59, 23);
+            btnRemove.TabIndex = 5;
+            btnRemove.Text = "Remove";
+            btnRemove.UseVisualStyleBackColor = true;
             // 
-            // button5
+            // btnRemove2
             // 
-            this.button5.Location = new System.Drawing.Point(274, 209);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(59, 23);
-            this.button5.TabIndex = 9;
-            this.button5.Text = "Remove";
-            this.button5.UseVisualStyleBackColor = true;
+            btnRemove2.Location = new System.Drawing.Point(274, 209);
+            btnRemove2.Name = "btnRemove2";
+            btnRemove2.Size = new System.Drawing.Size(59, 23);
+            btnRemove2.TabIndex = 9;
+            btnRemove2.Text = "Remove";
+            btnRemove2.UseVisualStyleBackColor = true;
             // 
-            // button6
+            // btnAdd2
             // 
-            this.button6.Location = new System.Drawing.Point(209, 209);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(59, 23);
-            this.button6.TabIndex = 8;
-            this.button6.Text = "Add";
-            this.button6.UseVisualStyleBackColor = true;
+            btnAdd2.Location = new System.Drawing.Point(209, 209);
+            btnAdd2.Name = "btnAdd2";
+            btnAdd2.Size = new System.Drawing.Size(59, 23);
+            btnAdd2.TabIndex = 8;
+            btnAdd2.Text = "Add";
+            btnAdd2.UseVisualStyleBackColor = true;
             // 
-            // button7
+            // btnEdit2
             // 
-            this.button7.Location = new System.Drawing.Point(339, 209);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(59, 23);
-            this.button7.TabIndex = 7;
-            this.button7.Text = "Edit";
-            this.button7.UseVisualStyleBackColor = true;
+            btnEdit2.Location = new System.Drawing.Point(339, 209);
+            btnEdit2.Name = "btnEdit2";
+            btnEdit2.Size = new System.Drawing.Size(59, 23);
+            btnEdit2.TabIndex = 7;
+            btnEdit2.Text = "Edit";
+            btnEdit2.UseVisualStyleBackColor = true;
             // 
-            // dataGridView2
+            // dgvOutputMarkers
             // 
-            this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView2.Location = new System.Drawing.Point(209, 31);
-            this.dataGridView2.Name = "dataGridView2";
-            this.dataGridView2.Size = new System.Drawing.Size(189, 172);
-            this.dataGridView2.TabIndex = 6;
+            dgvOutputMarkers.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvOutputMarkers.Location = new System.Drawing.Point(209, 31);
+            dgvOutputMarkers.Name = "dgvOutputMarkers";
+            dgvOutputMarkers.Size = new System.Drawing.Size(189, 172);
+            dgvOutputMarkers.TabIndex = 6;
             // 
-            // label1
+            // lblInputMarkers
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(66, 9);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(72, 13);
-            this.label1.TabIndex = 10;
-            this.label1.Text = "Input Markers";
+            lblInputMarkers.AutoSize = true;
+            lblInputMarkers.Location = new System.Drawing.Point(66, 9);
+            lblInputMarkers.Name = "lblInputMarkers";
+            lblInputMarkers.Size = new System.Drawing.Size(72, 13);
+            lblInputMarkers.TabIndex = 10;
+            lblInputMarkers.Text = "Input Markers";
             // 
-            // label2
+            // lblOutputMarkers
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(261, 9);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(80, 13);
-            this.label2.TabIndex = 11;
-            this.label2.Text = "Output Markers";
+            lblOutputMarkers.AutoSize = true;
+            lblOutputMarkers.Location = new System.Drawing.Point(261, 9);
+            lblOutputMarkers.Name = "lblOutputMarkers";
+            lblOutputMarkers.Size = new System.Drawing.Size(80, 13);
+            lblOutputMarkers.TabIndex = 11;
+            lblOutputMarkers.Text = "Output Markers";
             // 
             // RuleForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleMode = AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(410, 275);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.button5);
-            this.Controls.Add(this.button6);
-            this.Controls.Add(this.button7);
-            this.Controls.Add(this.dataGridView2);
-            this.Controls.Add(this.button4);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.dataGridView1);
+            this.Controls.Add(lblOutputMarkers);
+            this.Controls.Add(lblInputMarkers);
+            this.Controls.Add(btnRemove2);
+            this.Controls.Add(btnAdd2);
+            this.Controls.Add(btnEdit2);
+            this.Controls.Add(dgvOutputMarkers);
+            this.Controls.Add(btnRemove);
+            this.Controls.Add(btnAdd);
+            this.Controls.Add(btnBack);
+            this.Controls.Add(btnEdit);
+            this.Controls.Add(dgvInputMarkers);
             this.Name = "RuleForm";
             this.Text = "Rule Info";
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
+            this.Icon = Core.PetriNetResources.Storage.GetIcon("AppIcon");
+            ((System.ComponentModel.ISupportInitialize)(dgvInputMarkers)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(dgvOutputMarkers)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
 
-        #endregion
-
-        private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.Button button6;
-        private System.Windows.Forms.Button button7;
-        private System.Windows.Forms.DataGridView dataGridView2;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
+        private DataGridView dgvInputMarkers;
+        private Button btnEdit;
+        private Button btnBack;
+        private Button btnAdd;
+        private Button btnRemove;
+        private Button btnRemove2;
+        private Button btnAdd2;
+        private Button btnEdit2;
+        private DataGridView dgvOutputMarkers;
+        private Label lblInputMarkers;
+        private Label lblOutputMarkers;
     }
 }

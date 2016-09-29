@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using PetriNet = ColouredPetriNet.GraphicsPetriNet;
 
 namespace ColouredPetriNet.Gui.Forms
 {
@@ -38,7 +39,7 @@ namespace ColouredPetriNet.Gui.Forms
             _style.BorderPen.Color = pnlBorderColor.BackColor;
             _style.BorderPen.Width = (float)numBorderWidth.Value;
             */
-            _parent.UpdateItem(_typeId, ColouredPetriNet.Container.GraphicsPetriNet.ItemForm.Image);
+            _parent.UpdateItem(_typeId, PetriNet.ItemForm.Image);
             _style = null;
             this.Close();
         }

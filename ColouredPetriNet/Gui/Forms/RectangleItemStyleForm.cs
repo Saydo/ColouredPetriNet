@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 using System.Drawing;
-using ColouredPetriNet.Container.GraphicsPetriNet;
+using PetriNet = ColouredPetriNet.GraphicsPetriNet;
 
 namespace ColouredPetriNet.Gui.Forms
 {
@@ -9,7 +9,7 @@ namespace ColouredPetriNet.Gui.Forms
         private int _typeId;
         private Core.Style.RectangleShapeStyle _style;
         private ItemStyleForm _parent;
-        private ItemForm _form;
+        private PetriNet.ItemForm _form;
 
         public RectangleItemStyleForm(ItemStyleForm parent)
         {
@@ -17,7 +17,7 @@ namespace ColouredPetriNet.Gui.Forms
             _parent = parent;
         }
 
-        public void ShowDialog(int typeId, Core.Style.RectangleShapeStyle style, ItemForm form)
+        public void ShowDialog(int typeId, Core.Style.RectangleShapeStyle style, PetriNet.ItemForm form)
         {
             _typeId = typeId;
             _style = style;

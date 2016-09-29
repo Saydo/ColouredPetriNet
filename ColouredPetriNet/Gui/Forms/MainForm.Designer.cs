@@ -1,7 +1,7 @@
 ﻿using System.Windows.Forms;
 using System.Drawing;
-using ColouredPetriNet.Container.GraphicsPetriNet;
-using ColouredPetriNet.Container.GraphicsPetriNet.GraphicsItems;
+using PetriNet = ColouredPetriNet.GraphicsPetriNet;
+using ColouredPetriNet.GraphicsPetriNet.GraphicsItems;
 
 namespace ColouredPetriNet.Gui.Forms
 {
@@ -17,6 +17,10 @@ namespace ColouredPetriNet.Gui.Forms
             mniExit = new ToolStripMenuItem();
             mniMap = new ToolStripMenuItem();
             mniTypes = new ToolStripMenuItem();
+            mniRules = new ToolStripMenuItem();
+            mniMoveRules = new ToolStripMenuItem();
+            mniPrevAccumulateRules = new ToolStripMenuItem();
+            mniNextAccumulateRules = new ToolStripMenuItem();
             mniShowInfo = new ToolStripMenuItem();
             mniShowStateInfo = new ToolStripMenuItem();
             mniShowTransitionInfo = new ToolStripMenuItem();
@@ -46,6 +50,7 @@ namespace ColouredPetriNet.Gui.Forms
             tsbStartSimulation = new ToolStripButton();
             tsbStopSimulation = new ToolStripButton();
             dlgTypes = new TypeListForm(this, _petriNet);
+            dlgRules = new RuleListForm();
             dlgShowItemInfo = new ShowItemInfoForm();
             dlgStateInfo = new StateInfoForm();
             dlgTransitionInfo = new TransitionInfoForm();
@@ -131,6 +136,7 @@ namespace ColouredPetriNet.Gui.Forms
             mniMap.Text = "Map";
             mniMap.DropDownItems.AddRange(new ToolStripItem[] {
                 mniTypes,
+                mniRules,
                 mniShowInfo
             });
             //
@@ -140,6 +146,38 @@ namespace ColouredPetriNet.Gui.Forms
             mniTypes.Size = new Size(152, 22);
             mniTypes.Text = "Types";
             mniTypes.Click += (obj, e) => dlgTypes.ShowDialog();
+            //
+            // Rules (ToolStripMenuItem)
+            //
+            mniRules.Name = "mniRules";
+            mniRules.Size = new Size(152, 22);
+            mniRules.Text = "Rules";
+            mniRules.DropDownItems.AddRange(new ToolStripItem[] {
+                mniMoveRules,
+                mniPrevAccumulateRules,
+                mniNextAccumulateRules
+            });
+            //
+            // mniMoveRules (ToolStripMenuItem)
+            //
+            mniMoveRules.Name = "mniMoveRules";
+            mniMoveRules.Size = new Size(152, 22);
+            mniMoveRules.Text = "Move Rules";
+            mniMoveRules.Click += (obj, e) => OpenMoveRulesDialog();
+            //
+            // mniPrevAccumulateRules (ToolStripMenuItem)
+            //
+            mniPrevAccumulateRules.Name = "mniPrevAccumulateRules";
+            mniPrevAccumulateRules.Size = new Size(152, 22);
+            mniPrevAccumulateRules.Text = "Prev Accumulate Rules";
+            mniPrevAccumulateRules.Click += (obj, e) => OpenPrevAccumulateRulesDialog();
+            //
+            // mniNextAccumulateRules (ToolStripMenuItem)
+            //
+            mniNextAccumulateRules.Name = "mniNextAccumulateRules";
+            mniNextAccumulateRules.Size = new Size(152, 22);
+            mniNextAccumulateRules.Text = "Next Accumulate Rules";
+            mniNextAccumulateRules.Click += (obj, e) => OpenNextAccumulateRulesDialog();
             //
             // ShowInfo (ToolStripMenuItem)
             //
@@ -228,21 +266,21 @@ namespace ColouredPetriNet.Gui.Forms
             mniStateStyle.Name = "mniStateStyle";
             mniStateStyle.Size = new Size(152, 22);
             mniStateStyle.Text = "States";
-            mniStateStyle.Click += (obj, e) => dlgItemStyle.ShowDialog(GraphicsPetriNet.ItemType.State);
+            mniStateStyle.Click += (obj, e) => dlgItemStyle.ShowDialog(PetriNet.GraphicsPetriNet.ItemType.State);
             //
             // TransitionStyle (ToolStripMenuItem)
             //
             mniTransitionStyle.Name = "mniTransitionStyle";
             mniTransitionStyle.Size = new Size(152, 22);
             mniTransitionStyle.Text = "Transitions";
-            mniTransitionStyle.Click += (obj, e) => dlgItemStyle.ShowDialog(GraphicsPetriNet.ItemType.Transition);
+            mniTransitionStyle.Click += (obj, e) => dlgItemStyle.ShowDialog(PetriNet.GraphicsPetriNet.ItemType.Transition);
             //
             // MarkerStyle (ToolStripMenuItem)
             //
             mniMarkerStyle.Name = "mniMarkerStyle";
             mniMarkerStyle.Size = new Size(152, 22);
             mniMarkerStyle.Text = "Markers";
-            mniMarkerStyle.Click += (obj, e) => dlgItemStyle.ShowDialog(GraphicsPetriNet.ItemType.Marker);
+            mniMarkerStyle.Click += (obj, e) => dlgItemStyle.ShowDialog(PetriNet.GraphicsPetriNet.ItemType.Marker);
             //
             // mniLinkStyle (ToolStripMenuItem)
             //
@@ -422,16 +460,16 @@ namespace ColouredPetriNet.Gui.Forms
             trvStates.TabIndex = 4;
             trvStates.Anchor = AnchorStyles.Right | AnchorStyles.Top;
             ImageList stateImageList = new ImageList();
-            stateImageList.Images.Add(ItemForm.Round.ToString() + GraphicsPetriNet.ItemType.State.ToString(), Core.PetriNetResources.Storage.GetImage("RoundStateIcon"));
-            stateImageList.Images.Add(ItemForm.Rectangle.ToString() + GraphicsPetriNet.ItemType.State.ToString(), Core.PetriNetResources.Storage.GetImage("RectangleStateIcon"));
-            stateImageList.Images.Add(ItemForm.Rhomb.ToString() + GraphicsPetriNet.ItemType.State.ToString(), Core.PetriNetResources.Storage.GetImage("RhombStateIcon"));
-            stateImageList.Images.Add(ItemForm.Triangle.ToString() + GraphicsPetriNet.ItemType.State.ToString(), Core.PetriNetResources.Storage.GetImage("TriangleStateIcon"));
-            stateImageList.Images.Add(ItemForm.Image.ToString() + GraphicsPetriNet.ItemType.State.ToString(), Core.PetriNetResources.Storage.GetImage("ImageStateIcon"));
-            stateImageList.Images.Add(ItemForm.Round.ToString() + GraphicsPetriNet.ItemType.Marker.ToString(), Core.PetriNetResources.Storage.GetImage("RoundMarkerIcon"));
-            stateImageList.Images.Add(ItemForm.Rectangle.ToString() + GraphicsPetriNet.ItemType.Marker.ToString(), Core.PetriNetResources.Storage.GetImage("RectangleMarkerIcon"));
-            stateImageList.Images.Add(ItemForm.Rhomb.ToString() + GraphicsPetriNet.ItemType.Marker.ToString(), Core.PetriNetResources.Storage.GetImage("RhombMarkerIcon"));
-            stateImageList.Images.Add(ItemForm.Triangle.ToString() + GraphicsPetriNet.ItemType.Marker.ToString(), Core.PetriNetResources.Storage.GetImage("TriangleMarkerIcon"));
-            stateImageList.Images.Add(ItemForm.Image.ToString() + GraphicsPetriNet.ItemType.Marker.ToString(), Core.PetriNetResources.Storage.GetImage("ImageMarkerIcon"));
+            stateImageList.Images.Add(PetriNet.ItemForm.Round.ToString() + PetriNet.GraphicsPetriNet.ItemType.State.ToString(), Core.PetriNetResources.Storage.GetImage("RoundStateIcon"));
+            stateImageList.Images.Add(PetriNet.ItemForm.Rectangle.ToString() + PetriNet.GraphicsPetriNet.ItemType.State.ToString(), Core.PetriNetResources.Storage.GetImage("RectangleStateIcon"));
+            stateImageList.Images.Add(PetriNet.ItemForm.Rhomb.ToString() + PetriNet.GraphicsPetriNet.ItemType.State.ToString(), Core.PetriNetResources.Storage.GetImage("RhombStateIcon"));
+            stateImageList.Images.Add(PetriNet.ItemForm.Triangle.ToString() + PetriNet.GraphicsPetriNet.ItemType.State.ToString(), Core.PetriNetResources.Storage.GetImage("TriangleStateIcon"));
+            stateImageList.Images.Add(PetriNet.ItemForm.Image.ToString() + PetriNet.GraphicsPetriNet.ItemType.State.ToString(), Core.PetriNetResources.Storage.GetImage("ImageStateIcon"));
+            stateImageList.Images.Add(PetriNet.ItemForm.Round.ToString() + PetriNet.GraphicsPetriNet.ItemType.Marker.ToString(), Core.PetriNetResources.Storage.GetImage("RoundMarkerIcon"));
+            stateImageList.Images.Add(PetriNet.ItemForm.Rectangle.ToString() + PetriNet.GraphicsPetriNet.ItemType.Marker.ToString(), Core.PetriNetResources.Storage.GetImage("RectangleMarkerIcon"));
+            stateImageList.Images.Add(PetriNet.ItemForm.Rhomb.ToString() + PetriNet.GraphicsPetriNet.ItemType.Marker.ToString(), Core.PetriNetResources.Storage.GetImage("RhombMarkerIcon"));
+            stateImageList.Images.Add(PetriNet.ItemForm.Triangle.ToString() + PetriNet.GraphicsPetriNet.ItemType.Marker.ToString(), Core.PetriNetResources.Storage.GetImage("TriangleMarkerIcon"));
+            stateImageList.Images.Add(PetriNet.ItemForm.Image.ToString() + PetriNet.GraphicsPetriNet.ItemType.Marker.ToString(), Core.PetriNetResources.Storage.GetImage("ImageMarkerIcon"));
             trvStates.ImageList = stateImageList;
             //
             // trvTransitions (TreeView)
@@ -442,11 +480,11 @@ namespace ColouredPetriNet.Gui.Forms
             trvTransitions.TabIndex = 5;
             trvTransitions.Anchor = AnchorStyles.Right | AnchorStyles.Bottom | AnchorStyles.Top;
             ImageList transitionImageList = new ImageList();
-            transitionImageList.Images.Add(ItemForm.Round.ToString(), Core.PetriNetResources.Storage.GetImage("RoundTransitionIcon"));
-            transitionImageList.Images.Add(ItemForm.Rectangle.ToString(), Core.PetriNetResources.Storage.GetImage("RectangleTransitionIcon"));
-            transitionImageList.Images.Add(ItemForm.Rhomb.ToString(), Core.PetriNetResources.Storage.GetImage("RhombTransitionIcon"));
-            transitionImageList.Images.Add(ItemForm.Triangle.ToString(), Core.PetriNetResources.Storage.GetImage("TriangleTransitionIcon"));
-            transitionImageList.Images.Add(ItemForm.Image.ToString(), Core.PetriNetResources.Storage.GetImage("ImageTransitionIcon"));
+            transitionImageList.Images.Add(PetriNet.ItemForm.Round.ToString(), Core.PetriNetResources.Storage.GetImage("RoundTransitionIcon"));
+            transitionImageList.Images.Add(PetriNet.ItemForm.Rectangle.ToString(), Core.PetriNetResources.Storage.GetImage("RectangleTransitionIcon"));
+            transitionImageList.Images.Add(PetriNet.ItemForm.Rhomb.ToString(), Core.PetriNetResources.Storage.GetImage("RhombTransitionIcon"));
+            transitionImageList.Images.Add(PetriNet.ItemForm.Triangle.ToString(), Core.PetriNetResources.Storage.GetImage("TriangleTransitionIcon"));
+            transitionImageList.Images.Add(PetriNet.ItemForm.Image.ToString(), Core.PetriNetResources.Storage.GetImage("ImageTransitionIcon"));
             trvTransitions.ImageList = transitionImageList;
             //
             // lblStates (Label)
@@ -531,6 +569,10 @@ namespace ColouredPetriNet.Gui.Forms
         private ToolStripMenuItem mniExit;
         private ToolStripMenuItem mniMap;
         private ToolStripMenuItem mniTypes;
+        private ToolStripMenuItem mniRules;
+        private ToolStripMenuItem mniMoveRules;
+        private ToolStripMenuItem mniPrevAccumulateRules;
+        private ToolStripMenuItem mniNextAccumulateRules;
         private ToolStripMenuItem mniShowInfo;
         private ToolStripMenuItem mniShowStateInfo;
         private ToolStripMenuItem mniShowTransitionInfo;
@@ -567,6 +609,7 @@ namespace ColouredPetriNet.Gui.Forms
         private Label lblStates;
         private Label lblTransitions;
         private TypeListForm dlgTypes;
+        private RuleListForm dlgRules;
         private ShowItemInfoForm dlgShowItemInfo;
         private StateInfoForm dlgStateInfo;
         private TransitionInfoForm dlgTransitionInfo;

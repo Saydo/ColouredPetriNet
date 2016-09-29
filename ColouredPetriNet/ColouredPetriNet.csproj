@@ -62,81 +62,64 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Container\GraphicsPetriNet\GraphicsItems\ColourGraphicsItem.cs" />
-    <Compile Include="Container\GraphicsPetriNet\GraphicsItems\GraphicsItem.cs" />
-    <Compile Include="Container\GraphicsPetriNet\GraphicsItems\IGraphicsItem.cs" />
-    <Compile Include="Container\GraphicsPetriNet\GraphicsItems\ImageGraphicsItem.cs" />
-    <Compile Include="Container\GraphicsPetriNet\GraphicsItems\LineGraphicsItem.cs" />
-    <Compile Include="Container\GraphicsPetriNet\GraphicsItems\LinkGraphicsItem.cs" />
-    <Compile Include="Container\GraphicsPetriNet\GraphicsItems\PolygonGraphicsItem.cs" />
-    <Compile Include="Container\GraphicsPetriNet\GraphicsItems\RectangleGraphicsItem.cs" />
-    <Compile Include="Container\GraphicsPetriNet\GraphicsItems\RhombGraphicsItem.cs" />
-    <Compile Include="Container\GraphicsPetriNet\GraphicsItems\RoundGraphicsItem.cs" />
-    <Compile Include="Container\GraphicsPetriNet\GraphicsItems\TriangleGraphicsItem.cs" />
-    <Compile Include="Container\GraphicsPetriNet\GraphicsPetriNetXmlTypes.cs" />
-    <Compile Include="Container\GraphicsPetriNet\LinkWrapper.cs" />
-    <Compile Include="Container\GraphicsPetriNet\GraphicsPetriNet.cs" />
-    <Compile Include="Container\GraphicsPetriNet\IdConvertationRule.cs" />
-    <Compile Include="Container\GraphicsPetriNet\StateWrapper.cs" />
-    <Compile Include="Container\GraphicsPetriNet\TransitionWrapper.cs" />
-    <Compile Include="Container\IdGenerator.cs" />
-    <Compile Include="Container\GraphicsPetriNet\Interfaces\IAccumulateRuleStorage.cs" />
-    <Compile Include="Container\GraphicsPetriNet\Interfaces\ILinkStorage.cs" />
-    <Compile Include="Container\GraphicsPetriNet\Interfaces\IMarkerStorage.cs" />
-    <Compile Include="Container\GraphicsPetriNet\Interfaces\IMoveRuleStorage.cs" />
-    <Compile Include="Container\GraphicsPetriNet\Interfaces\IPetriNetItemStorage.cs" />
-    <Compile Include="Container\GraphicsPetriNet\Interfaces\IStateStorage.cs" />
-    <Compile Include="Container\GraphicsPetriNet\Interfaces\ITransitionStorage.cs" />
-    <Compile Include="Container\GraphicsPetriNet\Interfaces\ITypeStorage.cs" />
-    <Compile Include="Container\GraphicsPetriNet\LinearAlgebra\Algorithm.cs" />
-    <Compile Include="Container\GraphicsPetriNet\LinearAlgebra\Equation.cs" />
-    <Compile Include="Container\GraphicsPetriNet\MarkerInfo.cs" />
-    <Compile Include="Container\GraphicsPetriNet\AccumulateRule.cs" />
-    <Compile Include="Container\GraphicsPetriNet\MoveRule.cs" />
-    <Compile Include="Container\GraphicsPetriNet\SelectionArea.cs" />
-    <Compile Include="Container\GraphicsPetriNet\Storages\AccumulateRuleStorage.cs" />
-    <Compile Include="Container\GraphicsPetriNet\Storages\LinkStorage.cs" />
-    <Compile Include="Container\GraphicsPetriNet\Storages\MarkerStorage.cs" />
-    <Compile Include="Container\GraphicsPetriNet\Storages\MoveRuleStorage.cs" />
-    <Compile Include="Container\GraphicsPetriNet\Storages\StateStorage.cs" />
-    <Compile Include="Container\GraphicsPetriNet\Storages\TransitionStorage.cs" />
-    <Compile Include="Container\GraphicsPetriNet\Storages\TypeStorage.cs" />
-    <Compile Include="Container\GraphicsPetriNet\TypeInfo.cs" />
-    <Compile Include="Container\ColouredPetriNet\Interfaces\IAccumulateRuleStorage.cs" />
-    <Compile Include="Container\ColouredPetriNet\Interfaces\ILinkStorage.cs" />
-    <Compile Include="Container\ColouredPetriNet\Interfaces\IMarkerStorage.cs" />
-    <Compile Include="Container\ColouredPetriNet\Interfaces\IMarkerWrapper.cs" />
-    <Compile Include="Container\ColouredPetriNet\Interfaces\IColouredPetriNetNode.cs" />
-    <Compile Include="Container\ColouredPetriNet\Interfaces\IMoveRuleStorage.cs" />
-    <Compile Include="Container\ColouredPetriNet\Interfaces\IPetriNetItemStorage.cs" />
-    <Compile Include="Container\ColouredPetriNet\Interfaces\ITransitionWrapper.cs" />
-    <Compile Include="Container\ColouredPetriNet\Interfaces\ITypeStorage.cs" />
-    <Compile Include="Container\ColouredPetriNet\Interfaces\IStateStorage.cs" />
-    <Compile Include="Container\ColouredPetriNet\Interfaces\IStateWrapper.cs" />
-    <Compile Include="Container\ColouredPetriNet\Interfaces\ITransitionStorage.cs" />
-    <Compile Include="Container\ColouredPetriNet\Storages\AccumulateRuleStorage.cs" />
-    <Compile Include="Container\ColouredPetriNet\Storages\LinkStorage.cs" />
-    <Compile Include="Container\ColouredPetriNet\Storages\MarkerStorage.cs" />
-    <Compile Include="Container\ColouredPetriNet\MarkerWrapper.cs" />
-    <Compile Include="Container\ColouredPetriNet\ColouredPetriNet.cs" />
-    <Compile Include="Container\ColouredPetriNet\OneTypeItemList.cs" />
-    <Compile Include="Container\ColouredPetriNet\PetriNetAccumulateRule.cs" />
-    <Compile Include="Container\ColouredPetriNet\PetriNetMoveRule.cs" />
-    <Compile Include="Container\ColouredPetriNet\ColouredPetriNetNode.cs" />
-    <Compile Include="Container\ColouredPetriNet\Storages\MoveRuleStorage.cs" />
-    <Compile Include="Container\ColouredPetriNet\Storages\StateStorage.cs" />
-    <Compile Include="Container\ColouredPetriNet\StateWrapper.cs" />
-    <Compile Include="Container\ColouredPetriNet\Storages\TransitionStorage.cs" />
-    <Compile Include="Container\ColouredPetriNet\Storages\TypeStorage.cs" />
-    <Compile Include="Container\ColouredPetriNet\TransitionWrapper.cs" />
-    <Compile Include="Container\GraphicsPetriNet\PetriNetRule.cs" />
+    <Compile Include="GraphicsPetriNet\GraphicsItems\ColourGraphicsItem.cs" />
+    <Compile Include="GraphicsPetriNet\GraphicsItems\GraphicsItem.cs" />
+    <Compile Include="GraphicsPetriNet\GraphicsItems\IGraphicsItem.cs" />
+    <Compile Include="GraphicsPetriNet\GraphicsItems\ImageGraphicsItem.cs" />
+    <Compile Include="GraphicsPetriNet\GraphicsItems\LineGraphicsItem.cs" />
+    <Compile Include="GraphicsPetriNet\GraphicsItems\LinkGraphicsItem.cs" />
+    <Compile Include="GraphicsPetriNet\GraphicsItems\PolygonGraphicsItem.cs" />
+    <Compile Include="GraphicsPetriNet\GraphicsItems\RectangleGraphicsItem.cs" />
+    <Compile Include="GraphicsPetriNet\GraphicsItems\RhombGraphicsItem.cs" />
+    <Compile Include="GraphicsPetriNet\GraphicsItems\RoundGraphicsItem.cs" />
+    <Compile Include="GraphicsPetriNet\GraphicsItems\TriangleGraphicsItem.cs" />
+    <Compile Include="GraphicsPetriNet\LinkWrapper.cs" />
+    <Compile Include="GraphicsPetriNet\GraphicsPetriNet.cs" />
+    <Compile Include="GraphicsPetriNet\Rules\MarkerIdConvert.cs" />
+    <Compile Include="GraphicsPetriNet\Rules\OneTypeMarkerConvertInfo.cs" />
+    <Compile Include="GraphicsPetriNet\Rules\OneTypeMarkerInfo.cs" />
+    <Compile Include="GraphicsPetriNet\Rules\OneTypeMovingMarkerInfo.cs" />
+    <Compile Include="GraphicsPetriNet\StateWrapper.cs" />
+    <Compile Include="GraphicsPetriNet\TransitionWrapper.cs" />
+    <Compile Include="GraphicsPetriNet\IdGenerator.cs" />
+    <Compile Include="GraphicsPetriNet\Interfaces\IAccumulateRuleStorage.cs" />
+    <Compile Include="GraphicsPetriNet\Interfaces\ILinkStorage.cs" />
+    <Compile Include="GraphicsPetriNet\Interfaces\IMarkerStorage.cs" />
+    <Compile Include="GraphicsPetriNet\Interfaces\IMoveRuleStorage.cs" />
+    <Compile Include="GraphicsPetriNet\Interfaces\IPetriNetItemStorage.cs" />
+    <Compile Include="GraphicsPetriNet\Interfaces\IStateStorage.cs" />
+    <Compile Include="GraphicsPetriNet\Interfaces\ITransitionStorage.cs" />
+    <Compile Include="GraphicsPetriNet\Interfaces\ITypeStorage.cs" />
+    <Compile Include="GraphicsPetriNet\LinearAlgebra\Algorithm.cs" />
+    <Compile Include="GraphicsPetriNet\LinearAlgebra\Equation.cs" />
+    <Compile Include="GraphicsPetriNet\MarkerInfo.cs" />
+    <Compile Include="GraphicsPetriNet\Rules\AccumulateRule.cs" />
+    <Compile Include="GraphicsPetriNet\Rules\MoveRule.cs" />
+    <Compile Include="GraphicsPetriNet\SelectionArea.cs" />
+    <Compile Include="GraphicsPetriNet\Storages\AccumulateRuleStorage.cs" />
+    <Compile Include="GraphicsPetriNet\Storages\LinkStorage.cs" />
+    <Compile Include="GraphicsPetriNet\Storages\MarkerStorage.cs" />
+    <Compile Include="GraphicsPetriNet\Storages\MoveRuleStorage.cs" />
+    <Compile Include="GraphicsPetriNet\Storages\StateStorage.cs" />
+    <Compile Include="GraphicsPetriNet\Storages\TransitionStorage.cs" />
+    <Compile Include="GraphicsPetriNet\Storages\TypeStorage.cs" />
+    <Compile Include="GraphicsPetriNet\TypeInfo.cs" />
+    <Compile Include="GraphicsPetriNet\Rules\PetriNetRule.cs" />
     <Compile Include="Gui\Core\PetriNetResourceStorage.cs" />
     <Compile Include="Gui\Core\ResourceStorage.cs" />
     <Compile Include="Gui\Core\PetriNetTypeConverter.cs" />
     <Compile Include="Gui\Core\PetriNetTypes.cs" />
     <Compile Include="Gui\Core\PetriNetStyle.cs" />
-    <Compile Include="Gui\Core\Serialize\PetriNetStyleXml.cs" />
-    <Compile Include="Gui\Core\Serialize\PetriNetXmlSerializer.cs" />
+    <Compile Include="Gui\Core\Xml\AccumulateRuleXml.cs" />
+    <Compile Include="Gui\Core\Xml\GraphicsPetriNetXml.cs" />
+    <Compile Include="Gui\Core\Xml\LinkXml.cs" />
+    <Compile Include="Gui\Core\Xml\MarkerXml.cs" />
+    <Compile Include="Gui\Core\Xml\MoveRuleXml.cs" />
+    <Compile Include="Gui\Core\Xml\PetriNetStyleXml.cs" />
+    <Compile Include="Gui\Core\Xml\PetriNetXmlSerializer.cs" />
+    <Compile Include="Gui\Core\Xml\StateXml.cs" />
+    <Compile Include="Gui\Core\Xml\TransitionXml.cs" />
+    <Compile Include="Gui\Core\Xml\TypeXml.cs" />
     <Compile Include="Gui\Forms\AboutForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -266,15 +249,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Gui\Forms\RuleEditForm.resx">
-      <DependentUpon>RuleEditForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\Forms\RuleForm.resx">
-      <DependentUpon>RuleForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\Forms\RuleListForm.resx">
-      <DependentUpon>RuleListForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
+using PetriNet = ColouredPetriNet.GraphicsPetriNet;
 
 namespace ColouredPetriNet.Gui.Forms
 {
@@ -54,7 +55,7 @@ namespace ColouredPetriNet.Gui.Forms
             ((SolidBrush)_style.FillBrush).Color = pnlFillColor.BackColor;
             _style.BorderPen.Color = pnlBorderColor.BackColor;
             _style.BorderPen.Width = (float)numBorderWidth.Value;
-            _parent.UpdateItem(_typeId, ColouredPetriNet.Container.GraphicsPetriNet.ItemForm.Triangle);
+            _parent.UpdateItem(_typeId, PetriNet.ItemForm.Triangle);
             _style = null;
             this.Close();
         }

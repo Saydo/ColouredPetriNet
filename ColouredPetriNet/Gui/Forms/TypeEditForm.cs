@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 using System.Drawing;
-using ColouredPetriNet.Container.GraphicsPetriNet;
+using PetriNet = ColouredPetriNet.GraphicsPetriNet;
 
 namespace ColouredPetriNet.Gui.Forms
 {
@@ -31,7 +31,7 @@ namespace ColouredPetriNet.Gui.Forms
             base.ShowDialog();
         }
 
-        public void ShowDialog(TypeInfo type)
+        public void ShowDialog(PetriNet.TypeInfo type)
         {
             _mode = DialogMode.Edit;
             this.Text = "Edit Type";
@@ -46,8 +46,8 @@ namespace ColouredPetriNet.Gui.Forms
 
         private void UpdateImage()
         {
-            var kind = ColouredPetriNet.Container.GraphicsPetriNet.TypeInfo.GetTypeKindFromString((string)cmbKind.SelectedItem);
-            var form = ColouredPetriNet.Container.GraphicsPetriNet.TypeInfo.GetTypeFormFromString((string)cmbForm.SelectedItem);
+            var kind = PetriNet.TypeInfo.GetTypeKindFromString((string)cmbKind.SelectedItem);
+            var form = PetriNet.TypeInfo.GetTypeFormFromString((string)cmbForm.SelectedItem);
             pbForm.Image = new Bitmap(Core.PetriNetTypeConverter.GetTypeFormImage(kind, form),
                 pbForm.Width, pbForm.Height);
         }
@@ -61,9 +61,9 @@ namespace ColouredPetriNet.Gui.Forms
                     MessageBox.Show("Type with this name is exist! Select another type name!");
                     return;
                 }
-                _parent.AddType(new TypeInfo(_parent.GenerateNextTypeId(), txtName.Text,
-                    TypeInfo.GetTypeKindFromString((string)cmbKind.SelectedItem),
-                    TypeInfo.GetTypeFormFromString((string)cmbForm.SelectedItem)));
+                _parent.AddType(new PetriNet.TypeInfo(_parent.GenerateNextTypeId(), txtName.Text,
+                    PetriNet.TypeInfo.GetTypeKindFromString((string)cmbKind.SelectedItem),
+                    PetriNet.TypeInfo.GetTypeFormFromString((string)cmbForm.SelectedItem)));
             }
             else
             {

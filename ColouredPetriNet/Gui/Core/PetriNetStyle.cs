@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Collections.Generic;
-using ColouredPetriNet.Container.GraphicsPetriNet.GraphicsItems;
+using ColouredPetriNet.GraphicsPetriNet.GraphicsItems;
 
 namespace ColouredPetriNet.Gui.Core.Style
 {

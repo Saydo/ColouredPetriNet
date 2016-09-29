@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
-using ColouredPetriNet.Container.GraphicsPetriNet;
+using PetriNet = ColouredPetriNet.GraphicsPetriNet;
 
 namespace ColouredPetriNet.Gui.Forms
 {
@@ -12,11 +12,11 @@ namespace ColouredPetriNet.Gui.Forms
         public event EventHandler<Core.Events.PetriNetNodeEventArgs> ClearButtonClick;
         public event EventHandler<Core.Events.StateEventArgs> RemoveButtonClick;
 
-        private StateWrapper _selectedState;
+        private PetriNet.StateWrapper _selectedState;
         private DataTable _markersTable;
-        private GraphicsPetriNet _petriNet;
+        private PetriNet.GraphicsPetriNet _petriNet;
 
-        public RemoveMarkerForm(GraphicsPetriNet petriNet)
+        public RemoveMarkerForm(PetriNet.GraphicsPetriNet petriNet)
         {
             InitializeComponent();
             _petriNet = petriNet;
@@ -34,7 +34,7 @@ namespace ColouredPetriNet.Gui.Forms
             dgvMarkers.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
         }
 
-        public void ShowDialog(StateWrapper selectedState)
+        public void ShowDialog(PetriNet.StateWrapper selectedState)
         {
             _selectedState = selectedState;
             UpdateMarkersTable();
@@ -54,7 +54,7 @@ namespace ColouredPetriNet.Gui.Forms
             if (!ReferenceEquals(_selectedState, null))
             {
                 Image image;
-                TypeInfo type;
+                PetriNet.TypeInfo type;
                 for (int i = 0; i < _selectedState.Markers.Count; ++i)
                 {
                     type = _petriNet.Types.FindType(_selectedState.Markers[i].Item1.TypeId);
